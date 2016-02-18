@@ -97,3 +97,22 @@
       					
     public Scene getScene () -- External
     
+# Simplified Description of API's
+
+## Visualization:
+
+Internal - User interface, set up of simulation
+
+External - Getting values/properties from the simulation
+
+## Configuration:
+
+Internal - Reading in the XML file and setting up the object that holds the XML values
+
+External - Retreiving values from the object that holds the parsed XML values
+
+## Simulation
+
+Internal -- Changing the rules of the simulation
+
+External -- Broadcasting the current state of the simulation
