@@ -172,11 +172,13 @@ perform the action in the front end of the program.
 * passed to the command class which will then call the method to move fd by parameter length of
 * 50. The resulting operation of fd 50 will be sent to updateTurtle which will reflect the 
 * change on the view screen.
+
 #### 50 fd
 * Event handler of the input button takes in the text field '50 fd' and sends it to the back
 * In the back, the parser will receive '50 fd' and check/read the input which will then be
 * passed to the command class which will determine through the error checker that this is an 
 * invalid input and will send a message to the user interface to display the error.
+
 #### pu fd 50 pd fd 50
 * Similar to the steps before, but will set the line draw parameter to off in the method 
 * associated with that, and then once that has happened, the remaining instruction will 
