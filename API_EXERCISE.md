@@ -1,5 +1,5 @@
 # API Critique:
-
+ 
 ## public abstract class Cell
 
   	public Cell(int x, int y, int[] neighboringX, int[] neighboringY, int currentState, IEdgeCase edgeType, Map<Integer, String> colorMap,  Map<String, Double> parametersMap)
