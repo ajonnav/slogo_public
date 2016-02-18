@@ -142,3 +142,15 @@ Commands each know how to take in their input values from the backend reader onc
 
 Once the command returns, the resulting action will be passed to the backend processor which will
 perform the action in the front end of the program.
+
+## API Design
+
+### Front End
+#### Internal
+* Changing what the turtle look like
+* Styling the display
+* Do barrel roll
+#### External
+* Executing turtle movement
+* 
+### 
