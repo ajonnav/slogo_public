@@ -153,6 +153,9 @@ perform the action in the front end of the program.
 * Helper methods called by external methods to update display
 #### External
 * Executing turtle movement
-### BackEnd
+* Giving commands to the backend
+### Backend
 ### Internal
-* Changing what the turtle look like
+* Parsing commands and calling external methods
+### External
+* Getting commands from the frontend
