@@ -122,6 +122,8 @@ External -- Broadcasting the current state of the simulation
 
 Slogo Architecture Design
 
+![CRC Cards] (https://github.com/duke-compsci308-spring2016/slogo_team15/blob/master/SLOGOpic.png "Overview")
+
 1. When does parsing need to take place and what does it need to start properly?
 
 Upon pressing the enter button on the user interface, the view's event handler will call a method to parse the input in the text field and so long as some value is typed into the field, it will be parsed.
