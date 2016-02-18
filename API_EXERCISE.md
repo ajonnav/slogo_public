@@ -150,7 +150,9 @@ perform the action in the front end of the program.
 * Changing what the turtle look like
 * Styling the display
 * Do barrel roll
+* Helper methods called by external methods to update display
 #### External
 * Executing turtle movement
-* 
-### 
+### BackEnd
+### Internal
+* Changing what the turtle look like
