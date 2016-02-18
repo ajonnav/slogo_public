@@ -1,6 +1,6 @@
 # API Critique:
 
-## public abstract class Cell {
+## public abstract class Cell
 
   	public Cell(int x, int y, int[] neighboringX, int[] neighboringY, int currentState, IEdgeCase edgeType, Map<Integer, String> colorMap,  Map<String, Double> parametersMap)
   	
@@ -49,10 +49,8 @@
 	public void setNextCellGrid(Cell[][] nextCellGrid) -- Internal
 	
 	public Cell[][] getNextCellGrid() -- Internal
-	
-}
 
-## public class SegCell extends Cell implements Cloneable { 
+## public class SegCell extends Cell implements Cloneable
 
   	public SegCell(int x, int y, int[] neighboringX, int[] neighboringY, int state, IEdgeCase edgeType, Map<Integer, String> colorMap, HashMap<String, Double> parametersMap) 
   	
@@ -61,10 +59,8 @@
 	public void updateCell() 
 	
 	public boolean isHappy() -- Should not be part of API
-	
-}
 
-## public class SimulationModel { 
+## public class SimulationModel 
 
   	public SimulationModel() 
   	
@@ -94,12 +90,10 @@
     
 	public Map<Integer, String> getColorMap() -- External
 	
-}
 
-public class SimulationView { 
+## public class SimulationView
       	
       					public void handle(MouseEvent e) 
       					
     public Scene getScene () -- External
     
-}
