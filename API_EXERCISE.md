@@ -138,7 +138,7 @@ Whenever the user input is pressed on a blank entry or if the parser cannot deci
 
 Commands each know how to take in their input values from the backend reader once the reader calls them, once the inputs are received, then the command method will process the input and return the the corresponding action which will be passed to the backend command processor to pass the result to the front end.
 
-5.How is the GUI updated after a command has completed execution?
+5. How is the GUI updated after a command has completed execution?
 
 Once the command returns, the resulting action will be passed to the backend processor which will
 perform the action in the front end of the program.
