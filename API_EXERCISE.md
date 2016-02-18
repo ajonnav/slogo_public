@@ -146,16 +146,21 @@ perform the action in the front end of the program.
 ## API Design
 
 ### Front End
+
 #### Internal
 * Changing what the turtle look like
 * Styling the display
 * Do barrel roll
 * Helper methods called by external methods to update display
+
 #### External
 * Executing turtle movement
 * Giving commands to the backend
+
 ### Backend
-### Internal
+
+#### Internal
 * Parsing commands and calling external methods
-### External
+
+#### External
 * Getting commands from the frontend
