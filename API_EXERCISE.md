@@ -120,9 +120,7 @@ External -- Broadcasting the current state of the simulation
 
 ## Architecture
 
-Slogo Architecture Design
-
-![CRC Cards] (https://github.com/duke-compsci308-spring2016/slogo_team15/blob/master/SLOGOpic.png "Overview")
+![CRC Cards] (images/SLOGOpic.png "Slogo Architecture Design")
 
 1. When does parsing need to take place and what does it need to start properly?
 
