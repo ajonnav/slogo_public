@@ -4,7 +4,7 @@ This SLOGO project will provide an interactive programming environment that allo
 
 ##Design Overview
 
-![Slogo] (images/SLOGOpic.png "Slogo Architecture Design")
+![Slogo] (SLOGOpic.png "Slogo Architecture Design")
 
 Our design is back end heavy with a command design pattern, with the model and controller handling most of the changes in this project. The view will encompass the display packages which are responsible for initializing and updating the various panes on the screen, including the history, command, and scene features. User input will be sent to the internal back end parser, which will then process those commands and make the appropriate changes in the respective model (turtle, line, commandList, canvas, etc.). The commands package will be responsible for changing values and the binding nature of those variables will be updated throughout the project. This way, the front end and the back end are consistently working with the same states and information. 
 
