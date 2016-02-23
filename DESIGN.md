@@ -6,29 +6,32 @@ This SLOGO project will provide an interactive programming environment that allo
 
 ![Slogo] (images/SLOGOpic.png "Slogo Architecture Design")
 
-
+Our design is back end heavy, with the model and controller handling most of the changes in this project. The view will encompass the display packages which are responsible for initializing and updating the various panes on the screen, including the history, command, and scene features. User input will be sent to the parser, which will then process those commands and make the appropriate changes. The commands package will be responsible for changing values and the binding nature of those variables will be updated throughout the project. This way, the front end and the back end are consistently working with the same states and information. 
 
 ##User Interface
 
 The User Interface will contain many components that will all interact with each other. There will be a splash screen that prompts the user to begin programming. From there, a new window will open with three panes. The first will be an initially blank history screen that will continually refresh with previous user input. Next, there will be a graphic display to show the turtle and the results of the user's commands. Lastly, there will be a command pane that allows the user to type in new input code to be interpreted and executed. In addition, there will be small features like buttons to exit or navigate back to the main menu. In the event that the user inputs improperly formatted expressions, a error message will appear with details about how to make the appropriate changes. The user will be required to dismiss the message before being allowed to try again.  
 
 
-##Design Details
+##API Details
 
-##### Class Justifications:
+Front-end Internal
 
+draw()
 
-Program Walkthrough:
+Back-end Internal
 
+Front-end External
 
-##Use Cases:
-#####Case One
+Back-end External
 
+##API Example Code
 
 ##Design Considerations
 
+In our planning process, we discussed updating the display when there are multiple commands in the expression. For example, ‘pu fd 50 pd fd 50’ can be split into two operations and evaluated successively. The issue we debated was to either handle a command, update the display, and handle the next command or to handle all commands at once and then pass the display the states of the turtle after every command and allow the front end to update this. We choose to go with the first option so that the movement of the turtle would be more dynamic and evaluating programming expressions would be more visible to a new programmer.
 
-##### Design Assumptions 
+Another issue we discussed was having an animation timer versus an update method. The display with the turtle only needs to be refreshed after the user inputs more commands that alter its features. So rather than have an animation timer with a step method responsible for refreshing values, we opted to have the back end update the display so that way the changes take place sequentially and the problem of having all of the changes take place within one frame is avoided.
 
 
 
