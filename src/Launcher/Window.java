@@ -27,7 +27,7 @@ public abstract class Window {
 		myStage = new Stage();
 		myStage.setTitle(UIConstants.TITLE);
 		myRoot = new Group();
-		myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + BundleConstants.SCREEN_LANGUAGE);
+		//myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + BundleConstants.SCREEN_LANGUAGE);
 		setUpScene();
 	}
 
@@ -53,7 +53,7 @@ public abstract class Window {
 	}
 	protected Button addB(String name, EventHandler<MouseEvent> event) {
 		Button b = new Button(name);
-		b.setOnMouseClicked(event);
+		//b.setOnMouseClicked(event);
 		return b;
 	}
 	
@@ -75,24 +75,24 @@ public abstract class Window {
 	}
 
 	// transitions to a different display screen once a simulation is chosen
-	public void goToDisplay(File file) {
-		try {
-			close();
-		} catch (ErroneousFileException e) {
-			showError(e.getMessage());
-		}
-	}
-
-	protected File getFileFromFileChooser() {
-		FileChooser f = new FileChooser();
-		f.setTitle(myResources.getString("OpenFile"));
-		File selectedFile = f.showOpenDialog(getStage());
-		if (selectedFile == null) {
-			throw new ErroneousFileException(myResources.getString("NoFile"));
-		}
-
-		return selectedFile;
-	}
+//	public void goToDisplay(File file) {
+//		try {
+//			close();
+//		} catch (ErroneousFileException e) {
+//			showError(e.getMessage());
+//		}
+//	}
+//
+//	protected File getFileFromFileChooser() {
+//		FileChooser f = new FileChooser();
+//		f.setTitle(myResources.getString("OpenFile"));
+//		File selectedFile = f.showOpenDialog(getStage());
+//		if (selectedFile == null) {
+//			throw new ErroneousFileException(myResources.getString("NoFile"));
+//		}
+//
+//		return selectedFile;
+//	}
 
 	protected ResourceBundle getResources() {
 		return myResources;
