@@ -5,39 +5,63 @@ import command.*;
 import view.TurtleView;
 import model.TurtleModel;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
 public class Main extends Application{
 	
 	public static final String TITLE = "SLogo";
-	public static final int WIDTH = 500;
+	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 500;
 	
 	public void start (Stage s) {
 		Group root = new Group();
-		Canvas canvas = new Canvas(WIDTH, HEIGHT);
-		root.getChildren().add(canvas);
+		Scene scene = new Scene(root, WIDTH, HEIGHT, Color.GRAY);
+
 		
+		//canvas for turtle view
+		Canvas canvas = new Canvas(475, 475);	
 		GraphicsContext GC = canvas.getGraphicsContext2D();
-		Scene scene = new Scene(root);
+		GC.setFill(Color.WHITE);
+		GC.fillRect(25,25,475,475);
+		root.getChildren().add(canvas);	
 		
 		double turtleInitialX = 300;
 		double turtleInitialY = 300;
 		double turtleInitialHeading = 270;
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
+		//Image turtleImage = new Image("turtle.png");
 		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
 		TurtleView turtleView = new TurtleView(turtleImage, root, GC);
+		//GC.drawImage(turtleImage, 100, 100);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 
+		
+		//command input
+		HBox commandLine = makeCommandInput();
+		commandLine.setLayoutX(500);
+		commandLine.setLayoutY(450);
+		root.getChildren().add(commandLine);
+		
+		//history box
+		
+		
 		root.getScene().setOnKeyPressed(e ->{
 			ArrayList<ICommand> commands = new ArrayList<ICommand>();
 			commands.add(new PenDownCommand(turtleModel));
@@ -59,10 +83,31 @@ public class Main extends Application{
         s.show();
 	}
 	
+	private HBox makeCommandInput(){
+		HBox commandLine = new HBox();
+		TextField inputText = new TextField();
+		inputText.setMinWidth(300);
+		commandLine.getChildren().add(inputText);
+		Button inputButton = makeButton("Go", event -> readInput());
+		commandLine.getChildren().add(inputButton);
+		return commandLine;
+	}
+	
+	private Button makeButton(String property, EventHandler<ActionEvent> action) {
+		Button button = new Button();
+		button.setText(property);
+		button.setOnAction(action);
+		return button;
+	}
+	
+	private void readInput(){
+		//make to read the text field
+	}
+	
 	/**
 	 * Launches the animation
 	 */
 	public static void main (String[] args) {
         launch(args);
-    } 
+    }
 }
