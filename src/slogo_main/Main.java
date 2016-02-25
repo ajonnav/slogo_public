@@ -21,6 +21,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import addons.Features;
 
@@ -38,10 +40,7 @@ public class Main extends Application{
 
 		
 		//canvas for turtle view
-		Canvas canvas = new Canvas(475, 475);	
-		GraphicsContext GC = canvas.getGraphicsContext2D();
-		GC.setFill(Color.WHITE);
-		GC.fillRect(25,25,475,475);
+		Canvas canvas = featureMaker.makeCanvas(25,25,475,475, Color.WHITE);
 		root.getChildren().add(canvas);	
 		
 		double turtleInitialX = 300;
@@ -49,28 +48,56 @@ public class Main extends Application{
 		double turtleInitialHeading = 270;
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
-		//Image turtleImage = new Image("turtle.png");
 		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
-		TurtleView turtleView = new TurtleView(turtleImage, root, GC);
-		//GC.drawImage(turtleImage, 100, 100);
+		TurtleView turtleView = new TurtleView(turtleImage, root, canvas.getGraphicsContext2D());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 
 		
 		//command input
-		HBox commandLine = makeCommandInput();
+		HBox commandLine = makeCommandInput(root);
+		
+		//history box
+		makeHistoryPane(root);
+		
+		//top panel options, help to html file
+		
+		
+		testCommand(root, turtleModel);
+		
+		s.setTitle(TITLE);
+        s.setScene(scene);
+        s.show();
+	}
+
+	private HBox makeCommandInput(Group root){
+		HBox commandLine = new HBox();
+		TextArea inputText = new TextArea();
+		inputText.setMaxWidth(WIDTH/2 - 50);
+		inputText.setMaxHeight(HEIGHT/4);
+		commandLine.getChildren().add(inputText);
+		Button inputButton = featureMaker.makeB("Go", event -> readInput());
+		commandLine.getChildren().add(inputButton);
 		commandLine.setLayoutX(500);
 		commandLine.setLayoutY(350);
 		root.getChildren().add(commandLine);
-		
-		//history box
+		return commandLine;
+	}
+	
+	private void readInput(){
+		//make to read the text field
+	}
+	
+	private void makeHistoryPane(Group root){
 		IPane history = new IPane();
 		history.myPane.setLayoutX(WIDTH/2);
 		history.myPane.setLayoutY(25);
 		history.myPane.setMinWidth(WIDTH/2 -25);
 		history.myPane.setMinHeight(HEIGHT/2+50);
 		root.getChildren().add(history.myRoot);
-		
+	}
+	
+	private void testCommand(Group root, TurtleModel turtleModel){
 		root.getScene().setOnKeyPressed(e ->{
 			ArrayList<ICommand> commands = new ArrayList<ICommand>();
 			commands.add(new PenDownCommand(turtleModel));
@@ -86,34 +113,6 @@ public class Main extends Application{
 				commands.get(i).execute();
 			}
 		});
-		
-		s.setTitle(TITLE);
-        s.setScene(scene);
-        s.show();
-	}
-
-	private HBox makeCommandInput(){
-		HBox commandLine = new HBox();
-		TextArea inputText = new TextArea();
-		inputText.setMaxWidth(WIDTH/2 - 50);
-		inputText.setMaxHeight(HEIGHT/4);
-		commandLine.getChildren().add(inputText);
-		Button inputButton = featureMaker.makeB("Go", event -> readInput());
-		commandLine.getChildren().add(inputButton);
-		return commandLine;
-	}
-
-	/*
-	private Button makeButton(String property, EventHandler<ActionEvent> action) {
-		Button button = new Button();
-		button.setText(property);
-		button.setOnAction(action);
-		return button;
-	}
-	*/
-	
-	private void readInput(){
-		//make to read the text field
 	}
 	
 	/**
