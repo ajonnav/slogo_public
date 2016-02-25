@@ -1,6 +1,7 @@
 package slogo_main;
 import java.util.ArrayList;
 
+import Pane.IPane;
 import command.*;
 import view.TurtleView;
 import model.TurtleModel;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,15 +22,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
+import addons.Features;
 
 public class Main extends Application{
 	
 	public static final String TITLE = "SLogo";
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 500;
+	public Features featureMaker;
 	
 	public void start (Stage s) {
+		featureMaker = new Features();
 		Group root = new Group();
 		Scene scene = new Scene(root, WIDTH, HEIGHT, Color.GRAY);
 
@@ -56,11 +60,16 @@ public class Main extends Application{
 		//command input
 		HBox commandLine = makeCommandInput();
 		commandLine.setLayoutX(500);
-		commandLine.setLayoutY(450);
+		commandLine.setLayoutY(350);
 		root.getChildren().add(commandLine);
 		
 		//history box
-		
+		IPane history = new IPane();
+		history.myPane.setLayoutX(WIDTH/2);
+		history.myPane.setLayoutY(25);
+		history.myPane.setMinWidth(WIDTH/2 -25);
+		history.myPane.setMinHeight(HEIGHT/2+50);
+		root.getChildren().add(history.myRoot);
 		
 		root.getScene().setOnKeyPressed(e ->{
 			ArrayList<ICommand> commands = new ArrayList<ICommand>();
@@ -82,23 +91,26 @@ public class Main extends Application{
         s.setScene(scene);
         s.show();
 	}
-	
+
 	private HBox makeCommandInput(){
 		HBox commandLine = new HBox();
-		TextField inputText = new TextField();
-		inputText.setMinWidth(300);
+		TextArea inputText = new TextArea();
+		inputText.setMaxWidth(WIDTH/2 - 50);
+		inputText.setMaxHeight(HEIGHT/4);
 		commandLine.getChildren().add(inputText);
-		Button inputButton = makeButton("Go", event -> readInput());
+		Button inputButton = featureMaker.makeB("Go", event -> readInput());
 		commandLine.getChildren().add(inputButton);
 		return commandLine;
 	}
-	
+
+	/*
 	private Button makeButton(String property, EventHandler<ActionEvent> action) {
 		Button button = new Button();
 		button.setText(property);
 		button.setOnAction(action);
 		return button;
 	}
+	*/
 	
 	private void readInput(){
 		//make to read the text field
