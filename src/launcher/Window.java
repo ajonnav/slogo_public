@@ -1,10 +1,10 @@
-package Launcher;
+package launcher;
 
 import java.awt.Button;
 import java.io.File;
 import java.util.ResourceBundle;
 
-import Constants.UIConstants;
+import constants.UIConstants;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;

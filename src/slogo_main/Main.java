@@ -37,7 +37,6 @@ public class Main extends Application {
 		featureMaker = new Features();
 		Group root = new Group();
 		Scene scene = new Scene(root, WIDTH, HEIGHT, Color.GRAY);
-
 		
 		//canvas for turtle view
 		Canvas canvas = new Canvas(475, 475);	
@@ -49,16 +48,6 @@ public class Main extends Application {
 		double turtleInitialX = 300;
 		double turtleInitialY = 300;
 		double turtleInitialHeading = 270;
-        
-		
-		IPane thing = new IPane();
-		thing.add(new TextArea());
-        thing.myPane.setLayoutY(450);
-        thing.myPane.setMaxSize(100.0, HEIGHT);
-		root.getChildren().add(thing.myRoot);
-		
-		thing.myPane.setLayoutY(100);
-
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
 		//Image turtleImage = new Image("turtle.png");
@@ -67,7 +56,6 @@ public class Main extends Application {
 		//GC.drawImage(turtleImage, 100, 100);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
-
 		
 		//command input
 		HBox commandLine = makeCommandInput();
@@ -76,12 +64,12 @@ public class Main extends Application {
 		root.getChildren().add(commandLine);
 		
 		//history box
-//		IPane history = new IPane();
-//		history.myPane.setLayoutX(WIDTH/2);
-//		history.myPane.setLayoutY(25);
-//		history.myPane.setMinWidth(WIDTH/2 -25);
-//		history.myPane.setMinHeight(HEIGHT/2+50);
-//		root.getChildren().add(history.myRoot);
+		IPane history = new IPane();
+		history.myPane.setLayoutX(WIDTH/2);
+		history.myPane.setLayoutY(25);
+		history.myPane.setMinWidth(WIDTH/2 -25);
+		history.myPane.setMinHeight(HEIGHT/2+50);
+		root.getChildren().add(history.myRoot);
 		
 		root.getScene().setOnKeyPressed(e ->{
 			ArrayList<ICommand> commands = new ArrayList<ICommand>();

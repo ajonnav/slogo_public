@@ -1,4 +1,4 @@
-package Launcher;
+package launcher;
 
 import display.Splash;
 import javafx.application.Application;
