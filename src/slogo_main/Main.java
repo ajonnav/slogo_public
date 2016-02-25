@@ -1,6 +1,7 @@
 package slogo_main;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
+import Pane.IPane;
 import command.*;
 import view.TurtleView;
 import model.TurtleModel;
@@ -9,17 +10,17 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+public class Main extends Application {
 
-public class Main extends Application{
-	
 	public static final String TITLE = "SLogo";
-	public static final int WIDTH = 500;
+	public static final int WIDTH = 700;
 	public static final int HEIGHT = 500;
-	
+
 	public void start (Stage s) {
 		Group root = new Group();
 		Canvas canvas = new Canvas(WIDTH, HEIGHT);
@@ -31,6 +32,16 @@ public class Main extends Application{
 		double turtleInitialX = 300;
 		double turtleInitialY = 300;
 		double turtleInitialHeading = 270;
+        
+		
+		IPane thing = new IPane();
+		thing.add(new TextArea());
+        thing.myPane.setLayoutY(450);
+        thing.myPane.setMaxSize(100.0, HEIGHT);
+		root.getChildren().add(thing.myRoot);
+		
+		thing.myPane.setLayoutY(100);
+
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
 		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
@@ -58,11 +69,11 @@ public class Main extends Application{
         s.setScene(scene);
         s.show();
 	}
-	
+
 	/**
 	 * Launches the animation
 	 */
-	public static void main (String[] args) {
-        launch(args);
-    } 
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
