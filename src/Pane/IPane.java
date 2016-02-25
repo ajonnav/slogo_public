@@ -14,7 +14,7 @@ public class IPane {
 		myRoot = new Group();
 		myRoot.getChildren().add(myPane);
 		System.out.println("testing123");
-		myPane.setStyle("-fx-padding:20;-fx-background-color:dodgerblue;");
+		myPane.setStyle("-fx-padding:20;-fx-background-color:white;");
 	}
 	
 	public Pane getPane(){
