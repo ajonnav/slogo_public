@@ -14,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Menu;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -32,12 +34,12 @@ public class Main extends Application{
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 500;
 	public Features featureMaker;
+	private WebView browser;
 	
 	public void start (Stage s) {
 		featureMaker = new Features();
 		Group root = new Group();
 		Scene scene = new Scene(root, WIDTH, HEIGHT, Color.GRAY);
-
 		
 		//canvas for turtle view
 		Canvas canvas = featureMaker.makeCanvas(25,25,475,475, Color.WHITE);
@@ -52,8 +54,7 @@ public class Main extends Application{
 		TurtleView turtleView = new TurtleView(turtleImage, root, canvas.getGraphicsContext2D());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
-
-		
+	
 		//command input
 		HBox commandLine = makeCommandInput(root);
 		
@@ -61,7 +62,10 @@ public class Main extends Application{
 		makeHistoryPane(root);
 		
 		//top panel options, help to html file
-		
+		Button help = featureMaker.makeB("Help", event -> openHelpPage(root));
+		root.getChildren().add(help);
+		help.setLayoutX(0);
+		help.setLayoutY(0);
 		
 		testCommand(root, turtleModel);
 		
@@ -113,6 +117,20 @@ public class Main extends Application{
 				commands.get(i).execute();
 			}
 		});
+	}
+	
+	private void openHelpPage(Group root){
+		Stage myStage = new Stage();
+		Group helpRoot = new Group();
+		Scene scene = new Scene(helpRoot, WIDTH, HEIGHT);
+		myStage.setTitle("Help");
+        myStage.setScene(scene);
+        myStage.show();
+        
+		WebView browser = new WebView();
+		browser.setPrefSize(WIDTH, HEIGHT);
+		helpRoot.getChildren().add(browser);
+		browser.getEngine().load("http://www.cs.duke.edu/courses/compsci308/spring16/assign/03_slogo/commands.php");	
 	}
 	
 	/**
