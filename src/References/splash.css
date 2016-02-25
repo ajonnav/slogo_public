@@ -1,0 +1,23 @@
+.root {
+    -fx-font-size: 10pt;
+    -fx-base: rgb(32, 75, 193);
+    -fx-background: rgb(244, 216, 247);
+}
+.button {
+    -fx-text-fill: black;
+    -fx-background-color: #C3CDD5;
+    -fx-border-color: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 15;
+    -fx-padding: 8;
+}
+
+.button:hover {
+    -fx-background-color: #EBEEF4;
+}
+.rectangle {
+    -fx-background-color: #FFFFFF;
+}
+.text {
+    -fx-text-fill: #EBEEF4;
+}

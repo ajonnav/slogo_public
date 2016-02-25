@@ -1,7 +1,6 @@
 package Launcher;
 
 import display.Splash;
-import slogo_main.Main;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

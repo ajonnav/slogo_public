@@ -76,12 +76,12 @@ public class Main extends Application {
 		root.getChildren().add(commandLine);
 		
 		//history box
-		IPane history = new IPane();
-		history.myPane.setLayoutX(WIDTH/2);
-		history.myPane.setLayoutY(25);
-		history.myPane.setMinWidth(WIDTH/2 -25);
-		history.myPane.setMinHeight(HEIGHT/2+50);
-		root.getChildren().add(history.myRoot);
+//		IPane history = new IPane();
+//		history.myPane.setLayoutX(WIDTH/2);
+//		history.myPane.setLayoutY(25);
+//		history.myPane.setMinWidth(WIDTH/2 -25);
+//		history.myPane.setMinHeight(HEIGHT/2+50);
+//		root.getChildren().add(history.myRoot);
 		
 		root.getScene().setOnKeyPressed(e ->{
 			ArrayList<ICommand> commands = new ArrayList<ICommand>();

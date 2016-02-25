@@ -32,4 +32,11 @@ public abstract class Screen {
 	protected Group getRoot(){
 		return myRoot;
 	}
+	
+	protected Scene getScene(){
+		return myScene;
+	}
+	protected Stage getStage(){
+		return myStage;
+	}
 }
