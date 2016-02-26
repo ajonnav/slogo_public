@@ -1,4 +1,4 @@
-package Pane;
+package pane;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -13,7 +13,6 @@ public class IPane {
 		myPane = new Pane();
 		myRoot = new Group();
 		myRoot.getChildren().add(myPane);
-		System.out.println("testing123");
 		myPane.setStyle("-fx-padding:20;-fx-background-color:white;");
 	}
 	

@@ -23,7 +23,7 @@ public class Splash extends Screen {
 		
 		featMaker = new Features();
 		
-		setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT, Color.WHITE));
+		setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT, Color.GRAY));
 		
 		setLangBox();
 		
@@ -33,11 +33,11 @@ public class Splash extends Screen {
 	}
 	
 	private void setTitle() {
-		Rectangle welRect = new Rectangle(600, UIConstants.HEIGHT/5);
-		welRect.setX(200);
-		welRect.setY(100);
-		welRect.setArcHeight(20);
-		welRect.setArcWidth(20);
+		Rectangle welRect = new Rectangle(UIConstants.RECT_W, UIConstants.HEIGHT/5);
+		welRect.setX(UIConstants.RECT_X);
+		welRect.setY(UIConstants.HUNDRED);
+		welRect.setArcHeight(UIConstants.ARC);
+		welRect.setArcWidth(UIConstants.ARC);
 		getRoot().getChildren().add(welRect);
 		welRect.getStyleClass().add("welRect");
 		
@@ -52,9 +52,9 @@ public class Splash extends Screen {
 	private void setButton() {
 		Button go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToMain());
 		getRoot().getChildren().add(go);
-		go.setLayoutX(600);
-		go.setLayoutY(250);
-		go.setPrefSize(200, 50);
+		go.setLayoutX(UIConstants.RECT_W);
+		go.setLayoutY(UIConstants.BUTTON_Y);
+		go.setPrefSize(UIConstants.RECT_X, UIConstants.BUTTON_H);
 		
 	}
 
@@ -66,19 +66,20 @@ public class Splash extends Screen {
 
 	private void setLangBox(){
 		ObservableList<String> options = FXCollections.observableArrayList(
-			        "Chinese",
-			        "English",
-			        "French",
-			        "German",
-			        "Italian",
-			        "Portuguese",
-			        "Russian",
-			        "Spanish",
-			        "Syntax"
+			        getResources().getString(UIConstants.CHIN),
+			        getResources().getString(UIConstants.ENG),
+			        getResources().getString(UIConstants.FRA),
+			        getResources().getString(UIConstants.GER),
+			        getResources().getString(UIConstants.ITA),
+			        getResources().getString(UIConstants.POR),
+			        getResources().getString(UIConstants.RUS),
+			        getResources().getString(UIConstants.SPA),
+			        getResources().getString(UIConstants.SYN)
 			    );
 		ComboBox languageCBox = featMaker.makeCBox(options);
-		languageCBox.setLayoutX(200);
-		languageCBox.setLayoutY(250);
+		languageCBox.setLayoutX(UIConstants.RECT_X);
+		languageCBox.setLayoutY(UIConstants.BUTTON_Y);
+		languageCBox.setValue(getResources().getString(UIConstants.ENG));
 		getRoot().getChildren().add(languageCBox);
 
 	}

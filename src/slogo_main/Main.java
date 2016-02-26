@@ -1,10 +1,14 @@
 package slogo_main;
 
 import java.util.ArrayList;
-import Pane.IPane;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import command.*;
 import view.TurtleView;
 import model.TurtleModel;
+import pane.IPane;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,9 +23,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import addons.Features;
 
@@ -67,9 +74,25 @@ public class Main extends Application {
 		IPane history = new IPane();
 		history.myPane.setLayoutX(WIDTH/2);
 		history.myPane.setLayoutY(25);
-		history.myPane.setMinWidth(WIDTH/2 -25);
+		history.myPane.setMinWidth(WIDTH/2 -55);
 		history.myPane.setMinHeight(HEIGHT/2+50);
 		root.getChildren().add(history.myRoot);
+		
+		FlowPane variables = new FlowPane();
+		variables.setStyle("-fx-background-color: DAE6F3;");
+		variables.setLayoutX(50);
+		variables.setLayoutY(50);
+		variables.setMinWidth(WIDTH/2 -55);
+		variables.setMinHeight(HEIGHT/2+50);
+		Map<String, String> items = new HashMap<String,String>();
+		items.put("Turtle X: ",turtleView.getX());
+		items.put("Turtle Y: ",turtleView.getY());
+		for(String thing : items.keySet()){
+			System.out.println(thing);
+			Text a = new Text(thing + items.get(thing));
+			variables.getChildren().add(a);
+		}
+		root.getChildren().add(variables);	
 		
 		root.getScene().setOnKeyPressed(e ->{
 			ArrayList<ICommand> commands = new ArrayList<ICommand>();
@@ -92,12 +115,6 @@ public class Main extends Application {
         s.show();
 	}
 
-	/**
-	 * Launches the animation
-	 */
-	public static void main(String[] args) {
-		launch(args);
-	}
 
 	private HBox makeCommandInput(){
 		HBox commandLine = new HBox();
@@ -110,14 +127,6 @@ public class Main extends Application {
 		return commandLine;
 	}
 
-	/*
-	private Button makeButton(String property, EventHandler<ActionEvent> action) {
-		Button button = new Button();
-		button.setText(property);
-		button.setOnAction(action);
-		return button;
-	}
-	*/
 	
 	private void readInput(){
 		//make to read the text field
