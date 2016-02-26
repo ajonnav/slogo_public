@@ -1,7 +1,11 @@
 package slogo_main;
-import java.util.ArrayList;
 
-import Pane.IPane;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import pane.IPane;
 import command.*;
 import view.TurtleView;
 import model.TurtleModel;
@@ -13,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Menu;
@@ -20,16 +25,20 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import addons.Features;
 
-public class Main extends Application{
-	
+public class Main extends Application {
+
+
 	public static final String TITLE = "SLogo";
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 500;
@@ -54,7 +63,7 @@ public class Main extends Application{
 		TurtleView turtleView = new TurtleView(turtleImage, root, canvas.getGraphicsContext2D());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
-	
+
 		//command input
 		HBox commandLine = makeCommandInput(root);
 		
@@ -67,7 +76,7 @@ public class Main extends Application{
 		help.setLayoutX(0);
 		help.setLayoutY(0);
 		
-		testCommand(root, turtleModel);
+		testCommand(root, turtleModel, turtleView);
 		
 		s.setTitle(TITLE);
         s.setScene(scene);
@@ -96,12 +105,28 @@ public class Main extends Application{
 		IPane history = new IPane();
 		history.myPane.setLayoutX(WIDTH/2);
 		history.myPane.setLayoutY(25);
-		history.myPane.setMinWidth(WIDTH/2 -25);
+		history.myPane.setMinWidth(WIDTH/2 -55);
 		history.myPane.setMinHeight(HEIGHT/2+50);
 		root.getChildren().add(history.myRoot);
 	}
 	
-	private void testCommand(Group root, TurtleModel turtleModel){
+	private void testCommand(Group root, TurtleModel turtleModel, TurtleView turtleView){		
+		FlowPane variables = new FlowPane();
+		variables.setStyle("-fx-background-color: DAE6F3;");
+		variables.setLayoutX(50);
+		variables.setLayoutY(50);
+		variables.setMinWidth(WIDTH/2 -55);
+		variables.setMinHeight(HEIGHT/2+50);
+		Map<String, String> items = new HashMap<String,String>();
+		items.put("Turtle X: ", turtleView.getX());
+		items.put("Turtle Y: ", turtleView.getY());
+		for(String thing : items.keySet()){
+			System.out.println(thing);
+			Text a = new Text(thing + items.get(thing));
+			variables.getChildren().add(a);
+		}
+		root.getChildren().add(variables);	
+		
 		root.getScene().setOnKeyPressed(e ->{
 			ArrayList<ICommand> commands = new ArrayList<ICommand>();
 			commands.add(new PenDownCommand(turtleModel));
@@ -118,6 +143,18 @@ public class Main extends Application{
 			}
 		});
 	}
+
+
+	private HBox makeCommandInput(){
+		HBox commandLine = new HBox();
+		TextArea inputText = new TextArea();
+		inputText.setMaxWidth(WIDTH/2 - 50);
+		inputText.setMaxHeight(HEIGHT/4);
+		commandLine.getChildren().add(inputText);
+		Button inputButton = featureMaker.makeB("Go", event -> readInput());
+		commandLine.getChildren().add(inputButton);
+		return commandLine;
+	}
 	
 	private void openHelpPage(Group root){
 		Stage myStage = new Stage();
@@ -133,10 +170,4 @@ public class Main extends Application{
 		browser.getEngine().load("http://www.cs.duke.edu/courses/compsci308/spring16/assign/03_slogo/commands.php");	
 	}
 	
-	/**
-	 * Launches the animation
-	 */
-	public static void main (String[] args) {
-        launch(args);
-    }
 }

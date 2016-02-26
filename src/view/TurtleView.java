@@ -31,5 +31,13 @@ public class TurtleView implements IView{
 			image.setRotate(turtleModel.getHeading()-270);
 		}
 	}
+	
+	public String getX(){
+		return Double.toString(image.getX());
+	}
+	
+	public String getY(){
+		return Double.toString(image.getY());
+	}
 
 }
