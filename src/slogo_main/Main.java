@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import constants.UIConstants;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
@@ -38,25 +39,20 @@ import addons.Features;
 
 public class Main extends Application {
 
-
-	public static final String TITLE = "SLogo";
-	public static final int WIDTH = 1000;
-	public static final int HEIGHT = 500;
 	public Features featureMaker;
-	private WebView browser;
 	
 	public void start (Stage s) {
 		featureMaker = new Features();
 		Group root = new Group();
-		Scene scene = new Scene(root, WIDTH, HEIGHT, Color.GRAY);
+		Scene scene = new Scene(root, UIConstants.WIDTH, UIConstants.HEIGHT, Color.GRAY);
 		
 		//canvas for turtle view
-		Canvas canvas = featureMaker.makeCanvas(25,25,475,475, Color.WHITE);
+		Canvas canvas = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH,UIConstants.BORDER_WIDTH,UIConstants.CANVAS_SIZE,UIConstants.CANVAS_SIZE, Color.WHITE);
 		root.getChildren().add(canvas);	
 		
-		double turtleInitialX = 300;
-		double turtleInitialY = 300;
-		double turtleInitialHeading = 270;
+		double turtleInitialX = UIConstants.INITIAL_X;
+		double turtleInitialY = UIConstants.INITIAL_Y;
+		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
 		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
@@ -71,14 +67,14 @@ public class Main extends Application {
 		makeHistoryPane(root);
 		
 		//top panel options, help to html file
-		Button help = featureMaker.makeB("Help", event -> openHelpPage(root));
+		Button help = featureMaker.makeB("Help", event -> openHelpPage());
 		root.getChildren().add(help);
-		help.setLayoutX(0);
-		help.setLayoutY(0);
+		help.setLayoutX(UIConstants.ZERO);
+		help.setLayoutY(UIConstants.ZERO);
 		
 		testCommand(root, turtleModel, turtleView);
 		
-		s.setTitle(TITLE);
+		s.setTitle(UIConstants.TITLE);
         s.setScene(scene);
         s.show();
 	}
@@ -86,37 +82,38 @@ public class Main extends Application {
 	private HBox makeCommandInput(Group root){
 		HBox commandLine = new HBox();
 		TextArea inputText = new TextArea();
-		inputText.setMaxWidth(WIDTH/2 - 50);
-		inputText.setMaxHeight(HEIGHT/4);
+		inputText.setMaxWidth(UIConstants.WIDTH/2 - 50);
+		inputText.setMaxHeight(UIConstants.HEIGHT/4);
 		commandLine.getChildren().add(inputText);
-		Button inputButton = featureMaker.makeB("Go", event -> readInput());
+		Button inputButton = featureMaker.makeB("Go", event -> readInput(inputText));
 		commandLine.getChildren().add(inputButton);
-		commandLine.setLayoutX(500);
-		commandLine.setLayoutY(350);
+		commandLine.setLayoutX(UIConstants.WIDTH/2);
+		commandLine.setLayoutY(UIConstants.HEIGHT- UIConstants.RECT_X);
 		root.getChildren().add(commandLine);
 		return commandLine;
 	}
 	
-	private void readInput(){
+	private void readInput(TextArea input){
 		//make to read the text field
+		input.clear();
 	}
 	
 	private void makeHistoryPane(Group root){
 		IPane history = new IPane();
-		history.myPane.setLayoutX(WIDTH/2);
-		history.myPane.setLayoutY(25);
-		history.myPane.setMinWidth(WIDTH/2 -55);
-		history.myPane.setMinHeight(HEIGHT/2+50);
+		history.myPane.setLayoutX(UIConstants.WIDTH/2);
+		history.myPane.setLayoutY(UIConstants.BORDER_WIDTH);
+		history.myPane.setMinWidth(UIConstants.CANVAS_SIZE);
+		history.myPane.setMinHeight(UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
 		root.getChildren().add(history.myRoot);
 	}
 	
 	private void testCommand(Group root, TurtleModel turtleModel, TurtleView turtleView){		
 		FlowPane variables = new FlowPane();
 		variables.setStyle("-fx-background-color: DAE6F3;");
-		variables.setLayoutX(50);
-		variables.setLayoutY(50);
-		variables.setMinWidth(WIDTH/2 -55);
-		variables.setMinHeight(HEIGHT/2+50);
+		variables.setLayoutX(UIConstants.BORDER_WIDTH);
+		variables.setLayoutY(UIConstants.CANVAS_SIZE + UIConstants.BORDER_WIDTH);
+		variables.setMinWidth(UIConstants.WIDTH/2 - UIConstants.BORDER_WIDTH*2);
+		variables.setMinHeight(UIConstants.HEIGHT/4);
 		Map<String, String> items = new HashMap<String,String>();
 		items.put("Turtle X: ", turtleView.getX());
 		items.put("Turtle Y: ", turtleView.getY());
@@ -126,7 +123,7 @@ public class Main extends Application {
 			variables.getChildren().add(a);
 		}
 		root.getChildren().add(variables);	
-		
+	/*
 		root.getScene().setOnKeyPressed(e ->{
 			ArrayList<ICommand> commands = new ArrayList<ICommand>();
 			commands.add(new PenDownCommand(turtleModel));
@@ -142,32 +139,19 @@ public class Main extends Application {
 				commands.get(i).execute();
 			}
 		});
+	*/
 	}
-
-
-	private HBox makeCommandInput(){
-		HBox commandLine = new HBox();
-		TextArea inputText = new TextArea();
-		inputText.setMaxWidth(WIDTH/2 - 50);
-		inputText.setMaxHeight(HEIGHT/4);
-		commandLine.getChildren().add(inputText);
-		Button inputButton = featureMaker.makeB("Go", event -> readInput());
-		commandLine.getChildren().add(inputButton);
-		return commandLine;
-	}
-	
-	private void openHelpPage(Group root){
+	private void openHelpPage(){
 		Stage myStage = new Stage();
 		Group helpRoot = new Group();
-		Scene scene = new Scene(helpRoot, WIDTH, HEIGHT);
+		Scene scene = new Scene(helpRoot, UIConstants.WIDTH, UIConstants.HEIGHT);
 		myStage.setTitle("Help");
         myStage.setScene(scene);
         myStage.show();
         
 		WebView browser = new WebView();
-		browser.setPrefSize(WIDTH, HEIGHT);
+		browser.setPrefSize(UIConstants.WIDTH, UIConstants.HEIGHT);
 		helpRoot.getChildren().add(browser);
 		browser.getEngine().load("http://www.cs.duke.edu/courses/compsci308/spring16/assign/03_slogo/commands.php");	
 	}
-	
 }
