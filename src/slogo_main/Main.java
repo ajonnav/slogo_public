@@ -42,7 +42,7 @@ public class Main extends Application{
 		turtleModel.notifyObservers();
                 Map<String, Observable> modelMap = new HashMap<String, Observable>();
                 modelMap.put("turtle", turtleModel);
-		String userInput = "repeat 2 [ fd 50 ]";
+		String userInput = "fd repeat 2 [ fd 100 ]";
 		CommandParser parser = new CommandParser(modelMap);
 		parser.addPatterns("resources/languages/English");
 		parser.addPatterns("resources/languages/Syntax");
