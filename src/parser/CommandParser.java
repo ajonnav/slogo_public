@@ -42,7 +42,9 @@ public class CommandParser {
     }
     public void parseText(String text) {
         commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
-        parseHelper(commands);
+        while(commands.size()!=0) {
+            parseHelper(commands);  
+        }
         for(int i = 0; i < commandsList.size(); i++) {
             commandsList.get(i).execute();
         }
@@ -87,6 +89,7 @@ public class CommandParser {
                     bracketed.add(text.get(0));
                     text.remove(0);
                 }
+                text.remove(0);
                 tempFlag = true;
                 tempList = new ArrayList<ICommand>();
                 parseHelper(bracketed);

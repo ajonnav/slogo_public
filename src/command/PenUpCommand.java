@@ -1,18 +1,25 @@
 package command;
+
 import model.TurtleModel;
+
 
 public class PenUpCommand implements ICommand {
 
-	private TurtleModel myTurtle;
-	
-	public PenUpCommand(TurtleModel turtle) {
-		myTurtle = turtle;
-	}
+    private TurtleModel myTurtle;
 
-	@Override
-	public double execute() {
-		myTurtle.penUp();
-		return 1;
-	}
+    public PenUpCommand (TurtleModel turtle) {
+        myTurtle = turtle;
+    }
+
+    @Override
+    public double execute () {
+        myTurtle.penUp();
+        return 1;
+    }
+
+    @Override
+    public double evaluate () {
+        return 1;
+    }
 
 }

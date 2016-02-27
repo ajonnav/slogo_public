@@ -1,8 +1,6 @@
 package slogo_main;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import command.*;
 import view.TurtleView;
 import model.TurtleModel;
 import parser.CommandParser;
@@ -44,33 +42,13 @@ public class Main extends Application{
 		turtleModel.notifyObservers();
                 Map<String, Observable> modelMap = new HashMap<String, Observable>();
                 modelMap.put("turtle", turtleModel);
-		String userInput = "if 50 [ fd sum 50 30 ]";
+		String userInput = "repeat 2 [ fd 50 ]";
 		CommandParser parser = new CommandParser(modelMap);
 		parser.addPatterns("resources/languages/English");
 		parser.addPatterns("resources/languages/Syntax");
 		root.getScene().setOnKeyPressed(e ->{
 		    parser.parseText(userInput);
 		});
-		
-		
-//		root.getScene().setOnKeyPressed(e ->{
-//			ArrayList<ICommand> commands = new ArrayList<ICommand>();
-//			commands.add(new PenDownCommand(turtleModel));
-//			commands.add(new ForwardCommand(turtleModel, 50));
-//			commands.add(new RightTurnCommand(turtleModel, 90));
-//			commands.add(new ForwardCommand(turtleModel, 50));
-//			commands.add(new RightTurnCommand(turtleModel, 90));
-//			commands.add(new PenUpCommand(turtleModel));
-//			commands.add(new ForwardCommand(turtleModel, 50));
-//			commands.add(new RightTurnCommand(turtleModel, 90));
-//			commands.add(new PenDownCommand(turtleModel));
-//			commands.add(new ForwardCommand(turtleModel, 50));
-//			commands.add(new RightTurnCommand(turtleModel, 90));
-//			for(int i = 0; i < commands.size(); i++) {
-//				commands.get(i).execute();
-//			}
-//		});
-		
 		s.setTitle(TITLE);
                 s.setScene(scene);
                 s.show();
