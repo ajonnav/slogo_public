@@ -1,6 +1,8 @@
 package command;
 
 public interface ICommand {
-
-	void execute();
+         
+	double execute();
+	
+	double evaluate();
 }
