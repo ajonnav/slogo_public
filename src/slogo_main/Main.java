@@ -1,17 +1,21 @@
 package slogo_main;
 
 import java.util.ArrayList;
+
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import command.*;
 import view.TurtleView;
+import view.VariablesView;
 import model.TurtleModel;
-import pane.IPane;
+import pane.MasterPane;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -19,11 +23,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -59,10 +63,13 @@ public class Main extends Application {
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
 		//Image turtleImage = new Image("turtle.png");
 		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
-		TurtleView turtleView = new TurtleView(turtleImage, root, GC);
+		TurtleView turtleView = new TurtleView(turtleImage, root, GC, Color.BLACK);
 		//GC.drawImage(turtleImage, 100, 100);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
+		
+		
+		VariablesView variableView = new VariablesView(variableModel.myMap, root);
 		
 		//command input
 		HBox commandLine = makeCommandInput();
@@ -71,28 +78,10 @@ public class Main extends Application {
 		root.getChildren().add(commandLine);
 		
 		//history box
-		IPane history = new IPane();
-		history.myPane.setLayoutX(WIDTH/2);
-		history.myPane.setLayoutY(25);
-		history.myPane.setMinWidth(WIDTH/2 -55);
-		history.myPane.setMinHeight(HEIGHT/2+50);
-		root.getChildren().add(history.myRoot);
+		MasterPane vars = makeHistory();
+		root.getChildren().add(vars.getMyPane());
 		
-		FlowPane variables = new FlowPane();
-		variables.setStyle("-fx-background-color: DAE6F3;");
-		variables.setLayoutX(50);
-		variables.setLayoutY(50);
-		variables.setMinWidth(WIDTH/2 -55);
-		variables.setMinHeight(HEIGHT/2+50);
-		Map<String, String> items = new HashMap<String,String>();
-		items.put("Turtle X: ",turtleView.getX());
-		items.put("Turtle Y: ",turtleView.getY());
-		for(String thing : items.keySet()){
-			System.out.println(thing);
-			Text a = new Text(thing + items.get(thing));
-			variables.getChildren().add(a);
-		}
-		root.getChildren().add(variables);	
+		
 		
 		root.getScene().setOnKeyPressed(e ->{
 			ArrayList<ICommand> commands = new ArrayList<ICommand>();
@@ -127,6 +116,15 @@ public class Main extends Application {
 		return commandLine;
 	}
 
+	private MasterPane makeHistory(){
+		MasterPane mpane = new MasterPane(600, 100);
+		for(String key : variableView){
+			Text a = new Text(key + " : " + variableView.get(key));
+			mpane.add(a);
+		}
+		return mpane;
+	}
+	
 	
 	private void readInput(){
 		//make to read the text field
