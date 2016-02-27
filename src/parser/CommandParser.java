@@ -41,7 +41,9 @@ public class CommandParser {
     }
     public void parseText(String text) {
         commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
-        parseHelper(commands);
+        while(commands.size()!=0) {
+        	parseHelper(commands);
+        }
         for(int i = 0; i < commandsList.size(); i++) {
             commandsList.get(i).execute();
         }

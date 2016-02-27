@@ -1,18 +1,27 @@
 package command;
+import java.util.List;
+import java.util.Map;
+import java.util.Observable;
 import model.TurtleModel;
 
 public class PenDownCommand implements ICommand {
 
-	private TurtleModel myTurtle;
+	private int numChildren = 0;
+	private Map<String, Observable> modelMap;
 	
-	public PenDownCommand(TurtleModel turtle) {
-		myTurtle = turtle;
+	public PenDownCommand(Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+		this.modelMap = modelMap;
 	}
 
 	@Override
 	public double execute() {
-		myTurtle.penDown();
-		return 0;
+		((TurtleModel)modelMap.get("turtle")).penDown();
+		return evaluate();
+	}
+
+	@Override
+	public double evaluate() {
+		return 1;
 	}
 
 }

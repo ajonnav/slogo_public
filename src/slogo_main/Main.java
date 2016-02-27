@@ -1,8 +1,6 @@
 package slogo_main;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import command.*;
 import view.TurtleView;
 import model.TurtleModel;
 import parser.CommandParser;
@@ -44,7 +42,7 @@ public class Main extends Application{
 		turtleModel.notifyObservers();
                 Map<String, Observable> modelMap = new HashMap<String, Observable>();
                 modelMap.put("turtle", turtleModel);
-		String userInput = "rt 50";
+		String userInput = "pd rt 50 fd 100";
 		CommandParser parser = new CommandParser(modelMap);
 		parser.addPatterns("resources/languages/English");
 		parser.addPatterns("resources/languages/Syntax");

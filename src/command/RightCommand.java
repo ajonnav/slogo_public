@@ -12,9 +12,9 @@ public class RightCommand implements ICommand{
     private Map<String, Observable> modelMap;
     private double degrees;
 	
-	public RightCommand(Map<String, Observable> modelMap, List<ICommand> commands) {
+	public RightCommand(Map<String, Observable> modelMap, List<List<ICommand>> commands) {
 		this.modelMap = modelMap;
-		this.degrees = commands.get(0).evaluate();
+		this.degrees = commands.get(0).get(0).evaluate();
 	}
 	
 	public double execute() {
