@@ -1,5 +1,7 @@
 package constants;
 
+import javafx.scene.paint.Color;
+
 
 public class UIConstants {
 

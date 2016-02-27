@@ -50,18 +50,17 @@ public class Splash extends Screen {
 	}
 
 	private void setButton() {
-		Button go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToMain());
+		Button go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToWorkSpace());
 		getRoot().getChildren().add(go);
 		go.setLayoutX(UIConstants.RECT_W);
 		go.setLayoutY(UIConstants.BUTTON_Y);
 		go.setPrefSize(UIConstants.RECT_X, UIConstants.BUTTON_H);
-		
 	}
 
-	private void goToMain() {
-		Main newScreen = new Main();
+	private void goToWorkSpace() {
+		WorkSpace newScreen = new WorkSpace();
 		getStage().close();
-		newScreen.start(getStage());
+		newScreen.begin();
 	}
 
 	private void setLangBox(){
