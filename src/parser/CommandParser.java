@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 import command.ConstantCommand;
 import command.ICommand;
+import command.VariableCommand;
+import model.VariableModel;
 
 public class CommandParser {
     
@@ -24,6 +26,7 @@ public class CommandParser {
     private boolean tempFlag = false;
     private List<String> commands = new ArrayList<String>();
     public static final String WHITESPACE = "\\p{Space}";
+    private int numSplit;
     
     public CommandParser(Map<String, Observable> modelMap) {
         mySymbols = new ArrayList<>();
@@ -40,13 +43,15 @@ public class CommandParser {
         }
     }
     public void parseText(String text) {
+        numSplit = 0;
         commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
-        while(commands.size()!=0) {
+        while(!commands.isEmpty()) {
             parseHelper(commands);  
         }
         for(int i = 0; i < commandsList.size(); i++) {
             commandsList.get(i).execute();
         }
+        ((VariableModel) modelMap.get("variable")).printMap();
         commandsList.clear();
     }
     
@@ -60,6 +65,9 @@ public class CommandParser {
         String className = getClassName(currString);
         if(className.equals("command.ConstantCommand")) {
             return new ConstantCommand(Integer.parseInt(currString));
+        }
+        if(className.equals("command.VariableCommand"))  {
+            return new VariableCommand(modelMap, currString);
         }
         try {
             command = ((ICommand) Class.forName(className).getConstructor(Map.class, List.class)
@@ -91,7 +99,9 @@ public class CommandParser {
                 text.remove(0);
                 tempFlag = true;
                 tempList = new ArrayList<ICommand>();
-                parseHelper(bracketed);
+                while(!bracketed.isEmpty()) {
+                    parseHelper(bracketed);
+                }
                 commandParams.add(new ArrayList<ICommand>(tempList));
                 tempFlag = false;
                 tempList.clear();

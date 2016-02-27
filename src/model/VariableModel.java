@@ -24,4 +24,10 @@ public class VariableModel extends Observable{
 		map.put(variable, value);
 		return value;
 	}
+	
+	public void printMap() {
+	    for(String s : map.keySet()) {
+	        System.out.print(s + " " + map.get(s));
+	    }
+	}
 }

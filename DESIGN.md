@@ -11,7 +11,7 @@ Our design is back end heavy with a command design pattern, with the model and c
 Looking more in depth at each of our API, we obtain a better view of the design model. In the front end (internal), methods exist to draw() the turtle, lines, and scene per input; showHistory(); and showCommands(). From these, when a command is input, the back end will parse() the input information and convert it to the language of the program. Once the input string is parsed, the commands will be passed to the external back end for execution towards the UI. By some method, this parsed line will execute() changes to the respective values of the scene so long as the exceptionCheck() does not catch any errors on the deciphered syntax. With each execute(), the appropriate target (observable turtle, line, scene (and such)) will be signalled to update and the external front end will update() to obtain those values to draw() once more. This will all be repeated for each input line until each instruction is complete, and then the program will wait for the next input from the user. 
 
 
-
+Our design is back end heavy, with the model and controller handling most of the changes in this project. The view will encompass the display packages which are responsible for initializing and updating the various panes on the screen, including the history, command, and scene features. User input will be sent to the parser, which will then process those commands and make the appropriate changes. The commands package will be responsible for changing values and the binding nature of those variables will be updated throughout the project. This way, the front end and the back end are consistently working with the same states and information. 
 
 ##User Interface
 
@@ -22,11 +22,20 @@ The User Interface will contain many components that will all interact with each
 
 Front-end Internal
 
+draw()
+
+Back-end Internal
+
+Front-end External
+
+Back-end External
+
+##API Example Code
 draw() - abstract method from Drawable interface
 Each view implements the Drawable interface
 Each view has a set of properties and a draw method that draws the object using those properties
 
-Front-end Externa
+Front-end External
 
 update() - abstract method from Updateable interface
 Each view implements the Updateable interface
@@ -40,13 +49,9 @@ Each command implements the Command interface
 Updates model by calling model method with specific arguments
 
 Back-end External
-
 beginCommands(String s)
 Takes the command input and parses it into a queue of commands
 Execute each command, which updates the view 
-
-
-
 
 ##API Example Code
 
