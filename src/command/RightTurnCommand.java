@@ -12,8 +12,9 @@ public class RightTurnCommand implements ICommand{
 		this.degrees = degrees;
 	}
 	
-	public void execute() {
+	public double execute() {
 		myTurtle.turn(degrees);
+		return degrees;
 	}
 
 }

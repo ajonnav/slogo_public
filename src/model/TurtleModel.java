@@ -14,6 +14,7 @@ public class TurtleModel extends Observable{
 		penStatus = false;
 		setChanged();
 	}
+	
 	public void forward(double distance) {
 		positionX+= distance*Math.cos(Math.toRadians(heading));
 		positionY+= distance*Math.sin(Math.toRadians(heading));

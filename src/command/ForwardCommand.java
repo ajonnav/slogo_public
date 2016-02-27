@@ -1,17 +1,32 @@
 package command;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Observable;
 import model.TurtleModel;
 
-public class ForwardCommand implements ICommand{
-	private TurtleModel myTurtle;
-	private double distance;
-	public ForwardCommand(TurtleModel turtle, double dist) {
-		myTurtle = turtle;
-		distance = dist;
-	}
 
-	@Override
-	public void execute() {
-		myTurtle.forward(distance);	
-	}
+public class ForwardCommand implements ICommand {
+
+    public static int numChildren = 1;
+
+    private Map<String, Observable> modelMap;
+    private double distance;
+
+    public ForwardCommand (Map<String, Observable> modelMap, List<ICommand> commands) {
+        this.modelMap = modelMap;
+        this.distance = commands.get(0).evaluate();
+    }
+
+    @Override
+    public double execute () {
+        ((TurtleModel) modelMap.get("turtle")).forward(distance);
+        return evaluate();
+    }
+
+    @Override
+    public double evaluate () {
+       return distance;
+    }
+
 }

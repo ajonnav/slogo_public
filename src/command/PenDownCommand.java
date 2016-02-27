@@ -10,8 +10,9 @@ public class PenDownCommand implements ICommand {
 	}
 
 	@Override
-	public void execute() {
+	public double execute() {
 		myTurtle.penDown();
+		return 0;
 	}
 
 }
