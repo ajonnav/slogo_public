@@ -14,16 +14,21 @@ import parser.CommandParser;
 import view.TurtleView;
 import view.VariableView;
 import view.HistoryPaneView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -58,6 +63,8 @@ public class WorkSpace extends Screen{
 		setVariablePane();
 		
 		setHelpButton();
+		
+		setBackgroundColor();
 	}
 	
 	private void setCanvas(){
@@ -136,7 +143,25 @@ public class WorkSpace extends Screen{
 	}
 	
 	private void setBackgroundColor(){
+		ObservableList<String> options = FXCollections.observableArrayList(
+		        getResources().getString(UIConstants.BLU),
+		        getResources().getString(UIConstants.GRE),
+		        getResources().getString(UIConstants.YEL),
+		        getResources().getString(UIConstants.WHI),
+		        getResources().getString(UIConstants.BLA),
+		        getResources().getString(UIConstants.RED),
+		        getResources().getString(UIConstants.ORA),
+		        getResources().getString(UIConstants.PUR),
+		        getResources().getString(UIConstants.BEI)
+		    );
 		
+		ComboBox<String> colorPicker = featureMaker.makeCBox(options);
+		colorPicker.setLayoutX(200);
+		colorPicker.setLayoutY(0);
+		colorPicker.setValue(getResources().getString(UIConstants.BACK_COL));
+		
+		colorPicker.setOnAction(event -> changeCanvasColor(colorPicker.getValue()));
+		getRoot().getChildren().add(colorPicker);
 	}
 	
 	private void setPenColor(){
@@ -167,5 +192,9 @@ public class WorkSpace extends Screen{
 	private void readInput(CommandParser parser, TextArea input){
 		parser.parseText(input.getText());
 		input.clear();
+	}
+	
+	private void changeCanvasColor(String color){
+		//canvas.getGraphicsContext2D().setFill(Color.Back);
 	}
 }

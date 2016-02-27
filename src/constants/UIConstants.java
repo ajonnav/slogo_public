@@ -9,6 +9,7 @@ public class UIConstants {
 	public static final String DEFAULT_RESOURCE = "references/";
 	public static final String SCREEN_LANG = "Words";
 	public static final String SPLASH_CSS = "splash.css";
+	public static final String BACK_COL = "BackgroundColor";
 	public static final String GO = "go";
 	
 	public static final int WIDTH = 1000;
@@ -36,5 +37,13 @@ public class UIConstants {
 	public static final String SPA = "SPA";
 	public static final String SYN = "SYN";
 	
-
+	public static final String BLU = "BLUE";
+	public static final String GRE = "GREEN";
+	public static final String YEL = "YELLOW";
+	public static final String WHI = "WHITE";
+	public static final String BLA = "BLACK";
+	public static final String RED = "RED";
+	public static final String ORA = "ORANGE";
+	public static final String PUR = "PURPLE";
+	public static final String BEI = "BEIGE";
 }

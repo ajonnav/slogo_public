@@ -44,6 +44,10 @@ public class Features {
 		return canvas;
 	}
 
+	public void changeCanvasColor(Canvas canvas, Color color){
+		canvas.getGraphicsContext2D().setFill(color);
+	}
+	
 	public ComboBox makeCBox(ObservableList<String> choices){
 		ComboBox myCBox = new ComboBox(choices);
 		return myCBox;
