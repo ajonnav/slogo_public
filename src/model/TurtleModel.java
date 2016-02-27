@@ -1,7 +1,7 @@
 package model;
 import java.util.Observable;
 
-public class TurtleModel extends Observable{
+public class TurtleModel extends Observable {
 	private double heading;
 	private double positionX;
 	private double positionY;
