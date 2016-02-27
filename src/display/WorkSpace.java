@@ -6,6 +6,7 @@ import java.util.Observable;
 
 import model.TurtleModel;
 import pane.IPane;
+import pane.MasterPane;
 import parser.CommandParser;
 import view.TurtleView;
 import javafx.scene.Group;
@@ -90,12 +91,11 @@ public class WorkSpace extends Screen{
 	}
 	
 	private void setHistoryPane(){
-		IPane history = new IPane();
-		history.myPane.setLayoutX(UIConstants.WIDTH/2);
-		history.myPane.setLayoutY(UIConstants.BORDER_WIDTH);
+		MasterPane history = new MasterPane(UIConstants.WIDTH/2, UIConstants.BORDER_WIDTH);
 		history.myPane.setMinWidth(UIConstants.CANVAS_SIZE);
 		history.myPane.setMinHeight(UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
-		getRoot().getChildren().add(history.myRoot);
+		history.myPane.setStyle("-fx-background-color: DAE6F3;");
+		getRoot().getChildren().addAll(history.myRoot);
 	}
 	
 	private void setVariablePane(){
