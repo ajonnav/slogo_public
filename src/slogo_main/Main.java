@@ -1,5 +1,6 @@
 package slogo_main;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,37 +12,15 @@ import view.TurtleView;
 import model.TurtleModel;
 import model.VariableModel;
 import parser.CommandParser;
+=======
+>>>>>>> b2fe6a8e93be587c61c72d9ac1218336e537dfba
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import constants.UIConstants;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Menu;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import addons.Features;
-import java.util.Observable;
+import display.Splash;
 
 public class Main extends Application {
 
+<<<<<<< HEAD
         public Features featureMaker;
         private CommandParser parser;
         
@@ -151,3 +130,11 @@ public class Main extends Application {
                 browser.getEngine().load("http://www.cs.duke.edu/courses/compsci308/spring16/assign/03_slogo/commands.php");    
         }
 }
+=======
+	public void start (Stage s) {
+
+		Splash splashscreen = new Splash();
+		splashscreen.begin();
+	}
+}
+>>>>>>> b2fe6a8e93be587c61c72d9ac1218336e537dfba

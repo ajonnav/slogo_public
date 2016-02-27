@@ -3,12 +3,14 @@ import java.util.Observable;
 import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import model.TurtleModel;
 
 public class TurtleView implements IView{
 	
 	private ImageView image;
 	private GraphicsContext GC;
+	private Color myColor;
 	
 	public TurtleView(ImageView image, Group root, GraphicsContext GC) {
 		this.image = image;

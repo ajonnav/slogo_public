@@ -30,4 +30,8 @@ public class VariableModel extends Observable{
 	        System.out.print(s + " " + map.get(s));
 	    }
 	}
+	
+	public Map<String, Double> getMap(){
+		return map;
+	}
 }
