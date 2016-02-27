@@ -13,10 +13,10 @@ public class SumCommand implements ICommand {
     private double valueOne;
     private double valueTwo;
     
-    public SumCommand(Map<String, Observable> modelMap, List<ICommand> commands) {
+    public SumCommand(Map<String, Observable> modelMap, List<List<ICommand>> commands) {
             this.modelMap = modelMap;
-            this.valueOne = commands.get(0).evaluate();
-            this.valueTwo = commands.get(1).evaluate();
+            this.valueOne = commands.get(0).get(0).evaluate();
+            this.valueTwo = commands.get(1).get(0).evaluate();
     }
 
     @Override

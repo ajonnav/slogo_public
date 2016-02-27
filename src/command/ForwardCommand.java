@@ -13,9 +13,9 @@ public class ForwardCommand implements ICommand {
     private Map<String, Observable> modelMap;
     private double distance;
 
-    public ForwardCommand (Map<String, Observable> modelMap, List<ICommand> commands) {
+    public ForwardCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
         this.modelMap = modelMap;
-        this.distance = commands.get(0).evaluate();
+        this.distance = commands.get(0).get(0).evaluate();
     }
 
     @Override
