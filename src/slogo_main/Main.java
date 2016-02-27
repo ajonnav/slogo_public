@@ -49,6 +49,7 @@ public class Main extends Application{
 			commands.add(new RightTurnCommand(turtleModel, 90));
 			commands.add(new ForwardCommand(turtleModel, 50));
 			commands.add(new RightTurnCommand(turtleModel, 90));
+			commands.add(new RightTurnCommand(turtleModel, 90));
 			for(int i = 0; i < commands.size(); i++) {
 				commands.get(i).execute();
 			}
