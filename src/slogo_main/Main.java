@@ -1,23 +1,19 @@
 package slogo_main;
 
 import java.util.ArrayList;
-
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import pane.IPane;
+import pane.MasterPane;
 import command.*;
 import view.TurtleView;
-import view.VariablesView;
 import model.TurtleModel;
-import pane.MasterPane;
 import parser.CommandParser;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -28,11 +24,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Menu;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -64,15 +60,6 @@ public class Main extends Application {
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
 		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
-
-		TurtleView turtleView = new TurtleView(turtleImage, root, GC, Color.BLACK);
-		//GC.drawImage(turtleImage, 100, 100);
-		turtleModel.addObserver(turtleView);
-		turtleModel.notifyObservers();
-		
-		
-		VariablesView variableView = new VariablesView(variableModel.myMap, root);
-
 		TurtleView turtleView = new TurtleView(turtleImage, root, canvas.getGraphicsContext2D());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
@@ -83,15 +70,10 @@ public class Main extends Application {
         parser.addPatterns("resources/languages/English");
         parser.addPatterns("resources/languages/Syntax");
         
-
 		//command input
 		HBox commandLine = makeCommandInput(root);
 		
 		//history box
-		MasterPane vars = makeHistory();
-		root.getChildren().add(vars.getMyPane());
-		
-
 		makeHistoryPane(root);
 		
 		//top panel options, help to html file
@@ -99,7 +81,6 @@ public class Main extends Application {
 		root.getChildren().add(help);
 		help.setLayoutX(UIConstants.ZERO);
 		help.setLayoutY(UIConstants.ZERO);
-
 		
 		testCommand(root, turtleModel, turtleView);
 		
@@ -121,31 +102,19 @@ public class Main extends Application {
 		root.getChildren().add(commandLine);
 		return commandLine;
 	}
-
-
-	private MasterPane makeHistory(){
-		MasterPane mpane = new MasterPane(600, 100);
-		for(String key : variableView){
-			Text a = new Text(key + " : " + variableView.get(key));
-			mpane.add(a);
-		}
-		return mpane;
-	}
-
 	
 	private void readInput(CommandParser parser, TextArea input){
 		//CommandParser.parseText(input.getText());
         parser.parseText(input.getText());
+        System.out.println(input.getText());
 		input.clear();
 	}
 	
 	private void makeHistoryPane(Group root){
-		IPane history = new IPane();
-		history.myPane.setLayoutX(UIConstants.WIDTH/2);
-		history.myPane.setLayoutY(UIConstants.BORDER_WIDTH);
+		MasterPane history = new MasterPane(UIConstants.WIDTH/2, UIConstants.BORDER_WIDTH);
 		history.myPane.setMinWidth(UIConstants.CANVAS_SIZE);
 		history.myPane.setMinHeight(UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
-		root.getChildren().add(history.myRoot);
+		root.getChildren().add(history.getMyPane());
 	}
 	
 	private void testCommand(Group root, TurtleModel turtleModel, TurtleView turtleView){		

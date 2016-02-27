@@ -3,7 +3,7 @@ package pane;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-interface IPane {
+public interface IPane {
 	
 	public Pane getPane();
 	

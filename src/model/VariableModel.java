@@ -24,4 +24,8 @@ public class VariableModel extends Observable{
 		map.put(variable, value);
 		return value;
 	}
+	
+	public Map<String, Double> getMap(){
+		return map;
+	}
 }

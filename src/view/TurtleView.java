@@ -12,12 +12,11 @@ public class TurtleView implements IView{
 	private GraphicsContext GC;
 	private Color myColor;
 	
-	public TurtleView(ImageView image, Group root, GraphicsContext GC, Color penColor) {
+	public TurtleView(ImageView image, Group root, GraphicsContext GC) {
 		this.image = image;
 		this.image.setFitHeight(50);
 		this.image.setFitWidth(50);
 		root.getChildren().add(this.image);
-		this.myColor = penColor;
 		this.GC = GC;
 	}
 	
