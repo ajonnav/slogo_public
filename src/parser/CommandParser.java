@@ -32,6 +32,7 @@ public class CommandParser {
     }
     
     public void addPatterns (String syntax) {
+    	System.out.println(syntax);
         ResourceBundle resources = ResourceBundle.getBundle(syntax);
         Enumeration<String> iter = resources.getKeys();
         while (iter.hasMoreElements()) {

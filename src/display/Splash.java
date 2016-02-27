@@ -16,6 +16,7 @@ import slogo_main.Main;
 public class Splash extends Screen {
 	
 	private Features featMaker;
+	private ComboBox languageCBox;
 
 	@Override
 	public void setUpScene() {
@@ -30,6 +31,7 @@ public class Splash extends Screen {
 		setButton();
 		
 		setTitle();
+		
 	}
 	
 	private void setTitle() {
@@ -50,17 +52,19 @@ public class Splash extends Screen {
 	}
 
 	private void setButton() {
-		Button go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToWorkSpace());
+		Button go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToWorkSpace((String) languageCBox.getValue()));
 		getRoot().getChildren().add(go);
 		go.setLayoutX(UIConstants.RECT_W);
 		go.setLayoutY(UIConstants.BUTTON_Y);
 		go.setPrefSize(UIConstants.RECT_X, UIConstants.BUTTON_H);
 	}
 
-	private void goToWorkSpace() {
-		WorkSpace newScreen = new WorkSpace();
+	private void goToWorkSpace(String lang) {
+		WorkSpace myW = new WorkSpace();
+		myW.setLang(lang);
+		System.out.println("do i get here?");
 		getStage().close();
-		newScreen.begin();
+		myW.begin();
 	}
 
 	private void setLangBox(){
@@ -75,7 +79,7 @@ public class Splash extends Screen {
 			        getResources().getString(UIConstants.SPA),
 			        getResources().getString(UIConstants.SYN)
 			    );
-		ComboBox languageCBox = featMaker.makeCBox(options);
+		languageCBox = featMaker.makeCBox(options);
 		languageCBox.setLayoutX(UIConstants.RECT_X);
 		languageCBox.setLayoutY(UIConstants.BUTTON_Y);
 		languageCBox.setValue(getResources().getString(UIConstants.ENG));

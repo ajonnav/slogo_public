@@ -1,11 +1,9 @@
 .root {
     -fx-font-size: 10pt;
     -fx-base: rgb(32, 75, 193);
-    -fx-background: #99CCFF;
+    -fx-background: #ffffcc;
 }
-.background {
-    -fx-background: aliceblue;
-}
+
 .button {
     -fx-text-fill: black;
     -fx-background-color: #E0E0E0;
@@ -30,5 +28,8 @@
 }
 .text {
     -fx-font-family: "Helvetica";
-    -fx-text-color-fill: red;
+    -fx-text-color-fill: black;
+}
+.myPane {
+	-fx-background-color: black;
 }

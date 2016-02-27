@@ -10,6 +10,7 @@ public class UIConstants {
 	public static final String SCREEN_LANG = "Words";
 	public static final String SPLASH_CSS = "splash.css";
 	public static final String GO = "go";
+	public static final String RSRC_LANG = "resources/languages/";
 	
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;

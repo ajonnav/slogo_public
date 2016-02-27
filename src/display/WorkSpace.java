@@ -32,14 +32,25 @@ public class WorkSpace extends Screen{
 
 	private Features featureMaker;
 	private CommandParser parser;
+	private TextArea inputText;
+	private String myLang;
 	
 	private Canvas canvas;
 	private TurtleView turtleView;
 	private HistoryPaneView hpv;
 	private Map<String, Observable> modelMap;
 	
+	public void setLang(String language){
+		myLang = language;
+	}
+	
+	public WorkSpace(String l){
+		myLang = l;
+	}
+	
 	@Override
 	public void setUpScene() {
+		
 		getRoot().getStylesheets().add(UIConstants.DEFAULT_RESOURCE + UIConstants.SPLASH_CSS);
 		
 		featureMaker = new Features();
@@ -50,7 +61,7 @@ public class WorkSpace extends Screen{
 		
 		setCanvas();
 		
-		setTurtle();
+		setTurtle(myLang);
 		
 		setCommandPane();
 		
@@ -64,7 +75,7 @@ public class WorkSpace extends Screen{
 		getRoot().getChildren().add(canvas);	
 	}
 	
-	private void setTurtle(){
+	private void setTurtle(String lang){
 		double turtleInitialX = UIConstants.INITIAL_X;
 		double turtleInitialY = UIConstants.INITIAL_Y;
 		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
@@ -78,13 +89,15 @@ public class WorkSpace extends Screen{
         modelMap = new HashMap<String, Observable>();
         modelMap.put("turtle", turtleModel);
         parser = new CommandParser(modelMap);
+        //parser.addPatterns(UIConstants.RSRC_LANG + myLang);
         parser.addPatterns("resources/languages/English");
         parser.addPatterns("resources/languages/Syntax");
+        
 	}
 	
 	private void setCommandPane(){
 		HBox commandLine = new HBox();
-		TextArea inputText = new TextArea();
+		inputText = new TextArea();
 		inputText.setMaxWidth(UIConstants.WIDTH/2 - 50);
 		inputText.setMaxHeight(UIConstants.HEIGHT/4);
 		commandLine.getChildren().add(inputText);
@@ -97,14 +110,12 @@ public class WorkSpace extends Screen{
 	
 	private void setHistoryPane(){
 		SPane history = new SPane(UIConstants.WIDTH/2, UIConstants.BORDER_WIDTH);
-		history.myPane.setMinWidth(UIConstants.CANVAS_SIZE);
+		history.myPane.setMinWidth(400);
 		history.myPane.setMinHeight(UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
 		history.myPane.setMaxSize(UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
-		history.myPane.setStyle("-fx-background-color: DAE6F3;");
-		history.myBox.getChildren().add(new Text("Does this work?"));
 		getRoot().getChildren().addAll(history.myRoot);
 		HistoryPaneModel hpm = new HistoryPaneModel();
-		hpv = new HistoryPaneView(history.myBox);
+		hpv = new HistoryPaneView(history.myBox, inputText);
 		hpm.addObserver(hpv);
 		hpm.notifyObservers();
 		modelMap.put("history", hpm);
@@ -158,6 +169,7 @@ public class WorkSpace extends Screen{
 	}
 	
 	private void readInput(CommandParser parser, TextArea input){
+		//double output = parser.parseText(input.getText());
 		parser.parseText(input.getText());
 		input.clear();
 	}
