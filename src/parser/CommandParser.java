@@ -20,6 +20,9 @@ public class CommandParser {
     private List<Entry<String, Pattern>> mySymbols;
     private Map<String, Observable> modelMap = new HashMap<String, Observable>(); 
     private List<ICommand> commandsList = new ArrayList<ICommand>();
+    private List<ICommand> tempList;
+    private boolean tempFlag = false;
+    private List<String> commands = new ArrayList<String>();
     public static final String WHITESPACE = "\\p{Space}";
     
     public CommandParser(Map<String, Observable> modelMap) {
@@ -37,26 +40,34 @@ public class CommandParser {
         }
     }
     public void parseText(String text) {
-        ArrayList<String> fullText = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
-        parseHelper(fullText);
+        commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
+        parseHelper(commands);
         for(int i = 0; i < commandsList.size(); i++) {
             commandsList.get(i).execute();
         }
         commandsList.clear();
     }
     
-    public ICommand parseHelper(ArrayList<String> text) {
+    public ICommand parseHelper(List<String> text) {
         ICommand command = null;
+        if(text.size() == 0) {
+            return null;
+        }
         String currString = text.get(0);
         text.remove(0);
-        String className = "command." + getSymbol(currString) + "Command";
+        String className = getClassName(currString);
         if(className.equals("command.ConstantCommand")) {
             return new ConstantCommand(Integer.parseInt(currString));
         }
         try {
             command = ((ICommand) Class.forName(className).getConstructor(Map.class, List.class)
                     .newInstance(modelMap, getCommandParams(className, text)));
-                        commandsList.add(command);
+            if(tempFlag) {
+                tempList.add(command);
+            }
+            else {
+                commandsList.add(command);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -64,11 +75,29 @@ public class CommandParser {
         return command;
     }
     
-    public List<ICommand> getCommandParams(String className, ArrayList<String> text) {
+    public List<List<ICommand>> getCommandParams(String className, List<String> text) {
         int numChildren = getNumChildren(className);
-        List<ICommand> commandParams = new ArrayList<ICommand>();
+        List<List<ICommand>> commandParams = new ArrayList<List<ICommand>>();
         for(int i = 0; i < numChildren; i++) {
-            commandParams.add(parseHelper(text)); 
+            if(getNumChildren(getClassName(text.get(0))) == -1) {
+                text.remove(0);
+                List<String> bracketed = new ArrayList<String>();
+                while(getNumChildren(getClassName(text.get(0))) != -2) {
+                    bracketed.add(text.get(0));
+                    text.remove(0);
+                }
+                tempFlag = true;
+                tempList = new ArrayList<ICommand>();
+                parseHelper(bracketed);
+                commandParams.add(new ArrayList<ICommand>(tempList));
+                tempFlag = false;
+                tempList.clear();
+            }
+            else {
+                List<ICommand> singleList = new ArrayList<ICommand>();
+                singleList.add(parseHelper(text));
+                commandParams.add(singleList); 
+            }
         }
         return commandParams;
     }
@@ -88,6 +117,10 @@ public class CommandParser {
             e.printStackTrace();
         }
         return 0;
+    }
+    
+    public String getClassName(String text) {
+        return "command." + getSymbol(text) + "Command";
     }
     
     public String getSymbol (String text) {

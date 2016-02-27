@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-public class ListStopCommand implements ICommand{
+public class ListEndCommand implements ICommand{
     
-    public static int numChildren = -1;
+    public static int numChildren = -2;
     
     private Map<String, Observable> modelMap;  
     
-    public ListStopCommand( Map<String, Observable> modelMap, List<ICommand> commands) {
+    public ListEndCommand( Map<String, Observable> modelMap, List<ICommand> commands) {
         
     }
 

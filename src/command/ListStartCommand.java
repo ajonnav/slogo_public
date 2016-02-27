@@ -11,7 +11,7 @@ public class ListStartCommand implements ICommand{
     
     private Map<String, Observable> modelMap;  
     
-    public ListStartCommand( Map<String, Observable> modelMap, List<ICommand> commands) {
+    public ListStartCommand( Map<String, Observable> modelMap, List<List<ICommand>> commands) {
         this.modelMap = modelMap;
     }
 
