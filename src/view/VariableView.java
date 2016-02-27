@@ -17,7 +17,7 @@ public class VariableView implements IView{
 	public void update(Observable o, Object arg) {
 		if(o instanceof VariableModel){
 			VariableModel vm = (VariableModel) o;
-			vars = vm.getMap();
+			vars = vm.getImmutableVariableMap();
 			
 		}
 		
