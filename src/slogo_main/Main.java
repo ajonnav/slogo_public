@@ -9,7 +9,7 @@ import pane.IPane;
 import command.*;
 import view.TurtleView;
 import model.TurtleModel;
-//import parser.CommandParser;
+import parser.CommandParser;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,7 +42,7 @@ import java.util.Observable;
 public class Main extends Application {
 
 	public Features featureMaker;
-	public static final String WHITESPACE = "\\p{Space}";
+	private CommandParser parser;
 	
 	public void start (Stage s) {
 		featureMaker = new Features();
@@ -62,7 +62,13 @@ public class Main extends Application {
 		TurtleView turtleView = new TurtleView(turtleImage, root, canvas.getGraphicsContext2D());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
-
+		
+        Map<String, Observable> modelMap = new HashMap<String, Observable>();
+        modelMap.put("turtle", turtleModel);
+        parser = new CommandParser(modelMap);
+        parser.addPatterns("resources/languages/English");
+        parser.addPatterns("resources/languages/Syntax");
+        
 		//command input
 		HBox commandLine = makeCommandInput(root);
 		
@@ -88,7 +94,7 @@ public class Main extends Application {
 		inputText.setMaxWidth(UIConstants.WIDTH/2 - 50);
 		inputText.setMaxHeight(UIConstants.HEIGHT/4);
 		commandLine.getChildren().add(inputText);
-		Button inputButton = featureMaker.makeB("Go", event -> readInput(inputText));
+		Button inputButton = featureMaker.makeB("Go", event -> readInput(parser, inputText));
 		commandLine.getChildren().add(inputButton);
 		commandLine.setLayoutX(UIConstants.WIDTH/2);
 		commandLine.setLayoutY(UIConstants.HEIGHT- UIConstants.RECT_X);
@@ -96,8 +102,9 @@ public class Main extends Application {
 		return commandLine;
 	}
 	
-	private void readInput(TextArea input){
-		//make to read the text field
+	private void readInput(CommandParser parser, TextArea input){
+		//CommandParser.parseText(input.getText());
+        parser.parseText(input.getText());
 		input.clear();
 	}
 	
@@ -126,18 +133,6 @@ public class Main extends Application {
 			variables.getChildren().add(a);
 		}
 		root.getChildren().add(variables);	
-	/*
-                Map<String, Observable> modelMap = new HashMap<String, Observable>();
-                modelMap.put("turtle", turtleModel);
-		String userInput = "repeat 2 [ fd 50 ]";
-		CommandParser parser = new CommandParser(modelMap);
-		parser.addPatterns("resources/languages/English");
-		parser.addPatterns("resources/languages/Syntax");
-		root.getScene().setOnKeyPressed(e ->{
-		    parser.parseText(userInput);
-		});
-
-	*/
 	}
 	private void openHelpPage(){
 		Stage myStage = new Stage();
