@@ -9,6 +9,7 @@ import pane.IPane;
 import command.*;
 import view.TurtleView;
 import model.TurtleModel;
+//import parser.CommandParser;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,10 +37,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import addons.Features;
+import java.util.Observable;
 
 public class Main extends Application {
 
 	public Features featureMaker;
+	public static final String WHITESPACE = "\\p{Space}";
 	
 	public void start (Stage s) {
 		featureMaker = new Features();
@@ -124,21 +127,16 @@ public class Main extends Application {
 		}
 		root.getChildren().add(variables);	
 	/*
+                Map<String, Observable> modelMap = new HashMap<String, Observable>();
+                modelMap.put("turtle", turtleModel);
+		String userInput = "repeat 2 [ fd 50 ]";
+		CommandParser parser = new CommandParser(modelMap);
+		parser.addPatterns("resources/languages/English");
+		parser.addPatterns("resources/languages/Syntax");
 		root.getScene().setOnKeyPressed(e ->{
-			ArrayList<ICommand> commands = new ArrayList<ICommand>();
-			commands.add(new PenDownCommand(turtleModel));
-			commands.add(new ForwardCommand(turtleModel, 50));
-			commands.add(new RightTurnCommand(turtleModel, 90));
-			commands.add(new ForwardCommand(turtleModel, 50));
-			commands.add(new RightTurnCommand(turtleModel, 90));
-			commands.add(new ForwardCommand(turtleModel, 50));
-			commands.add(new RightTurnCommand(turtleModel, 90));
-			commands.add(new ForwardCommand(turtleModel, 50));
-			commands.add(new RightTurnCommand(turtleModel, 90));
-			for(int i = 0; i < commands.size(); i++) {
-				commands.get(i).execute();
-			}
+		    parser.parseText(userInput);
 		});
+
 	*/
 	}
 	private void openHelpPage(){

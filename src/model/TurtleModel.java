@@ -1,7 +1,7 @@
 package model;
 import java.util.Observable;
 
-public class TurtleModel extends Observable{
+public class TurtleModel extends Observable {
 	private double heading;
 	private double positionX;
 	private double positionY;
@@ -14,6 +14,7 @@ public class TurtleModel extends Observable{
 		penStatus = false;
 		setChanged();
 	}
+	
 	public void forward(double distance) {
 		positionX+= distance*Math.cos(Math.toRadians(heading));
 		positionY+= distance*Math.sin(Math.toRadians(heading));
