@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 import command.ConstantCommand;
 import command.ICommand;
+import model.HistoryPaneModel;
 
 public class CommandParser {
     
@@ -41,6 +42,7 @@ public class CommandParser {
     }
     public void parseText(String text) {
         commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
+        ((HistoryPaneModel) modelMap.get("history")).addToHistory(text);
         while(commands.size()!=0) {
             parseHelper(commands);  
         }
