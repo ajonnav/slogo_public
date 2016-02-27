@@ -21,7 +21,6 @@ public class CommandParser {
     private Map<String, Observable> modelMap = new HashMap<String, Observable>(); 
     private List<ICommand> commandsList = new ArrayList<ICommand>();
     public static final String WHITESPACE = "\\p{Space}";
-    private boolean bracketFlag = false;
     
     public CommandParser(Map<String, Observable> modelMap) {
         mySymbols = new ArrayList<>();

@@ -44,7 +44,7 @@ public class Main extends Application{
 		turtleModel.notifyObservers();
                 Map<String, Observable> modelMap = new HashMap<String, Observable>();
                 modelMap.put("turtle", turtleModel);
-		String userInput = "if 50 [ fd 50 ] fd 50";
+		String userInput = "rt 50";
 		CommandParser parser = new CommandParser(modelMap);
 		parser.addPatterns("resources/languages/English");
 		parser.addPatterns("resources/languages/Syntax");
