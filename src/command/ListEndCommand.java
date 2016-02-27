@@ -7,7 +7,7 @@ import java.util.Observable;
 
 public class ListEndCommand implements ICommand{
     
-    public static int numChildren = -1;
+    public static int numChildren = -2;
     
     private Map<String, Observable> modelMap;  
     

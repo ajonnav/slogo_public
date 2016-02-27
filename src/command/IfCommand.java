@@ -17,7 +17,6 @@ public class IfCommand implements ICommand{
             this.modelMap = modelMap;
             this.bool = commands.get(0).get(0).evaluate();
             this.commands = commands.get(1);
-            System.out.println(commands);
     }
     
     @Override

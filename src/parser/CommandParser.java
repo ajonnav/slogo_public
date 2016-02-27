@@ -83,7 +83,7 @@ public class CommandParser {
             if(getNumChildren(getClassName(text.get(0))) == -1) {
                 text.remove(0);
                 List<String> bracketed = new ArrayList<String>();
-                while(getNumChildren(getClassName(text.get(0))) != -1) {
+                while(getNumChildren(getClassName(text.get(0))) != -2) {
                     bracketed.add(text.get(0));
                     text.remove(0);
                 }
@@ -102,8 +102,6 @@ public class CommandParser {
         }
         return commandParams;
     }
-    
-    public 
     
     public int getNumChildren(String className) {
         try {
