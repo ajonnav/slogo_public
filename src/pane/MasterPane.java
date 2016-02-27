@@ -1,5 +1,6 @@
 package pane;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -7,10 +8,13 @@ import javafx.scene.layout.VBox;
 public class MasterPane {
 
 	public Pane myPane;
-	private VBox myBox;
+	public Group myRoot;
+	public VBox myBox;
 	
 	public MasterPane(int x, int y) {
 		setMyPane(new Pane());
+		setMyRoot(new Group());
+		getMyRoot().getChildren().add(myPane);
 		myBox = new VBox();
 		getMyPane().setLayoutX(x);
 		getMyPane().setLayoutY(y);
@@ -24,9 +28,17 @@ public class MasterPane {
 	public Pane getMyPane() {
 		return myPane;
 	}
+	
+	public Group getMyRoot(){
+		return myRoot;
+	}
 
 	public void setMyPane(Pane myPane) {
 		this.myPane = myPane;
+	}
+	
+	public void setMyRoot(Group r){
+		this.myRoot = r;
 	}
 	
 }
