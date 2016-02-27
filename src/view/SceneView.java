@@ -17,7 +17,7 @@ public class SceneView implements IView{
 	public void update(Observable o, Object arg) {
 		if(o instanceof SceneModel){
 			SceneModel sModel = (SceneModel) o;
-			myScene.setColor(sModel.getColor())
+			myScene.setColor(sModel.getColor());
 		}
 		
 	}
