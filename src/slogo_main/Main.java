@@ -7,7 +7,6 @@ import display.Splash;
 public class Main extends Application {
 
 	public void start (Stage s) {
-
 		Splash splashscreen = new Splash();
 		splashscreen.begin();
 	}
