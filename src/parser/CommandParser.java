@@ -43,7 +43,6 @@ public class CommandParser {
         }
     }
     public void parseText(String text) {
-        numSplit = 0;
         commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
         while(!commands.isEmpty()) {
             parseHelper(commands);  
@@ -61,6 +60,7 @@ public class CommandParser {
             return null;
         }
         String currString = text.get(0);
+        numSplit++;
         text.remove(0);
         String className = getClassName(currString);
         if(className.equals("command.ConstantCommand")) {
@@ -71,7 +71,7 @@ public class CommandParser {
         }
         try {
             command = ((ICommand) Class.forName(className).getConstructor(Map.class, List.class)
-                    .newInstance(modelMap, getCommandParams(className, text)));
+                    .newInstance(modelMap, getCommandParams(className, text)), numSplit);
             if(tempFlag) {
                 tempList.add(command);
             }
@@ -88,6 +88,7 @@ public class CommandParser {
     public List<List<ICommand>> getCommandParams(String className, List<String> text) {
         int numChildren = getNumChildren(className);
         List<List<ICommand>> commandParams = new ArrayList<List<ICommand>>();
+        numSplit = 0;
         for(int i = 0; i < numChildren; i++) {
             if(getNumChildren(getClassName(text.get(0))) == -1) {
                 text.remove(0);
