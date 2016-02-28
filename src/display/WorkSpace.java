@@ -1,6 +1,7 @@
 package display;
 
 import java.util.HashMap;
+
 import java.util.Map;
 import java.util.Observable;
 
@@ -15,14 +16,18 @@ import view.TurtleView;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -71,6 +76,8 @@ public class WorkSpace extends Screen{
 		setVariablePane();
 		
 		setColorPicker();
+		
+		setPenPicker();
 	}
 	
 	private void setColorPicker() {
@@ -84,9 +91,34 @@ public class WorkSpace extends Screen{
 		getRoot().getChildren().add(cp);
 		
 	}
+	
+	private void setPenPicker() {
+		ColorPicker cp = new ColorPicker();
+		cp.setValue(Color.CORAL);
+		
+		
+		cp.setOnAction(event -> penChange(cp.getValue()));
+		cp.setLayoutX(400);
+		cp.setLayoutY(50);
+		getRoot().getChildren().add(cp);
+		
+	}
+
+	private void penChange(Color value) {
+		// TODO Auto-generated method stub
+		turtleView.setColor(value);
+	}
 
 	private void sceneChange(Color c) {
 		// TODO Auto-generated method stub
+		//turtleView.getGC().setFill(c);
+		//canvas.getGraphicsContext2D() = new
+//		canvas = new Canvas();
+//		GraphicsContext gc = canvas.getGraphicsContext2D();
+//		gc.setFill(c);
+//		System.out.println(gc.getFill());
+//		canvas.getGraphicsContext2D().setFill(c);
+//		getRoot().getChildren().add(canvas);
 		getScene().setFill(c);
 	}
 
@@ -102,7 +134,7 @@ public class WorkSpace extends Screen{
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
 		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
-		turtleView = new TurtleView(turtleImage, getRoot(), canvas.getGraphicsContext2D());
+		turtleView = new TurtleView(turtleImage, getRoot(), canvas.getGraphicsContext2D(), Color.BLACK);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 		
@@ -189,8 +221,24 @@ public class WorkSpace extends Screen{
 	}
 	
 	private void readInput(CommandParser parser, TextArea input){
-		//double output = parser.parseText(input.getText());
 		parser.parseText(input.getText());
 		input.clear();
+	}
+	
+//	private void readInput(CommandParser parser, TextArea input){
+//		//double output = parser.parseText(input.getText());
+//		try{
+//			parser.parseText(input.getText());
+//			input.clear();
+//		}
+//		catch(String msg){
+//			showError("u messed up");
+//		}
+//	}
+	protected void showError(String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("ERROR");
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 }
