@@ -32,6 +32,7 @@ public class CommandParser {
     }
     
     public void addPatterns (String syntax) {
+    	System.out.println(syntax);
         ResourceBundle resources = ResourceBundle.getBundle(syntax);
         Enumeration<String> iter = resources.getKeys();
         while (iter.hasMoreElements()) {
@@ -93,7 +94,9 @@ public class CommandParser {
                 text.remove(0);
                 tempFlag = true;
                 tempList = new ArrayList<ICommand>();
-                parseHelper(bracketed);
+                while(!bracketed.isEmpty()) {
+                	parseHelper(bracketed);
+                }
                 commandParams.add(new ArrayList<ICommand>(tempList));
                 tempFlag = false;
                 tempList.clear();

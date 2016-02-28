@@ -17,7 +17,6 @@ public abstract class Screen {
 	
 	public Screen() {
 		myBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
-		
 		myStage = new Stage();
 		myStage.setTitle(myBundle.getString(UIConstants.TITLE));
 		myRoot = new Group();
@@ -47,5 +46,10 @@ public abstract class Screen {
 	}
 	protected ResourceBundle getResources(){
 		return myBundle;
+	}
+
+	public void setUpScene(String lang) {
+		// TODO Auto-generated method stub
+		
 	}
 }

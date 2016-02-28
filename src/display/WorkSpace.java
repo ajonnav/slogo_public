@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+
 import java.util.Map;
 import java.util.Observable;
 
@@ -16,6 +17,7 @@ import pane.IPane;
 import pane.MasterPane;
 import pane.SPane;
 import parser.CommandParser;
+import view.HistoryPaneView;
 import view.TurtleView;
 import view.VariableView;
 import view.HistoryPaneView;
@@ -24,10 +26,12 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -45,13 +49,25 @@ public class WorkSpace extends Screen{
 
 	private Features featureMaker;
 	private CommandParser parser;
-	private HistoryPaneView hpv;
+	private TextArea inputText;
+	private String myLang;
+	
 	private Canvas canvas;
 	private TurtleView turtleView;
-    Map<String, Observable> modelMap;
-    
+	private HistoryPaneView hpv;
+	private Map<String, Observable> modelMap;
+	
+	public void setLang(String language){
+		myLang = language;
+	}
+	
+//	public WorkSpace(String l){
+//		myLang = l;
+//	}
+	
 	@Override
 	public void setUpScene() {
+		
 		getRoot().getStylesheets().add(UIConstants.DEFAULT_RESOURCE + UIConstants.SPLASH_CSS);
 		
 		featureMaker = new Features();
@@ -71,8 +87,53 @@ public class WorkSpace extends Screen{
 		setHelpButton();
 		
 		setBackgroundColor();
+
+		setColorPicker();
+		
+		setPenPicker();
 	}
 	
+	private void setColorPicker() {
+		ColorPicker cp = new ColorPicker();
+		cp.setValue(Color.CORAL);
+		
+		
+		cp.setOnAction(event -> sceneChange(cp.getValue()));
+		cp.setLayoutX(250);
+		cp.setLayoutY(50);
+		getRoot().getChildren().add(cp);
+	}
+	
+	private void setPenPicker() {
+		ColorPicker cp = new ColorPicker();
+		cp.setValue(Color.CORAL);
+		
+		
+		cp.setOnAction(event -> penChange(cp.getValue()));
+		cp.setLayoutX(400);
+		cp.setLayoutY(50);
+		getRoot().getChildren().add(cp);
+		
+	}
+
+	private void penChange(Color value) {
+		// TODO Auto-generated method stub
+		turtleView.setColor(value);
+	}
+
+	private void sceneChange(Color c) {
+		// TODO Auto-generated method stub
+		//turtleView.getGC().setFill(c);
+		//canvas.getGraphicsContext2D() = new
+//		canvas = new Canvas();
+//		GraphicsContext gc = canvas.getGraphicsContext2D();
+//		gc.setFill(c);
+//		System.out.println(gc.getFill());
+//		canvas.getGraphicsContext2D().setFill(c);
+//		getRoot().getChildren().add(canvas);
+		getScene().setFill(c);
+	}
+
 	private void setCanvas(){
 		canvas = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH,UIConstants.BORDER_WIDTH,UIConstants.CANVAS_SIZE,UIConstants.CANVAS_SIZE, Color.WHITE);
 		getRoot().getChildren().add(canvas);	
@@ -85,20 +146,22 @@ public class WorkSpace extends Screen{
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
 		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
-		TurtleView turtleView = new TurtleView(turtleImage, getRoot(), canvas.getGraphicsContext2D());
+		turtleView = new TurtleView(turtleImage, getRoot(), canvas.getGraphicsContext2D(), Color.BLACK);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 		
-		modelMap = new HashMap<String, Observable>();
+        modelMap = new HashMap<String, Observable>();
         modelMap.put("turtle", turtleModel);
         parser = new CommandParser(modelMap);
+        //parser.addPatterns(UIConstants.RSRC_LANG + myLang);
         parser.addPatterns("resources/languages/English");
         parser.addPatterns("resources/languages/Syntax");
+        
 	}
 	
 	private void setCommandPane(){
 		HBox commandLine = new HBox();
-		TextArea inputText = new TextArea();
+		inputText = new TextArea();
 		inputText.setMaxWidth(UIConstants.WIDTH/2 - 50);
 		inputText.setMaxHeight(UIConstants.HEIGHT/4);
 		commandLine.getChildren().add(inputText);
@@ -111,16 +174,15 @@ public class WorkSpace extends Screen{
 	
 	private void setHistoryPane(){
 		SPane history = new SPane(UIConstants.WIDTH/2, UIConstants.BORDER_WIDTH);
-		history.myPane.setMinSize(UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
+		history.myPane.setMinWidth(400);
+		history.myPane.setMinHeight(UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
 		history.myPane.setMaxSize(UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
-  		history.myPane.setStyle("-fx-background-color: DAE6F3;");
-		history.myBox.getChildren().add(new Text("History"));
-  		getRoot().getChildren().addAll(history.myRoot);
+		getRoot().getChildren().addAll(history.myRoot);
 		HistoryPaneModel hpm = new HistoryPaneModel();
-		hpv = new HistoryPaneView(history.myBox);
+		hpv = new HistoryPaneView(history.myBox, inputText);
 		hpm.addObserver(hpv);
- 		hpm.notifyObservers();
- 		modelMap.put("history", hpm);
+		hpm.notifyObservers();
+		modelMap.put("history", hpm);
 	}
 	
 	private void setVariablePane(){
@@ -185,5 +247,22 @@ public class WorkSpace extends Screen{
 	private void readInput(CommandParser parser, TextArea input){
 		parser.parseText(input.getText());
 		input.clear();
+	}
+	
+//	private void readInput(CommandParser parser, TextArea input){
+//		//double output = parser.parseText(input.getText());
+//		try{
+//			parser.parseText(input.getText());
+//			input.clear();
+//		}
+//		catch(String msg){
+//			showError("u messed up");
+//		}
+//	}
+	protected void showError(String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("ERROR");
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 }
