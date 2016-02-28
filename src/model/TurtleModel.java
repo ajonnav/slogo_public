@@ -6,12 +6,14 @@ public class TurtleModel extends Observable {
 	private double positionX;
 	private double positionY;
 	private boolean penStatus;
+	private boolean showStatus;
 	
 	public TurtleModel(double turtleInitialX, double turtleInitialY, double turtleInitialHeading) {
 		heading = turtleInitialHeading;
 		positionX = turtleInitialX;
 		positionY = turtleInitialY;
 		penStatus = false;
+		showStatus = true;
 		setChanged();
 	}
 	
@@ -22,10 +24,21 @@ public class TurtleModel extends Observable {
 		notifyObservers();
 	}
 	
-	public void turn(double degree) {
-		heading+=degree;
+	public void setHeading(double degrees) {
+		heading = degrees;
 		setChanged();
 		notifyObservers();
+	}
+	
+	public void setPosition(double x, double y) {
+		positionX = x;
+		positionY = y;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void turn(double degree) {
+		setHeading(degree + heading);
 	}
 	
 	public void penUp() {
@@ -34,6 +47,18 @@ public class TurtleModel extends Observable {
 	
 	public void penDown() {
 		penStatus = true;
+	}
+	
+	public void show() {
+		showStatus = true;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void hide() {
+		showStatus = false;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public double getPositionY() {
@@ -47,7 +72,12 @@ public class TurtleModel extends Observable {
 	public double getHeading() {
 		return heading;
 	}
+	
 	public boolean getPenStatus() {
 		return penStatus;
+	}
+	
+	public boolean getShowStatus() {
+		return showStatus;
 	}
 }
