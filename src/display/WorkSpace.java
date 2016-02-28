@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
+import model.HistoryPaneModel;
 import model.TurtleModel;
 import pane.IPane;
 import pane.MasterPane;
+import pane.SPane;
 import parser.CommandParser;
+import view.HistoryPaneView;
 import view.TurtleView;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -32,6 +35,8 @@ public class WorkSpace extends Screen{
 	
 	private Canvas canvas;
 	private TurtleView turtleView;
+	private HistoryPaneView hpv;
+	private Map<String, Observable> modelMap;
 	
 	@Override
 	public void setUpScene() {
@@ -70,7 +75,7 @@ public class WorkSpace extends Screen{
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 		
-        Map<String, Observable> modelMap = new HashMap<String, Observable>();
+        modelMap = new HashMap<String, Observable>();
         modelMap.put("turtle", turtleModel);
         parser = new CommandParser(modelMap);
         parser.addPatterns("resources/languages/English");
@@ -91,11 +96,18 @@ public class WorkSpace extends Screen{
 	}
 	
 	private void setHistoryPane(){
-		MasterPane history = new MasterPane(UIConstants.WIDTH/2, UIConstants.BORDER_WIDTH);
+		SPane history = new SPane(UIConstants.WIDTH/2, UIConstants.BORDER_WIDTH);
 		history.myPane.setMinWidth(UIConstants.CANVAS_SIZE);
 		history.myPane.setMinHeight(UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
+		history.myPane.setMaxSize(UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
 		history.myPane.setStyle("-fx-background-color: DAE6F3;");
+		history.myBox.getChildren().add(new Text("Does this work?"));
 		getRoot().getChildren().addAll(history.myRoot);
+		HistoryPaneModel hpm = new HistoryPaneModel();
+		hpv = new HistoryPaneView(history.myBox);
+		hpm.addObserver(hpv);
+		hpm.notifyObservers();
+		modelMap.put("history", hpm);
 	}
 	
 	private void setVariablePane(){
