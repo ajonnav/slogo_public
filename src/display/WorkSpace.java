@@ -1,5 +1,10 @@
 package display;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -31,6 +36,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
+import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 import addons.Features;
 import constants.UIConstants;
@@ -143,25 +149,7 @@ public class WorkSpace extends Screen{
 	}
 	
 	private void setBackgroundColor(){
-		ObservableList<String> options = FXCollections.observableArrayList(
-		        getResources().getString(UIConstants.BLU),
-		        getResources().getString(UIConstants.GRE),
-		        getResources().getString(UIConstants.YEL),
-		        getResources().getString(UIConstants.WHI),
-		        getResources().getString(UIConstants.BLA),
-		        getResources().getString(UIConstants.RED),
-		        getResources().getString(UIConstants.ORA),
-		        getResources().getString(UIConstants.PUR),
-		        getResources().getString(UIConstants.BEI)
-		    );
-		
-		ComboBox<String> colorPicker = featureMaker.makeCBox(options);
-		colorPicker.setLayoutX(200);
-		colorPicker.setLayoutY(0);
-		colorPicker.setValue(getResources().getString(UIConstants.BACK_COL));
-		
-		colorPicker.setOnAction(event -> changeCanvasColor(colorPicker.getValue()));
-		getRoot().getChildren().add(colorPicker);
+
 	}
 	
 	private void setPenColor(){
@@ -175,11 +163,16 @@ public class WorkSpace extends Screen{
 		myStage.setTitle("Help");
         myStage.setScene(scene);
         myStage.show();
-        
+        /*
+		HTMLEditor editor = new HTMLEditor();
+		editor.setHtmlText("<!DOCTYPE html><html><head><title>Page Title</title></head><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>");
+		helpRoot.getChildren().add(editor);
+		editor.getHtmlText();
+		*/
 		WebView browser = new WebView();
 		browser.setPrefSize(UIConstants.WIDTH, UIConstants.HEIGHT);
 		helpRoot.getChildren().add(browser);
-		browser.getEngine().load("http://www.cs.duke.edu/courses/compsci308/spring16/assign/03_slogo/commands.php");
+		//browser.getEngine().load(Main.class.getResource("/references/help.html").toExternalForm());
 	}
 	
 	private void setHelpButton(){
@@ -192,9 +185,5 @@ public class WorkSpace extends Screen{
 	private void readInput(CommandParser parser, TextArea input){
 		parser.parseText(input.getText());
 		input.clear();
-	}
-	
-	private void changeCanvasColor(String color){
-		//canvas.getGraphicsContext2D().setFill(Color.Back);
 	}
 }
