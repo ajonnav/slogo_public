@@ -16,6 +16,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,9 +45,9 @@ public class WorkSpace extends Screen{
 		myLang = language;
 	}
 	
-	public WorkSpace(String l){
-		myLang = l;
-	}
+//	public WorkSpace(String l){
+//		myLang = l;
+//	}
 	
 	@Override
 	public void setUpScene() {
@@ -68,8 +69,27 @@ public class WorkSpace extends Screen{
 		setHistoryPane();
 		
 		setVariablePane();
+		
+		setColorPicker();
 	}
 	
+	private void setColorPicker() {
+		ColorPicker cp = new ColorPicker();
+		cp.setValue(Color.CORAL);
+		
+		
+		cp.setOnAction(event -> sceneChange(cp.getValue()));
+		cp.setLayoutX(250);
+		cp.setLayoutY(50);
+		getRoot().getChildren().add(cp);
+		
+	}
+
+	private void sceneChange(Color c) {
+		// TODO Auto-generated method stub
+		getScene().setFill(c);
+	}
+
 	private void setCanvas(){
 		canvas = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH,UIConstants.BORDER_WIDTH,UIConstants.CANVAS_SIZE,UIConstants.CANVAS_SIZE, Color.WHITE);
 		getRoot().getChildren().add(canvas);	
