@@ -30,6 +30,12 @@ public class TurtleView implements IView{
 				GC.strokeLine(image.getX() + image.getFitWidth()/2, image.getY() + image.getFitHeight()/2, 
 						turtleModel.getPositionX(), turtleModel.getPositionY());
 			}
+			if(turtleModel.getShowStatus()) {
+				image.setOpacity(1);
+			}
+			else {
+				image.setOpacity(0);
+			}
 			image.setX(turtleModel.getPositionX() - image.getFitWidth()/2);
 			image.setY(turtleModel.getPositionY() - image.getFitHeight()/2);
 			image.setRotate(turtleModel.getHeading()-270);
