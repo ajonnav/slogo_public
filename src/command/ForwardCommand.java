@@ -9,6 +9,7 @@ public class ForwardCommand implements ICommand {
     public static int numChildren = 1;
     private Map<String, Observable> modelMap;
     private double distance;
+    private int numSplit;
 
     public ForwardCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
         this.modelMap = modelMap;
@@ -24,5 +25,14 @@ public class ForwardCommand implements ICommand {
     @Override
     public double evaluate () {
        return distance;
+    }
+    
+    public int getNumSplit() {
+        return numSplit;
+    }
+
+    @Override
+    public int getNumChildren () {
+        return numChildren;
     }
 }

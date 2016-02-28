@@ -11,7 +11,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import slogo_main.Main;
 
 public class Splash extends Screen {
 	

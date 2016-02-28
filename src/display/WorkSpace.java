@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Observable;
 
 import model.TurtleModel;
+import model.VariableModel;
 import pane.IPane;
 import pane.MasterPane;
 import parser.CommandParser;
@@ -71,7 +72,9 @@ public class WorkSpace extends Screen{
 		turtleModel.notifyObservers();
 		
         Map<String, Observable> modelMap = new HashMap<String, Observable>();
+        VariableModel variableModel = new VariableModel();
         modelMap.put("turtle", turtleModel);
+        modelMap.put("variable", variableModel);
         parser = new CommandParser(modelMap);
         parser.addPatterns("resources/languages/English");
         parser.addPatterns("resources/languages/Syntax");
