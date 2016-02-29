@@ -1,32 +1,23 @@
 package display;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
-
 import java.util.Map;
 import java.util.Observable;
-
+import javax.imageio.ImageIO;
 import model.HistoryPaneModel;
 import model.TurtleModel;
 import model.VariableModel;
-import pane.IPane;
-import pane.MasterPane;
 import pane.SPane;
 import parser.CommandParser;
 import view.HistoryPaneView;
 import view.TurtleView;
 import view.VariableView;
-import view.HistoryPaneView;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -34,13 +25,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
-import javafx.scene.web.HTMLEditor;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import addons.Features;
 import constants.UIConstants;
@@ -51,20 +41,26 @@ public class WorkSpace extends Screen{
 	private CommandParser parser;
 	private TextArea inputText;
 	private String myLang;
+	private ImageView profileImage;
+	private TurtleModel turtleModel;
 	
 	private Canvas canvas;
 	private TurtleView turtleView;
 	private HistoryPaneView hpv;
 	private Map<String, Observable> modelMap;
 	
-	public void setLang(String language){
-		myLang = language;
-	}
+	private ImageView selectedFile;
 	
 //	public WorkSpace(String l){
 //		myLang = l;
+//		parser = new CommandParser(modelMap);
+//		setLang(myLang);
 //	}
 	
+	public WorkSpace() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void setUpScene() {
 		
@@ -85,12 +81,12 @@ public class WorkSpace extends Screen{
 		setVariablePane();
 		
 		setHelpButton();
-		
-		setBackgroundColor();
 
 		setColorPicker();
 		
 		setPenPicker();
+		
+		setButtons();
 	}
 	
 	private void setColorPicker() {
@@ -117,18 +113,25 @@ public class WorkSpace extends Screen{
 	}
 
 	private void penChange(Color value) {
-		// TODO Auto-generated method stub
 		turtleView.setColor(value);
 	}
-
+	
+	
+	public void setLang(String language){
+		System.out.println("is set lang first?");
+		myLang = language;
+		//parser = new CommandParser(modelMap);
+		//System.out.println("resources/languages/" + myLang);
+		parser.addPatterns("resources/languages/" + myLang);
+		
+	}
+	
 	private void sceneChange(Color c) {
-		// TODO Auto-generated method stub
 		//turtleView.getGC().setFill(c);
 		//canvas.getGraphicsContext2D() = new
 //		canvas = new Canvas();
 //		GraphicsContext gc = canvas.getGraphicsContext2D();
 //		gc.setFill(c);
-//		System.out.println(gc.getFill());
 //		canvas.getGraphicsContext2D().setFill(c);
 //		getRoot().getChildren().add(canvas);
 		getScene().setFill(c);
@@ -139,23 +142,74 @@ public class WorkSpace extends Screen{
 		getRoot().getChildren().add(canvas);	
 	}
 	
+	protected void setButtons(){
+		Button pick = new Button("Select a new image");
+		pick.setOnAction(event -> changeImage());
+		pick.setLayoutX(300);
+		pick.setLayoutY(150);
+
+		
+		getRoot().getChildren().add(pick);
+	}
+	   public void changeImage() {
+
+		    try {
+		        FileChooser fileChooser = new FileChooser();
+		        fileChooser.setTitle("Choose Image");
+		        fileChooser.getExtensionFilters().addAll(
+		                new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+		                new ExtensionFilter("All Files", "*.*"));
+		        File selectedFile = fileChooser.showOpenDialog(getStage());
+		        System.out.println(getClass().getClassLoader().getResourceAsStream(selectedFile.getName()));
+		       // profileImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(selectedFile.getName())));
+		        if (selectedFile != null) {
+		        	BufferedImage bufferedImage = ImageIO.read(selectedFile);
+	                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+	                ImageView iv = new ImageView(image);
+	                setFile(iv);
+	                //profileImage.setImage(image);
+		        }
+		        	/*
+		            File file = selectedFile;
+		            File desc = new File("/" + file.getName());
+		            FileUtils.copyFile(file, desc);
+		            Image img = new Image(desc.toURI().toURL().toExternalForm());
+		            profileImage.setImage(img);*/
+		        //}
+		    } catch (Exception e) {
+		    	System.out.println("FAIL");
+		        System.err.println(e);
+		    }
+
+		}
+	
+	private void setFile(ImageView thing) {
+		turtleView = new TurtleView(thing, getRoot(), canvas.getGraphicsContext2D(), Color.BLACK);
+		turtleView.getImage().setX(turtleModel.getPositionX());
+		turtleView.getImage().setY(turtleModel.getPositionY());
+		System.out.println(turtleView.getX());
+		turtleModel.addObserver(turtleView);
+		turtleModel.notifyObservers();
+
+	}
+	
 	private void setTurtle(){
 		double turtleInitialX = UIConstants.CANVAS_SIZE/2;
 		double turtleInitialY = turtleInitialX;
 		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
-		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
+		turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
 		turtleView = new TurtleView(turtleImage, getRoot(), canvas.getGraphicsContext2D(), Color.BLACK);
+		System.out.println(turtleView.getX());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 		
         modelMap = new HashMap<String, Observable>();
         modelMap.put("turtle", turtleModel);
         parser = new CommandParser(modelMap);
-        //parser.addPatterns(UIConstants.RSRC_LANG + myLang);
         parser.addPatterns("resources/languages/English");
-        parser.addPatterns("resources/languages/Syntax");
+    	parser.addPatterns("resources/languages/Syntax");
         
 	}
 	
@@ -210,14 +264,6 @@ public class WorkSpace extends Screen{
 		getRoot().getChildren().add(variables.myPane);
 	}
 	
-	private void setBackgroundColor(){
-
-	}
-	
-	private void setPenColor(){
-		
-	}
-	
 	private void openHelpPage(){
 		Stage myStage = new Stage();
 		Group helpRoot = new Group();
@@ -259,6 +305,7 @@ public class WorkSpace extends Screen{
 //			showError("u messed up");
 //		}
 //	}
+	
 	protected void showError(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("ERROR");
