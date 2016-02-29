@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-public class ListEndCommand implements ICommand{
-    
-    public static int numChildren = -2;
-    
-    public ListEndCommand( Map<String, Observable> modelMap, List<ICommand> commands) {
-        
+
+public class ListEndCommand implements ICommand {
+
+    public static final int numChildren = -1;
+
+    public ListEndCommand (Map<String, Observable> modelMap, List<ICommand> commands) {
     }
 
     @Override
@@ -21,10 +21,4 @@ public class ListEndCommand implements ICommand{
     public double evaluate () {
         return 0;
     }
-    
-    @Override
-    public int getNumChildren () {
-        return numChildren;
-    }
-    
 }

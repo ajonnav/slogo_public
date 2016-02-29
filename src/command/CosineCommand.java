@@ -5,15 +5,13 @@ import java.util.Map;
 import java.util.Observable;
 
 
-public class SumCommand implements ICommand {
+public class CosineCommand implements ICommand {
 
-    public static int numChildren = 2;
+    public static int numChildren = 1;
     private ICommand valueOne;
-    private ICommand valueTwo;
 
-    public SumCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public CosineCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
         this.valueOne = commands.get(0).get(0);
-        this.valueTwo = commands.get(1).get(0);
     }
 
     @Override
@@ -23,6 +21,6 @@ public class SumCommand implements ICommand {
 
     @Override
     public double evaluate () {
-        return valueOne.evaluate() + valueTwo.evaluate();
+        return Math.cos(Math.toRadians(valueOne.evaluate()));
     }
 }

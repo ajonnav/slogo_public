@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-public class ListStartCommand implements ICommand{
-    
+
+public class ListStartCommand implements ICommand {
+
     public static int numChildren = -1;
-    
-    public ListStartCommand( Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+
+    public ListStartCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
     }
 
     @Override
@@ -20,10 +21,5 @@ public class ListStartCommand implements ICommand{
     public double evaluate () {
         return 0;
     }
-    
-    @Override
-    public int getNumChildren () {
-        return numChildren;
-    }
-    
+
 }
