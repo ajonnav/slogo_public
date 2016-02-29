@@ -25,6 +25,6 @@ public class ListEndCommand implements ICommand{
     @Override
     public int getNumChildren () {
         return numChildren;
-    } 
+    }
     
 }

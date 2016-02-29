@@ -29,6 +29,6 @@ public class PenDownCommand implements ICommand {
     @Override
     public int getNumChildren () {
         return numChildren;
-    } 
-    
+    }
+
 }

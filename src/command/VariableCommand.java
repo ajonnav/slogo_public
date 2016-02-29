@@ -33,4 +33,5 @@ public class VariableCommand implements ICommand{
     public int getNumChildren () {
         return numChildren;
     }   
+
 }

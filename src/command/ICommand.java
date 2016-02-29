@@ -2,9 +2,9 @@ package command;
 
 public interface ICommand {
 	
-	double execute();
+	public double execute();
 	
-	double evaluate();
+	public double evaluate();
 	
 	public int getNumChildren();
 }

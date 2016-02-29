@@ -32,5 +32,5 @@ public class MakeVariableCommand implements ICommand{
     public int getNumChildren () {
         return numChildren;
     }
-    
+
 }

@@ -8,7 +8,6 @@ import java.util.Observable;
 public class IfCommand implements ICommand{
     
     public static int numChildren = 2;
-    
     private double bool;
     private List<ICommand> commands;
     
@@ -42,5 +41,6 @@ public class IfCommand implements ICommand{
     @Override
     public int getNumChildren () {
         return numChildren;
-    } 
+    }
+    
 }
