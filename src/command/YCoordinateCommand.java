@@ -23,5 +23,10 @@ public class YCoordinateCommand implements ICommand {
 		// TODO Auto-generated method stub
 		return y;
 	}
+	
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    }
 
 }

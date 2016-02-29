@@ -39,4 +39,10 @@ public class RepeatCommand implements ICommand{
         }
         return lastValue;
     }
+    
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    }
+    
 }

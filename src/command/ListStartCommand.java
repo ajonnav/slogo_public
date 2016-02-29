@@ -8,7 +8,6 @@ public class ListStartCommand implements ICommand{
     
     public static int numChildren = -1;
     
-    
     public ListStartCommand( Map<String, Observable> modelMap, List<List<ICommand>> commands) {
     }
 
@@ -22,5 +21,9 @@ public class ListStartCommand implements ICommand{
         return 0;
     }
     
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    }
     
 }

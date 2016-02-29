@@ -25,4 +25,10 @@ public class SetTowardsCommand implements ICommand {
     public double evaluate () {
         return valueOne + valueTwo;
     }
+    
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    }
+    
 }

@@ -7,8 +7,7 @@ import java.util.Observable;
 
 public class IfElseCommand implements ICommand{
     
-    public static int numChildren = 3;
-    
+    public static int numChildren = 3;    
     private double bool;
     private List<ICommand> ifcommands;
     private List<ICommand> elsecommands;
@@ -17,7 +16,6 @@ public class IfElseCommand implements ICommand{
             this.bool = commands.get(0).get(0).evaluate();
             this.ifcommands = commands.get(1);
             this.elsecommands = commands.get(2);
-            
     }
     
     @Override
@@ -53,4 +51,10 @@ public class IfElseCommand implements ICommand{
         }
         return lastValue;
     }
+    
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    }
+    
 }

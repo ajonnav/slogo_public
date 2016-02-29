@@ -25,4 +25,10 @@ public class SetHeadingCommand implements ICommand {
     public double evaluate () {
        return degrees;
     }
+    
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
+    
 }

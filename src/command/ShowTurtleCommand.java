@@ -24,5 +24,10 @@ public class ShowTurtleCommand implements ICommand {
 		// TODO Auto-generated method stub
 		return 1;
 	}
+	
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    }
 
 }

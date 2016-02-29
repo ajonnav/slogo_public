@@ -33,4 +33,10 @@ public class SetPositionCommand implements ICommand {
     public double evaluate () {
         return distance;
     }
+    
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
+    
 }

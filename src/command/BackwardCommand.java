@@ -25,4 +25,9 @@ public class BackwardCommand implements ICommand {
     public double evaluate () {
        return distance;
     }
+    
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
 }
