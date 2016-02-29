@@ -25,7 +25,7 @@ public class MakeVariableCommand implements ICommand{
 
     @Override
     public double evaluate () {
-        return ((VariableModel) modelMap.get("variable")).setVariable(variable, value);
+        return ((VariableModel) modelMap.get("variables")).setVariable(variable, value);
     }
 
     @Override

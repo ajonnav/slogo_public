@@ -9,9 +9,11 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Map.Entry;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+
 import command.ConstantCommand;
 import command.ICommand;
 import command.VariableCommand;
@@ -77,14 +79,19 @@ public class CommandParser {
         }
         else {
             try {
+            	List<List<ICommand>> x = getCommandParams(className, text);
                 command = ((ICommand) Class.forName(className).getConstructor(Map.class, List.class)
-                        .newInstance(modelMap, getCommandParams(className, text)));
+                        .newInstance(modelMap, x));
                 if(tempFlag) {
                     tempList.add(command);
                 }
                 else {
                     commandsList.add(command);
                 }
+            }
+            catch (InvocationTargetException ee) {
+            	Throwable x = ee.getTargetException();
+            	int y = 0;
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -126,6 +133,7 @@ public class CommandParser {
                 List<ICommand> singleList = new ArrayList<ICommand>();
                 singleList.add(parseHelper(text));
                 commandParams.add(singleList); 
+                int y=0;
             }
         }
         return commandParams;

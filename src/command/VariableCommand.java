@@ -6,7 +6,7 @@ import model.VariableModel;
 
 public class VariableCommand implements ICommand{
     
-    public final static int numChildren = 0;
+    public static final int numChildren = 0;
     private Map<String, Observable> modelMap;
     private String name;
     
@@ -22,7 +22,7 @@ public class VariableCommand implements ICommand{
 
     @Override
     public double evaluate () {
-        return ((VariableModel) modelMap.get("variable")).getVariable(name);
+        return ((VariableModel) modelMap.get("variables")).getVariable(name);
     }
     
     public String getName () {
