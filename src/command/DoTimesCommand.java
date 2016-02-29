@@ -5,47 +5,34 @@ import java.util.Map;
 import java.util.Observable;
 import model.VariableModel;
 
-public class DoTimesCommand implements ICommand{
-    
-    public static int numChildren = 2;
+
+public class DoTimesCommand implements ICommand {
+
+    public static final int numChildren = 2;
     private String variable;
-    private double start = 1;
+    private double start;
     private double end;
+    private double increment;
     private List<ICommand> block;
     private List<ICommand> loopBlock;
     private Map<String, Observable> modelMap;
-    
-    public DoTimesCommand(Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+
+    public DoTimesCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
         this.modelMap = modelMap;
         block = commands.get(0);
-        variable = ((VariableCommand)block.get(0)).getName();
-        loopBlock = commands.get(1);      
-    }
-    
-    @Override
-    public double execute () {
-        double lastValue = 0;
-        for(int i = 1; i < block.size(); i++) {
-            end = block.get(i).execute();
-        }
-        for(double i = start; i < end; i++) {
-            ((VariableModel) modelMap.get("variable")).setVariable(variable, i);
-            for(int j = 0; j < loopBlock.size(); j++) {
-                lastValue = loopBlock.get(j).execute();
-            }
-        }
-        return lastValue;
+        loopBlock = commands.get(1);
+        this.variable = ((VariableCommand) block.get(0)).getName();
+        this.start = 1;
+        this.end = block.get(1).evaluate();
+        this.increment = 1;
     }
 
     @Override
     public double evaluate () {
         double lastValue = 0;
-        for(int i = 1; i < block.size(); i++) {
-            end = block.get(i).evaluate();
-        }
-        for(double i = start; i < end; i++) {
-            ((VariableModel) modelMap.get("variable")).setVariable(variable, i);
-            for(int j = 0; j < loopBlock.size(); j++) {
+        for (double i = start; i < end; i += increment) {
+            ((VariableModel) modelMap.get("variables")).setVariable(variable, i);
+            for (int j = 0; j < loopBlock.size(); j++) {
                 lastValue = loopBlock.get(j).evaluate();
             }
         }
@@ -53,8 +40,15 @@ public class DoTimesCommand implements ICommand{
     }
 
     @Override
-    public int getNumChildren () {
-        return numChildren;
+    public double execute () {
+        double lastValue = 0;
+        for (double i = start; i < end; i += increment) {
+            ((VariableModel) modelMap.get("variables")).setVariable(variable, i);
+            for (int j = 0; j < loopBlock.size(); j++) {
+                lastValue = loopBlock.get(j).execute();
+            }
+        }
+        return lastValue;
     }
 
 }

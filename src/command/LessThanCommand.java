@@ -5,13 +5,13 @@ import java.util.Map;
 import java.util.Observable;
 
 
-public class SumCommand implements ICommand {
+public class LessThanCommand implements ICommand {
 
     public static int numChildren = 2;
     private ICommand valueOne;
     private ICommand valueTwo;
 
-    public SumCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public LessThanCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
         this.valueOne = commands.get(0).get(0);
         this.valueTwo = commands.get(1).get(0);
     }
@@ -23,6 +23,9 @@ public class SumCommand implements ICommand {
 
     @Override
     public double evaluate () {
-        return valueOne.evaluate() + valueTwo.evaluate();
+        if(valueOne.evaluate() < valueTwo.evaluate()) {
+            return 1;
+        }
+        return 0;
     }
 }
