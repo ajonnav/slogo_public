@@ -29,4 +29,9 @@ public class HomeCommand implements ICommand {
 		return distance;
 	}
 
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
+	
 }

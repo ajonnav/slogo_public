@@ -53,4 +53,9 @@ public class IfElseCommand implements ICommand{
         }
         return lastValue;
     }
+    
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
 }

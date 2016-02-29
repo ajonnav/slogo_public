@@ -25,5 +25,10 @@ public class XCoordinateCommand implements ICommand {
 		// TODO Auto-generated method stub
 		return x;
 	}
+	
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    }
 
 }

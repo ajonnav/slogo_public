@@ -2,6 +2,7 @@ package command;
 
 public class ConstantCommand implements ICommand {
     
+	public static final int numChildren = 0;
     private double constant;
     
     public ConstantCommand(double constant) {
@@ -17,4 +18,9 @@ public class ConstantCommand implements ICommand {
     public double evaluate () {
         return constant;
     }
+    
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
 }

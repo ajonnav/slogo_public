@@ -28,4 +28,9 @@ public class RightCommand implements ICommand{
 		return degrees;
 	}
 
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
+	
 }

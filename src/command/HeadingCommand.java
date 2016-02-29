@@ -23,5 +23,10 @@ public class HeadingCommand implements ICommand {
 		// TODO Auto-generated method stub
 		return heading;
 	}
+	
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
 
 }

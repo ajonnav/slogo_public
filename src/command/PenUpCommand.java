@@ -26,5 +26,10 @@ public class PenUpCommand implements ICommand {
 	public double evaluate() {
 		return 0;
 	}
+	
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    }
 
 }

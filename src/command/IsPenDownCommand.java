@@ -28,5 +28,10 @@ public class IsPenDownCommand implements ICommand {
 			return 0;
 		}
 	}
+	
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
 
 }

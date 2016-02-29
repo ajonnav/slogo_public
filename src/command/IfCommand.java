@@ -38,4 +38,9 @@ public class IfCommand implements ICommand{
         }
         return lastValue;
     }
+    
+    @Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
 }

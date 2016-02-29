@@ -25,4 +25,9 @@ public class HideTurtleCommand implements ICommand {
 		return 0;
 	}
 
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
+	
 }
