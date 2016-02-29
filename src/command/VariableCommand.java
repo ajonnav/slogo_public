@@ -1,34 +1,37 @@
 package command;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-import model.TurtleModel;
+import model.VariableModel;
 
-
-public class PenUpCommand implements ICommand {
-
+public class VariableCommand implements ICommand{
+    
     public static final int numChildren = 0;
     private Map<String, Observable> modelMap;
-
-    public PenUpCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    private String name;
+    
+    public VariableCommand(Map<String, Observable> modelMap, String name) {
         this.modelMap = modelMap;
+        this.name = name;
     }
-
+    
     @Override
     public double execute () {
-        ((TurtleModel) modelMap.get("turtle")).penUp();
         return evaluate();
     }
 
     @Override
     public double evaluate () {
-        return 0;
+        return ((VariableModel) modelMap.get("variables")).getVariable(name);
     }
     
+    public String getName () {
+        return name;
+    }
+
     @Override
     public int getNumChildren () {
         return numChildren;
-    }
-    
+    }   
+
 }

@@ -1,4 +1,5 @@
 package model;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,4 +38,5 @@ public class VariableModel extends Observable{
 	public Map<String, Double> getImmutableVariableMap() {
 		return Collections.unmodifiableMap(variableMap);
 	}
+
 }

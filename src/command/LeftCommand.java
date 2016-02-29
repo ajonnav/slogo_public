@@ -29,4 +29,9 @@ public class LeftCommand implements ICommand{
 		return degrees;
 	}
 
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
+	
 }

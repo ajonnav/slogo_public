@@ -29,4 +29,9 @@ public class IsShowingCommand implements ICommand {
 		}
 	}
 
+	@Override
+    public int getNumChildren () {
+        return numChildren;
+    } 
+	
 }
