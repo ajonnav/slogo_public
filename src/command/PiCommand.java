@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class PiCommand extends Command {
 
-    public PiCommand (Map<String, Observable> modelMap, List<String> text) {
+    public PiCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
     }
 

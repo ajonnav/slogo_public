@@ -3,6 +3,8 @@ package command;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
+import model.ModelMap;
 import model.TurtleModel;
 
 
@@ -10,9 +12,9 @@ public class XCoordinateCommand extends Command {
 
     private double x;
 
-    public XCoordinateCommand (Map<String, Observable> modelMap, List<String> text) {
+    public XCoordinateCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
-        x = ((TurtleModel) modelMap.get("turtle")).getPositionX();
+        x = modelMap.getTurtle().getPositionX();
     }
 
     @Override

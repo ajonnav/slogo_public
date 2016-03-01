@@ -3,15 +3,17 @@ package command;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
 import model.CommandsModel;
+import model.ModelMap;
 
 public class MakeUserInstructionCommand extends Command {
     
     private CommandsModel commandsModel;
     
-    public MakeUserInstructionCommand (Map<String, Observable> modelMap, List<String> text) {
+    public MakeUserInstructionCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(3);
-        this.commandsModel = (CommandsModel) modelMap.get("commands");
+        this.commandsModel = modelMap.getCommands();
         commandsModel.setVariables(text.get(1), null);
         commandsModel.setCommands(text.get(1), null);
     }

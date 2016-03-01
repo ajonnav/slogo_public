@@ -3,14 +3,16 @@ package command;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
+import model.ModelMap;
 import model.TurtleModel;
 
 
 public class ForwardCommand extends Command {
 
-    private Map<String, Observable> modelMap;
+    private ModelMap modelMap;
 
-    public ForwardCommand (Map<String, Observable> modelMap, List<String> text) {
+    public ForwardCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(1);
         this.modelMap = modelMap;
     }
@@ -18,7 +20,7 @@ public class ForwardCommand extends Command {
     @Override
     public double execute () {
         double dist = getCommands().get(0).get(0).execute();
-        ((TurtleModel) modelMap.get("turtle")).forward(dist);
+        modelMap.getTurtle().forward(dist);
         return dist;
     }
 }

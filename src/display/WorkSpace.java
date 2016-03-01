@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
+
 import model.CommandsModel;
 import model.HistoryPaneModel;
+import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
 import pane.IPane;
@@ -55,7 +57,7 @@ public class WorkSpace extends Screen{
 	private TurtleView turtleView;
 	private TurtleModel turtleModel;
 	private HistoryPaneView hpv;
-	private Map<String, Observable> modelMap;
+	private ModelMap modelMap;
 	
 	public void setLang(String language){
 		myLang = language;
@@ -164,10 +166,10 @@ public class WorkSpace extends Screen{
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 		
-        modelMap = new HashMap<String, Observable>();
-        modelMap.put("turtle", turtleModel);
+        modelMap = new ModelMap();
+        modelMap.setTurtle(turtleModel);
         CommandsModel commandsModel = new CommandsModel();
-        modelMap.put("commands", commandsModel);
+        modelMap.setCommands(commandsModel);
         parser = new CommandParser(modelMap);
         //parser.addPatterns(UIConstants.RSRC_LANG + myLang);
         parser.addPatterns("resources/languages/English");
@@ -198,7 +200,7 @@ public class WorkSpace extends Screen{
 		hpv = new HistoryPaneView(history.myBox, inputText);
 		hpm.addObserver(hpv);
 		hpm.notifyObservers();
-		modelMap.put("history", hpm);
+		modelMap.setHistory(hpm);
 	}
 	
 	private void setVariablePane(){
@@ -213,7 +215,7 @@ public class WorkSpace extends Screen{
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
 		
-		modelMap.put("variables", varModel);
+		modelMap.setVariable(varModel);
 		/*
 		vars.put("Turtle X: ", turtleView.getX());
 		vars.put("Turtle Y: ", turtleView.getY());

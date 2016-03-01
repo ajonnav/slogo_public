@@ -9,19 +9,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Map.Entry;
-import java.lang.reflect.Field;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+
 import command.Command;
+import model.HistoryPaneModel;
+import model.ModelMap;
 
 public class CommandParser {
     
     private List<Entry<String, Pattern>> mySymbols;
-    private Map<String, Observable> modelMap = new HashMap<String, Observable>(); 
+    private ModelMap modelMap = new ModelMap(); 
     public static final String WHITESPACE = "\\s+";
     
-    public CommandParser(Map<String, Observable> modelMap) {
+    public CommandParser(ModelMap modelMap) {
         this.mySymbols = new ArrayList<>();
         this.modelMap = modelMap;
     }
@@ -39,9 +41,17 @@ public class CommandParser {
     public void parseText(String text) {
         List<String> commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
         List<Command> commandsList = parseFullText(commands);
-        for(int i = 0; i < commandsList.size(); i++) {
-            commandsList.get(i).execute();
+        modelMap.getHistory().addToHistory(text);
+        double returnValue=0;
+        try {
+	        for(int i = 0; i < commandsList.size(); i++) {
+	        	returnValue = commandsList.get(i).execute();
+	        }
+	        modelMap.getHistory().addToHistory(Double.toString(returnValue));
         }
+        catch(Exception e) {
+        	modelMap.getHistory().addToHistory(e.getMessage());
+    	}
     }
     
     public List<Command> parseFullText(List<String> text) {
@@ -57,7 +67,7 @@ public class CommandParser {
         String currName = getClassName(currString);
         Command command = null;
         try {
-            command = ((Command) Class.forName(currName).getConstructor(Map.class, List.class)
+            command = ((Command) Class.forName(currName).getConstructor(ModelMap.class, List.class)
                     .newInstance(modelMap, Collections.unmodifiableList(text)));
         }
         catch (Exception e) {
@@ -101,20 +111,6 @@ public class CommandParser {
             text.remove(0);
         }
         return bracketed;
-    }
-    
-    public int getNumChildren(String className) {
-        try {
-            for(Field field : Class.forName(className).getFields()) {
-                if(field.getName().equals("numChildren")) {
-                    return (int) field.get(null);
-                }
-            }   
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
     
     public String getClassName(String text) {

@@ -3,13 +3,15 @@ package command;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
+import model.ModelMap;
 import model.TurtleModel;
 
 public class SetHeadingCommand extends Command {
 
-    private Map<String, Observable> modelMap;
+    private ModelMap modelMap;
 
-    public SetHeadingCommand (Map<String, Observable> modelMap, List<String> text) {
+    public SetHeadingCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(1);
         this.modelMap = modelMap;
     }
@@ -17,7 +19,7 @@ public class SetHeadingCommand extends Command {
     @Override
     public double execute () {
         double heading = getCommands().get(0).get(0).execute();
-        ((TurtleModel) modelMap.get("turtle")).setHeading(heading);
+        modelMap.getTurtle().setHeading(heading);
         return heading;
     }
 

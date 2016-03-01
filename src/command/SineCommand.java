@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class SineCommand extends Command {
 
-    public SineCommand (Map<String, Observable> modelMap, List<String> text) {
+    public SineCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(1);
     }
 

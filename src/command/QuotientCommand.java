@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class QuotientCommand extends Command {
 
-    public QuotientCommand (Map<String, Observable> modelMap, List<String> text) {
+    public QuotientCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 

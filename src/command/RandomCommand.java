@@ -5,10 +5,12 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Random;
 
+import model.ModelMap;
+
 
 public class RandomCommand extends Command {
 
-    public RandomCommand (Map<String, Observable> modelMap, List<String> text) {
+    public RandomCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(1);
     }
 

@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class LessThanCommand extends Command {
 
-    public LessThanCommand (Map<String, Observable> modelMap, List<String> text) {
+    public LessThanCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 
