@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class SumCommand extends Command {
 
-    public SumCommand (Map<String, Observable> modelMap, List<String> text) {
+    public SumCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 

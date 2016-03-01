@@ -3,6 +3,8 @@ package command;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
+import model.ModelMap;
 import model.TurtleModel;
 
 
@@ -10,9 +12,9 @@ public class IsShowingCommand extends Command {
 
     private boolean status;
 
-    public IsShowingCommand (Map<String, Observable> modelMap, List<String> text) {
+    public IsShowingCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
-        status = ((TurtleModel) modelMap.get("turtle")).getShowStatus();
+        status = modelMap.getTurtle().getShowStatus();
     }
 
     @Override

@@ -6,17 +6,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
-
 import java.util.Map;
 import java.util.Observable;
+
 import model.CommandsModel;
 import model.HistoryPaneModel;
+import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
 import pane.IPane;
 import pane.MasterPane;
 import pane.SPane;
 import parser.CommandParser;
+import view.CoordinateView;
 import view.HistoryPaneView;
 import view.TurtleView;
 import view.VariableView;
@@ -40,7 +42,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
-import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 import addons.Features;
 import constants.UIConstants;
@@ -54,8 +55,9 @@ public class WorkSpace extends Screen{
 	
 	private Canvas canvas;
 	private TurtleView turtleView;
+	private TurtleModel turtleModel;
 	private HistoryPaneView hpv;
-	private Map<String, Observable> modelMap;
+	private ModelMap modelMap;
 	
 	public void setLang(String language){
 		myLang = language;
@@ -91,6 +93,8 @@ public class WorkSpace extends Screen{
 		setColorPicker();
 		
 		setPenPicker();
+		
+		setTurtleCoords();
 	}
 	
 	private void setColorPicker() {
@@ -121,6 +125,18 @@ public class WorkSpace extends Screen{
 		turtleView.setColor(value);
 	}
 
+	private void setTurtleCoords(){
+		//duplicate, we already made another HBox elsewhere, can extract
+		HBox turtleVars = new HBox();
+		turtleVars.setLayoutX(25);
+		turtleVars.setLayoutY(475);
+		getRoot().getChildren().add(turtleVars);
+		
+		CoordinateView cv = new CoordinateView(turtleVars, turtleModel);
+		turtleModel.addObserver(cv);
+		turtleModel.notifyObservers();
+	}
+	
 	private void sceneChange(Color c) {
 		// TODO Auto-generated method stub
 		//turtleView.getGC().setFill(c);
@@ -145,15 +161,15 @@ public class WorkSpace extends Screen{
 		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
-		TurtleModel turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
+		turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
 		turtleView = new TurtleView(turtleImage, getRoot(), canvas.getGraphicsContext2D(), Color.BLACK);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 		
-        modelMap = new HashMap<String, Observable>();
-        modelMap.put("turtle", turtleModel);
+        modelMap = new ModelMap();
+        modelMap.setTurtle(turtleModel);
         CommandsModel commandsModel = new CommandsModel();
-        modelMap.put("commands", commandsModel);
+        modelMap.setCommands(commandsModel);
         parser = new CommandParser(modelMap);
         //parser.addPatterns(UIConstants.RSRC_LANG + myLang);
         parser.addPatterns("resources/languages/English");
@@ -184,7 +200,7 @@ public class WorkSpace extends Screen{
 		hpv = new HistoryPaneView(history.myBox, inputText);
 		hpm.addObserver(hpv);
 		hpm.notifyObservers();
-		modelMap.put("history", hpm);
+		modelMap.setHistory(hpm);
 	}
 	
 	private void setVariablePane(){
@@ -199,7 +215,7 @@ public class WorkSpace extends Screen{
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
 		
-		modelMap.put("variables", varModel);
+		modelMap.setVariable(varModel);
 		/*
 		vars.put("Turtle X: ", turtleView.getX());
 		vars.put("Turtle Y: ", turtleView.getY());
@@ -227,16 +243,11 @@ public class WorkSpace extends Screen{
 		myStage.setTitle("Help");
         myStage.setScene(scene);
         myStage.show();
-        /*
-		HTMLEditor editor = new HTMLEditor();
-		editor.setHtmlText("<!DOCTYPE html><html><head><title>Page Title</title></head><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>");
-		helpRoot.getChildren().add(editor);
-		editor.getHtmlText();
-		*/
+ 
 		WebView browser = new WebView();
 		browser.setPrefSize(UIConstants.WIDTH, UIConstants.HEIGHT);
 		helpRoot.getChildren().add(browser);
-		//browser.getEngine().load(Main.class.getResource("/references/help.html").toExternalForm());
+		browser.getEngine().load(WorkSpace.class.getResource("/references/help.html").toExternalForm());
 	}
 	
 	private void setHelpButton(){
@@ -261,6 +272,7 @@ public class WorkSpace extends Screen{
 //			showError("u messed up");
 //		}
 //	}
+	
 	protected void showError(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("ERROR");

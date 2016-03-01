@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class MinusCommand extends Command {
 
-    public MinusCommand (Map<String, Observable> modelMap, List<List<Command>> commands) {
+    public MinusCommand (ModelMap modelMap, List<List<Command>> commands) {
         setNumChildren(1);
     }
 

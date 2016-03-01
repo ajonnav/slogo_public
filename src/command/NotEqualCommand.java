@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class NotEqualCommand extends Command {
 
-    public NotEqualCommand (Map<String, Observable> modelMap, List<String> text) {
+    public NotEqualCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 

@@ -3,21 +3,23 @@ package command;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
+import model.ModelMap;
 import model.TurtleModel;
 
 
 public class PenDownCommand extends Command {
 
-    private Map<String, Observable> modelMap;
+    private ModelMap modelMap;
 
-    public PenDownCommand (Map<String, Observable> modelMap, List<String> text) {
+    public PenDownCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        ((TurtleModel) modelMap.get("turtle")).penDown();
+        modelMap.getTurtle().penDown();
         return 1;
     }
 

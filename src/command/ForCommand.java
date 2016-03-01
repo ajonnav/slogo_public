@@ -3,14 +3,16 @@ package command;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
+import model.ModelMap;
 import model.VariableModel;
 
 
 public class ForCommand extends Command {
 
-    private Map<String, Observable> modelMap;
+    private ModelMap modelMap;
 
-    public ForCommand (Map<String, Observable> modelMap, List<String> text) {
+    public ForCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
     }
@@ -23,7 +25,7 @@ public class ForCommand extends Command {
         double end = block.get(2).execute();
         double increment = block.get(3).execute();
         for (double i = start; i <= end; i += increment) {
-            ((VariableModel) modelMap.get("variables"))
+            modelMap.getVariable()
             .setVariable(((VariableCommand) block.get(0)).getName(), i);
             lastValue = loopExecute(getCommands().get(1));
         }

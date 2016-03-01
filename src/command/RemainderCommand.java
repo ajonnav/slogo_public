@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class RemainderCommand extends Command {
 
-    public RemainderCommand (Map<String, Observable> modelMap, List<String> text) {
+    public RemainderCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 
