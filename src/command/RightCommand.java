@@ -1,25 +1,21 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import model.TurtleModel;
+import model.ModelMap;
 
 
-public class RightCommand implements ICommand {
+public class RightCommand extends Command {
 
-    public static int numChildren = 1;
-    private Map<String, Observable> modelMap;
-    private ICommand degrees;
+    private ModelMap modelMap;
     
-    public RightCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public RightCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(1);
         this.modelMap = modelMap;
-        this.degrees = commands.get(0).get(0);
     }
 
     public double execute () {
-        double dist = degrees.execute();
-        ((TurtleModel) modelMap.get("turtle")).turn(dist);
-        return dist;
+        double deg = getCommands().get(0).get(0).execute();
+        modelMap.getTurtle().turn(deg);
+        return deg;
     }
 }

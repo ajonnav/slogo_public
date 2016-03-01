@@ -1,14 +1,17 @@
 package command;
 
-public class ConstantCommand implements ICommand {
+import java.util.List;
 
-    public static final int numChildren = 0;
+import model.ModelMap;
+
+public class ConstantCommand extends Command {
+
     private double constant;
 
-    public ConstantCommand (double constant) {
-        this.constant = constant;
+    public ConstantCommand (ModelMap modelMap, List<String> text) {
+        this.constant = Double.parseDouble(text.get(0));
     }
-
+    
     @Override
     public double execute () {
         return constant;

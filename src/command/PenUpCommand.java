@@ -1,23 +1,21 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import model.TurtleModel;
+import model.ModelMap;
 
 
-public class PenUpCommand implements ICommand {
+public class PenUpCommand extends Command {
 
-    public static final int numChildren = 0;
-    private Map<String, Observable> modelMap;
+    private ModelMap modelMap;
 
-    public PenUpCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public PenUpCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(0);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        ((TurtleModel) modelMap.get("turtle")).penUp();
+        modelMap.getTurtle().penUp();
         return 0;
     }
 

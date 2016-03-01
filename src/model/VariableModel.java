@@ -19,7 +19,6 @@ public class VariableModel extends Observable {
     }
 
     public Double setVariable (String variable, double value) {
-        System.out.println("updated variable");
         variableMap.put(variable, value);
         setChanged();
         notifyObservers();

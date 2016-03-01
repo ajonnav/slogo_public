@@ -1,18 +1,16 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import model.TurtleModel;
+import model.ModelMap;
 
 
-public class IsShowingCommand implements ICommand {
+public class IsShowingCommand extends Command {
 
-    public static final int numChildren = 0;
     private boolean status;
 
-    public IsShowingCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
-        status = ((TurtleModel) modelMap.get("turtle")).getShowStatus();
+    public IsShowingCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(0);
+        status = modelMap.getTurtle().getShowStatus();
     }
 
     @Override

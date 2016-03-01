@@ -1,22 +1,18 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
+import model.ModelMap;
 
 
-public class SineCommand implements ICommand {
+public class SineCommand extends Command {
 
-    public static int numChildren = 1;
-    private ICommand valueOne;
-
-    public SineCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
-        this.valueOne = commands.get(0).get(0);
+    public SineCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(1);
     }
 
     @Override
     public double execute () {
-        return Math.sin(Math.toRadians(valueOne.execute()));
+        return Math.sin(Math.toRadians(getCommands().get(0).get(0).execute()));
     }
 
 }

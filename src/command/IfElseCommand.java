@@ -1,25 +1,18 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
+import model.ModelMap;
 
 
-public class IfElseCommand implements ICommand {
+public class IfElseCommand extends Command {
 
-    public static final int numChildren = 3;
-    private ICommand bool;
-    private List<ICommand> ifcommands;
-    private List<ICommand> elsecommands;
-
-    public IfElseCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
-        this.bool = commands.get(0).get(0);
-        this.ifcommands = commands.get(1);
-        this.elsecommands = commands.get(2);
+    public IfElseCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(3);
     }
     
     @Override
     public double execute () {
-        return bool.execute() != 0.0 ? loopExecute(ifcommands) : loopExecute(elsecommands);
+        return getCommands().get(0).get(0).execute() != 
+                0 ? loopExecute(getCommands().get(1)) : loopExecute(getCommands().get(2));
     }
 }

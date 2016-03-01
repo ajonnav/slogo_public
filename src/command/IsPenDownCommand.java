@@ -1,18 +1,17 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import model.TurtleModel;
+import model.ModelMap;
 
 
-public class IsPenDownCommand implements ICommand {
 
-    public static final int numChildren = 0;
+public class IsPenDownCommand extends Command {
+
     private boolean status;
 
-    public IsPenDownCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
-        status = ((TurtleModel) modelMap.get("turtle")).getPenStatus();
+    public IsPenDownCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(0);
+        status = modelMap.getTurtle().getPenStatus();
     }
     
     @Override

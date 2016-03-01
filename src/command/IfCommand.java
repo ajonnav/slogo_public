@@ -1,23 +1,18 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
+import model.ModelMap;
 
 
-public class IfCommand implements ICommand {
+public class IfCommand extends Command {
 
-    public static final int numChildren = 2;
-    private ICommand bool;
-    private List<ICommand> commands;
-
-    public IfCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
-        this.bool = commands.get(0).get(0);
-        this.commands = commands.get(1);
+    public IfCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(2);
     }
     
     @Override
     public double execute () {
-        return bool.execute() != 0 ? loopExecute(commands) : 0;
+        return getCommands().get(0).get(0).execute() 
+                != 0 ? loopExecute(getCommands().get(1)) : 0;
     }
 }

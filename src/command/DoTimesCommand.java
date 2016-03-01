@@ -1,38 +1,26 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import model.VariableModel;
+import model.ModelMap;
 
 
-public class DoTimesCommand implements ICommand {
 
-    public static final int numChildren = 2;
-    private String variable;
-    private double start;
-    private double end;
-    private double increment;
-    private List<ICommand> block;
-    private List<ICommand> loopBlock;
-    private Map<String, Observable> modelMap;
+public class DoTimesCommand extends Command {
 
-    public DoTimesCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    private ModelMap modelMap;
+
+    public DoTimesCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(2);
         this.modelMap = modelMap;
-        this.block = commands.get(0);
-        this.loopBlock = commands.get(1);
-        this.variable = ((VariableCommand) block.get(0)).getName();
-        this.start = 1;
-        this.increment = 1;
     }
 
     @Override
     public double execute () {
         double lastValue = 0;
-        this.end = block.get(1).execute();
-        for (double i = start; i < end; i += increment) {
-            ((VariableModel) modelMap.get("variables")).setVariable(variable, i);
-            lastValue = loopExecute(loopBlock);
+        for (double i = 1; i <= getCommands().get(0).get(1).execute(); i++) {
+            modelMap.getVariable()
+            .setVariable(((VariableCommand) getCommands().get(0).get(0)).getName(), i);
+            lastValue = loopExecute(getCommands().get(1));
         }
         return lastValue;
     }

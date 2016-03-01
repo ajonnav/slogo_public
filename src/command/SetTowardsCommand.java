@@ -6,11 +6,11 @@ import model.ModelMap;
 import model.TurtleModel;
 
 
-public class SetPositionCommand extends Command {
+public class SetTowardsCommand extends Command {
 
     private ModelMap modelMap;
 
-    public SetPositionCommand (ModelMap modelMap, List<String> text) {
+    public SetTowardsCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
     }
@@ -20,9 +20,10 @@ public class SetPositionCommand extends Command {
         double xPos = getCommands().get(0).get(0).execute();
         double yPos = getCommands().get(1).get(0).execute();
         TurtleModel turtleModel = modelMap.getTurtle();
-        turtleModel.setPosition(xPos, yPos);
-        return Math.sqrt(Math.pow((xPos - turtleModel.getPositionX()), 2) +
-                         Math.pow((yPos - turtleModel.getPositionY()), 2));
+        double lastHeading = turtleModel.getHeading();
+        turtleModel.setHeading(Math.atan(xPos / yPos));
+        double headingDiff = turtleModel.getHeading() - lastHeading;
+        return headingDiff <= 180 ? headingDiff : lastHeading - turtleModel.getHeading();
     }
 
 }

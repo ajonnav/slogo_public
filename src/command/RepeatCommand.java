@@ -1,30 +1,24 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import model.VariableModel;
+import model.ModelMap;
 
 
-public class RepeatCommand implements ICommand {
+public class RepeatCommand extends Command {
 
-    public static final int numChildren = 2;
-    private ICommand repeat;
-    private Map<String, Observable> modelMap;
-    private List<ICommand> commands;
+    private ModelMap modelMap;
 
-    public RepeatCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public RepeatCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(2);
         this.modelMap = modelMap;
-        this.repeat = commands.get(0).get(0);
-        this.commands = commands.get(1);
     }
 
     @Override
     public double execute () {
         double lastValue = 0;
-        for (int i = 0; i < repeat.execute(); i++) {
-            ((VariableModel) modelMap.get("variables")).setVariable(":repcount", i+1);
-            lastValue = loopExecute(commands);
+        for (int i = 0; i < getCommands().get(0).get(0).execute(); i++) {
+            modelMap.getVariable().setVariable(":repcount", i+1);
+            lastValue = loopExecute(getCommands().get(1));
         }
         return lastValue;
     }

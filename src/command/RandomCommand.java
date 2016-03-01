@@ -1,22 +1,18 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
 import java.util.Random;
+import model.ModelMap;
 
 
-public class RandomCommand implements ICommand {
+public class RandomCommand extends Command {
 
-    public static int numChildren = 1;
-    private ICommand max;
-
-    public RandomCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
-        this.max = commands.get(0).get(0);
+    public RandomCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(1);
     }
 
     @Override
     public double execute () {
-        return max.execute() * (new Random()).nextDouble();
+        return getCommands().get(0).get(0).execute() * (new Random()).nextDouble();
     }
 }

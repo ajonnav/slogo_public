@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import javax.imageio.ImageIO;
+import model.CommandsModel;
 import model.HistoryPaneModel;
+import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
 import pane.SPane;
@@ -53,7 +55,8 @@ public class WorkSpace extends Screen {
 	private TurtleView turtleView;
 	// private TurtleModel turtleModel;
 	private HistoryPaneView hpv;
-	private Map<String, Observable> modelMap;
+
+	//private Map<String, Observable> modelMap;
 
 	private ImageView selectedFile;
 
@@ -65,6 +68,12 @@ public class WorkSpace extends Screen {
 
 	public WorkSpace() {
 	}
+	private ModelMap modelMap;
+	
+//	public void setLang(String language){
+//		myLang = language;
+//
+//	}
 
 	@Override
 	public void setUpScene() {
@@ -211,12 +220,15 @@ public class WorkSpace extends Screen {
 		System.out.println(turtleView.getX());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
-
-		modelMap = new HashMap<String, Observable>();
-		modelMap.put("turtle", turtleModel);
-		parser = new CommandParser(modelMap);
-		parser.addPatterns("resources/languages/English");
-		parser.addPatterns("resources/languages/Syntax");
+		
+        modelMap = new ModelMap();
+        modelMap.setTurtle(turtleModel);
+        CommandsModel commandsModel = new CommandsModel();
+        modelMap.setCommands(commandsModel);
+        parser = new CommandParser(modelMap);
+        //parser.addPatterns(UIConstants.RSRC_LANG + myLang);
+        parser.addPatterns("resources/languages/English");
+        parser.addPatterns("resources/languages/Syntax");
 
 	}
 
@@ -243,7 +255,7 @@ public class WorkSpace extends Screen {
 		hpv = new HistoryPaneView(history.myBox, inputText);
 		hpm.addObserver(hpv);
 		hpm.notifyObservers();
-		modelMap.put("history", hpm);
+		modelMap.setHistory(hpm);
 	}
 
 	private void setVariablePane() {
@@ -257,14 +269,8 @@ public class WorkSpace extends Screen {
 		VariableView varView = new VariableView(variables.myBox);
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
-
-		modelMap.put("variables", varModel);
-		/*
-		 * vars.put("Turtle X: ", turtleView.getX()); vars.put("Turtle Y: ",
-		 * turtleView.getY()); for(String thing : items.keySet()){
-		 * System.out.println(thing); Text a = new Text(thing +
-		 * items.get(thing)); variablePane.getChildren().add(a); }
-		 */
+		
+		modelMap.setVariable(varModel);
 		getRoot().getChildren().add(variables.myPane);
 	}
 
