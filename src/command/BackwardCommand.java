@@ -6,20 +6,19 @@ import java.util.Observable;
 import model.TurtleModel;
 
 
-public class BackwardCommand implements ICommand {
+public class BackwardCommand extends Command {
 
-    public static int numChildren = 1;
     private Map<String, Observable> modelMap;
-    private ICommand distance;
 
-    public BackwardCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public BackwardCommand (Map<String, Observable> modelMap, List<String> text) {
+        setNumChildren(1);
         this.modelMap = modelMap;
-        this.distance = commands.get(0).get(0);
+
     }
 
     @Override
     public double execute () {
-        double dist = distance.execute();
+        double dist = getCommands().get(0).get(0).execute();
         ((TurtleModel) modelMap.get("turtle")).forward(-dist);
         return dist;
     }

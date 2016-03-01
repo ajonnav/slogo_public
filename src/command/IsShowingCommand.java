@@ -6,12 +6,12 @@ import java.util.Observable;
 import model.TurtleModel;
 
 
-public class IsShowingCommand implements ICommand {
+public class IsShowingCommand extends Command {
 
-    public static final int numChildren = 0;
     private boolean status;
 
-    public IsShowingCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public IsShowingCommand (Map<String, Observable> modelMap, List<String> text) {
+        setNumChildren(0);
         status = ((TurtleModel) modelMap.get("turtle")).getShowStatus();
     }
 

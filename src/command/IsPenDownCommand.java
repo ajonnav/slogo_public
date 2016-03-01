@@ -6,12 +6,12 @@ import java.util.Observable;
 import model.TurtleModel;
 
 
-public class IsPenDownCommand implements ICommand {
+public class IsPenDownCommand extends Command {
 
-    public static final int numChildren = 0;
     private boolean status;
 
-    public IsPenDownCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public IsPenDownCommand (Map<String, Observable> modelMap, List<String> text) {
+        setNumChildren(0);
         status = ((TurtleModel) modelMap.get("turtle")).getPenStatus();
     }
     

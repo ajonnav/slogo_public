@@ -6,12 +6,12 @@ import java.util.Observable;
 import model.TurtleModel;
 
 
-public class HomeCommand implements ICommand {
+public class HomeCommand extends Command {
 
-    public static final int numChildren = 0;
     private Map<String, Observable> modelMap;
 
-    public HomeCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public HomeCommand (Map<String, Observable> modelMap, List<String> text) {
+        setNumChildren(0);
         this.modelMap = modelMap;
     }
 

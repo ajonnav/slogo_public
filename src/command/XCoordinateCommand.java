@@ -6,12 +6,12 @@ import java.util.Observable;
 import model.TurtleModel;
 
 
-public class XCoordinateCommand implements ICommand {
+public class XCoordinateCommand extends Command {
 
-    public static final int numChildren = 0;
     private double x;
 
-    public XCoordinateCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public XCoordinateCommand (Map<String, Observable> modelMap, List<String> text) {
+        setNumChildren(0);
         x = ((TurtleModel) modelMap.get("turtle")).getPositionX();
     }
 

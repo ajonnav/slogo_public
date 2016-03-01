@@ -1,24 +1,23 @@
 package command;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import model.VariableModel;
 
 
-public class VariableCommand implements ICommand {
+public class VariableCommand extends Command {
 
-    public static final int numChildren = 0;
     private Map<String, Observable> modelMap;
     private String name;
 
-    public VariableCommand (Map<String, Observable> modelMap, String name) {
+    public VariableCommand (Map<String, Observable> modelMap, List<String> text) {
         this.modelMap = modelMap;
-        this.name = name;
+        this.name = text.get(0);
     }
 
     @Override
     public double execute () {
-        System.out.println(((VariableModel) modelMap.get("variables")).getVariable(name));
         return ((VariableModel) modelMap.get("variables")).getVariable(name);
     }
 

@@ -6,20 +6,18 @@ import java.util.Observable;
 import model.TurtleModel;
 
 
-public class RightCommand implements ICommand {
+public class RightCommand extends Command {
 
-    public static int numChildren = 1;
     private Map<String, Observable> modelMap;
-    private ICommand degrees;
     
-    public RightCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public RightCommand (Map<String, Observable> modelMap, List<String> text) {
+        setNumChildren(1);
         this.modelMap = modelMap;
-        this.degrees = commands.get(0).get(0);
     }
 
     public double execute () {
-        double dist = degrees.execute();
-        ((TurtleModel) modelMap.get("turtle")).turn(dist);
-        return dist;
+        double deg = getCommands().get(0).get(0).execute();
+        ((TurtleModel) modelMap.get("turtle")).turn(deg);
+        return deg;
     }
 }

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
-
+import model.CommandsModel;
 import model.HistoryPaneModel;
 import model.TurtleModel;
 import model.VariableModel;
@@ -166,6 +166,8 @@ public class WorkSpace extends Screen{
 		
         modelMap = new HashMap<String, Observable>();
         modelMap.put("turtle", turtleModel);
+        CommandsModel commandsModel = new CommandsModel();
+        modelMap.put("commands", commandsModel);
         parser = new CommandParser(modelMap);
         //parser.addPatterns(UIConstants.RSRC_LANG + myLang);
         parser.addPatterns("resources/languages/English");
