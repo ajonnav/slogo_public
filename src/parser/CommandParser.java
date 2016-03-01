@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Map.Entry;
-import java.lang.reflect.Field;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -37,12 +36,34 @@ public class CommandParser {
     }
     
     public void parseText(String text) {
-        List<String> commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
+        List<String> commands = preProcess(text);
         List<Command> commandsList = parseFullText(commands);
         for(int i = 0; i < commandsList.size(); i++) {
+            try {
             commandsList.get(i).execute();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+    
+    public List<String> preProcess(String text) {
+        StringBuilder sbText = new StringBuilder(text);
+        int i = 0;
+        while(i < sbText.length()) {
+            if(sbText.charAt(i) == '#') {
+                sbText.deleteCharAt(i);
+                while(sbText.charAt(i) != '\n' && i < sbText.length() - 1) {
+                    sbText.deleteCharAt(i);
+                }
+            }
+            i++;
+        }
+        return new ArrayList<String>(Arrays.asList(sbText.toString().split(WHITESPACE)));
+    }
+    
+    
     
     public List<Command> parseFullText(List<String> text) {
         List<Command> commandsList = new ArrayList<Command>();
@@ -64,15 +85,14 @@ public class CommandParser {
             e.printStackTrace();
         }
         text.remove(0);
-        command.prepare(getCommandParams(currName, text, command.getNumChildren()));
+        command.prepare(getCommandParams(text, command.getNumChildren()));
         return command;
     }
     
-    public List<List<Command>> getCommandParams(String currName, List<String> text, int numChildren) {
+    public List<List<Command>> getCommandParams(List<String> text, int numChildren) {
         List<List<Command>> commandParams = new ArrayList<List<Command>>();
         for(int i = 0; i < numChildren; i++) {
-            String nextName = getClassName(text.get(0));
-            if(nextName.equals("command.ListStartCommand")) {
+            if(text.get(0).equals("[")) {
                 text.remove(0);
                 commandParams.add(parseFullText(getBracketed(text)));
                 text.remove(0);
@@ -101,20 +121,6 @@ public class CommandParser {
             text.remove(0);
         }
         return bracketed;
-    }
-    
-    public int getNumChildren(String className) {
-        try {
-            for(Field field : Class.forName(className).getFields()) {
-                if(field.getName().equals("numChildren")) {
-                    return (int) field.get(null);
-                }
-            }   
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
     
     public String getClassName(String text) {

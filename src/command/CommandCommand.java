@@ -33,7 +33,7 @@ public class CommandCommand extends Command{
             }
             return loopExecute(commandsModel.getCommands(name));
         }
-        return 0;
+        throw new RuntimeException();
     }
     
     public String getName () {

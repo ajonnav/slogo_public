@@ -19,10 +19,10 @@ public class MakeUserInstructionCommand extends Command {
     @Override
     public void prepare (List<List<Command>> commands) {
         super.prepare(commands);
-        CommandCommand newCommand = (CommandCommand) getCommands().get(0).get(0);
-        List<Command> variables = getCommands().get(1);
+        CommandCommand newCommand = (CommandCommand) commands.get(0).get(0);
+        List<Command> variables = commands.get(1);
         commandsModel.setVariables(newCommand.getName(), variables);
-        commandsModel.setCommands(newCommand.getName(), getCommands().get(2));
+        commandsModel.setCommands(newCommand.getName(), commands.get(2));
     }
     
     @Override
