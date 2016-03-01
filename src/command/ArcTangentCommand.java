@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class ArcTangentCommand extends Command {
 
-    
-    public ArcTangentCommand (Map<String, Observable> modelMap, List<String> text) {
+    public ArcTangentCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(1);
     }
 

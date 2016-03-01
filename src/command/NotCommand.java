@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class NotCommand extends Command {
 
-    public NotCommand (Map<String, Observable> modelMap, List<List<Command>> commands) {
+    public NotCommand (ModelMap modelMap, List<List<Command>> commands) {
         setNumChildren(1);
     }
 

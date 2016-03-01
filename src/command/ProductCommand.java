@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class ProductCommand extends Command {
 
-    public ProductCommand (Map<String, Observable> modelMap, List<String> text) {
+    public ProductCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 

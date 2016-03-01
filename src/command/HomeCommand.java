@@ -3,21 +3,23 @@ package command;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
+import model.ModelMap;
 import model.TurtleModel;
 
 
 public class HomeCommand extends Command {
 
-    private Map<String, Observable> modelMap;
+    private ModelMap modelMap;
 
-    public HomeCommand (Map<String, Observable> modelMap, List<String> text) {
+    public HomeCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        TurtleModel turtleModel = (TurtleModel) modelMap.get("turtle");
+        TurtleModel turtleModel = modelMap.getTurtle();
         turtleModel.setPosition(0, 0);
         return  Math.sqrt(Math.pow((0 - turtleModel.getPositionX()), 2) +
                           Math.pow((0 - turtleModel.getPositionY()), 2));

@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 public class AndCommand extends Command {
 
-    public AndCommand (Map<String, Observable> modelMap, List<String> text) {
+    public AndCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 

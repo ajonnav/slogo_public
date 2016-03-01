@@ -3,14 +3,16 @@ package command;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
+import model.ModelMap;
 import model.VariableModel;
 
 
 public class MakeVariableCommand extends Command {
 
-    private Map<String, Observable> modelMap;
+    private ModelMap modelMap;
 
-    public MakeVariableCommand (Map<String, Observable> modelMap, List<String> text) {
+    public MakeVariableCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
     }
@@ -18,7 +20,7 @@ public class MakeVariableCommand extends Command {
     @Override
     public double execute () {
         String variable = ((VariableCommand) getCommands().get(0).get(0)).getName();
-        return ((VariableModel) modelMap.get("variables"))
+        return modelMap.getVariable()
                 .setVariable(variable, getCommands().get(1).get(0).execute());
     }
 }

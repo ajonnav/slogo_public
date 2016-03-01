@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import model.ModelMap;
+
 
 public class NaturalLogCommand extends Command {
 
 
-    public NaturalLogCommand (Map<String, Observable> modelMap,List<String> text) {
+    public NaturalLogCommand (ModelMap modelMap,List<String> text) {
         setNumChildren(1);
     }
 
