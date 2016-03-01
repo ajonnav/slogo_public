@@ -9,7 +9,9 @@ import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+
 import command.Command;
+import exception.SLogoSyntaxException;
 import model.ModelMap;
 
 
@@ -76,6 +78,9 @@ public class CommandParser {
     public Command parseHelper (List<String> text) {
         String currString = text.get(0);
         String currName = getClassName(currString);
+        if(currName.equals("NO MATCH")) {
+        	throw new SLogoSyntaxException("Command not found");
+        }
         Command command = null;
         try {
             command = ((Command) Class.forName(currName).getConstructor(ModelMap.class, List.class)
