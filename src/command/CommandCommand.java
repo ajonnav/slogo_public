@@ -1,13 +1,9 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-
 import exception.SLogoSyntaxException;
 import model.CommandsModel;
 import model.ModelMap;
-import model.VariableModel;
 
 public class CommandCommand extends Command{
     
