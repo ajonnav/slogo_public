@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -14,25 +15,21 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 import command.ConstantCommand;
 import command.ICommand;
-import model.HistoryPaneModel;
+import command.VariableCommand;
+import model.VariableModel;
 
 public class CommandParser {
     
     private List<Entry<String, Pattern>> mySymbols;
     private Map<String, Observable> modelMap = new HashMap<String, Observable>(); 
-    private List<ICommand> commandsList = new ArrayList<ICommand>();
-    private List<ICommand> tempList;
-    private boolean tempFlag = false;
-    private List<String> commands = new ArrayList<String>();
-    public static final String WHITESPACE = "\\p{Space}";
+    public static final String WHITESPACE = "\\s+";
     
     public CommandParser(Map<String, Observable> modelMap) {
-        mySymbols = new ArrayList<>();
+        this.mySymbols = new ArrayList<>();
         this.modelMap = modelMap;
     }
     
     public void addPatterns (String syntax) {
-    	System.out.println(syntax);
         ResourceBundle resources = ResourceBundle.getBundle(syntax);
         Enumeration<String> iter = resources.getKeys();
         while (iter.hasMoreElements()) {
@@ -41,83 +38,84 @@ public class CommandParser {
             mySymbols.add(new SimpleEntry<>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
         }
     }
+    
     public void parseText(String text) {
-        commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
-        ((HistoryPaneModel) modelMap.get("history")).addToHistory(text);
-        while(commands.size()!=0) {
-            parseHelper(commands);  
-        }
+        List<String> commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
+        List<ICommand> commandsList = parseFullText(commands);
         for(int i = 0; i < commandsList.size(); i++) {
+            ((VariableModel) modelMap.get("variables")).printMap();
             commandsList.get(i).execute();
         }
-        commandsList.clear();
+    }
+    
+    public List<ICommand> parseFullText(List<String> text) {
+        List<ICommand> commandsList = new ArrayList<ICommand>();
+        while(!text.isEmpty()) {
+            commandsList.add(parseHelper(text));
+        }
+        return commandsList;
     }
     
     public ICommand parseHelper(List<String> text) {
-        ICommand command = null;
-        if(text.size() == 0) {
-            return null;
-        }
         String currString = text.get(0);
+        String currName = getClassName(currString);
         text.remove(0);
-        String className = getClassName(currString);
-        if(className.equals("command.ConstantCommand")) {
+        if(currName.equals("command.ConstantCommand")) {
             return new ConstantCommand(Integer.parseInt(currString));
         }
+        else if(currName.equals("command.VariableCommand"))  {
+            return new VariableCommand(modelMap, currString);
+        }
         try {
-            command = ((ICommand) Class.forName(className).getConstructor(Map.class, List.class)
-                    .newInstance(modelMap, getCommandParams(className, text)));
-            if(tempFlag) {
-                tempList.add(command);
-            }
-            else {
-                commandsList.add(command);
-            }
+            return ((ICommand) Class.forName(currName).getConstructor(Map.class, List.class)
+                    .newInstance(modelMap, getCommandParams(currName, text)));
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        return command;
+        return null;
     }
     
-    public List<List<ICommand>> getCommandParams(String className, List<String> text) {
-        int numChildren = getNumChildren(className);
+    public List<List<ICommand>> getCommandParams(String currName, List<String> text) {
         List<List<ICommand>> commandParams = new ArrayList<List<ICommand>>();
-        for(int i = 0; i < numChildren; i++) {
-            if(getNumChildren(getClassName(text.get(0))) == -1) {
+        for(int i = 0; i < getNumChildren(currName); i++) {
+            String nextName = getClassName(text.get(0));
+            if(nextName.equals("command.ListStartCommand")) {
                 text.remove(0);
-                List<String> bracketed = new ArrayList<String>();
-                while(getNumChildren(getClassName(text.get(0))) != -2) {
-                    bracketed.add(text.get(0));
-                    text.remove(0);
-                }
+                commandParams.add(parseFullText(getBracketed(text)));
                 text.remove(0);
-                tempFlag = true;
-                tempList = new ArrayList<ICommand>();
-                while(!bracketed.isEmpty()) {
-                	parseHelper(bracketed);
-                }
-                commandParams.add(new ArrayList<ICommand>(tempList));
-                tempFlag = false;
-                tempList.clear();
             }
             else {
-                List<ICommand> singleList = new ArrayList<ICommand>();
-                singleList.add(parseHelper(text));
-                commandParams.add(singleList); 
+                commandParams.add(Collections.singletonList(parseHelper(text)));
             }
         }
         return commandParams;
     }
     
+    public List<String> getBracketed(List<String> text) {
+        List<String> bracketed = new ArrayList<String>();
+        int bracketNumber = 1;
+        while(bracketNumber != 0) {
+            if(text.get(0).equals("[")) {
+                bracketNumber++;
+            }
+            else if(text.get(0).equals("]")) {
+                bracketNumber--;
+                if(bracketNumber == 0) {
+                    break;
+                }
+            }
+            bracketed.add(text.get(0));
+            text.remove(0);
+        }
+        return bracketed;
+    }
+    
     public int getNumChildren(String className) {
         try {
-            Class<?> c = Class.forName(className);
-            Field[] fields = c.getFields();
-            for(Field field : fields) {
+            for(Field field : Class.forName(className).getFields()) {
                 if(field.getName().equals("numChildren")) {
-                    int numChildren = (int) field.get(null);
-                    return numChildren;
+                    return (int) field.get(null);
                 }
             }   
         }

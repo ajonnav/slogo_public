@@ -8,7 +8,7 @@ import model.TurtleModel;
 
 public class PenDownCommand implements ICommand {
 
-    public static int numChildren = 0;
+    public static final int numChildren = 0;
     private Map<String, Observable> modelMap;
 
     public PenDownCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
@@ -18,11 +18,6 @@ public class PenDownCommand implements ICommand {
     @Override
     public double execute () {
         ((TurtleModel) modelMap.get("turtle")).penDown();
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
         return 1;
     }
 
