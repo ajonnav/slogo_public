@@ -15,13 +15,18 @@ public class MakeUserInstructionCommand extends Command {
         commandsModel.setVariables(text.get(1), null);
         commandsModel.setCommands(text.get(1), null);
     }
-
+    
     @Override
-    public double execute () {
+    public void prepare (List<List<Command>> commands) {
+        super.prepare(commands);
         CommandCommand newCommand = (CommandCommand) getCommands().get(0).get(0);
         List<Command> variables = getCommands().get(1);
         commandsModel.setVariables(newCommand.getName(), variables);
         commandsModel.setCommands(newCommand.getName(), getCommands().get(2));
+    }
+    
+    @Override
+    public double execute () {
         return 1;
     }
 }

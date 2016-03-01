@@ -11,7 +11,7 @@ public class ConstantCommand extends Command {
     public ConstantCommand (Map<String, Observable> modelMap, List<String> text) {
         this.constant = Double.parseDouble(text.get(0));
     }
-
+    
     @Override
     public double execute () {
         return constant;
