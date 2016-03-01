@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
 import command.ConstantCommand;
 import command.ICommand;
 import command.VariableCommand;
+import model.VariableModel;
 
 public class CommandParser {
     
@@ -39,13 +41,19 @@ public class CommandParser {
     
     public void parseText(String text) {
         List<String> commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
-        List<ICommand> commandsList = new ArrayList<ICommand>();
-        while(!commands.isEmpty()) {
-            commandsList.add(parseHelper(commands));
-        } 
+        List<ICommand> commandsList = parseFullText(commands);
         for(int i = 0; i < commandsList.size(); i++) {
+            ((VariableModel) modelMap.get("variables")).printMap();
             commandsList.get(i).execute();
         }
+    }
+    
+    public List<ICommand> parseFullText(List<String> text) {
+        List<ICommand> commandsList = new ArrayList<ICommand>();
+        while(!text.isEmpty()) {
+            commandsList.add(parseHelper(text));
+        }
+        return commandsList;
     }
     
     public ICommand parseHelper(List<String> text) {
@@ -74,33 +82,17 @@ public class CommandParser {
             String nextName = getClassName(text.get(0));
             if(nextName.equals("command.ListStartCommand")) {
                 text.remove(0);
-                commandParams.add(getBracketParams(text));
+                commandParams.add(parseFullText(getBracketed(text)));
                 text.remove(0);
             }
             else {
-                commandParams.add(getNonBracketParams(text, nextName));
+                commandParams.add(Collections.singletonList(parseHelper(text)));
             }
         }
         return commandParams;
     }
     
-    public List<ICommand> getNonBracketParams(List<String> text, String nextName) {
-        List<ICommand> list = new ArrayList<ICommand>();
-        if(nextName.equals("command.ConstantCommand")) {
-            list.add(new ConstantCommand(Integer.parseInt(text.get(0))));
-            text.remove(0);
-        }
-        else if(nextName.equals("command.VariableCommand"))  {
-            list.add(new VariableCommand(modelMap, text.get(0)));
-            text.remove(0);
-        }
-        else {
-            list.add(parseHelper(text));
-        }
-        return list;
-    }
-    
-    public List<ICommand> getBracketParams(List<String> text) {
+    public List<String> getBracketed(List<String> text) {
         List<String> bracketed = new ArrayList<String>();
         int bracketNumber = 1;
         while(bracketNumber != 0) {
@@ -116,11 +108,7 @@ public class CommandParser {
             bracketed.add(text.get(0));
             text.remove(0);
         }
-        List<ICommand> bracketList = new ArrayList<ICommand>();
-        while(!bracketed.isEmpty()) {
-            bracketList.add(parseHelper(bracketed));
-        }
-        return bracketList;
+        return bracketed;
     }
     
     public int getNumChildren(String className) {

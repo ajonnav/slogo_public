@@ -18,11 +18,6 @@ public class ShowTurtleCommand implements ICommand {
     @Override
     public double execute () {
         ((TurtleModel) modelMap.get("turtle")).show();
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
         return 1;
     }
 

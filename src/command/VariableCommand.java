@@ -18,11 +18,7 @@ public class VariableCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
+        System.out.println(((VariableModel) modelMap.get("variables")).getVariable(name));
         return ((VariableModel) modelMap.get("variables")).getVariable(name);
     }
 

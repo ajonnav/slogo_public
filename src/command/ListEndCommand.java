@@ -7,8 +7,6 @@ import java.util.Observable;
 
 public class ListEndCommand implements ICommand {
 
-    public static final int numChildren = -1;
-
     public ListEndCommand (Map<String, Observable> modelMap, List<ICommand> commands) {
     }
 
@@ -17,8 +15,4 @@ public class ListEndCommand implements ICommand {
         return 0;
     }
 
-    @Override
-    public double evaluate () {
-        return 0;
-    }
 }

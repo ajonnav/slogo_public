@@ -17,37 +17,9 @@ public class IfElseCommand implements ICommand {
         this.ifcommands = commands.get(1);
         this.elsecommands = commands.get(2);
     }
-
+    
     @Override
     public double execute () {
-        double lastValue = 0;
-        if (bool.execute() != 0) {
-            for (int i = 0; i < ifcommands.size(); i++) {
-                lastValue = ifcommands.get(i).execute();
-            }
-        }
-        else {
-            for (int i = 0; i < elsecommands.size(); i++) {
-                lastValue = elsecommands.get(i).execute();
-            }
-        }
-        return lastValue;
+        return bool.execute() != 0.0 ? loopExecute(ifcommands) : loopExecute(elsecommands);
     }
-
-    @Override
-    public double evaluate () {
-        double lastValue = 0;
-        if (bool.evaluate() != 0) {
-            for (int i = 0; i < ifcommands.size(); i++) {
-                lastValue = ifcommands.get(i).evaluate();
-            }
-        }
-        else {
-            for (int i = 0; i < elsecommands.size(); i++) {
-                lastValue = elsecommands.get(i).evaluate();
-            }
-        }
-        return lastValue;
-    }
-
 }

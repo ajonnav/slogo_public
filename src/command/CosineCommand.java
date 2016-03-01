@@ -16,11 +16,6 @@ public class CosineCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
-        return Math.cos(Math.toRadians(valueOne.evaluate()));
+        return Math.cos(Math.toRadians(valueOne.execute()));
     }
 }

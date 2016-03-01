@@ -1,8 +1,17 @@
 package command;
 
+import java.util.List;
+
+
 public interface ICommand {
-	
-	public double execute();
-	
-	public double evaluate();
+
+    double execute ();
+
+    default double loopExecute (List<ICommand> commands) {
+        double lastValue = 0;
+        for (int i = 0; i < commands.size(); i++) {
+            lastValue = commands.get(i).execute();
+        }
+        return lastValue;
+    }
 }

@@ -19,12 +19,8 @@ public class BackwardCommand implements ICommand {
 
     @Override
     public double execute () {
-        ((TurtleModel) modelMap.get("turtle")).forward(-distance.execute());
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
-        return distance.evaluate();
+        double dist = distance.execute();
+        ((TurtleModel) modelMap.get("turtle")).forward(-dist);
+        return dist;
     }
 }

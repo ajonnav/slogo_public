@@ -20,12 +20,7 @@ public class LeftCommand implements ICommand {
     @Override
     public double execute () {
         ((TurtleModel) modelMap.get("turtle")).turn(-degrees.execute());
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
-        return degrees.evaluate();
+        return  degrees.execute();
     }
     
 }

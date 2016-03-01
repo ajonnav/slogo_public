@@ -17,17 +17,7 @@ public class IsShowingCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
-        if (status) {
-            return 1;
-        }
-        else {
-            return 0;
-        }
+        return status ? 1 : 0;
     }
 
 }

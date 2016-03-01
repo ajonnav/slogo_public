@@ -17,13 +17,9 @@ public class SetHeadingCommand implements ICommand {
 
     @Override
     public double execute () {
-        ((TurtleModel) modelMap.get("turtle")).setHeading(degrees.execute());
-        return evaluate();
+        double heading = degrees.execute();
+        ((TurtleModel) modelMap.get("turtle")).setHeading(heading);
+        return heading;
     }
 
-    @Override
-    public double evaluate () {
-       return degrees.evaluate();
-    }
-    
 }

@@ -19,34 +19,20 @@ public class DoTimesCommand implements ICommand {
 
     public DoTimesCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
         this.modelMap = modelMap;
-        block = commands.get(0);
-        loopBlock = commands.get(1);
+        this.block = commands.get(0);
+        this.loopBlock = commands.get(1);
         this.variable = ((VariableCommand) block.get(0)).getName();
         this.start = 1;
-        this.end = block.get(1).evaluate();
         this.increment = 1;
-    }
-
-    @Override
-    public double evaluate () {
-        double lastValue = 0;
-        for (double i = start; i < end; i += increment) {
-            ((VariableModel) modelMap.get("variables")).setVariable(variable, i);
-            for (int j = 0; j < loopBlock.size(); j++) {
-                lastValue = loopBlock.get(j).evaluate();
-            }
-        }
-        return lastValue;
     }
 
     @Override
     public double execute () {
         double lastValue = 0;
+        this.end = block.get(1).execute();
         for (double i = start; i < end; i += increment) {
             ((VariableModel) modelMap.get("variables")).setVariable(variable, i);
-            for (int j = 0; j < loopBlock.size(); j++) {
-                lastValue = loopBlock.get(j).execute();
-            }
+            lastValue = loopExecute(loopBlock);
         }
         return lastValue;
     }

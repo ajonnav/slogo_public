@@ -18,11 +18,7 @@ public class PenUpCommand implements ICommand {
     @Override
     public double execute () {
         ((TurtleModel) modelMap.get("turtle")).penUp();
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
         return 0;
     }
+
 }

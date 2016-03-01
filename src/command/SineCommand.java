@@ -16,11 +16,7 @@ public class SineCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
+        return Math.sin(Math.toRadians(valueOne.execute()));
     }
 
-    @Override
-    public double evaluate () {
-        return Math.sin(Math.toRadians(valueOne.evaluate()));
-    }
 }

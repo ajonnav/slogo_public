@@ -7,7 +7,7 @@ import java.util.Observable;
 
 public class QuotientCommand implements ICommand {
 
-    public static int numChildren = 2;
+    public static final int numChildren = 2;
     private ICommand valueOne;
     private ICommand valueTwo;
 
@@ -18,11 +18,7 @@ public class QuotientCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
+        return valueOne.execute() / valueTwo.execute();
     }
 
-    @Override
-    public double evaluate () {
-        return valueOne.evaluate() / valueTwo.evaluate();
-    }
 }

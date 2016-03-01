@@ -18,12 +18,7 @@ public class HideTurtleCommand implements ICommand {
     @Override
     public double execute () {
         ((TurtleModel) modelMap.get("turtle")).hide();
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
         return 0;
     }
-
+    
 }
