@@ -6,12 +6,14 @@ import java.util.List;
 public abstract class Command {
 
     private int numChildren;
+    private String name;
     private List<List<Command>> commands;
     
     public abstract double execute ();
     
     public void prepare(List<List<Command>> commands) {
         this.commands = commands;
+        this.name = this.getClass().getSimpleName();
     }
     
     public int getNumChildren() {
@@ -24,6 +26,10 @@ public abstract class Command {
     
     public List<List<Command>> getCommands() {
         return commands;
+    }
+    
+    public String getName() {
+        return name;
     }
     
     public double loopExecute (List<Command> commands) {
