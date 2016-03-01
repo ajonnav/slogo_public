@@ -2,9 +2,6 @@
 package command;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-
 import model.ModelMap;
 import model.TurtleModel;
 
