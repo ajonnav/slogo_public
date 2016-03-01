@@ -14,18 +14,10 @@ public class IsPenDownCommand implements ICommand {
     public IsPenDownCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
         status = ((TurtleModel) modelMap.get("turtle")).getPenStatus();
     }
-
+    
     @Override
     public double execute () {
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
-        if (status) {
-            return 1;
-        }
-        return 0;
+        return status ? 1 : 0;
     }
 
 }

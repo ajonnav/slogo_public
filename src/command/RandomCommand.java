@@ -17,12 +17,6 @@ public class RandomCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
-        Random r = new Random();
-        return max.evaluate() * r.nextDouble();
+        return max.execute() * (new Random()).nextDouble();
     }
 }

@@ -13,27 +13,22 @@ public class SetPositionCommand implements ICommand {
 
     private ICommand x;
     private ICommand y;
-    private double distance;
     private Map<String, Observable> modelMap;
 
     public SetPositionCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+        this.modelMap = modelMap;
         this.x = commands.get(0).get(0);
         this.y = commands.get(1).get(0);
-        this.modelMap = modelMap;
-        TurtleModel turtleModel = (TurtleModel) modelMap.get("turtle");
-        this.distance =
-                Math.sqrt(Math.pow((x.evaluate() - turtleModel.getPositionX()), 2) +
-                          Math.pow((y.evaluate() - turtleModel.getPositionY()), 2));
     }
 
     @Override
     public double execute () {
-        ((TurtleModel) modelMap.get("turtle")).setPosition(x.execute(), y.execute());
-        return evaluate();
+        double xPos = x.execute();
+        double yPos = y.execute();
+        TurtleModel turtleModel = (TurtleModel) modelMap.get("turtle");
+        turtleModel.setPosition(xPos, yPos);
+        return Math.sqrt(Math.pow((xPos - turtleModel.getPositionX()), 2) +
+                         Math.pow((yPos - turtleModel.getPositionY()), 2));
     }
 
-    @Override
-    public double evaluate () {
-        return distance;
-    }
 }

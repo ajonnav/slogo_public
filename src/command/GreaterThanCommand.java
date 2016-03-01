@@ -7,7 +7,7 @@ import java.util.Observable;
 
 public class GreaterThanCommand implements ICommand {
 
-    public static int numChildren = 2;
+    public static final int numChildren = 2;
     private ICommand valueOne;
     private ICommand valueTwo;
 
@@ -15,17 +15,9 @@ public class GreaterThanCommand implements ICommand {
         this.valueOne = commands.get(0).get(0);
         this.valueTwo = commands.get(1).get(0);
     }
-
+    
     @Override
     public double execute () {
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
-        if(valueOne.evaluate() > valueTwo.evaluate()) {
-            return 1;
-        }
-        return 0;
+        return valueOne.execute() > valueTwo.execute() ? 1 : 0;
     }
 }

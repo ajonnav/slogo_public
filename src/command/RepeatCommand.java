@@ -24,22 +24,7 @@ public class RepeatCommand implements ICommand {
         double lastValue = 0;
         for (int i = 0; i < repeat.execute(); i++) {
             ((VariableModel) modelMap.get("variables")).setVariable(":repcount", i+1);
-            for (int j = 0; j < commands.size(); j++) {
-                lastValue = commands.get(j).execute();
-            }
-        }
-        return lastValue;
-    }
-
-    @Override
-
-    public double evaluate () {
-        double lastValue = 0;
-        for (int i = 0; i < repeat.evaluate(); i++) {
-            ((VariableModel) modelMap.get("variables")).setVariable(":repcount", i+1);
-            for (int j = 0; j < commands.size(); j++) {
-                lastValue = commands.get(j).evaluate();
-            }
+            lastValue = loopExecute(commands);
         }
         return lastValue;
     }

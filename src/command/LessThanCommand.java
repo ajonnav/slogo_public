@@ -7,7 +7,7 @@ import java.util.Observable;
 
 public class LessThanCommand implements ICommand {
 
-    public static int numChildren = 2;
+    public static final int numChildren = 2;
     private ICommand valueOne;
     private ICommand valueTwo;
 
@@ -18,14 +18,6 @@ public class LessThanCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
-        if(valueOne.evaluate() < valueTwo.evaluate()) {
-            return 1;
-        }
-        return 0;
+        return valueOne.execute() < valueTwo.execute() ? 1 : 0;
     }
 }

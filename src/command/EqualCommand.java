@@ -18,14 +18,9 @@ public class EqualCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
-        if(valueOne.evaluate() == valueTwo.evaluate()) {
-            return 1;
-        }
-        return 0;
+        double one = valueOne.execute();
+        double two = valueTwo.execute();
+        System.out.println(one == two);
+        return one == two ? 1 : 0;
     }
 }

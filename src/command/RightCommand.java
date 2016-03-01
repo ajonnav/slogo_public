@@ -18,13 +18,8 @@ public class RightCommand implements ICommand {
     }
 
     public double execute () {
-        ((TurtleModel) modelMap.get("turtle")).turn(degrees.execute());
-        return evaluate();
+        double dist = degrees.execute();
+        ((TurtleModel) modelMap.get("turtle")).turn(dist);
+        return dist;
     }
-
-    @Override
-    public double evaluate () {
-        return degrees.evaluate();
-    }
-
 }

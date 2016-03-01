@@ -17,11 +17,6 @@ public class HeadingCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
-    }
-
-    @Override
-    public double evaluate () {
         return heading;
     }
 }

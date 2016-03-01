@@ -18,11 +18,7 @@ public class ProductCommand implements ICommand {
 
     @Override
     public double execute () {
-        return evaluate();
+        return valueOne.execute() * valueTwo.execute();
     }
 
-    @Override
-    public double evaluate () {
-        return valueOne.evaluate() * valueTwo.evaluate();
-    }
 }
