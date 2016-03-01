@@ -38,8 +38,9 @@ public class CommandParser {
     
     public void parseText(String text) {
         List<String> commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
-        while(!commands.isEmpty()) {
-            parseHelper(commands).execute();
+        List<Command> commandsList = parseFullText(commands);
+        for(int i = 0; i < commandsList.size(); i++) {
+            commandsList.get(i).execute();
         }
     }
     
@@ -63,7 +64,7 @@ public class CommandParser {
             e.printStackTrace();
         }
         text.remove(0);
-        command.setCommands(getCommandParams(currName, text, command.getNumChildren()));
+        command.prepare(getCommandParams(currName, text, command.getNumChildren()));
         return command;
     }
     

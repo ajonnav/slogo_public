@@ -10,6 +10,10 @@ public abstract class Command {
     
     public abstract double execute ();
     
+    public void prepare(List<List<Command>> commands) {
+        this.commands = commands;
+    }
+    
     public int getNumChildren() {
         return numChildren;
     }
@@ -20,10 +24,6 @@ public abstract class Command {
     
     public List<List<Command>> getCommands() {
         return commands;
-    }
-    
-    public void setCommands(List<List<Command>> commands) {
-        this.commands = commands;
     }
     
     public double loopExecute (List<Command> commands) {

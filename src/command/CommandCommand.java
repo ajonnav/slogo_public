@@ -22,7 +22,7 @@ public class CommandCommand extends Command{
             setNumChildren(variables.size());
         }
     }
-
+    
     @Override
     public double execute () {
         if(getNumChildren() != -1) {       

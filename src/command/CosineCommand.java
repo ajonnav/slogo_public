@@ -10,6 +10,10 @@ public class CosineCommand extends Command {
     public CosineCommand (Map<String, Observable> modelMap, List<String> text) {
         setNumChildren(1);
     }
+    
+    public void prepare() {
+        return;
+    }
 
     @Override
     public double execute () {

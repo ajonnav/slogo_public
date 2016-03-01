@@ -13,7 +13,6 @@ public class BackwardCommand extends Command {
     public BackwardCommand (Map<String, Observable> modelMap, List<String> text) {
         setNumChildren(1);
         this.modelMap = modelMap;
-
     }
 
     @Override
