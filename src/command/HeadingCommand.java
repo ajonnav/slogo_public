@@ -6,12 +6,12 @@ import java.util.Observable;
 import model.TurtleModel;
 
 
-public class HeadingCommand implements ICommand {
+public class HeadingCommand extends Command {
 
-    public static final int numChildren = 0;
     private double heading;
 
-    public HeadingCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public HeadingCommand (Map<String, Observable> modelMap, List<String> text) {
+        setNumChildren(0);
         heading = ((TurtleModel) modelMap.get("turtle")).getHeading();
     }
 

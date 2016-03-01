@@ -5,17 +5,14 @@ import java.util.Map;
 import java.util.Observable;
 
 
-public class CosineCommand implements ICommand {
+public class CosineCommand extends Command {
 
-    public static int numChildren = 1;
-    private ICommand valueOne;
-
-    public CosineCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
-        this.valueOne = commands.get(0).get(0);
+    public CosineCommand (Map<String, Observable> modelMap, List<String> text) {
+        setNumChildren(1);
     }
 
     @Override
     public double execute () {
-        return Math.cos(Math.toRadians(valueOne.execute()));
+        return Math.cos(Math.toRadians(getCommands().get(0).get(0).execute()));
     }
 }

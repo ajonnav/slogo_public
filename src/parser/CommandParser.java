@@ -13,10 +13,7 @@ import java.lang.reflect.Field;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
-import command.ConstantCommand;
-import command.ICommand;
-import command.VariableCommand;
-import model.VariableModel;
+import command.Command;
 
 public class CommandParser {
     
@@ -41,44 +38,38 @@ public class CommandParser {
     
     public void parseText(String text) {
         List<String> commands = new ArrayList<String>(Arrays.asList(text.split(WHITESPACE)));
-        List<ICommand> commandsList = parseFullText(commands);
-        for(int i = 0; i < commandsList.size(); i++) {
-            ((VariableModel) modelMap.get("variables")).printMap();
-            commandsList.get(i).execute();
+        while(!commands.isEmpty()) {
+            parseHelper(commands).execute();
         }
     }
     
-    public List<ICommand> parseFullText(List<String> text) {
-        List<ICommand> commandsList = new ArrayList<ICommand>();
+    public List<Command> parseFullText(List<String> text) {
+        List<Command> commandsList = new ArrayList<Command>();
         while(!text.isEmpty()) {
             commandsList.add(parseHelper(text));
         }
         return commandsList;
     }
     
-    public ICommand parseHelper(List<String> text) {
+    public Command parseHelper(List<String> text) {
         String currString = text.get(0);
         String currName = getClassName(currString);
-        text.remove(0);
-        if(currName.equals("command.ConstantCommand")) {
-            return new ConstantCommand(Integer.parseInt(currString));
-        }
-        else if(currName.equals("command.VariableCommand"))  {
-            return new VariableCommand(modelMap, currString);
-        }
+        Command command = null;
         try {
-            return ((ICommand) Class.forName(currName).getConstructor(Map.class, List.class)
-                    .newInstance(modelMap, getCommandParams(currName, text)));
+            command = ((Command) Class.forName(currName).getConstructor(Map.class, List.class)
+                    .newInstance(modelMap, Collections.unmodifiableList(text)));
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        text.remove(0);
+        command.setCommands(getCommandParams(currName, text, command.getNumChildren()));
+        return command;
     }
     
-    public List<List<ICommand>> getCommandParams(String currName, List<String> text) {
-        List<List<ICommand>> commandParams = new ArrayList<List<ICommand>>();
-        for(int i = 0; i < getNumChildren(currName); i++) {
+    public List<List<Command>> getCommandParams(String currName, List<String> text, int numChildren) {
+        List<List<Command>> commandParams = new ArrayList<List<Command>>();
+        for(int i = 0; i < numChildren; i++) {
             String nextName = getClassName(text.get(0));
             if(nextName.equals("command.ListStartCommand")) {
                 text.remove(0);

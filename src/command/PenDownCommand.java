@@ -6,12 +6,12 @@ import java.util.Observable;
 import model.TurtleModel;
 
 
-public class PenDownCommand implements ICommand {
+public class PenDownCommand extends Command {
 
-    public static final int numChildren = 0;
     private Map<String, Observable> modelMap;
 
-    public PenDownCommand (Map<String, Observable> modelMap, List<List<ICommand>> commands) {
+    public PenDownCommand (Map<String, Observable> modelMap, List<String> text) {
+        setNumChildren(0);
         this.modelMap = modelMap;
     }
 
