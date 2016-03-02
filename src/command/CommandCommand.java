@@ -33,7 +33,7 @@ public class CommandCommand extends Command{
             return loopExecute(commandsModel.getCommands(name));
         }
         else {
-        	throw new SLogoSyntaxException("Command not Found");
+        	throw new SLogoSyntaxException("User command not found");
         }
     }
     

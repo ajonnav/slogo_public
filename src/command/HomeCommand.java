@@ -17,8 +17,10 @@ public class HomeCommand extends Command {
     @Override
     public double execute () {
         TurtleModel turtleModel = modelMap.getTurtle();
+        double returnValue = Math.sqrt(Math.pow((0 - turtleModel.getPositionX()), 2) +
+                Math.pow((0 - turtleModel.getPositionY()), 2));
         turtleModel.setPosition(0, 0);
-        return  Math.sqrt(Math.pow((0 - turtleModel.getPositionX()), 2) +
-                          Math.pow((0 - turtleModel.getPositionY()), 2));
+        turtleModel.setHeading(90);
+        return returnValue;
     }
 }
