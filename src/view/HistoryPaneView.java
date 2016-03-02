@@ -26,11 +26,9 @@ public class HistoryPaneView implements IView {
     public void update (Observable o, Object arg) {
         if (o instanceof HistoryPaneModel) {
             HistoryPaneModel hpm = (HistoryPaneModel) o;
-            myHist = new ArrayList(hpm.getImmutableHistoryList());
             myVBox.getChildren().clear();
-            //Collections.reverse(myHist);
             int x = 1;
-            for (String item : myHist) {
+            for (String item : hpm.getImmutableHistoryList()) {
             	if(x % 2 != 0) {
             		Hyperlink past = new Hyperlink(">> " + item);
             		past.setOnAction(event -> {

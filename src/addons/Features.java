@@ -1,22 +1,14 @@
 package addons;
 
-import model.TurtleModel;
-import view.TurtleView;
-
 import java.util.ResourceBundle;
-
 import constants.UIConstants;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
@@ -28,11 +20,7 @@ public class Features {
 	private ResourceBundle myBundle;
 	
 	public Button makeB(String property, EventHandler<ActionEvent> action) {
-		myBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
-		
-		Button myButton = new Button();
-		myButton = new Button();
-		myButton.setText(property);
+		Button myButton = new Button(property);
 		myButton.setOnAction(action);
 		return myButton;
 	}

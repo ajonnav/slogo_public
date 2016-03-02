@@ -1,7 +1,7 @@
-.root {
+.scene {
     -fx-font-size: 10pt;
-    -fx-base: rgb(32, 75, 193);
-    -fx-background: #99cc99;
+    -fx-base: red;
+    -fx-background: white;
 }
 
 .button {
@@ -21,7 +21,7 @@
 .welRect {
     -fx-fill: lightblue;
 }
-.welText {
+#welText {
     -fx-font-size: 30pt;
     -fx-font-family: "Helvetica";
     -fx-text-color-fill: blue;
@@ -32,5 +32,9 @@
 }
 .myPane {
 	-fx-background-color: black;
+}
+
+ Rectangle {
+	-fx-fill: green
 }
 

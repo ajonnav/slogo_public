@@ -39,12 +39,12 @@ public class Splash extends Screen {
 		welRect.setArcHeight(UIConstants.ARC);
 		welRect.setArcWidth(UIConstants.ARC);
 		getRoot().getChildren().add(welRect);
-		welRect.getStyleClass().add("welRect");
+		//welRect.getStyleClass().add("welRect");
 		
 		Text welText = new Text(getResources().getString(UIConstants.TITLE));
 		welText.setLayoutX(290);
 		welText.setLayoutY(150);
-		welText.getStyleClass().add("welText");
+		//welText.getStyleClass().add("welText");
 		getRoot().getChildren().add(welText);
 		
 	}
@@ -73,8 +73,7 @@ public class Splash extends Screen {
 			        getResources().getString(UIConstants.ITA),
 			        getResources().getString(UIConstants.POR),
 			        getResources().getString(UIConstants.RUS),
-			        getResources().getString(UIConstants.SPA),
-			        getResources().getString(UIConstants.SYN)
+			        getResources().getString(UIConstants.SPA)
 			    );
 		languageCBox = featMaker.makeCBox(options);
 		languageCBox.setLayoutX(UIConstants.RECT_X);

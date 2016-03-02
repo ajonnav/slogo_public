@@ -24,14 +24,10 @@ public class SPane {
 		
 		myPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		myPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		myPane.setOnScrollFinished(e -> printInfo());
 		myPane.setStyle("-fx-color: red;");
-		myPane.setMaxHeight(y);
-		
+	
 	}
-	public void printInfo(){
-		System.out.println(myPane.getVvalue());
-	}
+
 	public ScrollPane getMyPane() {
 		return myPane;
 	}
