@@ -18,8 +18,8 @@ public class TurtleView implements IView{
 		this.image = image;
 		this.image.setFitHeight(50);
 		this.image.setFitWidth(50);
-		this.image.setX(transformX(0) + UIConstants.INITIAL_X);
-		this.image.setY(transformY(0) + UIConstants.INITIAL_Y);
+		this.image.setX(transformX(0));
+		this.image.setY(transformY(0));
 		root.getChildren().add(this.image);
 		this.myColor = c;
 		this.GC = GC;
@@ -31,12 +31,9 @@ public class TurtleView implements IView{
 			TurtleModel turtleModel = (TurtleModel) o;
 			GC.setStroke(myColor);
 			if(turtleModel.getPenStatus()) {
-				GC.strokeLine(image.getX(), image.getY(), 
-						transformX(turtleModel.getPositionX()), transformY(turtleModel.getPositionY()));
-				System.out.println(image.getX());
-				System.out.println(image.getY());
-				System.out.println(turtleModel.getPositionX());
-				System.out.println(turtleModel.getPositionY());
+				GC.strokeLine(image.getX() - UIConstants.INITIAL_X, image.getY() - UIConstants.INITIAL_Y, 
+						transformX(turtleModel.getPositionX()) - UIConstants.INITIAL_X, 
+						transformY(turtleModel.getPositionY()) - UIConstants.INITIAL_Y);
 			}
 			image.setOpacity(Boolean.compare(turtleModel.getShowStatus(), false));
 			image.setX(transformX(turtleModel.getPositionX()));
@@ -71,7 +68,6 @@ public class TurtleView implements IView{
 	private double transformY(double y) {
 		return -y + (double)UIConstants.CANVAS_SIZE/2;
 	}
-
 	private double transformHeading(double heading) {
 		return 90 - heading;
 	}

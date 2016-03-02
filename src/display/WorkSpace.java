@@ -194,9 +194,9 @@ public class WorkSpace extends Screen {
 		turtleView = new TurtleView(thing, getRoot(),
 				layer2.getGraphicsContext2D(), Color.BLACK);
 		turtleView.getImage().setX(
-				turtleModel.getPositionX() - thing.getFitWidth() / 2);
+				turtleModel.getPositionX() + UIConstants.CANVAS_SIZE/2);
 		turtleView.getImage().setY(
-				turtleModel.getPositionY() - thing.getFitHeight() / 2);
+				turtleModel.getPositionY() + UIConstants.CANVAS_SIZE/2);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 	}
@@ -214,6 +214,7 @@ public class WorkSpace extends Screen {
 				layer2.getGraphicsContext2D(), Color.BLACK);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
+		turtleModel.penDown();
 
 		modelMap = new ModelMap();
 		modelMap.setTurtle(turtleModel);
@@ -224,8 +225,8 @@ public class WorkSpace extends Screen {
 	private void setInputPane() {
 		HBox commandLine = new HBox();
 		inputText = new TextArea();
-		inputText.setMinWidth(450);
-		inputText.setMinHeight(200);
+		inputText.setMinSize(450, 200);
+		inputText.setMaxSize(450, 200);
 		commandLine.getChildren().add(inputText);
 		Button inputButton = featureMaker.makeB("Go",
 				event -> readInput(parser, inputText));
@@ -237,10 +238,8 @@ public class WorkSpace extends Screen {
 
 	private void setHistoryPane() {
 		SPane history = new SPane(900, 25);
-		history.myPane.setMinWidth(360);
-		history.myPane.setMinHeight(475);
-		history.myPane.setMaxSize(UIConstants.CANVAS_SIZE,
-				UIConstants.CANVAS_SIZE - UIConstants.BORDER_WIDTH);
+		history.myPane.setMinSize(360, 475);
+		history.myPane.setMaxSize(360, 475);
 		getRoot().getChildren().addAll(history.myRoot);
 		HistoryPaneModel hpm = new HistoryPaneModel();
 		hpv = new HistoryPaneView(history.myBox, inputText);
