@@ -44,12 +44,13 @@ public class TurtleView implements IView{
 	public GraphicsContext getGC(){
 		return GC;
 	}
+	
 	public String getX(){
-		return Double.toString(image.getX());
+		return Double.toString(getImage().getX());
 	}
 	
 	public String getY(){
-		return Double.toString(image.getY());
+		return Double.toString(getImage().getY());
 	}
 	
 	public void setColor(Color v){
@@ -66,5 +67,13 @@ public class TurtleView implements IView{
 
 	private double transformHeading(double heading) {
 		return 90 - heading;
+	}
+
+	public ImageView getImage() {
+		return image;
+	}
+
+	public void setImage(ImageView image) {
+		this.image = image;
 	}
 }

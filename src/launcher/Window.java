@@ -1,7 +1,6 @@
 package launcher;
 
 import java.awt.Button;
-import java.io.File;
 import java.util.ResourceBundle;
 
 import constants.UIConstants;
@@ -14,7 +13,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public abstract class Window {
