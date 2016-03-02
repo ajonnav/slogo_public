@@ -28,7 +28,7 @@ public abstract class Command {
         return commands;
     }
     
-    public String getName() {
+    public String getCommandName() {
         return name;
     }
     

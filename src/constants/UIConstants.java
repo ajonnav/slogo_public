@@ -14,10 +14,11 @@ public class UIConstants {
 	public static final int HEIGHT = 750;
 	public static final int RECT_W = 600;
 	public static final int CANVAS_SIZE = 475;
-	public static final int INITIAL_X = 300;
-	public static final int INITIAL_Y = 300;
-	public static final int INITIAL_HEADING = 270;
 	public static final int BORDER_WIDTH = 25;
+	public static final int INITIAL_X = 385;
+	public static final int INITIAL_Y = 0;
+	public static final int INITIAL_HEADING = 90;
+	public static final int ROTATION = -90;
 	public static final int ZERO = 0;
 	public static final int HUNDRED = 100;
 	public static final int RECT_X = 200;

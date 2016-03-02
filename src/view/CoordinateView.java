@@ -34,15 +34,15 @@ public class CoordinateView implements IView{
 	}
 
 	private Double xWorkSpaceCoordinate(double modelCoordinate){
-		return (double) Math.round((modelCoordinate - UIConstants.CANVAS_SIZE/2));
+		return (double) Math.round(modelCoordinate)-UIConstants.INITIAL_X;
 	}
 	
 	private Double yWorkSpaceCoordinate(double modelCoordinate){
-		return (double) Math.round(-(modelCoordinate - UIConstants.CANVAS_SIZE/2));
+		return (double) Math.round(modelCoordinate)-UIConstants.INITIAL_Y;
 	}
 	
 	private Double workSpaceHeading(double heading){
-		return (360-heading)%360;
+		return heading;
 	}
 	
 	private Text updateText(Double setting, String text, Text field){

@@ -40,7 +40,7 @@ public class TurtleModel extends Observable {
     }
 
     public void turn (double degree) {
-        setHeading(degree + heading);
+        setHeading(heading - degree);
     }
 
     public void penUp () {

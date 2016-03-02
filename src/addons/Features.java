@@ -28,6 +28,8 @@ public class Features {
 		canvas.setTranslateX(xLoc);
 		canvas.setTranslateY(yLoc);
 		GraphicsContext GC = canvas.getGraphicsContext2D();
+		canvas.setTranslateX(xLoc);
+		canvas.setTranslateY(yLoc);
 		GC.setFill(color);
 		GC.fillRect(0,0,width,height);
 		return canvas;

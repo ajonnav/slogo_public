@@ -1,7 +1,6 @@
 package display;
 
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import javax.imageio.ImageIO;
 import model.CommandsModel;
@@ -149,7 +148,7 @@ public class WorkSpace extends Screen {
 		getRoot().getChildren().add(layer2);
 		layer2.toFront();
 	}
-
+	
 	protected void setButtons() {
 		Button pick = new Button("Select a new image");
 		pick.setOnAction(event -> changeImage());
@@ -193,10 +192,9 @@ public class WorkSpace extends Screen {
 
 	}
 
-	private void setTurtle() {
-		double turtleInitialX = 410 + UIConstants.CANVAS_SIZE / 2;
-		double turtleInitialY = UIConstants.BORDER_WIDTH
-				+ UIConstants.CANVAS_SIZE / 2;
+	private void setTurtle(){
+		double turtleInitialX = UIConstants.INITIAL_X;
+		double turtleInitialY = UIConstants.INITIAL_Y;
 		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
 
 		ImageView turtleImage = new ImageView(new Image(getClass()
@@ -205,7 +203,6 @@ public class WorkSpace extends Screen {
 				turtleInitialHeading);
 		turtleView = new TurtleView(turtleImage, getRoot(),
 				layer2.getGraphicsContext2D(), Color.BLACK);
-		System.out.println(turtleView.getX());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 
