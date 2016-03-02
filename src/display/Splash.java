@@ -60,9 +60,7 @@ public class Splash extends Screen {
 	private void goToWorkSpace(String lang) {
 		WorkSpace myW = new WorkSpace();
 		myW.setLang(lang);
-		//DemoWorkSpace myDemo = new DemoWorkSpace(lang);
 		getStage().close();
-		//myDemo.begin();
 		myW.begin();
 	}
 
@@ -75,8 +73,7 @@ public class Splash extends Screen {
 			        getResources().getString(UIConstants.ITA),
 			        getResources().getString(UIConstants.POR),
 			        getResources().getString(UIConstants.RUS),
-			        getResources().getString(UIConstants.SPA),
-			        getResources().getString(UIConstants.SYN)
+			        getResources().getString(UIConstants.SPA)
 			    );
 		languageCBox = featMaker.makeCBox(options);
 		languageCBox.setLayoutX(592);

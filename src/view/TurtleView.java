@@ -54,6 +54,9 @@ public class TurtleView implements IView{
 		return Double.toString(getImage().getY());
 	}
 	
+	public void changeImage(ImageView i){
+		image = i;
+	}
 	public void setColor(Color v){
 		myColor = v;
 	}

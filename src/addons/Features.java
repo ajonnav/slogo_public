@@ -16,9 +16,8 @@ import javafx.scene.control.MenuItem;
 public class Features {
 	
 	public Button makeB(String property, EventHandler<ActionEvent> action) {
-		Button myButton = new Button();
-		myButton = new Button();
-		myButton.setText(property);
+
+		Button myButton = new Button(property);
 		myButton.setOnAction(action);
 		return myButton;
 	}
@@ -33,29 +32,6 @@ public class Features {
 		GC.setFill(color);
 		GC.fillRect(0,0,width,height);
 		return canvas;
-		
-		/*
-		layer1 = new Canvas(300,250);
-	    layer2 = new Canvas(300,250);
-	        
-	    // Obtain Graphics Contexts
-	    gc1 = layer1.getGraphicsContext2D();
-	    gc1.setFill(Color.GREEN);
-	    gc2 = layer2.getGraphicsContext2D();
-	    gc2.setFill(Color.TRANSPARENT);
-	}
-	    ...
-
-	private void addLayers(){
-	    // Add Layers
-	    getRoot().setTop(cb);        
-	    Pane pane = new Pane();
-	    pane.getChildren().add(layer1);
-	    pane.getChildren().add(layer2);
-	    layer2.toFront();
-	    borderPane.setCenter(pane);    
-	    root.getChildren().add(borderPane);
-	    */
 	}
 
 	public void changeCanvasColor(Canvas canvas, Color color){

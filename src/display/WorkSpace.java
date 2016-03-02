@@ -10,6 +10,7 @@ import model.TurtleModel;
 import model.VariableModel;
 import pane.SPane;
 import parser.CommandParser;
+import view.CommandsView;
 import view.CoordinateView;
 import view.HistoryPaneView;
 import view.TurtleView;
@@ -18,11 +19,9 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -46,6 +45,8 @@ public class WorkSpace extends Screen {
 	private Canvas layer2;
 	private TurtleView turtleView;
 	private HistoryPaneView hpv;
+	private ModelMap modelMap;
+
 
 	public WorkSpace(String l) {
 		myLang = l;
@@ -55,13 +56,6 @@ public class WorkSpace extends Screen {
 
 	public WorkSpace() {
 	}
-
-	private ModelMap modelMap;
-
-	// public void setLang(String language){
-	// myLang = language;
-	//
-	// }
 
 	@Override
 	public void setUpScene() {
@@ -90,12 +84,13 @@ public class WorkSpace extends Screen {
 
 		setButtons();
 
+		setUserCommandPane();
+
 		setTurtleCoordsBox();
 	}
 
 	private void setColorPicker() {
 		ColorPicker cp = new ColorPicker();
-		cp.setValue(Color.CORAL);
 		cp.setOnAction(event -> sceneChange(cp.getValue()));
 		cp.setLayoutX(UIConstants.BACKGROUND_PICK_X);
 		cp.setLayoutY(UIConstants.ZERO);
@@ -106,14 +101,12 @@ public class WorkSpace extends Screen {
 
 	private void setPenPicker() {
 		ColorPicker cp = new ColorPicker();
-		cp.setValue(Color.CORAL);
 		cp.setOnAction(event -> penChange(cp.getValue()));
 		cp.setLayoutX(UIConstants.PEN_PICK_X);
 		cp.setLayoutY(UIConstants.ZERO);
 		cp.setMinWidth(UIConstants.COLOR_SELECTOR_WIDTH);
 		cp.setMinHeight(UIConstants.BORDER_WIDTH);
 		getRoot().getChildren().add(cp);
-
 	}
 
 	private void penChange(Color value) {
@@ -127,6 +120,7 @@ public class WorkSpace extends Screen {
 		parser.addPatterns("resources/languages/Syntax");
 		setVariablePane();
 	}
+
 
 	private void sceneChange(Color c) {
 		layer1 = featureMaker.makeCanvas(410, UIConstants.BORDER_WIDTH,
@@ -175,7 +169,6 @@ public class WorkSpace extends Screen {
 			System.out.println("FAIL");
 			System.err.println(e);
 		}
-
 	}
 
 	private void setFile(ImageView thing) {
@@ -241,6 +234,10 @@ public class WorkSpace extends Screen {
 		variables.myPane.setMinSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
 		variables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
 		variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
+
+		//SPane variables = new SPane(100, 525);
+		//variables.myPane.setMinSize(450, 200);
+		//variables.myPane.setMaxSize(450, 200);
 		variables.myBox.getChildren().add(new Text("Variables"));
 
 		VariableModel varModel = new VariableModel();
@@ -252,6 +249,22 @@ public class WorkSpace extends Screen {
 		modelMap.setVariable(varModel);
 		getRoot().getChildren().add(variables.myPane);
 	}
+	
+	private void setUserCommandPane() {
+		SPane variables = new SPane(25, 25);
+		variables.myPane.setMinSize(360, 475);
+		variables.myPane.setMaxSize(360, 475);
+		variables.myBox.getChildren().add(new Text("User Commands"));
+
+		CommandsModel varModel = new CommandsModel();
+		CommandsView varView = new CommandsView(variables.myBox);
+		varModel.addObserver(varView);
+		varModel.notifyObservers();
+
+		modelMap.setCommands(varModel);
+		getRoot().getChildren().add(variables.myPane);
+	}
+	
 
 	private void openHelpPage() {
 		Stage myStage = new Stage();
@@ -295,10 +308,4 @@ public class WorkSpace extends Screen {
 		input.clear();
 	}
 
-	protected void showError(String message) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("ERROR");
-		alert.setContentText(message);
-		alert.showAndWait();
-	}
 }
