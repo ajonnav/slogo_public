@@ -1,7 +1,6 @@
 package display;
 
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import javax.imageio.ImageIO;
 import model.CommandsModel;
@@ -11,6 +10,7 @@ import model.TurtleModel;
 import model.VariableModel;
 import pane.SPane;
 import parser.CommandParser;
+import view.CommandsView;
 import view.CoordinateView;
 import view.HistoryPaneView;
 import view.TurtleView;
@@ -19,7 +19,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -28,7 +27,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
@@ -36,7 +34,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import addons.Features;
-import addons.MenuMaker;
 import constants.UIConstants;
 
 public class WorkSpace extends Screen {
@@ -45,34 +42,12 @@ public class WorkSpace extends Screen {
 	private CommandParser parser;
 	private TextArea inputText;
 	private String myLang;
-	private ImageView profileImage;
 	private TurtleModel turtleModel;
-	private MenuMaker mm;
-
-	private Canvas canvas;
 	private Canvas layer1;
 	private Canvas layer2;
 	private TurtleView turtleView;
 	private HistoryPaneView hpv;
-	private GraphicsContext gc1;
-	private GraphicsContext gc2;
-
-	private ImageView selectedFile;
-
-	 public WorkSpace(String l){
-	 myLang = l;
-	 parser = new CommandParser(modelMap);
-	 setLang(myLang);
-	 }
-
-	public WorkSpace() {
-	}
 	private ModelMap modelMap;
-	
-//	public void setLang(String language){
-//		myLang = language;
-//
-//	}
 
 	@Override
 	public void setUpScene() {
@@ -102,12 +77,12 @@ public class WorkSpace extends Screen {
 		setButtons();
 
 		setTurtleCoords();
+		setUserCommandPane();
 
 	}
 
 	private void setColorPicker() {
 		ColorPicker cp = new ColorPicker();
-		cp.setValue(Color.CORAL);
 		cp.setOnAction(event -> sceneChange(cp.getValue()));
 		cp.setLayoutX(450);
 		cp.setLayoutY(5);
@@ -116,12 +91,10 @@ public class WorkSpace extends Screen {
 
 	private void setPenPicker() {
 		ColorPicker cp = new ColorPicker();
-		cp.setValue(Color.CORAL);
 		cp.setOnAction(event -> penChange(cp.getValue()));
 		cp.setLayoutX(400);
 		cp.setLayoutY(50);
 		getRoot().getChildren().add(cp);
-
 	}
 
 	private void penChange(Color value) {
@@ -133,7 +106,6 @@ public class WorkSpace extends Screen {
 		parser = new CommandParser(modelMap);
 		parser.addPatterns("resources/languages/" + myLang);
 		parser.addPatterns("resources/languages/Syntax");
-
 	}
 
 	private void setTurtleCoords() {
@@ -155,8 +127,6 @@ public class WorkSpace extends Screen {
 		layer2.toFront();
 		turtleView.getImage().toFront();
 	}
-
-
 
 	private void setCanvas() {
 		layer1 = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE,
@@ -193,16 +163,14 @@ public class WorkSpace extends Screen {
 			System.out.println("FAIL");
 			System.err.println(e);
 		}
-
 	}
 
 	private void setFile(ImageView thing) {
 		turtleView = new TurtleView(thing, getRoot(), layer2.getGraphicsContext2D(), Color.BLACK);
-		turtleView.getImage().setX(turtleModel.getPositionX() - thing.getFitWidth()/2);
-		turtleView.getImage().setY(turtleModel.getPositionY() - thing.getFitHeight()/2);
+		turtleView.getImage().setX(turtleModel.getPositionX() - thing.getFitWidth() / 2);
+		turtleView.getImage().setY(turtleModel.getPositionY() - thing.getFitHeight() / 2);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
-
 	}
 
 	private void setTurtle() {
@@ -216,11 +184,11 @@ public class WorkSpace extends Screen {
 		System.out.println(turtleView.getX());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
-		
-        modelMap = new ModelMap();
-        modelMap.setTurtle(turtleModel);
-        CommandsModel commandsModel = new CommandsModel();
-        modelMap.setCommands(commandsModel);
+
+		modelMap = new ModelMap();
+		modelMap.setTurtle(turtleModel);
+		CommandsModel commandsModel = new CommandsModel();
+		modelMap.setCommands(commandsModel);
 	}
 
 	private void setCommandPane() {
@@ -260,10 +228,27 @@ public class WorkSpace extends Screen {
 		VariableView varView = new VariableView(variables.myBox);
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
-		
+
 		modelMap.setVariable(varModel);
 		getRoot().getChildren().add(variables.myPane);
 	}
+	
+	private void setUserCommandPane() {
+		SPane variables = new SPane(200,525);
+		variables.myPane.setMinSize(UIConstants.WIDTH / 2 - UIConstants.BORDER_WIDTH * 2, UIConstants.HEIGHT / 4);
+		variables.myPane.setMaxSize(UIConstants.WIDTH / 2 - UIConstants.BORDER_WIDTH * 2, UIConstants.HEIGHT / 4);
+		variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
+		variables.myBox.getChildren().add(new Text("User Commands"));
+
+		CommandsModel varModel = new CommandsModel();
+		CommandsView varView = new CommandsView(variables.myBox);
+		varModel.addObserver(varView);
+		varModel.notifyObservers();
+
+		modelMap.setCommands(varModel);
+		getRoot().getChildren().add(variables.myPane);
+	}
+	
 
 	private void openHelpPage() {
 		Stage myStage = new Stage();
@@ -290,7 +275,7 @@ public class WorkSpace extends Screen {
 		parser.parseText(input.getText());
 		input.clear();
 	}
-
+	
 	// private void readInput(CommandParser parser, TextArea input){
 	// //double output = parser.parseText(input.getText());
 	// try{

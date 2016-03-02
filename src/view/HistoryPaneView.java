@@ -6,15 +6,8 @@ import java.util.Observable;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.HistoryPaneModel;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Observable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import model.HistoryPaneModel;
 
 
 public class HistoryPaneView implements IView {

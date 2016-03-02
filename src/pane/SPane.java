@@ -1,17 +1,10 @@
 package pane;
 
 import constants.UIConstants;
-import javafx.beans.binding.Bindings;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 public class SPane {
 	public ScrollPane myPane;
@@ -31,11 +24,14 @@ public class SPane {
 		
 		myPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		myPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		myPane.setVvalue(y);
+		myPane.setOnScrollFinished(e -> printInfo());
 		myPane.setStyle("-fx-color: red;");
+		myPane.setMaxHeight(y);
 		
 	}
-
+	public void printInfo(){
+		System.out.println(myPane.getVvalue());
+	}
 	public ScrollPane getMyPane() {
 		return myPane;
 	}
