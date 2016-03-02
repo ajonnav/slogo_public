@@ -4,7 +4,6 @@ import java.util.List;
 import model.ModelMap;
 
 
-
 public class IsPenDownCommand extends Command {
 
     private boolean status;
@@ -13,7 +12,7 @@ public class IsPenDownCommand extends Command {
         setNumChildren(0);
         status = modelMap.getTurtle().getPenStatus();
     }
-    
+
     @Override
     public double execute () {
         return status ? 1 : 0;

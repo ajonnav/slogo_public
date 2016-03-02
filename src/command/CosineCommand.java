@@ -9,8 +9,8 @@ public class CosineCommand extends Command {
     public CosineCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(1);
     }
-    
-    public void prepare() {
+
+    public void prepare () {
         return;
     }
 

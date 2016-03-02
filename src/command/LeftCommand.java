@@ -19,5 +19,5 @@ public class LeftCommand extends Command {
         modelMap.getTurtle().turn(-deg);
         return deg;
     }
-    
+
 }
