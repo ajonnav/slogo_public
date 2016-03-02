@@ -172,10 +172,9 @@ public class WorkSpace extends Screen {
 
 
 	private void setTurtle(){
-		double turtleInitialX = UIConstants.INITIAL_X;
-		double turtleInitialY = UIConstants.INITIAL_Y;
+		double turtleInitialX = 0;
+		double turtleInitialY = 0;
 		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
-
 		ImageView turtleImage = new ImageView(new Image(getClass()
 				.getClassLoader().getResourceAsStream("turtle.png")));
 		turtleModel = new TurtleModel(turtleInitialX, turtleInitialY,
@@ -246,7 +245,7 @@ public class WorkSpace extends Screen {
 		variables.myBox.getChildren().add(new Text("User Commands"));
 
 		CommandsModel varModel = new CommandsModel();
-		CommandsView varView = new CommandsView(variables.myBox);
+		CommandsView varView = new CommandsView(variables.myBox, inputText);
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
 

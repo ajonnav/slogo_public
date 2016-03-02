@@ -10,15 +10,11 @@ public class TurtleModel extends Observable {
     private boolean penStatus;
     private boolean showStatus;
     private boolean shouldClear;
-    private final double initX;
-    private final double initY;
 
     public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading) {
         heading = turtleInitialHeading;
         positionX = turtleInitialX;
         positionY = turtleInitialY;
-        initX = turtleInitialX;
-        initY = turtleInitialY;
         penStatus = false;
         showStatus = true;
         setChanged();
@@ -78,14 +74,6 @@ public class TurtleModel extends Observable {
 
     public double getHeading () {
         return heading;
-    }
-    
-    public double getInitX() {
-        return initX;
-    }
-    
-    public double getInitY() {
-        return initY;
     }
 
     public boolean getPenStatus () {

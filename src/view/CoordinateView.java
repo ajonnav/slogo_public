@@ -34,11 +34,11 @@ public class CoordinateView implements IView{
 	}
 
 	private Double xWorkSpaceCoordinate(double modelCoordinate){
-		return (double) Math.round(modelCoordinate)-UIConstants.INITIAL_X;
+		return (double) Math.round(modelCoordinate);
 	}
 	
 	private Double yWorkSpaceCoordinate(double modelCoordinate){
-		return (double) Math.round(modelCoordinate)-UIConstants.INITIAL_Y;
+		return (double) Math.round(modelCoordinate);
 	}
 	
 	private Double workSpaceHeading(double heading){
