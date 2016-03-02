@@ -94,7 +94,7 @@ public class WorkSpace extends Screen{
 		
 		setPenPicker();
 		
-		setTurtleCoords();
+		setTurtleCoordsBox();
 	}
 	
 	private void setColorPicker() {
@@ -104,7 +104,7 @@ public class WorkSpace extends Screen{
 		
 		cp.setOnAction(event -> sceneChange(cp.getValue()));
 		cp.setLayoutX(250);
-		cp.setLayoutY(50);
+		cp.setLayoutY(0);
 		getRoot().getChildren().add(cp);
 	}
 	
@@ -115,7 +115,7 @@ public class WorkSpace extends Screen{
 		
 		cp.setOnAction(event -> penChange(cp.getValue()));
 		cp.setLayoutX(400);
-		cp.setLayoutY(50);
+		cp.setLayoutY(0);
 		getRoot().getChildren().add(cp);
 		
 	}
@@ -123,18 +123,6 @@ public class WorkSpace extends Screen{
 	private void penChange(Color value) {
 		// TODO Auto-generated method stub
 		turtleView.setColor(value);
-	}
-
-	private void setTurtleCoords(){
-		//duplicate, we already made another HBox elsewhere, can extract
-		HBox turtleVars = new HBox();
-		turtleVars.setLayoutX(25);
-		turtleVars.setLayoutY(475);
-		getRoot().getChildren().add(turtleVars);
-		
-		CoordinateView cv = new CoordinateView(turtleVars, turtleModel);
-		turtleModel.addObserver(cv);
-		turtleModel.notifyObservers();
 	}
 	
 	private void sceneChange(Color c) {
@@ -156,7 +144,7 @@ public class WorkSpace extends Screen{
 	}
 	
 	private void setTurtle(){
-		double turtleInitialX = UIConstants.CANVAS_SIZE/2;
+		double turtleInitialX = UIConstants.CANVAS_SIZE/2+UIConstants.BORDER_WIDTH;
 		double turtleInitialY = turtleInitialX;
 		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
 		
@@ -174,7 +162,6 @@ public class WorkSpace extends Screen{
         //parser.addPatterns(UIConstants.RSRC_LANG + myLang);
         parser.addPatterns("resources/languages/English");
         parser.addPatterns("resources/languages/Syntax");
-        
 	}
 	
 	private void setCommandPane(){
@@ -193,7 +180,7 @@ public class WorkSpace extends Screen{
 	private void setHistoryPane(){
 		SPane history = new SPane(UIConstants.WIDTH/2, UIConstants.BORDER_WIDTH);
 		history.myPane.setMinWidth(400);
-		history.myPane.setMinHeight(UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
+		history.myPane.setMinHeight(UIConstants.CANVAS_SIZE);
 		history.myPane.setMaxSize(UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE-UIConstants.BORDER_WIDTH);
 		getRoot().getChildren().addAll(history.myRoot);
 		HistoryPaneModel hpm = new HistoryPaneModel();
@@ -204,27 +191,19 @@ public class WorkSpace extends Screen{
 	}
 	
 	private void setVariablePane(){
-		SPane variables = new SPane(UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE + UIConstants.BORDER_WIDTH);
+		SPane variables = new SPane(UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE + 2*UIConstants.BORDER_WIDTH);
 		variables.myPane.setMinSize(UIConstants.WIDTH/2 - UIConstants.BORDER_WIDTH*2, UIConstants.HEIGHT/4);
 		variables.myPane.setMaxSize(UIConstants.WIDTH/2 - UIConstants.BORDER_WIDTH*2, UIConstants.HEIGHT/4);
 		variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
 		variables.myBox.getChildren().add(new Text("Variables"));
 
 		VariableModel varModel = new VariableModel();
-		VariableView varView = new VariableView(variables.myBox);
+		VariableView varView = new VariableView(variables.myBox, inputText);
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
 		
 		modelMap.setVariable(varModel);
-		/*
-		vars.put("Turtle X: ", turtleView.getX());
-		vars.put("Turtle Y: ", turtleView.getY());
-		for(String thing : items.keySet()){
-			System.out.println(thing);
-			Text a = new Text(thing + items.get(thing));
-			variablePane.getChildren().add(a);
-		}
-		*/
+
 		getRoot().getChildren().add(variables.myPane);
 	}
 	
@@ -255,6 +234,18 @@ public class WorkSpace extends Screen{
 		getRoot().getChildren().add(help);
 		help.setLayoutX(UIConstants.ZERO);
 		help.setLayoutY(UIConstants.ZERO);
+	}
+	
+	private void setTurtleCoordsBox(){
+		//duplicate, we already made another HBox elsewhere, can extract
+		HBox turtleVars = new HBox();
+		turtleVars.setLayoutX(25);
+		turtleVars.setLayoutY(475);
+		getRoot().getChildren().add(turtleVars);
+		
+		CoordinateView cv = new CoordinateView(turtleVars, turtleModel);
+		turtleModel.addObserver(cv);
+		turtleModel.notifyObservers();
 	}
 	
 	private void readInput(CommandParser parser, TextArea input){

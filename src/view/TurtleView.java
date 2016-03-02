@@ -45,6 +45,7 @@ public class TurtleView implements IView{
 	public GraphicsContext getGC(){
 		return GC;
 	}
+	
 	public String getX(){
 		return Double.toString(image.getX());
 	}

@@ -38,10 +38,35 @@ public class Features {
 	
 	public Canvas makeCanvas(int xLoc, int yLoc, int width, int height, Color color){
 		Canvas canvas = new Canvas(width, height);	
+		canvas.setTranslateX(xLoc);
+		canvas.setTranslateY(yLoc);
 		GraphicsContext GC = canvas.getGraphicsContext2D();
 		GC.setFill(color);
-		GC.fillRect(xLoc,yLoc,width,height);
+		GC.fillRect(0,0,width,height);
 		return canvas;
+		
+		/*
+		layer1 = new Canvas(300,250);
+	    layer2 = new Canvas(300,250);
+	        
+	    // Obtain Graphics Contexts
+	    gc1 = layer1.getGraphicsContext2D();
+	    gc1.setFill(Color.GREEN);
+	    gc2 = layer2.getGraphicsContext2D();
+	    gc2.setFill(Color.TRANSPARENT);
+	}
+	    ...
+
+	private void addLayers(){
+	    // Add Layers
+	    getRoot().setTop(cb);        
+	    Pane pane = new Pane();
+	    pane.getChildren().add(layer1);
+	    pane.getChildren().add(layer2);
+	    layer2.toFront();
+	    borderPane.setCenter(pane);    
+	    root.getChildren().add(borderPane);
+	    */
 	}
 
 	public void changeCanvasColor(Canvas canvas, Color color){
