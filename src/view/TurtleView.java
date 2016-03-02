@@ -13,10 +13,11 @@ public class TurtleView implements IView{
 	private Color myColor;
 	
 	public TurtleView(ImageView image, Group root, GraphicsContext GC, Color c) {
-		this.image = image;
-		this.image.setFitHeight(50);
-		this.image.setFitWidth(50);
-		root.getChildren().add(this.image);
+
+		this.setImage(image);
+		this.getImage().setFitHeight(50);
+		this.getImage().setFitWidth(50);
+		root.getChildren().add(this.getImage());
 		this.myColor = c;
 		this.GC = GC;
 	}
@@ -27,18 +28,18 @@ public class TurtleView implements IView{
 			TurtleModel turtleModel = (TurtleModel) o;
 			GC.setStroke(myColor);
 			if(turtleModel.getPenStatus()) {
-				GC.strokeLine(image.getX() + image.getFitWidth()/2, image.getY() + image.getFitHeight()/2, 
+				GC.strokeLine(getImage().getX() + getImage().getFitWidth()/2, getImage().getY() + getImage().getFitHeight()/2, 
 						turtleModel.getPositionX(), turtleModel.getPositionY());
 			}
 			if(turtleModel.getShowStatus()) {
-				image.setOpacity(1);
+				getImage().setOpacity(1);
 			}
 			else {
-				image.setOpacity(0);
+				getImage().setOpacity(0);
 			}
-			image.setX(turtleModel.getPositionX() - image.getFitWidth()/2);
-			image.setY(turtleModel.getPositionY() - image.getFitHeight()/2);
-			image.setRotate(turtleModel.getHeading()-270);
+			getImage().setX(turtleModel.getPositionX() - getImage().getFitWidth()/2);
+			getImage().setY(turtleModel.getPositionY() - getImage().getFitHeight()/2);
+			getImage().setRotate(turtleModel.getHeading()-270);
 		}
 	}
 	
@@ -47,15 +48,23 @@ public class TurtleView implements IView{
 	}
 	
 	public String getX(){
-		return Double.toString(image.getX());
+		return Double.toString(getImage().getX());
 	}
 	
 	public String getY(){
-		return Double.toString(image.getY());
+		return Double.toString(getImage().getY());
 	}
 	
 	public void setColor(Color v){
 		myColor = v;
+	}
+
+	public ImageView getImage() {
+		return image;
+	}
+
+	public void setImage(ImageView image) {
+		this.image = image;
 	}
 
 }

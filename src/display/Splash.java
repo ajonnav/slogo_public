@@ -1,4 +1,5 @@
 package display;
+
 import addons.Features;
 import constants.UIConstants;
 import javafx.collections.FXCollections;
@@ -13,7 +14,7 @@ import javafx.scene.text.Text;
 public class Splash extends Screen {
 	
 	private Features featMaker;
-	private ComboBox languageCBox;
+	private ComboBox<String> languageCBox;
 
 	@Override
 	public void setUpScene() {
@@ -59,8 +60,9 @@ public class Splash extends Screen {
 	private void goToWorkSpace(String lang) {
 		WorkSpace myW = new WorkSpace();
 		myW.setLang(lang);
-		System.out.println("do i get here?");
+		//DemoWorkSpace myDemo = new DemoWorkSpace(lang);
 		getStage().close();
+		//myDemo.begin();
 		myW.begin();
 	}
 

@@ -35,14 +35,22 @@ public class HistoryPaneView implements IView {
             HistoryPaneModel hpm = (HistoryPaneModel) o;
             myHist = new ArrayList(hpm.getImmutableHistoryList());
             myVBox.getChildren().clear();
-            Collections.reverse(myHist);
+            //Collections.reverse(myHist);
+            int x = 1;
             for (String item : myHist) {
-                Hyperlink past = new Hyperlink(">> " + item);
-                past.setOnAction(event -> {
-                    myTA.appendText(item);
-                    past.setStyle("-fx-color: black;");
-                });
-                myVBox.getChildren().add(past);
+            	if(x % 2 != 0) {
+            		Hyperlink past = new Hyperlink(">> " + item);
+            		past.setOnAction(event -> {
+            			myTA.appendText(item);
+            			past.setStyle("-fx-color: black;");
+            		});
+            		myVBox.getChildren().add(past);
+            	}
+            	else{
+            		Text past = new Text("\t" + item);
+            		myVBox.getChildren().add(past);
+            	}
+            	x++;
             }
         }
     }

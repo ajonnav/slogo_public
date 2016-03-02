@@ -31,6 +31,7 @@ public class SPane {
 		
 		myPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		myPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		myPane.setVvalue(y);
 		myPane.setStyle("-fx-color: red;");
 		
 	}
