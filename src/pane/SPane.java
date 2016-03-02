@@ -11,7 +11,7 @@ public class SPane {
 	public Group myRoot;
 	public VBox myBox;
 	
-	public SPane(int x, int y) {	
+	public SPane(double x, double y) {	
 		setMyRoot(new Group());
 		myBox = new VBox();
 		
