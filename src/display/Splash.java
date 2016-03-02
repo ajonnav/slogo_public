@@ -33,17 +33,17 @@ public class Splash extends Screen {
 	}
 	
 	private void setTitle() {
-		Rectangle welRect = new Rectangle(UIConstants.RECT_W, UIConstants.HEIGHT/5);
-		welRect.setX(UIConstants.RECT_X);
-		welRect.setY(UIConstants.HUNDRED);
+		Rectangle welRect = new Rectangle(500, 200);
+		welRect.setX(400);
+		welRect.setY(200);
 		welRect.setArcHeight(UIConstants.ARC);
 		welRect.setArcWidth(UIConstants.ARC);
 		getRoot().getChildren().add(welRect);
 		welRect.getStyleClass().add("welRect");
 		
 		Text welText = new Text(getResources().getString(UIConstants.TITLE));
-		welText.setLayoutX(290);
-		welText.setLayoutY(150);
+		welText.setLayoutX(435);
+		welText.setLayoutY(300);
 		welText.getStyleClass().add("welText");
 		getRoot().getChildren().add(welText);
 		
@@ -52,17 +52,15 @@ public class Splash extends Screen {
 	private void setButton() {
 		Button go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToWorkSpace((String) languageCBox.getValue()));
 		getRoot().getChildren().add(go);
-		go.setLayoutX(UIConstants.RECT_W);
-		go.setLayoutY(UIConstants.BUTTON_Y);
-		go.setPrefSize(UIConstants.RECT_X, UIConstants.BUTTON_H);
+		go.setLayoutX(600);
+		go.setLayoutY(425);
+		go.setPrefSize(100, 50);
 	}
 
 	private void goToWorkSpace(String lang) {
 		WorkSpace myW = new WorkSpace();
 		myW.setLang(lang);
-		//DemoWorkSpace myDemo = new DemoWorkSpace(lang);
 		getStage().close();
-		//myDemo.begin();
 		myW.begin();
 	}
 
@@ -75,12 +73,11 @@ public class Splash extends Screen {
 			        getResources().getString(UIConstants.ITA),
 			        getResources().getString(UIConstants.POR),
 			        getResources().getString(UIConstants.RUS),
-			        getResources().getString(UIConstants.SPA),
-			        getResources().getString(UIConstants.SYN)
+			        getResources().getString(UIConstants.SPA)
 			    );
 		languageCBox = featMaker.makeCBox(options);
-		languageCBox.setLayoutX(UIConstants.RECT_X);
-		languageCBox.setLayoutY(UIConstants.BUTTON_Y);
+		languageCBox.setLayoutX(592);
+		languageCBox.setLayoutY(400);
 		languageCBox.setValue(getResources().getString(UIConstants.ENG));
 		getRoot().getChildren().add(languageCBox);
 

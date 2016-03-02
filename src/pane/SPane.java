@@ -11,7 +11,7 @@ public class SPane {
 	public Group myRoot;
 	public VBox myBox;
 	
-	public SPane(int x, int y) {	
+	public SPane(double x, double y) {	
 		setMyRoot(new Group());
 		myBox = new VBox();
 		
@@ -24,9 +24,8 @@ public class SPane {
 		
 		myPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		myPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		myPane.setVvalue(y);
 		myPane.setStyle("-fx-color: red;");
-		
+	
 	}
 
 	public ScrollPane getMyPane() {
