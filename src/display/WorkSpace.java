@@ -3,9 +3,6 @@ package display;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
 import javax.imageio.ImageIO;
 import model.CommandsModel;
 import model.HistoryPaneModel;
@@ -31,6 +28,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
@@ -52,11 +50,12 @@ public class WorkSpace extends Screen {
 	private MenuMaker mm;
 
 	private Canvas canvas;
+	private Canvas layer1;
+	private Canvas layer2;
 	private TurtleView turtleView;
-	// private TurtleModel turtleModel;
 	private HistoryPaneView hpv;
-
-	//private Map<String, Observable> modelMap;
+	private GraphicsContext gc1;
+	private GraphicsContext gc2;
 
 	private ImageView selectedFile;
 
@@ -109,32 +108,31 @@ public class WorkSpace extends Screen {
 	private void setColorPicker() {
 		ColorPicker cp = new ColorPicker();
 		cp.setValue(Color.CORAL);
-		cp.setOnAction(event -> sceneChange(cp.getValue(), cp));
-		cp.setLayoutX(250);
-		cp.setLayoutY(50);
+		cp.setOnAction(event -> sceneChange(cp.getValue()));
+		cp.setLayoutX(450);
+		cp.setLayoutY(5);
 		getRoot().getChildren().add(cp);
 	}
 
 	private void setPenPicker() {
 		ColorPicker cp = new ColorPicker();
 		cp.setValue(Color.CORAL);
-		cp.setOnAction(event -> penChange(cp.getValue(), cp));
+		cp.setOnAction(event -> penChange(cp.getValue()));
 		cp.setLayoutX(400);
 		cp.setLayoutY(50);
 		getRoot().getChildren().add(cp);
 
 	}
 
-	private void penChange(Color value, ColorPicker cp) {
+	private void penChange(Color value) {
 		turtleView.setColor(value);
 	}
 
 	public void setLang(String language) {
-		System.out.println("is set lang first?");
 		myLang = language;
 		parser = new CommandParser(modelMap);
-		// System.out.println("resources/languages/" + myLang);
 		parser.addPatterns("resources/languages/" + myLang);
+		parser.addPatterns("resources/languages/Syntax");
 
 	}
 
@@ -150,21 +148,24 @@ public class WorkSpace extends Screen {
 		turtleModel.notifyObservers();
 	}
 
-	private void sceneChange(Color c, ColorPicker cp) {
-		// turtleView.getGC().setFill(c);
-		// canvas.getGraphicsContext2D() = new
-		canvas = new Canvas();
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.setFill(c);
-		canvas.getGraphicsContext2D().setFill(c);
-		 //getRoot().getChildren().add(canvas);
-		//getScene().setFill(c);
+	private void sceneChange(Color c) {
+		layer1 = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE,
+				UIConstants.CANVAS_SIZE, c);
+		getRoot().getChildren().add(layer1);
+		layer2.toFront();
+		turtleView.getImage().toFront();
 	}
 
+
+
 	private void setCanvas() {
-		canvas = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE,
-				UIConstants.CANVAS_SIZE, Color.WHITE);
-		getRoot().getChildren().add(canvas);
+		layer1 = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE,
+				UIConstants.CANVAS_SIZE, Color.GREEN);
+		layer2 = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE,
+				UIConstants.CANVAS_SIZE, Color.TRANSPARENT);
+		getRoot().getChildren().add(layer1);
+		getRoot().getChildren().add(layer2);
+		layer2.toFront();
 	}
 
 	protected void setButtons() {
@@ -182,15 +183,11 @@ public class WorkSpace extends Screen {
 			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
 					new ExtensionFilter("All Files", "*.*"));
 			File selectedFile = fileChooser.showOpenDialog(getStage());
-			System.out.println(getClass().getClassLoader().getResourceAsStream(selectedFile.getName()));
-			// profileImage = new ImageView(new
-			// Image(getClass().getClassLoader().getResourceAsStream(selectedFile.getName())));
 			if (selectedFile != null) {
 				BufferedImage bufferedImage = ImageIO.read(selectedFile);
 				Image image = SwingFXUtils.toFXImage(bufferedImage, null);
 				ImageView iv = new ImageView(image);
 				setFile(iv);
-				// profileImage.setImage(image);
 			}
 		} catch (Exception e) {
 			System.out.println("FAIL");
@@ -200,10 +197,9 @@ public class WorkSpace extends Screen {
 	}
 
 	private void setFile(ImageView thing) {
-		turtleView = new TurtleView(thing, getRoot(), canvas.getGraphicsContext2D(), Color.BLACK);
-		turtleView.getImage().setX(turtleModel.getPositionX());
-		turtleView.getImage().setY(turtleModel.getPositionY());
-		System.out.println(turtleView.getX());
+		turtleView = new TurtleView(thing, getRoot(), layer2.getGraphicsContext2D(), Color.BLACK);
+		turtleView.getImage().setX(turtleModel.getPositionX() - thing.getFitWidth()/2);
+		turtleView.getImage().setY(turtleModel.getPositionY() - thing.getFitHeight()/2);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 
@@ -216,7 +212,7 @@ public class WorkSpace extends Screen {
 
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
 		turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
-		turtleView = new TurtleView(turtleImage, getRoot(), canvas.getGraphicsContext2D(), Color.BLACK);
+		turtleView = new TurtleView(turtleImage, getRoot(), layer2.getGraphicsContext2D(), Color.BLACK);
 		System.out.println(turtleView.getX());
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
@@ -225,11 +221,6 @@ public class WorkSpace extends Screen {
         modelMap.setTurtle(turtleModel);
         CommandsModel commandsModel = new CommandsModel();
         modelMap.setCommands(commandsModel);
-        parser = new CommandParser(modelMap);
-        //parser.addPatterns(UIConstants.RSRC_LANG + myLang);
-        parser.addPatterns("resources/languages/English");
-        parser.addPatterns("resources/languages/Syntax");
-
 	}
 
 	private void setCommandPane() {

@@ -1,0 +1,22 @@
+.root {
+    -fx-font-size: 10pt;
+    -fx-base: #F25353;
+    -fx-background: #575555;
+}
+
+.button {
+    -fx-text-fill: black;
+    -fx-background-color: #194CF6;
+    -fx-border-color: green;
+    -fx-border-radius: 10;
+    -fx-background-radius: 15;
+    -fx-padding: 8;
+}
+
+.button:hover {
+    -fx-background-color: green;
+    -fx-border-color: white;
+    -fx-text-fill: white;
+}
+
+

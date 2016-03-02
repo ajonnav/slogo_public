@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -51,6 +52,25 @@ public class Features {
 	public ComboBox makeCBox(ObservableList<String> choices){
 		ComboBox myCBox = new ComboBox(choices);
 		return myCBox;
+	}
+	
+	protected ColorPicker setColorPicker(EventHandler<ActionEvent> event) {
+		ColorPicker cp = new ColorPicker();
+		cp.setValue(Color.CORAL);
+		cp.setOnAction(event);
+		cp.setLayoutX(250);
+		cp.setLayoutY(50);
+		return cp;
+	}
+
+	public ColorPicker setPenPicker(EventHandler<ActionEvent> event) {
+		ColorPicker cp = new ColorPicker();
+		cp.setValue(Color.CORAL);
+		cp.setOnAction(event);
+		cp.setLayoutX(400);
+		cp.setLayoutY(50);
+		return cp;
+
 	}
 	
 	private MenuBar makeMenu() {
