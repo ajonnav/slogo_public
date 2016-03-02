@@ -39,8 +39,10 @@ public class Features {
 	public Canvas makeCanvas(int xLoc, int yLoc, int width, int height, Color color){
 		Canvas canvas = new Canvas(width, height);	
 		GraphicsContext GC = canvas.getGraphicsContext2D();
+		canvas.setTranslateX(xLoc);
+		canvas.setTranslateY(yLoc);
 		GC.setFill(color);
-		GC.fillRect(xLoc,yLoc,width,height);
+		GC.fillRect(0,0,width,height);
 		return canvas;
 	}
 

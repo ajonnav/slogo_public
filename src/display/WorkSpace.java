@@ -1,34 +1,18 @@
 package display;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
-
 import model.CommandsModel;
 import model.HistoryPaneModel;
 import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
-import pane.IPane;
-import pane.MasterPane;
 import pane.SPane;
 import parser.CommandParser;
 import view.CoordinateView;
 import view.HistoryPaneView;
 import view.TurtleView;
 import view.VariableView;
-import view.HistoryPaneView;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -36,10 +20,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -156,8 +138,8 @@ public class WorkSpace extends Screen{
 	}
 	
 	private void setTurtle(){
-		double turtleInitialX = UIConstants.CANVAS_SIZE/2;
-		double turtleInitialY = turtleInitialX;
+		double turtleInitialX = UIConstants.INITIAL_X;
+		double turtleInitialY = UIConstants.INITIAL_Y;
 		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
 		
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));

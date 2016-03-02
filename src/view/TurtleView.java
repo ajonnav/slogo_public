@@ -1,5 +1,7 @@
 package view;
 import java.util.Observable;
+
+import constants.UIConstants;
 import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
@@ -16,6 +18,8 @@ public class TurtleView implements IView{
 		this.image = image;
 		this.image.setFitHeight(50);
 		this.image.setFitWidth(50);
+		this.image.setX(transformX(0));
+		this.image.setY(transformY(0));
 		root.getChildren().add(this.image);
 		this.myColor = c;
 		this.GC = GC;
@@ -23,22 +27,17 @@ public class TurtleView implements IView{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o instanceof TurtleModel) {
+		if(o instanceof TurtleModel) {			
 			TurtleModel turtleModel = (TurtleModel) o;
 			GC.setStroke(myColor);
 			if(turtleModel.getPenStatus()) {
-				GC.strokeLine(image.getX() + image.getFitWidth()/2, image.getY() + image.getFitHeight()/2, 
-						turtleModel.getPositionX(), turtleModel.getPositionY());
+				GC.strokeLine(image.getX(), image.getY(), 
+						transformX(turtleModel.getPositionX()), transformY(turtleModel.getPositionY()));
 			}
-			if(turtleModel.getShowStatus()) {
-				image.setOpacity(1);
-			}
-			else {
-				image.setOpacity(0);
-			}
-			image.setX(turtleModel.getPositionX() - image.getFitWidth()/2);
-			image.setY(turtleModel.getPositionY() - image.getFitHeight()/2);
-			image.setRotate(turtleModel.getHeading()-270);
+			image.setOpacity(Boolean.compare(turtleModel.getShowStatus(), false));
+			image.setX(transformX(turtleModel.getPositionX()));
+			image.setY(transformY(turtleModel.getPositionY()));
+			image.setRotate(transformHeading(turtleModel.getHeading()));
 		}
 	}
 	
@@ -56,5 +55,16 @@ public class TurtleView implements IView{
 	public void setColor(Color v){
 		myColor = v;
 	}
+	
+	private double transformX(double x) {
+		return x + (double)UIConstants.CANVAS_SIZE/2;
+	}
+	
+	private double transformY(double y) {
+		return -y + (double)UIConstants.CANVAS_SIZE/2;
+	}
 
+	private double transformHeading(double heading) {
+		return 90 - heading;
+	}
 }

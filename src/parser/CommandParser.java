@@ -20,6 +20,7 @@ public class CommandParser {
     private List<Entry<String, Pattern>> mySymbols;
     private ModelMap modelMap = new ModelMap();
     public static final String WHITESPACE = "\\s+";
+    private final String ERROR = "NO MATCH";
 
     public CommandParser (ModelMap modelMap) {
         this.mySymbols = new ArrayList<>();
@@ -37,12 +38,16 @@ public class CommandParser {
     }
 
     public void parseText (String text) {
-        List<String> commands = preProcess(text);
-        List<Command> commandsList = parseFullText(commands);
-        modelMap.getHistory().addToHistory(text);
-        double returnValue = 0;
-        try {
-            for (int i = 0; i < commandsList.size(); i++) {
+    	text = text.trim();
+    	if(text.equals("")) {
+    		return;
+    	}
+    	modelMap.getHistory().addToHistory(text);
+    	try {
+    		List<String> commands = preProcess(text);
+	        List<Command> commandsList = parseFullText(commands);
+	        double returnValue = 0;
+	        for (int i = 0; i < commandsList.size(); i++) {
                 returnValue = commandsList.get(i).execute();
             }
             modelMap.getHistory().addToHistory(Double.toString(returnValue));
@@ -78,7 +83,7 @@ public class CommandParser {
     public Command parseHelper (List<String> text) {
         String currString = text.get(0);
         String currName = getClassName(currString);
-        if(currName.equals("NO MATCH")) {
+        if(currString.equalsIgnoreCase(ERROR)) {
         	throw new SLogoSyntaxException("Command not found");
         }
         Command command = null;
@@ -97,6 +102,9 @@ public class CommandParser {
     public List<List<Command>> getCommandParams (List<String> text, int numChildren) {
         List<List<Command>> commandParams = new ArrayList<List<Command>>();
         for (int i = 0; i < numChildren; i++) {
+        	if(text.isEmpty()) {
+        		throw new SLogoSyntaxException("Incomplete Command");
+        	}
             if (text.get(0).equals("[")) {
                 text.remove(0);
                 commandParams.add(parseFullText(getBracketed(text)));
@@ -133,7 +141,6 @@ public class CommandParser {
     }
 
     public String getSymbol (String text) {
-        final String ERROR = "NO MATCH";
         for (Entry<String, Pattern> e : mySymbols) {
             if (match(text, e.getValue())) {
                 return e.getKey();
