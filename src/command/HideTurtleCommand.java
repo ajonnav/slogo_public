@@ -18,5 +18,5 @@ public class HideTurtleCommand extends Command {
         modelMap.getTurtle().hide();
         return 0;
     }
-    
+
 }

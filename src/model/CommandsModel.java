@@ -33,6 +33,8 @@ public class CommandsModel extends Observable {
     
     public void setVariables(String key, List<Command> variables) {
         nameToVariablesMap.put(key, variables);
+        setChanged();
+        notifyObservers();
     }
 
     public void clearCommands () {
@@ -50,6 +52,10 @@ public class CommandsModel extends Observable {
     
     public Map<String, List<Command>> getImmutableCommandsMap () {
         return Collections.unmodifiableMap(nameToCommandsMap);
+    }
+    
+    public Map<String, List<Command>> getImmutableVariablesMap () {
+        return Collections.unmodifiableMap(nameToVariablesMap);
     }
 
 }

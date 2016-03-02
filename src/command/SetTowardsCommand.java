@@ -23,11 +23,11 @@ public class SetTowardsCommand extends Command {
         double lastHeading = turtleModel.getHeading();
         double turtleXPos = turtleModel.getPositionX();
         double turtleYPos = turtleModel.getPositionY();
-        double rawDegrees = Math.toDegrees(Math.atan((yPos - turtleYPos)  / (xPos - turtleXPos)));
-        double newHeading = xPos - turtleXPos >= 0 ? rawDegrees : rawDegrees-180;
+        double rawDegrees = Math.toDegrees(Math.atan((yPos - turtleYPos) / (xPos - turtleXPos)));
+        double newHeading = xPos - turtleXPos >= 0 ? rawDegrees : rawDegrees - 180;
         turtleModel.setHeading(newHeading);
         double headingDiff = Math.abs(lastHeading - turtleModel.getHeading());
-        return headingDiff >= 180 ? 360 - headingDiff: headingDiff;
+        return headingDiff >= 180 ? 360 - headingDiff : headingDiff;
     }
 
 }

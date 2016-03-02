@@ -6,8 +6,7 @@ import model.ModelMap;
 
 public class NaturalLogCommand extends Command {
 
-
-    public NaturalLogCommand (ModelMap modelMap,List<String> text) {
+    public NaturalLogCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(1);
     }
 

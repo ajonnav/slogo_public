@@ -3,6 +3,7 @@ package command;
 import java.util.List;
 import model.ModelMap;
 
+
 public class SetHeadingCommand extends Command {
 
     private ModelMap modelMap;
