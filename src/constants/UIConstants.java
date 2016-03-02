@@ -10,10 +10,10 @@ public class UIConstants {
 	public static final String GO = "go";
 	public static final String RSRC_LANG = "resources/languages/";
 	
-	public static final int WIDTH = 1000;
-	public static final int HEIGHT = 700;
+	public static final int WIDTH = 1300;
+	public static final int HEIGHT = 750;
 	public static final int RECT_W = 600;
-	public static final int CANVAS_SIZE = 450;
+	public static final int CANVAS_SIZE = 475;
 	public static final int INITIAL_X = 300;
 	public static final int INITIAL_Y = 300;
 	public static final int INITIAL_HEADING = 270;
