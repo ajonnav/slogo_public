@@ -47,6 +47,8 @@ public class WorkSpace extends Screen {
 	private HistoryPaneView hpv;
 	private ModelMap modelMap;
 
+
+
 	@Override
 	public void setUpScene() {
 
@@ -64,8 +66,6 @@ public class WorkSpace extends Screen {
 
 		setHistoryPane();
 
-		setVariablePane();
-
 		setHelpButton();
 
 		setColorPicker();
@@ -78,8 +78,11 @@ public class WorkSpace extends Screen {
 		
 		setUserCommandPane();
 
-	}
+		setTurtleCoordsBox();
+		
 
+	}
+	
 	private void setColorPicker() {
 		ColorPicker cp = new ColorPicker();
 		cp.setOnAction(event -> sceneChange(cp.getValue()));
@@ -92,7 +95,7 @@ public class WorkSpace extends Screen {
 		ColorPicker cp = new ColorPicker();
 		cp.setOnAction(event -> penChange(cp.getValue()));
 		cp.setLayoutX(400);
-		cp.setLayoutY(50);
+		cp.setLayoutY(0);
 		getRoot().getChildren().add(cp);
 	}
 
@@ -105,6 +108,7 @@ public class WorkSpace extends Screen {
 		parser = new CommandParser(modelMap);
 		parser.addPatterns("resources/languages/" + myLang);
 		parser.addPatterns("resources/languages/Syntax");
+		setVariablePane();
 	}
 
 	private void setTurtleCoords() {
@@ -117,6 +121,7 @@ public class WorkSpace extends Screen {
 		CoordinateView cv = new CoordinateView(turtleVars, turtleModel);
 		turtleModel.addObserver(cv);
 		turtleModel.notifyObservers();
+
 	}
 
 	private void sceneChange(Color c) {
@@ -136,7 +141,7 @@ public class WorkSpace extends Screen {
 		getRoot().getChildren().add(layer2);
 		layer2.toFront();
 	}
-
+	
 	protected void setButtons() {
 		Button pick = new Button("Select a new image");
 		pick.setOnAction(event -> changeImage());
@@ -166,15 +171,21 @@ public class WorkSpace extends Screen {
 
 	private void setFile(ImageView thing) {
 		turtleView = new TurtleView(thing, getRoot(), layer2.getGraphicsContext2D(), Color.BLACK);
+		System.out.println("WTF");
+		System.out.println(turtleModel.getPositionX());
+		System.out.println(turtleModel.getPositionY());
+		System.out.println(thing.getFitWidth() / 2);
+		System.out.println(thing.getFitHeight() / 2);
+		System.out.println("HELP");
 		turtleView.getImage().setX(turtleModel.getPositionX() - thing.getFitWidth() / 2);
 		turtleView.getImage().setY(turtleModel.getPositionY() - thing.getFitHeight() / 2);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 	}
 
-	private void setTurtle() {
-		double turtleInitialX = UIConstants.CANVAS_SIZE / 2;
-		double turtleInitialY = turtleInitialX;
+	private void setTurtle(){
+		double turtleInitialX = UIConstants.INITIAL_X;
+		double turtleInitialY = UIConstants.INITIAL_Y;
 		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
 
 		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
@@ -215,7 +226,7 @@ public class WorkSpace extends Screen {
 		hpm.notifyObservers();
 		modelMap.setHistory(hpm);
 	}
-
+	
 	private void setVariablePane() {
 		SPane variables = new SPane(UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE + UIConstants.BORDER_WIDTH);
 		variables.myPane.setMinSize(UIConstants.WIDTH / 2 - UIConstants.BORDER_WIDTH * 2, UIConstants.HEIGHT / 4);
@@ -224,7 +235,7 @@ public class WorkSpace extends Screen {
 		variables.myBox.getChildren().add(new Text("Variables"));
 
 		VariableModel varModel = new VariableModel();
-		VariableView varView = new VariableView(variables.myBox);
+		VariableView varView = new VariableView(variables.myBox, inputText, myLang);
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
 
@@ -268,6 +279,18 @@ public class WorkSpace extends Screen {
 		getRoot().getChildren().add(help);
 		help.setLayoutX(UIConstants.ZERO);
 		help.setLayoutY(UIConstants.ZERO);
+	}
+	
+	private void setTurtleCoordsBox(){
+		//duplicate, we already made another HBox elsewhere, can extract
+		HBox turtleVars = new HBox();
+		turtleVars.setLayoutX(25);
+		turtleVars.setLayoutY(475);
+		getRoot().getChildren().add(turtleVars);
+		
+		CoordinateView cv = new CoordinateView(turtleVars, turtleModel);
+		turtleModel.addObserver(cv);
+		turtleModel.notifyObservers();
 	}
 
 	private void readInput(CommandParser parser, TextArea input) {

@@ -1,7 +1,5 @@
 package addons;
 
-import java.util.ResourceBundle;
-import constants.UIConstants;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,10 +14,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
 public class Features {
-
-	private ResourceBundle myBundle;
 	
 	public Button makeB(String property, EventHandler<ActionEvent> action) {
+
 		Button myButton = new Button(property);
 		myButton.setOnAction(action);
 		return myButton;
@@ -27,9 +24,13 @@ public class Features {
 	
 	public Canvas makeCanvas(int xLoc, int yLoc, int width, int height, Color color){
 		Canvas canvas = new Canvas(width, height);	
+		canvas.setTranslateX(xLoc);
+		canvas.setTranslateY(yLoc);
 		GraphicsContext GC = canvas.getGraphicsContext2D();
+		canvas.setTranslateX(xLoc);
+		canvas.setTranslateY(yLoc);
 		GC.setFill(color);
-		GC.fillRect(xLoc,yLoc,width,height);
+		GC.fillRect(0,0,width,height);
 		return canvas;
 	}
 
@@ -37,8 +38,8 @@ public class Features {
 		canvas.getGraphicsContext2D().setFill(color);
 	}
 	
-	public ComboBox makeCBox(ObservableList<String> choices){
-		ComboBox myCBox = new ComboBox(choices);
+	public ComboBox<String> makeCBox(ObservableList<String> choices){
+		ComboBox<String> myCBox = new ComboBox<String>(choices);
 		return myCBox;
 	}
 	
@@ -58,12 +59,6 @@ public class Features {
 		cp.setLayoutX(400);
 		cp.setLayoutY(50);
 		return cp;
-
-	}
-	
-	private MenuBar makeMenu() {
-		MenuBar menu = new MenuBar();
-		return menu;
 
 	}
 	
