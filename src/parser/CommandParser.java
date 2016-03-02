@@ -83,13 +83,16 @@ public class CommandParser {
     public Command parseHelper (List<String> text) {
         String currString = text.get(0);
         String currName = getClassName(currString);
-        if(currString.equalsIgnoreCase(ERROR)) {
+        if(currName.equalsIgnoreCase("command.NO MATCHCommand")) {
         	throw new SLogoSyntaxException("Command not found");
         }
         Command command = null;
         try {
             command = ((Command) Class.forName(currName).getConstructor(ModelMap.class, List.class)
                     .newInstance(modelMap, Collections.unmodifiableList(text)));
+        }
+        catch (SLogoSyntaxException ee) {
+        	throw ee;
         }
         catch (Exception e) {
             e.printStackTrace();
