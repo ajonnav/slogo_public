@@ -23,7 +23,7 @@ public class Features {
 		return myButton;
 	}
 	
-	public Canvas makeCanvas(int xLoc, int yLoc, int width, int height, Color color){
+	public Canvas makeCanvas(double xLoc, double yLoc, double width, double height, Color color){
 		Canvas canvas = new Canvas(width, height);	
 		canvas.setTranslateX(xLoc);
 		canvas.setTranslateY(yLoc);
