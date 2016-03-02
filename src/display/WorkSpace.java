@@ -48,21 +48,38 @@ public class WorkSpace extends Screen {
 	private ModelMap modelMap;
 
 
+	public WorkSpace(String l) {
+		myLang = l;
+		parser = new CommandParser(modelMap);
+		setLang(myLang);
+	}
+
+	public WorkSpace() {
+	}
+
+
+	// public void setLang(String language){
+	// myLang = language;
+	//
+	// }
+
 
 	@Override
 	public void setUpScene() {
 
-		getRoot().getStylesheets().add(UIConstants.DEFAULT_RESOURCE + UIConstants.SPLASH_CSS);
+		getRoot().getStylesheets().add(
+				UIConstants.DEFAULT_RESOURCE + UIConstants.SPLASH_CSS);
 
 		featureMaker = new Features();
 
-		setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT, Color.GRAY));
+		setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT,
+				Color.GRAY));
 
 		setCanvas();
 
 		setTurtle();
 
-		setCommandPane();
+		setInputPane();
 
 		setHistoryPane();
 
@@ -74,28 +91,29 @@ public class WorkSpace extends Screen {
 
 		setButtons();
 
-		setTurtleCoords();
-		
 		setUserCommandPane();
 
 		setTurtleCoordsBox();
-		
 
 	}
-	
+
 	private void setColorPicker() {
 		ColorPicker cp = new ColorPicker();
 		cp.setOnAction(event -> sceneChange(cp.getValue()));
-		cp.setLayoutX(450);
-		cp.setLayoutY(5);
+		cp.setLayoutX(100);
+		cp.setLayoutY(0);
+		cp.setMinWidth(150);
+		cp.setMinHeight(25);
 		getRoot().getChildren().add(cp);
 	}
 
 	private void setPenPicker() {
 		ColorPicker cp = new ColorPicker();
 		cp.setOnAction(event -> penChange(cp.getValue()));
-		cp.setLayoutX(400);
+		cp.setLayoutX(250);
 		cp.setLayoutY(0);
+		cp.setMinWidth(150);
+		cp.setMinHeight(25);
 		getRoot().getChildren().add(cp);
 	}
 
@@ -111,32 +129,21 @@ public class WorkSpace extends Screen {
 		setVariablePane();
 	}
 
-	private void setTurtleCoords() {
-		// duplicate, we already made another HBox elsewhere, can extract
-		HBox turtleVars = new HBox();
-		turtleVars.setLayoutX(25);
-		turtleVars.setLayoutY(475);
-		getRoot().getChildren().add(turtleVars);
-
-		CoordinateView cv = new CoordinateView(turtleVars, turtleModel);
-		turtleModel.addObserver(cv);
-		turtleModel.notifyObservers();
-
-	}
 
 	private void sceneChange(Color c) {
-		layer1 = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE,
-				UIConstants.CANVAS_SIZE, c);
+		layer1 = featureMaker.makeCanvas(410, UIConstants.BORDER_WIDTH,
+				UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE, c);
 		getRoot().getChildren().add(layer1);
 		layer2.toFront();
 		turtleView.getImage().toFront();
 	}
 
 	private void setCanvas() {
-		layer1 = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE,
-				UIConstants.CANVAS_SIZE, Color.GREEN);
-		layer2 = featureMaker.makeCanvas(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE,
-				UIConstants.CANVAS_SIZE, Color.TRANSPARENT);
+		layer1 = featureMaker.makeCanvas(410, UIConstants.BORDER_WIDTH,
+				UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE, Color.GREEN);
+		layer2 = featureMaker.makeCanvas(410, UIConstants.BORDER_WIDTH,
+				UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE,
+				Color.TRANSPARENT);
 		getRoot().getChildren().add(layer1);
 		getRoot().getChildren().add(layer2);
 		layer2.toFront();
@@ -145,8 +152,10 @@ public class WorkSpace extends Screen {
 	protected void setButtons() {
 		Button pick = new Button("Select a new image");
 		pick.setOnAction(event -> changeImage());
-		pick.setLayoutX(300);
-		pick.setLayoutY(150);
+		pick.setLayoutX(400);
+		pick.setLayoutY(0);
+		pick.setMinWidth(100);
+		pick.setMinHeight(25);
 		getRoot().getChildren().add(pick);
 	}
 
@@ -154,8 +163,9 @@ public class WorkSpace extends Screen {
 		try {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Choose Image");
-			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
-					new ExtensionFilter("All Files", "*.*"));
+			fileChooser.getExtensionFilters().addAll(
+					new ExtensionFilter("Image Files", "*.png", "*.jpg",
+							"*.gif"), new ExtensionFilter("All Files", "*.*"));
 			File selectedFile = fileChooser.showOpenDialog(getStage());
 			if (selectedFile != null) {
 				BufferedImage bufferedImage = ImageIO.read(selectedFile);
@@ -170,15 +180,23 @@ public class WorkSpace extends Screen {
 	}
 
 	private void setFile(ImageView thing) {
-		turtleView = new TurtleView(thing, getRoot(), layer2.getGraphicsContext2D(), Color.BLACK);
+//<<<<<<< HEAD
+//		turtleView = new TurtleView(thing, getRoot(), layer2.getGraphicsContext2D(), Color.BLACK);
 		System.out.println("WTF");
-		System.out.println(turtleModel.getPositionX());
-		System.out.println(turtleModel.getPositionY());
-		System.out.println(thing.getFitWidth() / 2);
-		System.out.println(thing.getFitHeight() / 2);
+//		System.out.println(turtleModel.getPositionX());
+//		System.out.println(turtleModel.getPositionY());
+		System.out.println(thing.getFitWidth());
+		System.out.println(thing.getFitHeight());
 		System.out.println("HELP");
-		turtleView.getImage().setX(turtleModel.getPositionX() - thing.getFitWidth() / 2);
-		turtleView.getImage().setY(turtleModel.getPositionY() - thing.getFitHeight() / 2);
+//		turtleView.getImage().setX(turtleModel.getPositionX() - thing.getFitWidth() / 2);
+//		turtleView.getImage().setY(turtleModel.getPositionY() - thing.getFitHeight() / 2);
+//=======
+		turtleView = new TurtleView(thing, getRoot(),
+				layer2.getGraphicsContext2D(), Color.BLACK);
+		turtleView.getImage().setX(
+				turtleModel.getPositionX() - thing.getFitWidth() / 2);
+		turtleView.getImage().setY(
+				turtleModel.getPositionY() - thing.getFitHeight() / 2);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 	}
@@ -188,10 +206,12 @@ public class WorkSpace extends Screen {
 		double turtleInitialY = UIConstants.INITIAL_Y;
 		double turtleInitialHeading = UIConstants.INITIAL_HEADING;
 
-		ImageView turtleImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.png")));
-		turtleModel = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
-		turtleView = new TurtleView(turtleImage, getRoot(), layer2.getGraphicsContext2D(), Color.BLACK);
-		System.out.println(turtleView.getX());
+		ImageView turtleImage = new ImageView(new Image(getClass()
+				.getClassLoader().getResourceAsStream("turtle.png")));
+		turtleModel = new TurtleModel(turtleInitialX, turtleInitialY,
+				turtleInitialHeading);
+		turtleView = new TurtleView(turtleImage, getRoot(),
+				layer2.getGraphicsContext2D(), Color.BLACK);
 		turtleModel.addObserver(turtleView);
 		turtleModel.notifyObservers();
 
@@ -201,24 +221,26 @@ public class WorkSpace extends Screen {
 		modelMap.setCommands(commandsModel);
 	}
 
-	private void setCommandPane() {
+	private void setInputPane() {
 		HBox commandLine = new HBox();
 		inputText = new TextArea();
-		inputText.setMaxWidth(UIConstants.WIDTH / 2 - 50);
-		inputText.setMaxHeight(UIConstants.HEIGHT / 4);
+		inputText.setMinWidth(450);
+		inputText.setMinHeight(200);
 		commandLine.getChildren().add(inputText);
-		Button inputButton = featureMaker.makeB("Go", event -> readInput(parser, inputText));
+		Button inputButton = featureMaker.makeB("Go",
+				event -> readInput(parser, inputText));
 		commandLine.getChildren().add(inputButton);
-		commandLine.setLayoutX(UIConstants.WIDTH / 2);
-		commandLine.setLayoutY(UIConstants.HEIGHT - UIConstants.RECT_X);
+		commandLine.setLayoutX(600);
+		commandLine.setLayoutY(525);
 		getRoot().getChildren().add(commandLine);
 	}
 
 	private void setHistoryPane() {
-		SPane history = new SPane(UIConstants.WIDTH / 2, UIConstants.BORDER_WIDTH);
-		history.myPane.setMinWidth(400);
-		history.myPane.setMinHeight(UIConstants.CANVAS_SIZE - UIConstants.BORDER_WIDTH);
-		history.myPane.setMaxSize(UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE - UIConstants.BORDER_WIDTH);
+		SPane history = new SPane(900, 25);
+		history.myPane.setMinWidth(360);
+		history.myPane.setMinHeight(475);
+		history.myPane.setMaxSize(UIConstants.CANVAS_SIZE,
+				UIConstants.CANVAS_SIZE - UIConstants.BORDER_WIDTH);
 		getRoot().getChildren().addAll(history.myRoot);
 		HistoryPaneModel hpm = new HistoryPaneModel();
 		hpv = new HistoryPaneView(history.myBox, inputText);
@@ -226,16 +248,16 @@ public class WorkSpace extends Screen {
 		hpm.notifyObservers();
 		modelMap.setHistory(hpm);
 	}
-	
+
 	private void setVariablePane() {
-		SPane variables = new SPane(UIConstants.BORDER_WIDTH, UIConstants.CANVAS_SIZE + UIConstants.BORDER_WIDTH);
-		variables.myPane.setMinSize(UIConstants.WIDTH / 2 - UIConstants.BORDER_WIDTH * 2, UIConstants.HEIGHT / 4);
-		variables.myPane.setMaxSize(UIConstants.WIDTH / 2 - UIConstants.BORDER_WIDTH * 2, UIConstants.HEIGHT / 4);
-		variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
+		SPane variables = new SPane(100, 525);
+		variables.myPane.setMinSize(450, 200);
+		variables.myPane.setMaxSize(450, 200);
 		variables.myBox.getChildren().add(new Text("Variables"));
 
 		VariableModel varModel = new VariableModel();
-		VariableView varView = new VariableView(variables.myBox, inputText, myLang);
+		VariableView varView = new VariableView(variables.myBox, inputText,
+				myLang);
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
 
@@ -244,10 +266,9 @@ public class WorkSpace extends Screen {
 	}
 	
 	private void setUserCommandPane() {
-		SPane variables = new SPane(200,525);
-		variables.myPane.setMinSize(UIConstants.WIDTH / 2 - UIConstants.BORDER_WIDTH * 2, UIConstants.HEIGHT / 4);
-		variables.myPane.setMaxSize(UIConstants.WIDTH / 2 - UIConstants.BORDER_WIDTH * 2, UIConstants.HEIGHT / 4);
-		variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
+		SPane variables = new SPane(25, 25);
+		variables.myPane.setMinSize(360, 475);
+		variables.myPane.setMaxSize(360, 475);
 		variables.myBox.getChildren().add(new Text("User Commands"));
 
 		CommandsModel varModel = new CommandsModel();
@@ -271,7 +292,9 @@ public class WorkSpace extends Screen {
 		WebView browser = new WebView();
 		browser.setPrefSize(UIConstants.WIDTH, UIConstants.HEIGHT);
 		helpRoot.getChildren().add(browser);
-		browser.getEngine().load(WorkSpace.class.getResource("/references/help.html").toExternalForm());
+		browser.getEngine().load(
+				WorkSpace.class.getResource("/references/help.html")
+						.toExternalForm());
 	}
 
 	private void setHelpButton() {
@@ -279,13 +302,15 @@ public class WorkSpace extends Screen {
 		getRoot().getChildren().add(help);
 		help.setLayoutX(UIConstants.ZERO);
 		help.setLayoutY(UIConstants.ZERO);
+		help.setMaxSize(75, 25);
 	}
-	
-	private void setTurtleCoordsBox(){
-		//duplicate, we already made another HBox elsewhere, can extract
+
+	private void setTurtleCoordsBox() {
+		// duplicate, we already made another HBox elsewhere, can extract
 		HBox turtleVars = new HBox();
-		turtleVars.setLayoutX(25);
-		turtleVars.setLayoutY(475);
+		turtleVars.setLayoutX(500);
+		turtleVars.setLayoutY(500);
+		turtleVars.setMaxSize(200, 25);
 		getRoot().getChildren().add(turtleVars);
 		
 		CoordinateView cv = new CoordinateView(turtleVars, turtleModel);

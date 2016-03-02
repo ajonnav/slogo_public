@@ -18,8 +18,8 @@ public class TurtleView implements IView{
 		this.image = image;
 		this.image.setFitHeight(50);
 		this.image.setFitWidth(50);
-		this.image.setX(transformX(0));
-		this.image.setY(transformY(0));
+		this.image.setX(transformX(0) + UIConstants.INITIAL_X);
+		this.image.setY(transformY(0) + UIConstants.INITIAL_Y);
 		root.getChildren().add(this.image);
 		this.myColor = c;
 		this.GC = GC;
@@ -33,6 +33,10 @@ public class TurtleView implements IView{
 			if(turtleModel.getPenStatus()) {
 				GC.strokeLine(image.getX(), image.getY(), 
 						transformX(turtleModel.getPositionX()), transformY(turtleModel.getPositionY()));
+				System.out.println(image.getX());
+				System.out.println(image.getY());
+				System.out.println(turtleModel.getPositionX());
+				System.out.println(turtleModel.getPositionY());
 			}
 			image.setOpacity(Boolean.compare(turtleModel.getShowStatus(), false));
 			image.setX(transformX(turtleModel.getPositionX()));

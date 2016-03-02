@@ -14,7 +14,7 @@ public class TurtleModel extends Observable {
         heading = turtleInitialHeading;
         positionX = turtleInitialX;
         positionY = turtleInitialY;
-        penStatus = true;
+        penStatus = false;
         showStatus = true;
         setChanged();
     }
