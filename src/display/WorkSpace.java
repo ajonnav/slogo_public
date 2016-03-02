@@ -170,8 +170,7 @@ public class WorkSpace extends Screen {
 			if (selectedFile != null) {
 				BufferedImage bufferedImage = ImageIO.read(selectedFile);
 				Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-				ImageView iv = new ImageView(image);
-				setFile(iv);
+				turtleView.setImage(image);
 			}
 		} catch (Exception e) {
 			System.out.println("FAIL");
@@ -179,27 +178,6 @@ public class WorkSpace extends Screen {
 		}
 	}
 
-	private void setFile(ImageView thing) {
-//<<<<<<< HEAD
-//		turtleView = new TurtleView(thing, getRoot(), layer2.getGraphicsContext2D(), Color.BLACK);
-		System.out.println("WTF");
-//		System.out.println(turtleModel.getPositionX());
-//		System.out.println(turtleModel.getPositionY());
-		System.out.println(thing.getFitWidth());
-		System.out.println(thing.getFitHeight());
-		System.out.println("HELP");
-//		turtleView.getImage().setX(turtleModel.getPositionX() - thing.getFitWidth() / 2);
-//		turtleView.getImage().setY(turtleModel.getPositionY() - thing.getFitHeight() / 2);
-//=======
-		turtleView = new TurtleView(thing, getRoot(),
-				layer2.getGraphicsContext2D(), Color.BLACK);
-		turtleView.getImage().setX(
-				turtleModel.getPositionX() + UIConstants.CANVAS_SIZE/2);
-		turtleView.getImage().setY(
-				turtleModel.getPositionY() + UIConstants.CANVAS_SIZE/2);
-		turtleModel.addObserver(turtleView);
-		turtleModel.notifyObservers();
-	}
 
 	private void setTurtle(){
 		double turtleInitialX = UIConstants.INITIAL_X;

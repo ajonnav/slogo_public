@@ -22,7 +22,7 @@ public class SetPositionCommand extends Command {
         TurtleModel turtleModel = modelMap.getTurtle();
         double turtleXPos = turtleModel.getPositionX();
         double turtleYPos = turtleModel.getPositionY();
-        turtleModel.setPosition(xPos, yPos);
+        turtleModel.setPosition(turtleModel.getInitX(), turtleModel.getInitY());
         return Math.sqrt(Math.pow((xPos - turtleXPos), 2) +
                          Math.pow((yPos - turtleYPos), 2));
     }
