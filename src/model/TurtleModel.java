@@ -14,7 +14,7 @@ public class TurtleModel extends Observable {
         heading = turtleInitialHeading;
         positionX = turtleInitialX;
         positionY = turtleInitialY;
-        penStatus = false;
+        penStatus = true;
         showStatus = true;
         setChanged();
     }
@@ -40,7 +40,7 @@ public class TurtleModel extends Observable {
     }
 
     public void turn (double degree) {
-        setHeading(degree + heading);
+        setHeading(heading - degree);
     }
 
     public void penUp () {
