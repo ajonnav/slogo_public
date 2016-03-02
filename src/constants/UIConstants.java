@@ -1,8 +1,5 @@
 package constants;
 
-import javafx.scene.paint.Color;
-
-
 public class UIConstants {
 
 	public static final String TITLE = "title";

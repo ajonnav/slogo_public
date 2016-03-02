@@ -19,7 +19,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -28,7 +27,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
@@ -36,7 +34,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import addons.Features;
-import addons.MenuMaker;
 import constants.UIConstants;
 
 public class WorkSpace extends Screen {
@@ -45,19 +42,11 @@ public class WorkSpace extends Screen {
 	private CommandParser parser;
 	private TextArea inputText;
 	private String myLang;
-	private ImageView profileImage;
 	private TurtleModel turtleModel;
-	private MenuMaker mm;
-
-	private Canvas canvas;
 	private Canvas layer1;
 	private Canvas layer2;
 	private TurtleView turtleView;
 	private HistoryPaneView hpv;
-	private GraphicsContext gc1;
-	private GraphicsContext gc2;
-
-	private ImageView selectedFile;
 
 	 public WorkSpace(String l){
 	 myLang = l;

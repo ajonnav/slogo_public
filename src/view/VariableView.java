@@ -1,17 +1,14 @@
 package view;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
 import constants.UIConstants;
-import javafx.scene.Group;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import model.VariableModel;
 
 public class VariableView implements IView{
