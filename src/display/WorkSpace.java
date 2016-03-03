@@ -1,6 +1,7 @@
 package display;
 
 import model.CommandsModel;
+import model.DisplayModel;
 import model.HistoryPaneModel;
 import model.ModelMap;
 import model.TurtleModel;
@@ -9,6 +10,7 @@ import pane.SPane;
 import parser.CommandParser;
 import view.CommandsView;
 import view.CoordinateView;
+import view.DisplayView;
 import view.HistoryPaneView;
 import view.TurtleView;
 import view.VariableView;
@@ -33,9 +35,11 @@ public class WorkSpace extends Screen {
     private CommandParser parser;
     private TextArea inputText;
     private String myLang;
-    private TurtleView turtleView;
     private HistoryPaneView hpv;
     private ModelMap modelMap;
+    private Map<Double, String> imageMap;
+    private Map<Double, String> colorMap;
+    
 
     @Override
     public void setUpScene () {
@@ -44,6 +48,20 @@ public class WorkSpace extends Screen {
         featureMaker = new Features();
         setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT,
                            Color.GRAY));
+        colorMap = new HashMap<Double, String>();
+        colorMap.put(1.0, "#849775");
+        colorMap.put(2.0, "#1518b4");
+        colorMap.put(3.0, "#5df45d");
+        colorMap.put(4.0, "#7182a7");
+        colorMap.put(5.0, "#b73547");
+        imageMap = new HashMap<Double, String>();
+        imageMap.put(1.0, "black.png");
+        imageMap.put(2.0, "blue.png");
+        imageMap.put(3.0, "green.png");
+        imageMap.put(4.0, "red.png");
+        imageMap.put(5.0, "turtle.png");
+        modelMap = new ModelMap();
+        setDisplay();
         setTurtle();
         setInputPane();
         setHistoryPane();
@@ -58,28 +76,23 @@ public class WorkSpace extends Screen {
         parser.addPatterns("resources/languages/Syntax");
         setVariablePane();
     }
-
+    
+    private void setDisplay() {
+        DisplayModel displayModel = new DisplayModel(colorMap);
+        DisplayView displayView = new DisplayView(getRoot());
+        displayModel.addObserver(displayView);
+        modelMap.setDisplay(displayModel);
+        displayModel.notifyObservers();
+    }
+    
     private void setTurtle () {
         double turtleInitialHeading = UIConstants.INITIAL_HEADING;
         String turtleImage = "turtle.png";
-        Map<Double, String> colorMap = new HashMap<Double, String>();
-        colorMap.put(1.0, "#849775");
-        colorMap.put(2.0, "#1518b4");
-        colorMap.put(3.0, "#5df45d");
-        colorMap.put(4.0, "#7182a7");
-        colorMap.put(5.0, "#b73547");
-        Map<Double, String> imageMap = new HashMap<Double, String>();
-        imageMap.put(1.0, "black.png");
-        imageMap.put(2.0, "blue.png");
-        imageMap.put(3.0, "green.png");
-        imageMap.put(4.0, "red.png");
-        imageMap.put(5.0, "turtle.png");
-        TurtleModel turtleModel = new TurtleModel(0, 0, turtleInitialHeading, colorMap, imageMap);
-        turtleView = new TurtleView(turtleImage, getRoot(), Color.BLACK, turtleModel);
+        TurtleModel turtleModel = new TurtleModel(0, 0, turtleInitialHeading, colorMap, imageMap); 
+        TurtleView turtleView = new TurtleView(turtleImage, getRoot(), Color.BLACK);
         turtleModel.addObserver(turtleView);
         turtleModel.notifyObservers();
         turtleModel.penDown();
-        modelMap = new ModelMap();
         modelMap.setTurtle(turtleModel);
         setTurtleCoordsBox(turtleModel);
     }
