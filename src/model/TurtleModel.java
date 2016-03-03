@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Map;
 import java.util.Observable;
 
 
@@ -10,34 +11,51 @@ public class TurtleModel extends Observable {
     private boolean penStatus;
     private boolean showStatus;
     private boolean shouldClear;
+    private boolean shouldStamp;
+    private boolean shouldClearStamp;
+    private int numStamps;
+    private double penColorIndex;
+    private double backgroundColorIndex;
+    private double imageIndex;
+    private double lineWidth;
+    private Map<Double, String> colorMap;
+    private Map<Double, String> imageMap;
 
-    public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading) {
+    public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading, 
+                        Map<Double, String> colorMap, Map<Double, String> imageMap) {
         heading = turtleInitialHeading;
         positionX = turtleInitialX;
         positionY = turtleInitialY;
         penStatus = false;
         showStatus = true;
+        shouldClear = false;
+        shouldStamp = false;
+        numStamps = 0;
+        penColorIndex = 1;
+        backgroundColorIndex = 3;
+        imageIndex = 5;
+        lineWidth = 1;
+        this.colorMap = colorMap;
+        this.imageMap = imageMap;
         setChanged();
     }
+
 
     public void forward (double distance) {
         positionX += distance * Math.cos(Math.toRadians(heading));
         positionY += distance * Math.sin(Math.toRadians(heading));
-        setChanged();
-        notifyObservers();
+        updateView();
     }
 
     public void setHeading (double degrees) {
         heading = degrees;
-        setChanged();
-        notifyObservers();
+        updateView();
     }
 
     public void setPosition (double x, double y) {
         positionX = x;
         positionY = y;
-        setChanged();
-        notifyObservers();
+        updateView();
     }
 
     public void turn (double degree) {
@@ -54,16 +72,14 @@ public class TurtleModel extends Observable {
 
     public void show () {
         showStatus = true;
-        setChanged();
-        notifyObservers();
+        updateView();
     }
 
     public void hide () {
         showStatus = false;
-        setChanged();
-        notifyObservers();
+        updateView();
     }
-
+    
     public double getPositionY () {
         return positionY;
     }
@@ -84,13 +100,94 @@ public class TurtleModel extends Observable {
         return showStatus;
     }
 
-	public boolean shouldClear() {
-		return shouldClear;
-	}
+    public boolean shouldClear () {
+        return shouldClear;
+    }
+    
+    public void setShouldClear(boolean shouldClear) {
+        this.shouldClear = shouldClear;
+        updateView();
+    }
+    
+    public void addToColorMap(double index, double r, double g, double b) {
+        colorMap.put(index, String.format("#%02X%02X%02X", (int) r, (int) g, (int) b));
+        updateView();
+    }
+    
+    public Map<Double, String> getColorMap() {
+        return colorMap;
+    }
 
-	public void setShouldClear(boolean shouldClear) {
-		this.shouldClear = shouldClear;
-		setChanged();
+    public Map<Double, String> getImageMap () {
+        return imageMap;
+    }
+
+    public double getBackgroundColorIndex () {
+        return backgroundColorIndex;
+    }
+
+    public void setBackgroundColorIndex (double backgroundColorIndex) {
+        this.backgroundColorIndex = backgroundColorIndex;
+        updateView();
+    }
+
+    public double getPenColorIndex () {
+        return penColorIndex;
+    }
+
+    public void setPenColorIndex (double penColorIndex) {
+        this.penColorIndex = penColorIndex;
+        updateView();
+    }
+
+    public double getImageIndex () {
+        return imageIndex;
+    }
+
+    public void setImageIndex (double imageIndex) {
+        this.imageIndex = imageIndex;
+        updateView();
+    }
+
+    public double getLineWidth () {
+        return lineWidth;
+    }
+
+    public void setLineWidth (double lineWidth) {
+        this.lineWidth = lineWidth;
+        updateView();
+    }
+
+    public boolean shouldStamp () {
+        return shouldStamp;
+    }
+
+    public void setShouldStamp (boolean shouldStamp) {
+        this.shouldStamp = shouldStamp;
+        updateView();
+    }
+    
+    public int getNumStamps() {
+        return numStamps;
+    }
+    
+    public void setNumStamps(int numStamps) {
+        this.numStamps = numStamps;
+        updateView();
+    }
+
+    public boolean shouldClearStamp () {
+        return shouldClearStamp;
+    }
+
+    public void setShouldClearStamp (boolean shouldClearStamp) {
+        this.shouldClearStamp = shouldClearStamp;
+        updateView();
+    }
+    
+    public void updateView() {
+        setChanged();
         notifyObservers();
-	}
+    }
+
 }
