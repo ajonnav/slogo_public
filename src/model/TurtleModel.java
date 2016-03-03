@@ -15,7 +15,6 @@ public class TurtleModel extends Observable {
     private boolean shouldClearStamp;
     private int numStamps;
     private double penColorIndex;
-    private double backgroundColorIndex;
     private double imageIndex;
     private double lineWidth;
     private Map<Double, String> colorMap;
@@ -32,7 +31,6 @@ public class TurtleModel extends Observable {
         shouldStamp = false;
         numStamps = 0;
         penColorIndex = 1;
-        backgroundColorIndex = 3;
         imageIndex = 5;
         lineWidth = 1;
         this.colorMap = colorMap;
@@ -120,15 +118,6 @@ public class TurtleModel extends Observable {
 
     public Map<Double, String> getImageMap () {
         return imageMap;
-    }
-
-    public double getBackgroundColorIndex () {
-        return backgroundColorIndex;
-    }
-
-    public void setBackgroundColorIndex (double backgroundColorIndex) {
-        this.backgroundColorIndex = backgroundColorIndex;
-        updateView();
     }
 
     public double getPenColorIndex () {
