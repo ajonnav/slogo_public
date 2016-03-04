@@ -17,9 +17,15 @@ import view.VariableView;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -28,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import addons.Features;
+import addons.MenuMaker;
 import constants.UIConstants;
 
 
@@ -67,15 +74,31 @@ public class WorkSpace extends Screen {
         setTurtle();
         setInputPane();
         setHistoryPane();
-        setHelpButton();
+        //setHelpButton();
         setUserCommandPane();
+        setBar();
     }
-
+    
+    public void switchWS(){
+    	WorkSpace ws = new WorkSpace();
+    	ws.setLang(myLang);
+    	ws.begin();
+    	
+    }
+    
+    public void setBar(){
+    	MenuMaker menuMaker = new MenuMaker();
+    	MenuBar myMenu = menuMaker.getMenu();
+    	Menu fileMenu = menuMaker.addMenu("File");
+    	MenuItem helpItem = menuMaker.addMenuItem("Help", e -> openHelpPage(), fileMenu);
+    	MenuItem newItem = menuMaker.addMenuItem("New", e -> switchWS(), fileMenu);
+    	getRoot().getChildren().add(myMenu);
+    }
     public void setLang (String language) {
         myLang = language;
         parser = new CommandParser(modelMap);
-        parser.addPatterns("resources/languages/" + myLang);
-        parser.addPatterns("resources/languages/Syntax");
+        parser.addPatterns(UIConstants.RSRC_LANG + myLang);
+        parser.addPatterns(UIConstants.RSRC_LANG + UIConstants.SYNTAX);
         setVariablePane();
     }
     
@@ -124,7 +147,7 @@ public class WorkSpace extends Screen {
         inputText.setMinSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
         inputText.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
         commandLine.getChildren().add(inputText);
-        Button inputButton = featureMaker.makeB("Go",
+        Button inputButton = featureMaker.makeB(getResources().getString("GoCommand"),
                                                 event -> readInput(parser, inputText));
         commandLine.getChildren().add(inputButton);
         commandLine.setLayoutX(UIConstants.RECT_W);
@@ -168,7 +191,7 @@ public class WorkSpace extends Screen {
         SPane variables = new SPane(25, 25);
         variables.myPane.setMinSize(360, 475);
         variables.myPane.setMaxSize(360, 475);
-        variables.myBox.getChildren().add(new Text("User Commands"));
+        variables.myBox.getChildren().add(new Text(getResources().getString("UCommands")));
         CommandsModel varModel = new CommandsModel();
         CommandsView varView = new CommandsView(variables.myBox, inputText);
         varModel.addObserver(varView);
@@ -178,18 +201,24 @@ public class WorkSpace extends Screen {
     }
 
     private void setHelpButton () {
-        Button help = featureMaker.makeB("Help", event -> openHelpPage());
+        Button help = featureMaker.makeB(getResources().getString("HelpTitle"), event -> openHelpPage());
         getRoot().getChildren().add(help);
         help.setLayoutX(UIConstants.ZERO);
         help.setLayoutY(UIConstants.ZERO);
         help.setMaxSize(UIConstants.BUTTON_H, UIConstants.BORDER_WIDTH);
+        
+        Button newW = featureMaker.makeB(getResources().getString("NewCommand"), e -> switchWS());
+        getRoot().getChildren().add(newW);
+        newW.setLayoutX(25);
+        newW.setLayoutY(650);
+        
     }
     
     private void openHelpPage () {
         Stage myStage = new Stage();
         Group helpRoot = new Group();
         Scene scene = new Scene(helpRoot, UIConstants.WIDTH, UIConstants.HEIGHT);
-        myStage.setTitle("Help");
+        myStage.setTitle(getResources().getString("HelpTitle"));
         myStage.setScene(scene);
         myStage.show();
         WebView browser = new WebView();

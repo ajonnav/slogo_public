@@ -1,5 +1,7 @@
 package display;
 
+import java.util.ResourceBundle;
+
 import addons.Features;
 import constants.UIConstants;
 import javafx.collections.FXCollections;
@@ -32,6 +34,7 @@ public class Splash extends Screen {
 		
 	}
 	
+
 	private void setTitle() {
 		Rectangle welRect = new Rectangle(500, 200);
 		welRect.setX(400);

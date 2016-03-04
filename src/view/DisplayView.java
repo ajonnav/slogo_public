@@ -25,8 +25,8 @@ public class DisplayView implements IView {
                                                    Color.GREEN);
         this.backgroundGC = backgroundLayer.getGraphicsContext2D();
         this.backgroundChange =
-                features.makeColorPicker(UIConstants.BACKGROUND_PICK_X,
-                                         UIConstants.ZERO,
+                features.makeColorPicker(1100,
+                                         550,
                                          UIConstants.COLOR_SELECTOR_WIDTH,
                                          UIConstants.BORDER_WIDTH);
         root.getChildren().add(backgroundLayer);

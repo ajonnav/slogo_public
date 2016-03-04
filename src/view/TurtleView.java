@@ -51,10 +51,10 @@ public class TurtleView implements IView {
 
     public void setUpPickers () {
         this.penChange =
-                features.makeColorPicker(UIConstants.PEN_PICK_X, UIConstants.ZERO,
+                features.makeColorPicker(1100, 600,
                                 UIConstants.COLOR_SELECTOR_WIDTH, UIConstants.BORDER_WIDTH);
         this.imageChange =
-                features.makeColorPicker(UIConstants.IMAGE_SELECT_X, UIConstants.ZERO,
+                features.makeColorPicker(1100, 650,
                                 UIConstants.IMAGE_SELECT_WIDTH, UIConstants.BORDER_WIDTH);
     }
 
@@ -93,6 +93,7 @@ public class TurtleView implements IView {
         String imageString = turtleModel.getImageIndex() + " " +
                              turtleModel.getImageMap().get(turtleModel.getImageIndex());
         penChange.setValue(penColor);
+        
         imageChange.setValue(imageString);
         lineGC.setStroke(Color.web(penColor.split(" ")[1]));
         lineGC.setLineWidth(turtleModel.getLineWidth());
