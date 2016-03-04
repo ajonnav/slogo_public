@@ -15,7 +15,7 @@ public class XCoordinateCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getPositionX", new double[]{-1});
+        return modelMap.getDisplay().TurtleAction("getPositionX", new double[]{-1});
     }
 
 }

@@ -80,7 +80,7 @@ public class WorkSpace extends Screen {
     }
     
     private void setDisplay() {
-        DisplayModel displayModel = new DisplayModel(colorMap);
+        DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
         DisplayView displayView = new DisplayView(getRoot());
         displayModel.addObserver(displayView);
         modelMap.setDisplay(displayModel);
@@ -135,6 +135,7 @@ public class WorkSpace extends Screen {
     private void readInput (CommandParser parser, TextArea input) {
         parser.parseText(input.getText());
         input.clear();
+        
     }
 
     private void setHistoryPane () {

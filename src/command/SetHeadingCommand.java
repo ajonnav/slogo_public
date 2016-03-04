@@ -15,7 +15,7 @@ public class SetHeadingCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("setHeading", new double[]{getCommands().get(0).get(0).execute()});
+        return modelMap.getDisplay().TurtleAction("setHeading", new double[]{getCommands().get(0).get(0).execute()});
     }
 
 }

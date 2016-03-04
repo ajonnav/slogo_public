@@ -16,7 +16,7 @@ public class SetTowardsCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("setTowards",
+        return modelMap.getDisplay().TurtleAction("setTowards",
                                      new double[] { getCommands().get(0).get(0).execute(),
                                                     getCommands().get(1).get(0).execute() });
     }

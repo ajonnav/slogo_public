@@ -18,6 +18,6 @@ public class TellCommand extends Command {
         for(int i = 0; i < getCommands().get(0).size(); i++) {
             turtles[i] = getCommands().get(0).get(i).execute();
         }
-        return modelMap.tell(turtles);
+        return modelMap.getDisplay().tell(turtles);
     }
 }

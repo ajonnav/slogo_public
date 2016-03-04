@@ -15,7 +15,7 @@ public class IsShowingCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getShowStatus", new double[]{-1});
+        return modelMap.getDisplay().TurtleAction("getShowStatus", new double[]{-1});
     }
 
 }

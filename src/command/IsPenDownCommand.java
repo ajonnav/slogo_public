@@ -15,7 +15,7 @@ public class IsPenDownCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getPenStatus", new double[]{-1});
+        return modelMap.getDisplay().TurtleAction("getPenStatus", new double[]{-1});
     }
 
 }

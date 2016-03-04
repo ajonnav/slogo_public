@@ -15,6 +15,6 @@ public class HomeCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("home", new double[]{-1});
+        return modelMap.getDisplay().TurtleAction("home", new double[]{-1});
     }
 }

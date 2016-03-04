@@ -13,7 +13,7 @@ public class IDCommand extends Command {
     
     @Override
     public double execute () {
-        return modelMap.getLastActiveID();
+        return modelMap.getDisplay().getLastActiveID();
     }
 
 }
