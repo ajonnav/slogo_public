@@ -23,7 +23,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import addons.Features;
 import constants.UIConstants;
@@ -60,7 +62,7 @@ public class WorkSpace extends Screen {
         imageMap.put(3.0, "green.png");
         imageMap.put(4.0, "red.png");
         imageMap.put(5.0, "turtle.png");
-        modelMap = new ModelMap();
+        modelMap = new ModelMap(colorMap, imageMap);
         setDisplay();
         setTurtle();
         setInputPane();
@@ -86,26 +88,34 @@ public class WorkSpace extends Screen {
     }
     
     private void setTurtle () {
-        double turtleInitialHeading = UIConstants.INITIAL_HEADING;
         String turtleImage = "turtle.png";
-        TurtleModel turtleModel = new TurtleModel(0, 0, turtleInitialHeading, colorMap, imageMap); 
-        TurtleView turtleView = new TurtleView(turtleImage, getRoot(), Color.BLACK);
-        turtleModel.addObserver(turtleView);
-        turtleModel.notifyObservers();
-        turtleModel.penDown();
-        modelMap.setTurtle(turtleModel);
-        setTurtleCoordsBox(turtleModel);
+        List<TurtleModel> turtles = new ArrayList<TurtleModel>();
+        List<TurtleView> turtleViews = new ArrayList<TurtleView>();
+        for(int i = 0; i < 3; i++) {
+            TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING, colorMap, imageMap); 
+            TurtleView turtleView = new TurtleView(turtleImage, getRoot());
+            turtleModel.addObserver(turtleView);
+            turtleModel.notifyObservers();
+            turtleModel.penDown();
+            turtles.add(turtleModel);
+            turtleViews.add(turtleView);
+        }
+        modelMap.setTurtles(turtles);
+        modelMap.setTurtleViews(turtleViews);
+        setTurtleCoordsBox(turtles);
     }
     
-    private void setTurtleCoordsBox (TurtleModel turtleModel) {
+    private void setTurtleCoordsBox (List<TurtleModel> turtles) {
         HBox turtleVars = new HBox();
         turtleVars.setLayoutX(UIConstants.COORDINATE_LOCATION);
         turtleVars.setLayoutY(UIConstants.COORDINATE_LOCATION);
         turtleVars.setMaxSize(UIConstants.RECT_X, UIConstants.BORDER_WIDTH);
         getRoot().getChildren().add(turtleVars);
-        CoordinateView cv = new CoordinateView(turtleVars, turtleModel);
-        turtleModel.addObserver(cv);
-        turtleModel.notifyObservers();
+        CoordinateView cv = new CoordinateView(turtleVars, 0, 0, UIConstants.INITIAL_HEADING);
+        for(int i = 0; i < turtles.size(); i++) {
+            turtles.get(i).addObserver(cv);
+            turtles.get(i).notifyObservers();
+        }
     }
 
     private void setInputPane () {

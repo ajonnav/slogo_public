@@ -15,9 +15,7 @@ public class SetPenColorCommand extends Command {
 
     @Override
     public double execute () {
-        double index = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().setPenColorIndex(index);
-        return index;
+        return modelMap.TurtleAction("setPenColorIndex", new double[]{getCommands().get(0).get(0).execute()});
     }
 
 }

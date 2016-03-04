@@ -18,6 +18,7 @@ import model.TurtleModel;
 public class TurtleView implements IView {
 
     private ImageView image;
+    private String initImage;
     private Canvas lineLayer;
     private Group root;
     private GraphicsContext lineGC;
@@ -26,14 +27,19 @@ public class TurtleView implements IView {
     private ComboBox<String> imageChange;
     private Features features;
 
-    public TurtleView (String image, Group root, Color c) {
+    public TurtleView (String image, Group root) {
         this.root = root;
         this.features = new Features();
+        this.initImage = image;
         this.image = setUpImage(getImageFromString(image), 0, 0);
         this.stamps = new ArrayList<ImageView>();
         setUpLayers();
         setUpPickers();
         addToRoot();
+    }
+    
+    public TurtleView makeNewTurtleView(TurtleView view) {
+        return new TurtleView(initImage, root);
     }
 
     public void setUpLayers () {
@@ -102,23 +108,23 @@ public class TurtleView implements IView {
             stamps.add(stamp);
             root.getChildren().add(stamp);
             stamp.toFront();
-            turtleModel.setShouldStamp(false);
+            turtleModel.setShouldStamp(0);
         }
         if (turtleModel.shouldClearStamp()) {
             for (ImageView i : stamps) {
                 i.setImage(null);
             }
             stamps.clear();
-            turtleModel.setShouldClearStamp(false);
+            turtleModel.setShouldClearStamp(new double[]{0});
         }
     }
 
     public void updateLine (TurtleModel turtleModel) {
         if (turtleModel.shouldClear()) {
             lineGC.clearRect(0, 0, UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE);
-            turtleModel.setShouldClear(false);
+            turtleModel.setShouldClear(0);
         }
-        if (turtleModel.getPenStatus()) {
+        if (turtleModel.getPenStatus() == 1) {
             lineGC.strokeLine(image.getX() - UIConstants.INITIAL_X,
                               image.getY() - UIConstants.INITIAL_Y,
                               transformX(turtleModel.getPositionX()),
@@ -127,7 +133,7 @@ public class TurtleView implements IView {
     }
 
     public void updateImage (TurtleModel turtleModel) {
-        image.setOpacity(Boolean.compare(turtleModel.getShowStatus(), false));
+        image.setOpacity(turtleModel.getShowStatus());
         image.setX(transformX(turtleModel.getPositionX()) + UIConstants.INITIAL_X);
         image.setY(transformY(turtleModel.getPositionY()) + UIConstants.INITIAL_Y);
         image.setRotate(transformHeading(turtleModel.getHeading()));

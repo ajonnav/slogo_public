@@ -15,8 +15,7 @@ public class ShowTurtleCommand extends Command {
 
     @Override
     public double execute () {
-        modelMap.getTurtle().show();
-        return 1;
+        return modelMap.TurtleAction("show", new double[]{-1});
     }
 
 }

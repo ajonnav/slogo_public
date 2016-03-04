@@ -15,8 +15,6 @@ public class ForwardCommand extends Command {
 
     @Override
     public double execute () {
-        double dist = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().forward(dist);
-        return dist;
+        return modelMap.TurtleAction("forward", new double[]{getCommands().get(0).get(0).execute()});
     }
 }
