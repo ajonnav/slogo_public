@@ -3,7 +3,6 @@ package command;
 
 import java.util.List;
 import model.ModelMap;
-import model.TurtleModel;
 
 
 public class SetPositionCommand extends Command {
@@ -17,12 +16,8 @@ public class SetPositionCommand extends Command {
 
     @Override
     public double execute () {
-        double xPos = getCommands().get(0).get(0).execute();
-        double yPos = getCommands().get(1).get(0).execute();
-        TurtleModel turtleModel = modelMap.getTurtle();
-        turtleModel.setPosition(xPos, yPos);
-        return Math.sqrt(Math.pow((xPos - turtleModel.getPositionX()), 2) +
-                         Math.pow((yPos - turtleModel.getPositionY()), 2));
+        return modelMap.TurtleAction("setPosition", new double[]{getCommands().get(0).get(0).execute(), 
+                                                                 getCommands().get(1).get(0).execute()});
     }
 
 }

@@ -9,24 +9,19 @@ import model.TurtleModel;
 public class CoordinateView implements IView {
 
     private HBox coordBox;
-    private TurtleModel turtleModel;
 
     private Text xCoord;
     private Text yCoord;
     private Text heading;
 
-    public CoordinateView (HBox hb, TurtleModel turtleModel) {
+    public CoordinateView (HBox hb, double initX, double initY, double initHeading) {
         coordBox = hb;
-        this.turtleModel = turtleModel;
-
         xCoord = new Text();
         yCoord = new Text();
         heading = new Text();
-
-        xCoord = updateText(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
-        yCoord = updateText(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
-        heading = updateText(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);
-
+        xCoord = updateText(xWorkSpaceCoordinate(initX), "X Coord: ", xCoord);
+        yCoord = updateText(yWorkSpaceCoordinate(initY), "Y Coord: ", yCoord);
+        heading = updateText(workSpaceHeading(initHeading), "Heading: ", heading);
         coordBox.getChildren().add(xCoord);
         coordBox.getChildren().add(yCoord);
         coordBox.getChildren().add(heading);
@@ -52,6 +47,7 @@ public class CoordinateView implements IView {
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof TurtleModel) {
+            TurtleModel turtleModel = (TurtleModel) o;
             updateText(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
             updateText(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
             updateText(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);

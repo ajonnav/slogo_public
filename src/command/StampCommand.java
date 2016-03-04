@@ -2,23 +2,20 @@ package command;
 
 import java.util.List;
 import model.ModelMap;
-import model.TurtleModel;
 
 
 public class StampCommand extends Command {
 
-    private TurtleModel turtleModel;
+    private ModelMap modelMap;
 
     public StampCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
-        this.turtleModel = modelMap.getTurtle();
+        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        turtleModel.setShouldStamp(true);
-        turtleModel.setNumStamps(turtleModel.getNumStamps() + 1);
-        return turtleModel.getImageIndex();
+        return modelMap.TurtleAction("stamp", new double[]{-1});
     }
 
 }

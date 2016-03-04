@@ -18,7 +18,7 @@ import model.ModelMap;
 public class CommandParser {
 
     private List<Entry<String, Pattern>> mySymbols;
-    private ModelMap modelMap = new ModelMap();
+    private ModelMap modelMap;
     public static final String WHITESPACE = "\\s+";
     private final String ERROR = "NO MATCH";
 

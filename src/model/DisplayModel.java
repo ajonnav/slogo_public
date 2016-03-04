@@ -18,13 +18,19 @@ public class DisplayModel extends Observable{
         return backgroundColorIndex;
     }
 
-    public void setBackgroundColorIndex (double backgroundColorIndex) {
+    public double setBackgroundColorIndex (double backgroundColorIndex) {
         this.backgroundColorIndex = backgroundColorIndex;
         updateView();
+        return backgroundColorIndex;
     }
     
     public Map<Double, String> getColorMap() {
         return colorMap;
+    }
+    
+    public void setColorMap(Map<Double, String> colorMap) {
+        this.colorMap = colorMap;
+        updateView();
     }
         
     public void updateView() {

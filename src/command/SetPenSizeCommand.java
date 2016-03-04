@@ -15,9 +15,7 @@ public class SetPenSizeCommand extends Command {
 
     @Override
     public double execute () {
-        double pixels = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().setLineWidth(pixels);
-        return pixels;
+        return modelMap.TurtleAction("setLineWidth", new double[]{getCommands().get(0).get(0).execute()});
     }
 
 }

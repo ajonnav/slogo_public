@@ -15,9 +15,7 @@ public class LeftCommand extends Command {
 
     @Override
     public double execute () {
-        double deg = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().turn(-deg);
-        return deg;
+        return -modelMap.TurtleAction("turn", new double[]{-getCommands().get(0).get(0).execute()});
     }
 
 }

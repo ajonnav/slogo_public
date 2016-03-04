@@ -15,8 +15,7 @@ public class PenDownCommand extends Command {
 
     @Override
     public double execute () {
-        modelMap.getTurtle().penDown();
-        return 1;
+        return modelMap.TurtleAction("penDown", new double[]{-1});
     }
 
 }

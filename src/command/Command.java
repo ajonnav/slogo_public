@@ -39,4 +39,16 @@ public abstract class Command {
         }
         return lastValue;
     }
+    
+    public double getConcatDouble(double[] doubles) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < doubles.length; i++) {
+            String str = Integer.toString((int)Math.abs(doubles[i]));
+            String sign = doubles[i] < 0 ? "1" : "2";
+            sb.append(sign);
+            sb.append(Integer.toString(str.length()));
+            sb.append(str);
+        }
+        return Double.parseDouble(sb.toString());
+    }
 }
