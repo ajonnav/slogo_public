@@ -15,6 +15,6 @@ public class GetPenColorCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getPenColorIndex", new double[]{-1});
+        return modelMap.TurtleAction("getPenColorIndex", null);
     }
 }

@@ -9,13 +9,12 @@ public class YCoordinateCommand extends Command {
     private ModelMap modelMap;
 
     public YCoordinateCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getPositionY", new double[]{-1});
+        return modelMap.TurtleAction("getPositionY", null);
     }
 
 }

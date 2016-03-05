@@ -7,7 +7,6 @@ import model.ModelMap;
 public class PiCommand extends Command {
 
     public PiCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
     }
 
     @Override
