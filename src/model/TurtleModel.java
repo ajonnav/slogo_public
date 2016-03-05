@@ -47,7 +47,7 @@ public class TurtleModel extends Observable {
         setChanged();
     }
     
-    public TurtleModel makeNewActiveTurtle(TurtleModel t) {
+    public TurtleModel makeNewActiveTurtle() {
         TurtleModel newTurtle = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading, colorMap, imageMap);
         newTurtle.isActive = true;
         return newTurtle;
@@ -60,6 +60,11 @@ public class TurtleModel extends Observable {
         updateView();
         return distance[0];
     }
+    
+    public double backward (double[] distance) {
+        distance[0] = -distance[0];
+        return forward(distance);
+    }
 
     public void setHeading (double[] degrees) {
         heading = degrees[0];
@@ -67,10 +72,15 @@ public class TurtleModel extends Observable {
     }
     
 
-    public double turn (double[] degree) {
+    public double turnRight (double[] degree) {
         heading -= degree[0];
         updateView();
         return degree[0];
+    }
+    
+    public double turnLeft (double[] degree) {
+        degree[0] = -degree[0];
+        return turnRight(degree);
     }
 
     public double penUp () {
@@ -177,9 +187,9 @@ public class TurtleModel extends Observable {
         return shouldClear;
     }
     
-    public double clearScreen(double shouldClear) {
+    public double clearScreen() {
         double returnValue = home();
-        setShouldClear(shouldClear);
+        setShouldClear(1);
         return returnValue;
     }
     
@@ -239,11 +249,15 @@ public class TurtleModel extends Observable {
     public boolean shouldClearStamp () {
         return shouldClearStamp;
     }
-
-    public double setShouldClearStamp (double[] shouldClearStamp) {
+    
+    public double clearStamp () {
+        return setShouldClearStamp(1);
+    }
+    
+    public double setShouldClearStamp (double shouldClearStamp) {
         if(numStamps > 0) {
             numStamps = 0;
-            this.shouldClearStamp = shouldClearStamp[0] == 1 ? true : false;
+            this.shouldClearStamp = shouldClearStamp == 1 ? true : false;
             updateView();
             return 1;
         }

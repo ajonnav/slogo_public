@@ -13,6 +13,7 @@ public class RandomCommand extends Command {
 
     @Override
     public double execute () {
-        return getCommands().get(0).get(0).execute() * (new Random()).nextDouble();
+        double random = (new Random()).nextDouble();
+        return getCommands().get(0).get(0).execute() * random;
     }
 }

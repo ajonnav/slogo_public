@@ -7,15 +7,15 @@ import model.ModelMap;
 public class XCoordinateCommand extends Command {
 
     private ModelMap modelMap;
+    public static final String command = "getPositionX";
 
     public XCoordinateCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getPositionX", new double[]{-1});
+        return modelMap.TurtleAction(command, null);
     }
 
 }

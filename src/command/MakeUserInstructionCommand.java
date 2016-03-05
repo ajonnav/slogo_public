@@ -13,8 +13,6 @@ public class MakeUserInstructionCommand extends Command {
     public MakeUserInstructionCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(3);
         this.commandsModel = modelMap.getCommands();
-        commandsModel.setVariables(text.get(1), null);
-        commandsModel.setCommands(text.get(1), null);
     }
 
     @Override

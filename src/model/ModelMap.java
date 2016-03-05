@@ -1,7 +1,10 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import command.Command;
 import view.TurtleView;
 
 
@@ -34,17 +37,44 @@ public class ModelMap {
             if(values[i] > turtles.size()) {
                 int currSize = turtles.size();
                 for(int j = 0; j < values[i] - currSize; j++) {
-                    TurtleModel newTurtle = turtles.get(0).makeNewActiveTurtle(turtles.get(0));
-                    TurtleView newView = turtleViews.get(0).makeNewTurtleView(turtleViews.get(0));
+                    TurtleModel newTurtle = turtles.get(0).makeNewActiveTurtle();
+                    TurtleView newView = turtleViews.get(0).makeNewTurtleView();
                     turtles.add(newTurtle);
                     turtleViews.add(newView);
                     newTurtle.addObserver(newView);
+                    try {
+                        newTurtle.getClass().getDeclaredMethod("updateView").invoke(newTurtle);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
             turtles.get((int) values[i]-1).setActive(1);
         }
-        lastActiveID = (int) values[values.length-1];
+        if(values.length != 0) {
+            lastActiveID = (int) values[values.length-1];
+        }
         return lastActiveID;
+    }
+    
+    public double[] getActiveTurtleIDs() {
+        List<Double> active = new ArrayList<Double>();
+        for(int i = 0; i < turtles.size(); i++) {
+            if(turtles.get(i).isActive()) {
+                active.add((double) i + 1);
+            }
+        }
+        return active.stream().mapToDouble(d -> d).toArray();
+    }
+    
+    public List<TurtleModel> getImmutableTurtles() {
+        return Collections.unmodifiableList(turtles);
+    }
+    
+    
+    public void setTurtlesActiveWithCondition() {
+        
     }
     
     public void setTurtleViews(List<TurtleView> turtleViews) {
@@ -82,25 +112,33 @@ public class ModelMap {
         this.turtles = turtles;
     }
 
-    public double TurtleAction (String command, double[] parameter) {
+    public double TurtleAction (String command, List<Command> parameters) {
         lastValue = 0;
         turtles.stream().filter(t -> t.isActive()).forEach(t -> {
             try {
-                if (parameter[0] == -1) {
+                lastActiveID = turtles.indexOf(t) + 1;
+                if (parameters == null) {
                     lastValue = (double) t.getClass().getDeclaredMethod(command).invoke(t);
                 }
-                else {
+                else {  
                     lastValue =
                             (double) t.getClass().getDeclaredMethod(command, double[].class)
-                                    .invoke(t, parameter);
+                                    .invoke(t, commandsToDoubleArray(parameters));
                 }
-                lastActiveID = turtles.indexOf(t);
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
         });
         return lastValue;
+    }
+    
+    public double[] commandsToDoubleArray(List<Command> parameters) {
+        double[] array = new double[parameters.size()];
+        for(int i = 0; i < parameters.size(); i++) {
+            array[i] = parameters.get(i).execute();
+        }
+        return array;
     }
 
     public void setHistory (HistoryPaneModel history) {

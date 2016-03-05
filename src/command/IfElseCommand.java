@@ -8,6 +8,7 @@ public class IfElseCommand extends Command {
 
     public IfElseCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(3);
+        setTakesUnlimitedParameters(false);
     }
 
     @Override
