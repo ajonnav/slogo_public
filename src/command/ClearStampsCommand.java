@@ -8,13 +8,12 @@ public class ClearStampsCommand extends Command {
     private ModelMap modelMap;
 
     public ClearStampsCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("setShouldClearStamp", new double[]{1});
+        return modelMap.TurtleAction("setShouldClearStamp", null);
     }
 
 }

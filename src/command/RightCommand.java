@@ -1,5 +1,6 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
 import model.ModelMap;
 
@@ -14,6 +15,6 @@ public class RightCommand extends Command {
     }
 
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("turn", new double[]{getCommands().get(0).get(0).execute()});
+        return modelMap.TurtleAction("turnRight", Arrays.asList(getCommands().get(0).get(0)));
     }
 }

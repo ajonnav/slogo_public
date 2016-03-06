@@ -1,5 +1,6 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
 import model.ModelMap;
 
@@ -15,7 +16,7 @@ public class SetShapeCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("setImageIndex", new double[]{getCommands().get(0).get(0).execute()});
+        return modelMap.TurtleAction("setImageIndex", Arrays.asList(getCommands().get(0).get(0)));
     }
 
 }

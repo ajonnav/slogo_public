@@ -10,11 +10,12 @@ public class HomeCommand extends Command {
 
     public HomeCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
+        setTakesUnlimitedParameters(false);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("home", new double[]{-1});
+        return modelMap.TurtleAction("home", null);
     }
 }

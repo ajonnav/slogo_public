@@ -47,7 +47,7 @@ public class TurtleModel extends Observable {
         setChanged();
     }
     
-    public TurtleModel makeNewActiveTurtle(TurtleModel t) {
+    public TurtleModel makeNewActiveTurtle() {
         TurtleModel newTurtle = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading, colorMap, imageMap);
         newTurtle.isActive = true;
         return newTurtle;
@@ -66,18 +66,26 @@ public class TurtleModel extends Observable {
         return distance[0];
     }
     
+    public double backward (double[] distance) {
+        distance[0] = -distance[0];
+        return forward(distance);
+    }
 
     public void setHeading (double[] degrees) {
         heading = degrees[0];
         updateView();
     }
-    
-    public double turn (double[] degree) {
+
+    public double turnRight (double[] degree) {
         heading -= degree[0];
         updateView();
         return degree[0];
     }
-    
+
+    public double turnLeft (double[] degree) {
+        degree[0] = -degree[0];
+        return turnRight(degree);
+    }
 
     public double penUp () {
         pen.setStatus(false);

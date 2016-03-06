@@ -9,13 +9,12 @@ public class PenDownCommand extends Command {
     private ModelMap modelMap;
 
     public PenDownCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("penDown", new double[]{-1});
+        return modelMap.TurtleAction("penDown", null);
     }
 
 }

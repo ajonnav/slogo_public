@@ -9,13 +9,12 @@ public class StampCommand extends Command {
     private ModelMap modelMap;
 
     public StampCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("stamp", new double[]{-1});
+        return modelMap.TurtleAction("stamp", null);
     }
 
 }

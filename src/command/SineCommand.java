@@ -8,6 +8,7 @@ public class SineCommand extends Command {
 
     public SineCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(1);
+        setTakesUnlimitedParameters(false);
     }
 
     @Override

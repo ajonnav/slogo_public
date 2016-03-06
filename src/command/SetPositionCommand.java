@@ -1,6 +1,7 @@
 
 package command;
 
+import java.util.Arrays;
 import java.util.List;
 import model.ModelMap;
 
@@ -16,8 +17,8 @@ public class SetPositionCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("setPosition", new double[]{getCommands().get(0).get(0).execute(), 
-                                                                 getCommands().get(1).get(0).execute()});
+        return modelMap.TurtleAction("setPosition", Arrays.asList(getCommands().get(0).get(0), 
+                                                                  getCommands().get(1).get(0)));
     }
 
 }

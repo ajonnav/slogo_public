@@ -10,12 +10,13 @@ public class HideTurtleCommand extends Command {
 
     public HideTurtleCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
+        setTakesUnlimitedParameters(false);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("hide", new double[]{-1});
+        return modelMap.TurtleAction("hide", null);
     }
 
 }

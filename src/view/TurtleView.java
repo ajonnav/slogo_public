@@ -38,7 +38,7 @@ public class TurtleView implements IView {
         addToRoot();
     }
     
-    public TurtleView makeNewTurtleView(TurtleView view) {
+    public TurtleView makeNewTurtleView() {
         return new TurtleView(initImage, root);
     }
 
@@ -115,7 +115,7 @@ public class TurtleView implements IView {
                 i.setImage(null);
             }
             stamps.clear();
-            turtleModel.setShouldClearStamp(new double[]{0});
+            turtleModel.setShouldClearStamp(0);
         }
     }
 
