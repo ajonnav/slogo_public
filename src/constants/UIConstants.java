@@ -22,7 +22,8 @@ public class UIConstants {
 	public static final double LOWER_PANE_HEIGHT = 200;
 	public static final double UPPER_PANE_WIDTH = 360;
 	public static final double UPPER_PANE_HEIGHT = 475;
-	public static final double COORDINATE_LOCATION = 500;
+	public static final double COORDINATE_LOCATION_X = 450;
+	public static final double COORDINATE_LOCATION_Y = 500;
 	public static final double VARIABLE_PANE_X = 100;
 	public static final double COLOR_SELECTOR_WIDTH = 150;
 	public static final double BACKGROUND_PICK_X = 100;

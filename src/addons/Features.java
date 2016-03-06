@@ -1,6 +1,7 @@
 package addons;
 
 import java.util.Map;
+
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -106,5 +108,9 @@ public class Features {
         MenuItem back = new MenuItem(name);
         back.setOnAction(event);
         root.getItems().add(back);
+    }
+    
+    public static Text makeText(String input){
+    	return new Text(input);
     }
 }

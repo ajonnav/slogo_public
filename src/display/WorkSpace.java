@@ -18,13 +18,17 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import addons.Features;
 import constants.UIConstants;
 
@@ -67,6 +71,7 @@ public class WorkSpace extends Screen {
         setHistoryPane();
         setHelpButton();
         setUserCommandPane();
+        //setPreferencesSaveButton();
     }
 
     public void setLang (String language) {
@@ -99,8 +104,8 @@ public class WorkSpace extends Screen {
     
     private void setTurtleCoordsBox (TurtleModel turtleModel) {
         HBox turtleVars = new HBox();
-        turtleVars.setLayoutX(UIConstants.COORDINATE_LOCATION);
-        turtleVars.setLayoutY(UIConstants.COORDINATE_LOCATION);
+        turtleVars.setLayoutX(UIConstants.COORDINATE_LOCATION_X);
+        turtleVars.setLayoutY(UIConstants.COORDINATE_LOCATION_Y);
         turtleVars.setMaxSize(UIConstants.RECT_X, UIConstants.BORDER_WIDTH);
         getRoot().getChildren().add(turtleVars);
         CoordinateView cv = new CoordinateView(turtleVars, turtleModel);
@@ -144,9 +149,8 @@ public class WorkSpace extends Screen {
         variables.myPane.setMinSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
         variables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
         variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
-        variables.myBox.getChildren().add(new Text("Variables"));
         VariableModel varModel = new VariableModel();
-        VariableView varView = new VariableView(variables.myBox, inputText,
+        VariableView varView = new VariableView(variables.myBox, new VBox(),inputText,
                                                 myLang);
         varModel.addObserver(varView);
         varModel.notifyObservers();
@@ -155,9 +159,9 @@ public class WorkSpace extends Screen {
     }
 
     private void setUserCommandPane () {
-        SPane variables = new SPane(25, 25);
-        variables.myPane.setMinSize(360, 475);
-        variables.myPane.setMaxSize(360, 475);
+        SPane variables = new SPane(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH);
+        variables.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        variables.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
         variables.myBox.getChildren().add(new Text("User Commands"));
         CommandsModel varModel = new CommandsModel();
         CommandsView varView = new CommandsView(variables.myBox, inputText);
@@ -189,5 +193,42 @@ public class WorkSpace extends Screen {
                                  WorkSpace.class.getResource("/references/help.html")
                                          .toExternalForm());
     }
-
+    
+    private void setPreferencesSaveButton(){
+        Button save = featureMaker.makeB("Save State", event -> setPrefs());
+        getRoot().getChildren().add(save);
+        save.setLayoutX(UIConstants.ZERO);
+        save.setLayoutY(UIConstants.HEIGHT-50);
+    }
+    
+    private void setPrefs(){
+    	String saveName = "SaveTest";
+    }
+    
+    private void setPenUpDownButton(){
+    	Button penUD = featureMaker.makeB("Pen Up/Down", event -> setPenUpDown());
+    	getRoot().getChildren().add(penUD);
+    	penUD.setLayoutX(150);
+    	penUD.setLayoutY(UIConstants.HEIGHT-50);
+    }
+    
+    private void setPenUpDown(){
+    	
+    }
+    
+    private void setPenThicknessInputField(){
+    
+    }
+    
+    private void setPenThickness(){
+    	
+    }
+    
+    private void setPenStyleBox(){
+    	
+    }
+    
+    private void setPenStyle(){
+    	
+    }
 }

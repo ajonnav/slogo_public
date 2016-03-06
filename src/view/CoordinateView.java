@@ -14,7 +14,9 @@ public class CoordinateView implements IView {
     private Text xCoord;
     private Text yCoord;
     private Text heading;
-
+    private Text penStat;
+    
+    //or refactor to be a single string to be shorter, will see
     public CoordinateView (HBox hb, TurtleModel turtleModel) {
         coordBox = hb;
         this.turtleModel = turtleModel;
@@ -22,14 +24,14 @@ public class CoordinateView implements IView {
         xCoord = new Text();
         yCoord = new Text();
         heading = new Text();
-
-        xCoord = updateText(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
-        yCoord = updateText(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
-        heading = updateText(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);
-
-        coordBox.getChildren().add(xCoord);
-        coordBox.getChildren().add(yCoord);
-        coordBox.getChildren().add(heading);
+        penStat = new Text();
+        
+        xCoord = updateTurtleStat(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
+        yCoord = updateTurtleStat(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
+        heading = updateTurtleStat(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);
+        penStat = updatePenStatus(turtleModel.getPenStatus(), "Pen Down", penStat);
+        		
+        coordBox.getChildren().addAll(xCoord, yCoord, heading, penStat);
     }
 
     private Double xWorkSpaceCoordinate (double modelCoordinate) {
@@ -43,18 +45,27 @@ public class CoordinateView implements IView {
     private Double workSpaceHeading (double heading) {
         return Math.abs((90 - heading) % 360);
     }
-
-    private Text updateText (Double setting, String text, Text field) {
+    
+    private Text updateTurtleStat (Double setting, String text, Text field) {
         field.setText(text + setting.toString() + "  ");
         return field;
     }
 
+    private Text updatePenStatus (boolean state, String text, Text field) {
+    	if (state)
+    		field.setText(text + ": True ");
+    	else 
+    		field.setText(text + ": False");
+    	return field;
+    }
+    
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof TurtleModel) {
-            updateText(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
-            updateText(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
-            updateText(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);
+            updateTurtleStat(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
+            updateTurtleStat(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
+            updateTurtleStat(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);
+            penStat = updatePenStatus(turtleModel.getPenStatus(), "Pen Up", penStat);
         }
     }
 }
