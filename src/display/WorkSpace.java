@@ -20,12 +20,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -74,12 +71,21 @@ public class WorkSpace extends Screen {
         setTurtle();
         setInputPane();
         setHistoryPane();
-        //setHelpButton();
         setUserCommandPane();
         setBar();
+        setTurtlePane();
     }
     
-    public void switchWS(){
+    private void setTurtlePane() {
+        SPane turtleID = new SPane(UIConstants.TURTLE_PANE_X, UIConstants.LOWER_PANE_Y);
+        turtleID.myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
+        turtleID.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
+        turtleID.myBox.getChildren().add(new Text(getResources().getString("Tur")));
+        getRoot().getChildren().add(turtleID.myPane);
+		
+	}
+
+	public void switchWS(){
     	WorkSpace ws = new WorkSpace();
     	ws.setLang(myLang);
     	ws.begin();
@@ -89,11 +95,12 @@ public class WorkSpace extends Screen {
     public void setBar(){
     	MenuMaker menuMaker = new MenuMaker();
     	MenuBar myMenu = menuMaker.getMenu();
-    	Menu fileMenu = menuMaker.addMenu("File");
-    	MenuItem helpItem = menuMaker.addMenuItem("Help", e -> openHelpPage(), fileMenu);
-    	MenuItem newItem = menuMaker.addMenuItem("New", e -> switchWS(), fileMenu);
+    	Menu fileMenu = menuMaker.addMenu(getResources().getString("FileCommand"));
+    	MenuItem helpItem = menuMaker.addMenuItem(getResources().getString("HelpTitle"), e -> openHelpPage(), fileMenu);
+    	MenuItem newItem = menuMaker.addMenuItem(getResources().getString("NewCommand"), e -> switchWS(), fileMenu);
     	getRoot().getChildren().add(myMenu);
     }
+    
     public void setLang (String language) {
         myLang = language;
         parser = new CommandParser(modelMap);
@@ -173,11 +180,10 @@ public class WorkSpace extends Screen {
     }
 
     private void setVariablePane () {
-        SPane variables = new SPane(UIConstants.VARIABLE_PANE_X, UIConstants.LOWER_PANE_Y);
-        variables.myPane.setMinSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
+        SPane variables = new SPane(25, UIConstants.LOWER_PANE_Y);
+        variables.myPane.setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
         variables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
-        variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
-        variables.myBox.getChildren().add(new Text("Variables"));
+        variables.myBox.getChildren().add(new Text(getResources().getString("Var")));
         VariableModel varModel = new VariableModel();
         VariableView varView = new VariableView(variables.myBox, inputText,
                                                 myLang);
@@ -188,8 +194,8 @@ public class WorkSpace extends Screen {
     }
 
     private void setUserCommandPane () {
-        SPane variables = new SPane(25, 25);
-        variables.myPane.setMinSize(360, 475);
+        SPane variables = new SPane(25, 35);
+        variables.myPane.setMinSize(360, 465);
         variables.myPane.setMaxSize(360, 475);
         variables.myBox.getChildren().add(new Text(getResources().getString("UCommands")));
         CommandsModel varModel = new CommandsModel();
@@ -200,19 +206,6 @@ public class WorkSpace extends Screen {
         getRoot().getChildren().add(variables.myPane);
     }
 
-    private void setHelpButton () {
-        Button help = featureMaker.makeB(getResources().getString("HelpTitle"), event -> openHelpPage());
-        getRoot().getChildren().add(help);
-        help.setLayoutX(UIConstants.ZERO);
-        help.setLayoutY(UIConstants.ZERO);
-        help.setMaxSize(UIConstants.BUTTON_H, UIConstants.BORDER_WIDTH);
-        
-        Button newW = featureMaker.makeB(getResources().getString("NewCommand"), e -> switchWS());
-        getRoot().getChildren().add(newW);
-        newW.setLayoutX(25);
-        newW.setLayoutY(650);
-        
-    }
     
     private void openHelpPage () {
         Stage myStage = new Stage();
