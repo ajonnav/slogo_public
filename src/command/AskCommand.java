@@ -3,12 +3,12 @@ package command;
 import java.util.List;
 import model.ModelMap;
 
-public class TellCommand extends Command {
+public class AskCommand extends Command {
 
     private ModelMap modelMap;
 
-    public TellCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(1);
+    public AskCommand (ModelMap modelMap, List<String> text) {
+        setNumChildren(2);
         this.modelMap = modelMap;
     }
     
@@ -18,7 +18,10 @@ public class TellCommand extends Command {
         for(int i = 0; i < getCommands().get(0).size(); i++) {
             turtles[i] = getCommands().get(0).get(i).execute();
         }
-        return modelMap.tell(turtles);
+        double[] oldValues = modelMap.getActiveTurtleIDs();
+        modelMap.tell(turtles);
+        double returnValue = loopExecute(getCommands().get(1));
+        modelMap.tell(oldValues);
+        return returnValue;
     }
-
 }

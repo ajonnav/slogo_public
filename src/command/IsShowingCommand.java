@@ -10,12 +10,13 @@ public class IsShowingCommand extends Command {
 
     public IsShowingCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
+        setTakesUnlimitedParameters(false);
         this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getShowStatus", new double[]{-1});
+        return modelMap.TurtleAction("getShowStatus", null);
     }
 
 }
