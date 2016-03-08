@@ -12,12 +12,10 @@ import javafx.scene.control.TextArea;
 
 public class HistoryPaneView implements IView {
 
-    public List<String> myHist;
     public VBox myVBox;
     public TextArea myTA;
 
     public HistoryPaneView (VBox vb, TextArea ta) {
-        myHist = new ArrayList<>();
         myVBox = vb;
         myTA = ta;
     }

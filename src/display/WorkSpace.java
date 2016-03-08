@@ -12,6 +12,7 @@ import view.CommandsView;
 import view.CoordinateView;
 import view.DisplayView;
 import view.HistoryPaneView;
+import view.TurtleIDView;
 import view.TurtleView;
 import view.VariableView;
 import javafx.scene.Group;
@@ -82,20 +83,26 @@ public class WorkSpace extends Screen {
         imageMap.put(12.0, "turtle.png");
         modelMap = new ModelMap(colorMap, imageMap);
         setDisplay();
-        setTurtle();
+        
         setInputPane();
+        setTurtle();
+        
         setHistoryPane();
         setUserCommandPane();
         setBar();
-        setTurtlePane();
     }
     
-    private void setTurtlePane() {
+    private void setTurtlePane(List<TurtleModel> tm) {
         SPane turtleID = new SPane(UIConstants.TURTLE_PANE_X, UIConstants.LOWER_PANE_Y);
         turtleID.myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
-        turtleID.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
+        turtleID.myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
         turtleID.myBox.getChildren().add(new Text(getResources().getString("Tur")));
         getRoot().getChildren().add(turtleID.myPane);
+        TurtleIDView cv = new TurtleIDView(inputText, turtleID.myBox);
+        for(int i = 0; i < tm.size(); i++) {
+            tm.get(i).addObserver(cv);
+            tm.get(i).notifyObservers();
+        }
 		
 	}
 
@@ -147,6 +154,7 @@ public class WorkSpace extends Screen {
         modelMap.setTurtles(turtles);
         modelMap.setTurtleViews(turtleViews);
         setTurtleCoordsBox(turtles);
+        setTurtlePane(turtles);
     }
     
     private void setTurtleCoordsBox (List<TurtleModel> turtles) {
@@ -192,9 +200,21 @@ public class WorkSpace extends Screen {
         hpm.notifyObservers();
         modelMap.setHistory(hpm);
     }
-
+    private void noVars(SPane variables){
+    	if(getRoot().getChildren().contains(variables.myPane)){
+    		getRoot().getChildren().remove(variables.myPane);
+    	}
+    	else{
+    		getRoot().getChildren().add(variables.myPane);
+    	}
+    }
     private void setVariablePane () {
-        SPane variables = new SPane(25, UIConstants.LOWER_PANE_Y);
+    	SPane variables = new SPane(25, UIConstants.LOWER_PANE_Y);
+    	Button disappear = featureMaker.makeB("GTFO", e -> noVars(variables));
+    	disappear.setLayoutX(40);
+    	disappear.setLayoutY(10);
+    	getRoot().getChildren().add(disappear);
+        //SPane variables = new SPane(25, UIConstants.LOWER_PANE_Y);
         variables.myPane.setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
         variables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
         variables.myBox.getChildren().add(new Text(getResources().getString("Var")));

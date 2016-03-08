@@ -1,7 +1,6 @@
 package display;
 
 import java.util.ResourceBundle;
-
 import addons.Features;
 import constants.UIConstants;
 import javafx.collections.FXCollections;
@@ -62,6 +61,7 @@ public class Splash extends Screen {
 
 	private void goToWorkSpace(String lang) {
 		WorkSpace myW = new WorkSpace();
+		//myW.adjustToFile(File file);
 		myW.setLang(lang);
 		getStage().close();
 		myW.begin();
