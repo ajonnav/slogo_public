@@ -1,5 +1,6 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
 import model.ModelMap;
 
@@ -15,9 +16,7 @@ public class SetPenColorCommand extends Command {
 
     @Override
     public double execute () {
-        double index = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().setPenColorIndex(index);
-        return index;
+        return modelMap.TurtleAction("setPenColorIndex", Arrays.asList(getCommands().get(0).get(0)));
     }
 
 }

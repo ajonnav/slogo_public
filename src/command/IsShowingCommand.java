@@ -6,16 +6,17 @@ import model.ModelMap;
 
 public class IsShowingCommand extends Command {
 
-    private boolean status;
+    private ModelMap modelMap;
 
     public IsShowingCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
-        status = modelMap.getTurtle().getShowStatus();
+        setTakesUnlimitedParameters(false);
+        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return status ? 1 : 0;
+        return modelMap.TurtleAction("getShowStatus", null);
     }
 
 }

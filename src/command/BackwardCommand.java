@@ -1,5 +1,6 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
 import model.ModelMap;
 
@@ -15,8 +16,6 @@ public class BackwardCommand extends Command {
 
     @Override
     public double execute () {
-        double dist = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().forward(-dist);
-        return dist;
+        return -modelMap.TurtleAction("backward", Arrays.asList(getCommands().get(0).get(0)));
     }
 }

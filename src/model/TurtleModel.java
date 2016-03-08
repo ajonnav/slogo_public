@@ -5,6 +5,11 @@ import java.util.Observable;
 
 
 public class TurtleModel extends Observable {
+    
+    private double turtleInitialX;
+    private double turtleInitialY;
+    private double turtleInitialHeading;
+    private boolean isActive;
     private double heading;
     private double positionX;
     private double positionY;
@@ -22,9 +27,13 @@ public class TurtleModel extends Observable {
 
     public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading, 
                         Map<Double, String> colorMap, Map<Double, String> imageMap) {
+        isActive = false;
         heading = turtleInitialHeading;
-        positionX = turtleInitialX;
+        this.turtleInitialHeading = turtleInitialHeading;
+        positionX = turtleInitialX; 
+        this.turtleInitialX = turtleInitialX;
         positionY = turtleInitialY;
+        this.turtleInitialY = turtleInitialY;
         penStatus = false;
         showStatus = true;
         shouldClear = false;
@@ -37,45 +46,121 @@ public class TurtleModel extends Observable {
         this.imageMap = imageMap;
         setChanged();
     }
+    
+    public TurtleModel makeNewActiveTurtle() {
+        TurtleModel newTurtle = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading, colorMap, imageMap);
+        newTurtle.isActive = true;
+        return newTurtle;
+    }
 
 
-    public void forward (double distance) {
-        positionX += distance * Math.cos(Math.toRadians(heading));
-        positionY += distance * Math.sin(Math.toRadians(heading));
+    public double forward (double[] distance) {
+        positionX += distance[0] * Math.cos(Math.toRadians(heading));
+        positionY += distance[0] * Math.sin(Math.toRadians(heading));
+        updateView();
+        return distance[0];
+    }
+    
+    public double backward (double[] distance) {
+        distance[0] = -distance[0];
+        return forward(distance);
+    }
+
+    public void setHeading (double[] degrees) {
+        heading = degrees[0];
         updateView();
     }
+    
 
-    public void setHeading (double degrees) {
-        heading = degrees;
+    public double turnRight (double[] degree) {
+        heading -= degree[0];
         updateView();
+        return degree[0];
+    }
+    
+    public double turnLeft (double[] degree) {
+        degree[0] = -degree[0];
+        return turnRight(degree);
     }
 
-    public void setPosition (double x, double y) {
-        positionX = x;
-        positionY = y;
-        updateView();
-    }
-
-    public void turn (double degree) {
-        setHeading(heading - degree);
-    }
-
-    public void penUp () {
+    public double penUp () {
         penStatus = false;
+        updateView();
+        return 0;
     }
 
-    public void penDown () {
+    public double penDown () {
         penStatus = true;
+        updateView();
+        return 1;
+    }
+    
+    public double stamp () {
+        this.setShouldStamp(1);
+        numStamps++;
+        return imageIndex;
     }
 
-    public void show () {
+    public double show () {
         showStatus = true;
         updateView();
+        return 1;
     }
 
-    public void hide () {
+    public double hide () {
         showStatus = false;
         updateView();
+        return 0;
+    }
+    
+    public double home () {
+        double returnValue = Math.sqrt(Math.pow((0 - positionX), 2) +
+                                       Math.pow((0 - positionY), 2));
+        positionX = 0;
+        positionY = 0;
+        heading = 90;
+        updateView();
+        return returnValue;
+    }
+    
+    public double setPosition(double[] xy) {
+        double[] oldPos = new double[]{positionX, positionY};
+        positionX = xy[0];
+        positionY = xy[1];
+        updateView();
+        return Math.sqrt(Math.pow((oldPos[0] - positionX), 2) +
+                         Math.pow((oldPos[1] - positionY), 2));
+    }
+    
+    public double setTowards(double[] xy) {
+        double lastHeading = heading;
+        if(xy[0] == positionX && xy[1] == positionY) {
+            return 0;
+        }
+        double rawDegrees = Math.toDegrees(Math.atan((xy[1] - positionY) / (xy[0] - positionX)));
+        double newHeading = xy[0] - positionX >= 0 ? rawDegrees : rawDegrees - 180;
+        heading = newHeading;
+        double headingDiff = Math.abs(lastHeading - heading);
+        updateView();
+        return headingDiff >= 180 ? 360 - headingDiff : headingDiff;
+    }
+      
+    public void setColorMap(Map<Double, String> colorMap) {
+        this.colorMap = colorMap;
+        updateView();
+    }
+    
+    public void setImageMap(Map<Double, String> imageMap) {
+        this.imageMap = imageMap;
+        updateView();
+    }
+    
+    public Map<Double, String> getColorMap() {
+        return colorMap;
+    }
+    
+    public Map<Double, String> getImageMap() {
+        return imageMap;
     }
     
     public double getPositionY () {
@@ -90,69 +175,65 @@ public class TurtleModel extends Observable {
         return heading;
     }
 
-    public boolean getPenStatus () {
-        return penStatus;
+    public double getPenStatus () {
+        return penStatus ? 1 : 0;
     }
 
-    public boolean getShowStatus () {
-        return showStatus;
+    public double getShowStatus () {
+        return showStatus ? 1 : 0;
     }
 
     public boolean shouldClear () {
         return shouldClear;
     }
     
-    public void setShouldClear(boolean shouldClear) {
-        this.shouldClear = shouldClear;
-        updateView();
+    public double clearScreen() {
+        double returnValue = home();
+        setShouldClear(1);
+        return returnValue;
     }
     
-    public void addToColorMap(double index, double r, double g, double b) {
-        colorMap.put(index, String.format("#%02X%02X%02X", (int) r, (int) g, (int) b));
+    public void setShouldClear(double shouldClear) {
+        this.shouldClear = shouldClear == 1 ? true : false;
         updateView();
-    }
-    
-    public Map<Double, String> getColorMap() {
-        return colorMap;
-    }
-
-    public Map<Double, String> getImageMap () {
-        return imageMap;
     }
 
     public double getPenColorIndex () {
         return penColorIndex;
     }
 
-    public void setPenColorIndex (double penColorIndex) {
-        this.penColorIndex = penColorIndex;
+    public double setPenColorIndex (double[] penColorIndex) {
+        this.penColorIndex = penColorIndex[0];
         updateView();
+        return penColorIndex[0];
     }
 
     public double getImageIndex () {
         return imageIndex;
     }
 
-    public void setImageIndex (double imageIndex) {
-        this.imageIndex = imageIndex;
+    public double setImageIndex (double[] imageIndex) {
+        this.imageIndex = imageIndex[0];
         updateView();
+        return imageIndex[0];
     }
 
     public double getLineWidth () {
         return lineWidth;
     }
 
-    public void setLineWidth (double lineWidth) {
-        this.lineWidth = lineWidth;
+    public double setLineWidth (double[] lineWidth) {
+        this.lineWidth = lineWidth[0];
         updateView();
+        return lineWidth[0];
     }
 
     public boolean shouldStamp () {
         return shouldStamp;
     }
 
-    public void setShouldStamp (boolean shouldStamp) {
-        this.shouldStamp = shouldStamp;
+    public void setShouldStamp (double shouldStamp) {
+        this.shouldStamp = shouldStamp == 1 ? true : false;
         updateView();
     }
     
@@ -168,15 +249,32 @@ public class TurtleModel extends Observable {
     public boolean shouldClearStamp () {
         return shouldClearStamp;
     }
-
-    public void setShouldClearStamp (boolean shouldClearStamp) {
-        this.shouldClearStamp = shouldClearStamp;
-        updateView();
+    
+    public double clearStamp () {
+        return setShouldClearStamp(1);
     }
     
+    public double setShouldClearStamp (double shouldClearStamp) {
+        if(numStamps > 0) {
+            numStamps = 0;
+            this.shouldClearStamp = shouldClearStamp == 1 ? true : false;
+            updateView();
+            return 1;
+        }
+        return 0;
+    }
+    
+    public boolean isActive () {
+        return isActive;
+    }
+
+    public void setActive (double isActive) {
+        this.isActive = isActive == 1 ? true : false;
+    }
+  
     public void updateView() {
         setChanged();
         notifyObservers();
     }
-
+    
 }

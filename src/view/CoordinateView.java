@@ -9,7 +9,6 @@ import model.TurtleModel;
 public class CoordinateView implements IView {
 
     private HBox coordBox;
-    private TurtleModel turtleModel;
 
     private Text xCoord;
     private Text yCoord;
@@ -17,21 +16,20 @@ public class CoordinateView implements IView {
     private Text penStat;
     
     //or refactor to be a single string to be shorter, will see
-    public CoordinateView (HBox hb, TurtleModel turtleModel) {
+    public CoordinateView (HBox hb, double penState, double initX, double initY, double initHeading) {
         coordBox = hb;
-        this.turtleModel = turtleModel;
-
         xCoord = new Text();
         yCoord = new Text();
         heading = new Text();
         penStat = new Text();
         
-        xCoord = updateTurtleStat(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
-        yCoord = updateTurtleStat(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
-        heading = updateTurtleStat(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);
-        penStat = updatePenStatus(turtleModel.getPenStatus(), "Pen Down", penStat);
+        xCoord = updateTurtleStat(initX, "X Coord: ", xCoord);
+        yCoord = updateTurtleStat(initY, "Y Coord: ", yCoord);
+        heading = updateTurtleStat(initHeading, "Heading: ", heading);
+        penStat = updatePenStatus(penState, "Pen Down", penStat);
         		
         coordBox.getChildren().addAll(xCoord, yCoord, heading, penStat);
+
     }
 
     private Double xWorkSpaceCoordinate (double modelCoordinate) {
@@ -51,8 +49,8 @@ public class CoordinateView implements IView {
         return field;
     }
 
-    private Text updatePenStatus (boolean state, String text, Text field) {
-    	if (state)
+    private Text updatePenStatus (double status, String text, Text field) {
+    	if (status==1)
     		field.setText(text + ": True ");
     	else 
     		field.setText(text + ": False");
@@ -62,10 +60,11 @@ public class CoordinateView implements IView {
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof TurtleModel) {
+        	TurtleModel turtleModel = (TurtleModel) o;
             updateTurtleStat(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
             updateTurtleStat(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
             updateTurtleStat(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);
-            penStat = updatePenStatus(turtleModel.getPenStatus(), "Pen Up", penStat);
+            updatePenStatus(turtleModel.getPenStatus(), "Pen Down", penStat);
         }
     }
 }

@@ -1,5 +1,6 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
 import model.ModelMap;
 
@@ -15,9 +16,7 @@ public class SetHeadingCommand extends Command {
 
     @Override
     public double execute () {
-        double heading = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().setHeading(heading);
-        return heading;
+        return modelMap.TurtleAction("setHeading", Arrays.asList(getCommands().get(0).get(0)));
     }
 
 }

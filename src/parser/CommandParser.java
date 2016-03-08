@@ -18,13 +18,15 @@ import model.ModelMap;
 public class CommandParser {
 
     private List<Entry<String, Pattern>> mySymbols;
-    private ModelMap modelMap = new ModelMap();
+    private ModelMap modelMap;
     public static final String WHITESPACE = "\\s+";
     private final String ERROR = "NO MATCH";
+    private List<Command> commandsList;
 
     public CommandParser (ModelMap modelMap) {
         this.mySymbols = new ArrayList<>();
         this.modelMap = modelMap;
+        this.commandsList = new ArrayList<>();
     }
 
     public void addPatterns (String syntax) {
@@ -36,19 +38,19 @@ public class CommandParser {
             mySymbols.add(new SimpleEntry<>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
         }
     }
-
+    
     public void parseText (String text) {
-    	text = text.trim();
-    	if(text.equals("")) {
-    		return;
-    	}
-    	modelMap.getHistory().addToHistory(text);
-    	try {
-    		List<String> commands = preProcess(text);
-	        List<Command> commandsList = parseFullText(commands);
-	        double returnValue = 0;
-	        for (int i = 0; i < commandsList.size(); i++) {
-                returnValue = commandsList.get(i).execute();
+        text = text.trim();
+        if(text.equals("")) {
+            return;
+        }
+        modelMap.getHistory().addToHistory(text);
+        try {
+             List<String> commands = preProcess(text);
+             commandsList = parseFullText(commands);
+             double returnValue = 0;
+             for (int i = 0; i < commandsList.size(); i++) {
+                 returnValue = commandsList.get(i).execute();
             }
             modelMap.getHistory().addToHistory(Double.toString(returnValue));
         }
@@ -58,18 +60,19 @@ public class CommandParser {
     }
 
     public List<String> preProcess (String text) {
-        StringBuilder sbText = new StringBuilder(text);
+        StringBuilder sbText = new StringBuilder();
         int i = 0;
-        while (i < sbText.length()) {
-            if (sbText.charAt(i) == '#') {
-                sbText.deleteCharAt(i);
-                while (sbText.charAt(i) != '\n' && i < sbText.length() - 1) {
-                    sbText.deleteCharAt(i);
+        while (i < text.length()) {
+            if (text.charAt(i) == '#') {
+                i++;
+                while (text.charAt(i) != '\n' && i < text.length() - 1) {
+                    i++;
                 }
             }
+            sbText.append(text.charAt(i));
             i++;
         }
-        return new ArrayList<String>(Arrays.asList(sbText.toString().split(WHITESPACE)));
+        return new ArrayList<String>(Arrays.asList(sbText.toString().trim().split(WHITESPACE)));
     }
 
     public List<Command> parseFullText (List<String> text) {
@@ -84,33 +87,59 @@ public class CommandParser {
         String currString = text.get(0);
         String currName = getClassName(currString);
         if(currName.equalsIgnoreCase("command.NO MATCHCommand")) {
-        	throw new SLogoSyntaxException("Command not found");
+                throw new SLogoSyntaxException("Command not found");
         }
+        Command command = null;
+        if(currString.equals("(")) {
+            command = processUnlimitedParameters(text);
+        }
+        else {
+            command = constructCurrCommand(text, currName);
+            text.remove(0);
+            command.prepare(getCommandParams(text, command.getNumChildren(), "[", "]"));
+        }
+        return command;
+    }
+    
+    public Command processUnlimitedParameters(List<String> text) {
+        Command command = null;
+        text.remove(0);
+        command = constructCurrCommand(text, getClassName(text.get(0)));
+        text.remove(0);
+        text.add(0, "(");
+        if(command.takesUnlimitedParameters()) {
+            command.prepare(getCommandParams(text, 1, "(", ")" ));
+        }     
+        else {
+            throw new SLogoSyntaxException("This command can't take unlimited parameters");
+        }
+        return command;
+    }
+    
+    public Command constructCurrCommand(List<String> text, String currName) {
         Command command = null;
         try {
             command = ((Command) Class.forName(currName).getConstructor(ModelMap.class, List.class)
                     .newInstance(modelMap, Collections.unmodifiableList(text)));
         }
         catch (SLogoSyntaxException ee) {
-        	throw ee;
+            throw ee;
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        text.remove(0);
-        command.prepare(getCommandParams(text, command.getNumChildren()));
         return command;
     }
 
-    public List<List<Command>> getCommandParams (List<String> text, int numChildren) {
+    public List<List<Command>> getCommandParams (List<String> text, int numChildren, String open, String close) {
         List<List<Command>> commandParams = new ArrayList<List<Command>>();
         for (int i = 0; i < numChildren; i++) {
-        	if(text.isEmpty()) {
-        		throw new SLogoSyntaxException("Incomplete Command");
-        	}
-            if (text.get(0).equals("[")) {
+            if(text.isEmpty()) {
+                throw new SLogoSyntaxException("Incomplete Command");
+            }
+            if (text.get(0).equals(open)) {
                 text.remove(0);
-                commandParams.add(parseFullText(getBracketed(text)));
+                commandParams.add(parseFullText(getBracketed(text, open, close)));
                 text.remove(0);
             }
             else {
@@ -120,14 +149,14 @@ public class CommandParser {
         return commandParams;
     }
 
-    public List<String> getBracketed (List<String> text) {
+    public List<String> getBracketed (List<String> text, String openSymbol, String closeSymbol) {
         List<String> bracketed = new ArrayList<String>();
         int bracketNumber = 1;
         while (bracketNumber != 0) {
-            if (text.get(0).equals("[")) {
+            if (text.get(0).equals(openSymbol)) {
                 bracketNumber++;
             }
-            else if (text.get(0).equals("]")) {
+            else if (text.get(0).equals(closeSymbol)) {
                 bracketNumber--;
                 if (bracketNumber == 0) {
                     break;

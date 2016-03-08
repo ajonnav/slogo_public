@@ -1,9 +1,9 @@
 
 package command;
 
+import java.util.Arrays;
 import java.util.List;
 import model.ModelMap;
-import model.TurtleModel;
 
 
 public class SetTowardsCommand extends Command {
@@ -17,17 +17,8 @@ public class SetTowardsCommand extends Command {
 
     @Override
     public double execute () {
-        double xPos = getCommands().get(0).get(0).execute();
-        double yPos = getCommands().get(1).get(0).execute();
-        TurtleModel turtleModel = modelMap.getTurtle();
-        double lastHeading = turtleModel.getHeading();
-        double turtleXPos = turtleModel.getPositionX();
-        double turtleYPos = turtleModel.getPositionY();
-        double rawDegrees = Math.toDegrees(Math.atan((yPos - turtleYPos) / (xPos - turtleXPos)));
-        double newHeading = xPos - turtleXPos >= 0 ? rawDegrees : rawDegrees - 180;
-        turtleModel.setHeading(newHeading);
-        double headingDiff = Math.abs(lastHeading - turtleModel.getHeading());
-        return headingDiff >= 180 ? 360 - headingDiff : headingDiff;
+        return modelMap.TurtleAction("setTowards", Arrays.asList(getCommands().get(0).get(0),
+                                                                 getCommands().get(1).get(0)));
     }
 
 }

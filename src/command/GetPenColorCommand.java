@@ -6,15 +6,15 @@ import model.ModelMap;
 
 public class GetPenColorCommand extends Command {
 
-    private double index;
+    private ModelMap modelMap;
 
     public GetPenColorCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
-        index = modelMap.getTurtle().getPenColorIndex();
+        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return index;
+        return modelMap.TurtleAction("getPenColorIndex", null);
     }
 }

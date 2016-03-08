@@ -5,8 +5,9 @@ import java.util.List;
 
 public abstract class Command {
 
-    private int numChildren;
+    private int numChildren = 0;
     private String name;
+    private boolean takesUnlimitedParameters = false;
     private List<List<Command>> commands;
 
     public abstract double execute ();
@@ -39,4 +40,13 @@ public abstract class Command {
         }
         return lastValue;
     }
+    
+    public boolean takesUnlimitedParameters () {
+        return takesUnlimitedParameters;
+    }
+
+    public void setTakesUnlimitedParameters (boolean takesUnlimitedParameters) {
+        this.takesUnlimitedParameters = takesUnlimitedParameters;
+    }
+
 }

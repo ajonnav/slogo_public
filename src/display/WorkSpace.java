@@ -8,6 +8,9 @@ import model.TurtleModel;
 import model.VariableModel;
 import pane.SPane;
 import parser.CommandParser;
+import preferences.PrefLoader;
+import preferences.PrefSetter;
+import preferences.PrefWriter;
 import view.CommandsView;
 import view.CoordinateView;
 import view.DisplayView;
@@ -19,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -26,8 +30,11 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import addons.Features;
 import constants.UIConstants;
@@ -43,7 +50,6 @@ public class WorkSpace extends Screen {
     private ModelMap modelMap;
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
-    
 
     @Override
     public void setUpScene () {
@@ -58,28 +64,43 @@ public class WorkSpace extends Screen {
         colorMap.put(3.0, "#5df45d");
         colorMap.put(4.0, "#7182a7");
         colorMap.put(5.0, "#b73547");
+        colorMap.put(6.0, "#849775");
+        colorMap.put(7.0, "#1518b4");
+        colorMap.put(8.0, "#5df45d");
+        colorMap.put(9.0, "#7182a7");
+        colorMap.put(10.0, "#b73547");
+        colorMap.put(11.0, "#b73547");
+        colorMap.put(12.0, "#b73547");
         imageMap = new HashMap<Double, String>();
         imageMap.put(1.0, "black.png");
         imageMap.put(2.0, "blue.png");
         imageMap.put(3.0, "green.png");
         imageMap.put(4.0, "red.png");
         imageMap.put(5.0, "turtle.png");
-        modelMap = new ModelMap();
+        imageMap.put(6.0, "black.png");
+        imageMap.put(7.0, "blue.png");
+        imageMap.put(8.0, "green.png");
+        imageMap.put(9.0, "red.png");
+        imageMap.put(10.0, "turtle.png");
+        imageMap.put(11.0, "red.png");
+        imageMap.put(12.0, "turtle.png");
+        modelMap = new ModelMap(colorMap, imageMap);
         setDisplay();
         setTurtle();
         setInputPane();
         setHistoryPane();
         setHelpButton();
         setUserCommandPane();
-        //setPreferencesSaveButton();
+        setPenUpDownButton();
     }
 
     public void setLang (String language) {
-        myLang = language;
+        setMyLang(language);
         parser = new CommandParser(modelMap);
-        parser.addPatterns("resources/languages/" + myLang);
+        parser.addPatterns("resources/languages/" + getMyLang());
         parser.addPatterns("resources/languages/Syntax");
         setVariablePane();
+        setPreferencesSaveButton();
     }
     
     private void setDisplay() {
@@ -91,26 +112,34 @@ public class WorkSpace extends Screen {
     }
     
     private void setTurtle () {
-        double turtleInitialHeading = UIConstants.INITIAL_HEADING;
         String turtleImage = "turtle.png";
-        TurtleModel turtleModel = new TurtleModel(0, 0, turtleInitialHeading, colorMap, imageMap); 
-        TurtleView turtleView = new TurtleView(turtleImage, getRoot(), Color.BLACK);
-        turtleModel.addObserver(turtleView);
-        turtleModel.notifyObservers();
-        turtleModel.penDown();
-        modelMap.setTurtle(turtleModel);
-        setTurtleCoordsBox(turtleModel);
+        List<TurtleModel> turtles = new ArrayList<TurtleModel>();
+        List<TurtleView> turtleViews = new ArrayList<TurtleView>();
+        for(int i = 0; i < 3; i++) {
+            TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING, colorMap, imageMap); 
+            TurtleView turtleView = new TurtleView(turtleImage, getRoot());
+            turtleModel.addObserver(turtleView);
+            turtleModel.notifyObservers();
+            turtleModel.penDown();
+            turtles.add(turtleModel);
+            turtleViews.add(turtleView);
+        }
+        modelMap.setTurtles(turtles);
+        modelMap.setTurtleViews(turtleViews);
+        setTurtleCoordsBox(turtles);
     }
     
-    private void setTurtleCoordsBox (TurtleModel turtleModel) {
+    private void setTurtleCoordsBox (List<TurtleModel> turtles) {
         HBox turtleVars = new HBox();
         turtleVars.setLayoutX(UIConstants.COORDINATE_LOCATION_X);
         turtleVars.setLayoutY(UIConstants.COORDINATE_LOCATION_Y);
         turtleVars.setMaxSize(UIConstants.RECT_X, UIConstants.BORDER_WIDTH);
         getRoot().getChildren().add(turtleVars);
-        CoordinateView cv = new CoordinateView(turtleVars, turtleModel);
-        turtleModel.addObserver(cv);
-        turtleModel.notifyObservers();
+        CoordinateView cv = new CoordinateView(turtleVars, 1, 0, 0, UIConstants.INITIAL_HEADING);
+        for(int i = 0; i < turtles.size(); i++) {
+            turtles.get(i).addObserver(cv);
+            turtles.get(i).notifyObservers();
+        }
     }
 
     private void setInputPane () {
@@ -151,7 +180,7 @@ public class WorkSpace extends Screen {
         variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
         VariableModel varModel = new VariableModel();
         VariableView varView = new VariableView(variables.myBox, new VBox(),inputText,
-                                                myLang);
+                                                getMyLang());
         varModel.addObserver(varView);
         varModel.notifyObservers();
         modelMap.setVariable(varModel);
@@ -170,7 +199,7 @@ public class WorkSpace extends Screen {
         modelMap.setCommands(varModel);
         getRoot().getChildren().add(variables.myPane);
     }
-
+    
     private void setHelpButton () {
         Button help = featureMaker.makeB("Help", event -> openHelpPage());
         getRoot().getChildren().add(help);
@@ -195,21 +224,37 @@ public class WorkSpace extends Screen {
     }
     
     private void setPreferencesSaveButton(){
-        Button save = featureMaker.makeB("Save State", event -> setPrefs());
+        Button save = featureMaker.makeB("Set State", event -> setPrefs());
         getRoot().getChildren().add(save);
         save.setLayoutX(UIConstants.ZERO);
-        save.setLayoutY(UIConstants.HEIGHT-50);
+        save.setLayoutY(UIConstants.HEIGHT-25);
     }
     
     private void setPrefs(){
-    	String saveName = "SaveTest";
+    	String newTitle = newTextInput("File Name", "Save File", "Enter New File Name", "File:");
+    	PrefWriter setter = new PrefWriter(modelMap, newTitle, myLang);
+    	setter.writeToSrl();
     }
+    
+    private String newTextInput(String holder, String title, String header, String prompt) {
+		TextInputDialog dialog = new TextInputDialog(holder);
+		dialog.setTitle(title);
+		dialog.setHeaderText(header);
+		dialog.setContentText(prompt);
+		Optional<String> input = dialog.showAndWait();
+		if (input.isPresent()) {
+			String newTitle = input.get();
+			return newTitle;
+		} else {
+			return null;
+		}
+	}
     
     private void setPenUpDownButton(){
     	Button penUD = featureMaker.makeB("Pen Up/Down", event -> setPenUpDown());
-    	getRoot().getChildren().add(penUD);
     	penUD.setLayoutX(150);
-    	penUD.setLayoutY(UIConstants.HEIGHT-50);
+    	penUD.setLayoutY(UIConstants.HEIGHT-25);
+    	getRoot().getChildren().add(penUD);
     }
     
     private void setPenUpDown(){
@@ -217,7 +262,7 @@ public class WorkSpace extends Screen {
     }
     
     private void setPenThicknessInputField(){
-    
+    	
     }
     
     private void setPenThickness(){
@@ -231,4 +276,12 @@ public class WorkSpace extends Screen {
     private void setPenStyle(){
     	
     }
+
+	public String getMyLang() {
+		return myLang;
+	}
+
+	public void setMyLang(String myLang) {
+		this.myLang = myLang;
+	}
 }

@@ -1,5 +1,6 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
 import model.ModelMap;
 
@@ -15,9 +16,7 @@ public class SetPenSizeCommand extends Command {
 
     @Override
     public double execute () {
-        double pixels = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().setLineWidth(pixels);
-        return pixels;
+        return modelMap.TurtleAction("setLineWidth", Arrays.asList(getCommands().get(0).get(0)));
     }
 
 }

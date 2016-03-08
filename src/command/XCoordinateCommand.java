@@ -6,16 +6,16 @@ import model.ModelMap;
 
 public class XCoordinateCommand extends Command {
 
-    private double x;
+    private ModelMap modelMap;
+    public static final String command = "getPositionX";
 
     public XCoordinateCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
-        x = modelMap.getTurtle().getPositionX();
+        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return x;
+        return modelMap.TurtleAction(command, null);
     }
 
 }

@@ -15,9 +15,7 @@ public class SetBackgroundCommand extends Command {
 
     @Override
     public double execute () {
-        double index = getCommands().get(0).get(0).execute();
-        modelMap.getDisplay().setBackgroundColorIndex(index);
-        return index;
+        return modelMap.getDisplay().setBackgroundColorIndex(getCommands().get(0).get(0).execute());
     }
 
 }

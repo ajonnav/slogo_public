@@ -1,5 +1,8 @@
 package display;
 
+import java.io.File;
+
+import preferences.PrefLoader;
 import addons.Features;
 import constants.UIConstants;
 import javafx.collections.FXCollections;
@@ -10,6 +13,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class Splash extends Screen {
 	
@@ -30,6 +35,7 @@ public class Splash extends Screen {
 		
 		setTitle();
 		
+		loadPreferencesButton();
 	}
 	
 	private void setTitle() {
@@ -52,13 +58,40 @@ public class Splash extends Screen {
 	private void setButton() {
 		Button go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToWorkSpace((String) languageCBox.getValue()));
 		getRoot().getChildren().add(go);
+		go.setDisable(true);
 		go.setLayoutX(600);
 		go.setLayoutY(425);
 		go.setPrefSize(100, 50);
 	}
 
+	private void loadPreferencesButton(){
+		Button preferences = featMaker.makeB("Load Pref", e -> loadPrefs());
+		preferences.setLayoutX(50);
+		preferences.setLayoutY(50);
+		getRoot().getChildren().add(preferences);
+	}
+	
+	private void loadPrefs(){
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Choose .srl file");
+		fileChooser.getExtensionFilters().addAll(
+				new ExtensionFilter("Image Files", "*.srl"));
+		
+		File selectedFile = fileChooser.showOpenDialog(getStage());
+
+		PrefLoader loader = new PrefLoader();
+		loader.load(selectedFile);
+	}
+	
 	private void goToWorkSpace(String lang) {
 		WorkSpace myW = new WorkSpace();
+		/*
+		if (file != null)
+			saveState = prefLoader(file)
+			
+		else 
+			saveState = DEFAULT
+		*/
 		myW.setLang(lang);
 		getStage().close();
 		myW.begin();

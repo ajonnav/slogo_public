@@ -6,15 +6,15 @@ import model.ModelMap;
 
 public class GetShapeCommand extends Command {
 
-    private double index;
+    private ModelMap modelMap;
 
     public GetShapeCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
-        index = modelMap.getTurtle().getImageIndex();
+        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return index;
+        return modelMap.TurtleAction("getImageIndex", null);
     }
 }

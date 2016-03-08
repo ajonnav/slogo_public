@@ -6,15 +6,15 @@ import model.ModelMap;
 
 public class HeadingCommand extends Command {
 
-    private double heading;
+    private ModelMap modelMap;
 
     public HeadingCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(0);
-        heading = modelMap.getTurtle().getHeading();
+        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return heading;
+        return modelMap.TurtleAction("getHeading", null);
     }
 }
