@@ -19,6 +19,7 @@ public class VariableView implements IView{
 	private VBox varBox;
 	private TextArea myTA;
 	private ResourceBundle myBundle;
+	private ResourceBundle myResources;
 	
 	public VariableView(VBox vbMain, VBox vbVar, TextArea ta, String language) {
 		vars = new HashMap<String, Double>();
@@ -27,8 +28,9 @@ public class VariableView implements IView{
 		myTA = ta;
 		String myLang = language;
 		myBundle = ResourceBundle.getBundle(UIConstants.RSRC_LANG + myLang);
-		
-		vbMain.getChildren().add(Features.makeText("Variables"));
+		myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
+				
+		vbMain.getChildren().add(Features.makeText(myResources.getString("Var")));
 		vbMain.getChildren().add(varBox);
 	}
 

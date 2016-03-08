@@ -3,6 +3,9 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.ResourceBundle;
+
+import constants.UIConstants;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.HistoryPaneModel;
@@ -14,10 +17,12 @@ public class HistoryPaneView implements IView {
 
     public VBox myVBox;
     public TextArea myTA;
-
+    private ResourceBundle myResources;
+    
     public HistoryPaneView (VBox vb, TextArea ta) {
         myVBox = vb;
         myTA = ta;
+        myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
     }
 
     @Override
@@ -31,7 +36,7 @@ public class HistoryPaneView implements IView {
             		Hyperlink past = new Hyperlink(">> " + item);
             		past.setOnAction(event -> {
             			myTA.appendText(item);
-            			past.setStyle("-fx-color: black;");
+            			past.setStyle(myResources.getString("black"));
             		});
             		myVBox.getChildren().add(past);
             	}
