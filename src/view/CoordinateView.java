@@ -1,10 +1,14 @@
 package view;
 
 import java.util.Observable;
+
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import model.TurtleModel;
 
+import java.util.ResourceBundle;
+
+import constants.UIConstants;
 
 public class CoordinateView implements IView {
 
@@ -14,6 +18,7 @@ public class CoordinateView implements IView {
     private Text yCoord;
     private Text heading;
     private Text penStat;
+    private ResourceBundle myResources;
     
     //or refactor to be a single string to be shorter, will see
     public CoordinateView (HBox hb, double penState, double initX, double initY, double initHeading) {
@@ -22,11 +27,12 @@ public class CoordinateView implements IView {
         yCoord = new Text();
         heading = new Text();
         penStat = new Text();
+        myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
         
-        xCoord = updateTurtleStat(initX, "X Coord: ", xCoord);
-        yCoord = updateTurtleStat(initY, "Y Coord: ", yCoord);
-        heading = updateTurtleStat(initHeading, "Heading: ", heading);
-        penStat = updatePenStatus(penState, "Pen Down", penStat);
+        xCoord = updateTurtleStat(initX, myResources.getString("xcoord"), xCoord);
+        yCoord = updateTurtleStat(initY, myResources.getString("ycoord"), yCoord);
+        heading = updateTurtleStat(initHeading, myResources.getString("heading"), heading);
+        penStat = updatePenStatus(penState, myResources.getString("pendu"), penStat);
         		
         coordBox.getChildren().addAll(xCoord, yCoord, heading, penStat);
 
@@ -51,9 +57,9 @@ public class CoordinateView implements IView {
 
     private Text updatePenStatus (double status, String text, Text field) {
     	if (status==1)
-    		field.setText(text + ": True ");
+    		field.setText(text + myResources.getString("true"));
     	else 
-    		field.setText(text + ": False");
+    		field.setText(text + myResources.getString("false"));
     	return field;
     }
     
@@ -61,10 +67,10 @@ public class CoordinateView implements IView {
     public void update (Observable o, Object arg) {
         if (o instanceof TurtleModel) {
         	TurtleModel turtleModel = (TurtleModel) o;
-            updateTurtleStat(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
-            updateTurtleStat(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
-            updateTurtleStat(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);
-            updatePenStatus(turtleModel.getPenStatus(), "Pen Down", penStat);
+            updateTurtleStat(xWorkSpaceCoordinate(turtleModel.getPositionX()), myResources.getString("xcoord"), xCoord);
+            updateTurtleStat(yWorkSpaceCoordinate(turtleModel.getPositionY()), myResources.getString("ycoord"), yCoord);
+            updateTurtleStat(workSpaceHeading(turtleModel.getHeading()), myResources.getString("heading"), heading);
+            updatePenStatus(turtleModel.getPenStatus(), myResources.getString("pendu"), penStat);
         }
     }
 }

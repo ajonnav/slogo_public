@@ -7,14 +7,12 @@ import java.io.ObjectInputStream;
 
 public class PrefLoader {
 	private saveState e;
-	private String path;
 	
 	public PrefLoader(){
 	}
 	
 	public void load(File loadingFile){
 		e = null;
-		//path = "src/preferences/" + "test" + ".srl";
 	    try
 	    {
 	       FileInputStream fileIn = new FileInputStream(loadingFile);

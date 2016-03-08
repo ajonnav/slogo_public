@@ -8,8 +8,6 @@ import model.TurtleModel;
 import model.VariableModel;
 import pane.SPane;
 import parser.CommandParser;
-import preferences.PrefLoader;
-import preferences.PrefSetter;
 import preferences.PrefWriter;
 import view.CommandsView;
 import view.CoordinateView;
@@ -25,7 +23,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -266,15 +263,6 @@ public class WorkSpace extends Screen {
         varModel.notifyObservers();
         modelMap.setCommands(varModel);
         getRoot().getChildren().add(variables.myPane);
-    }
-
-    
-    private void setHelpButton () {
-        Button help = featureMaker.makeB("Help", event -> openHelpPage());
-        getRoot().getChildren().add(help);
-        help.setLayoutX(UIConstants.ZERO);
-        help.setLayoutY(UIConstants.ZERO);
-        help.setMaxSize(UIConstants.BUTTON_H, UIConstants.BORDER_WIDTH);
     }
     
     private void openHelpPage () {
