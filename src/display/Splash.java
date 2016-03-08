@@ -20,7 +20,7 @@ public class Splash extends Screen {
 	
 	private Features featMaker;
 	private ComboBox<String> languageCBox;
-
+	private Button go;
 	@Override
 	public void setUpScene() {
 		getRoot().getStylesheets().add(UIConstants.DEFAULT_RESOURCE + UIConstants.SPLASH_CSS);
@@ -57,7 +57,7 @@ public class Splash extends Screen {
 	}
 
 	private void setButton() {
-		Button go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToWorkSpace((String) languageCBox.getValue()));
+		go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToWorkSpace((String) languageCBox.getValue()));
 		getRoot().getChildren().add(go);
 		go.setDisable(true);
 		go.setLayoutX(600);
@@ -82,6 +82,7 @@ public class Splash extends Screen {
 
 		PrefLoader loader = new PrefLoader();
 		loader.load(selectedFile);
+		go.setDisable(false);
 	}
 	
 	private void goToWorkSpace(String lang) {
