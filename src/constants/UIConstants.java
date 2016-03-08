@@ -13,9 +13,12 @@ public class UIConstants {
 	
 	public static final double WIDTH = 1300;
 	public static final double HEIGHT = 750;
+	public static final double SWIDTH = 500;
+	public static final double SHEIGHT = 500;
 	public static final double RECT_W = 600;
 	public static final double CANVAS_SIZE = 475;
-	public static final double BORDER_WIDTH = 25; 
+	public static final double BORDER_WIDTH = 25;
+	public static final double METHODS_Y = 35; 
 	public static final double INITIAL_X = 385;
 	public static final double INITIAL_Y = 0;
 	public static final double INITIAL_HEADING = 90;

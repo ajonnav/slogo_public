@@ -27,7 +27,7 @@ public class Splash extends Screen {
 		
 		featMaker = new Features();
 		
-		setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT, Color.GRAY));
+		setScene(new Scene(getRoot(), UIConstants.SWIDTH, UIConstants.SHEIGHT, Color.GRAY));
 		
 		setLangBox();
 		
@@ -40,17 +40,17 @@ public class Splash extends Screen {
 	
 
 	private void setTitle() {
-		Rectangle welRect = new Rectangle(500, 200);
-		welRect.setX(400);
-		welRect.setY(200);
+		Rectangle welRect = new Rectangle(300, 200);
+		welRect.setX(100);
+		welRect.setY(50);
 		welRect.setArcHeight(UIConstants.ARC);
 		welRect.setArcWidth(UIConstants.ARC);
 		getRoot().getChildren().add(welRect);
 		welRect.getStyleClass().add("welRect");
 		
 		Text welText = new Text(getResources().getString(UIConstants.TITLE));
-		welText.setLayoutX(435);
-		welText.setLayoutY(300);
+		welText.setLayoutX(110);
+		welText.setLayoutY(150);
 		welText.getStyleClass().add("welText");
 		getRoot().getChildren().add(welText);
 		
@@ -60,15 +60,15 @@ public class Splash extends Screen {
 		go = featMaker.makeB(getResources().getString(UIConstants.GO), e -> goToWorkSpace((String) languageCBox.getValue()));
 		getRoot().getChildren().add(go);
 		go.setDisable(true);
-		go.setLayoutX(600);
-		go.setLayoutY(425);
+		go.setLayoutX(200);
+		go.setLayoutY(355);
 		go.setPrefSize(100, 50);
 	}
 
 	private void loadPreferencesButton(){
 		Button preferences = featMaker.makeB("Load Pref", e -> loadPrefs());
-		preferences.setLayoutX(50);
-		preferences.setLayoutY(50);
+		preferences.setLayoutX(100);
+		preferences.setLayoutY(300);
 		getRoot().getChildren().add(preferences);
 	}
 	
@@ -113,8 +113,8 @@ public class Splash extends Screen {
 			        getResources().getString(UIConstants.SPA)
 			    );
 		languageCBox = featMaker.makeCBox(options);
-		languageCBox.setLayoutX(592);
-		languageCBox.setLayoutY(400);
+		languageCBox.setLayoutX(300);
+		languageCBox.setLayoutY(300);
 		languageCBox.setValue(getResources().getString(UIConstants.ENG));
 		getRoot().getChildren().add(languageCBox);
 

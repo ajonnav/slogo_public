@@ -55,6 +55,12 @@ public class WorkSpace extends Screen {
     private ModelMap modelMap;
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
+    
+    private SPane userHistory;
+    private SPane userMethods;
+    private SPane userVariables;
+    private SPane userTurtles;
+    private SPane userInput;
 
     @Override
     public void setUpScene () {
@@ -91,38 +97,18 @@ public class WorkSpace extends Screen {
         imageMap.put(12.0, "turtle.png");
         modelMap = new ModelMap(colorMap, imageMap);
         setDisplay();
-        
         setInputPane();
         setTurtle();
-        
         setHistoryPane();
         setUserCommandPane();
-
         setBar();
-
-        setPenUpDownButton();
-
     }
     
-    private void setTurtlePane(List<TurtleModel> tm) {
-        SPane turtleID = new SPane(UIConstants.TURTLE_PANE_X, UIConstants.LOWER_PANE_Y);
-        turtleID.myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
-        turtleID.myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
-        turtleID.myBox.getChildren().add(new Text(getResources().getString("Tur")));
-        getRoot().getChildren().add(turtleID.myPane);
-        TurtleIDView cv = new TurtleIDView(inputText, turtleID.myBox);
-        for(int i = 0; i < tm.size(); i++) {
-            tm.get(i).addObserver(cv);
-            tm.get(i).notifyObservers();
-        }
-		
-	}
 
 	public void switchWS(){
     	WorkSpace ws = new WorkSpace();
     	ws.setLang(myLang);
     	ws.begin();
-    	
     }
     
     public void setBar(){
@@ -131,22 +117,36 @@ public class WorkSpace extends Screen {
     	Menu fileMenu = menuMaker.addMenu(getResources().getString("FileCommand"));
     	MenuItem helpItem = menuMaker.addMenuItem(getResources().getString("HelpTitle"), e -> openHelpPage(), fileMenu);
     	MenuItem newItem = menuMaker.addMenuItem(getResources().getString("NewCommand"), e -> switchWS(), fileMenu);
+    	MenuItem saveItem = menuMaker.addMenuItem(getResources().getString("SaveCommand"), e -> setPrefs(), fileMenu);
+    	Menu toggleMenu = menuMaker.addMenu(getResources().getString("Toggle"));
+    	MenuItem commandToggle = menuMaker.addMenuItem(getResources().getString("cToggle"), e -> noVars(userVariables), toggleMenu);
+    	MenuItem historyToggle = menuMaker.addMenuItem(getResources().getString("hToggle"), e -> noVars(userHistory), toggleMenu);
+    	MenuItem turtleToggle = menuMaker.addMenuItem(getResources().getString("tToggle"), e -> noVars(userTurtles), toggleMenu);
+    	MenuItem variableToggle = menuMaker.addMenuItem(getResources().getString("vToggle"), e -> noVars(userMethods), toggleMenu);
+    	Menu editMenu = menuMaker.addMenu(getResources().getString("EditCommand"));
+    	MenuItem penStatus = menuMaker.addMenuItem(getResources().getString("penStatus"), e -> setPenUpDown(), editMenu);
     	getRoot().getChildren().add(myMenu);
     }
     
     public void setLang (String language) {
-        setMyLang(language);
+    	this.myLang = language;
         parser = new CommandParser(modelMap);
-
         parser.addPatterns(UIConstants.RSRC_LANG + myLang);
         parser.addPatterns(UIConstants.RSRC_LANG + UIConstants.SYNTAX);
-
-        parser.addPatterns("resources/languages/" + getMyLang());
-
         setVariablePane();
-        setPreferencesSaveButton();
     }
     
+    /*
+     * reads the input and passes it to the parser to interpret
+     */
+    private void readInput (CommandParser parser, TextArea input) {
+        parser.parseText(input.getText());
+        input.clear();
+    }
+    
+    /*
+     * Initializes the turtle display's front end and back end relationship
+     */
     private void setDisplay() {
         DisplayModel displayModel = new DisplayModel(colorMap);
         DisplayView displayView = new DisplayView(getRoot());
@@ -155,6 +155,21 @@ public class WorkSpace extends Screen {
         displayModel.notifyObservers();
     }
     
+    /*
+     * Hides/shows a user view from the Scene
+     */
+    private void noVars(SPane variables){
+    	if(getRoot().getChildren().contains(variables.myPane)){
+    		getRoot().getChildren().remove(variables.myPane);
+    	}
+    	else{
+    		getRoot().getChildren().add(variables.myPane);
+    	}
+    }
+    
+    /*
+     * creates the starting turtles
+     */
     private void setTurtle () {
         String turtleImage = "turtle.png";
         List<TurtleModel> turtles = new ArrayList<TurtleModel>();
@@ -187,96 +202,89 @@ public class WorkSpace extends Screen {
         }
     }
 
+    /*
+     * Sets the Pane for the user input text area
+     */
     private void setInputPane () {
-        HBox commandLine = new HBox();
+    	userInput = new SPane(UIConstants.RECT_W, UIConstants.LOWER_PANE_Y);
         inputText = new TextArea();
         inputText.setMinSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
         inputText.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
-        commandLine.getChildren().add(inputText);
+        userInput.myBox.getChildren().add(inputText);
         Button inputButton = featureMaker.makeB(getResources().getString("GoCommand"),
                                                 event -> readInput(parser, inputText));
-        commandLine.getChildren().add(inputButton);
-        commandLine.setLayoutX(UIConstants.RECT_W);
-        commandLine.setLayoutY(UIConstants.LOWER_PANE_Y);
-        getRoot().getChildren().add(commandLine);
-    }
-    
-    private void readInput (CommandParser parser, TextArea input) {
-        parser.parseText(input.getText());
-        input.clear();
+        userInput.myBox.getChildren().add(inputButton);
+        getRoot().getChildren().add(userInput.myPane);
     }
 
+    /*
+     * Sets the Pane for the user history
+     */
     private void setHistoryPane () {
-        SPane history = new SPane(UIConstants.HISTORY_PANE_X, UIConstants.BORDER_WIDTH);
-        history.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-        history.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-        getRoot().getChildren().addAll(history.myRoot);
+        userHistory = new SPane(UIConstants.HISTORY_PANE_X, UIConstants.BORDER_WIDTH);
+        userHistory.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        userHistory.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        getRoot().getChildren().addAll(userHistory.myRoot);
         HistoryPaneModel hpm = new HistoryPaneModel();
-        hpv = new HistoryPaneView(history.myBox, inputText);
+        hpv = new HistoryPaneView(userHistory.myBox, inputText);
         hpm.addObserver(hpv);
         hpm.notifyObservers();
         modelMap.setHistory(hpm);
     }
-    private void noVars(SPane variables){
-    	if(getRoot().getChildren().contains(variables.myPane)){
-    		getRoot().getChildren().remove(variables.myPane);
-    	}
-    	else{
-    		getRoot().getChildren().add(variables.myPane);
-    	}
-    }
+    
+    /*
+     * Sets the Pane for the current user-defined variables in the environment
+     */
     private void setVariablePane () {
-    	SPane variables = new SPane(25, UIConstants.LOWER_PANE_Y);
-    	Button disappear = featureMaker.makeB("GTFO", e -> noVars(variables));
-    	disappear.setLayoutX(40);
-    	disappear.setLayoutY(10);
-    	getRoot().getChildren().add(disappear);
-        //SPane variables = new SPane(25, UIConstants.LOWER_PANE_Y);
-        variables.myPane.setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
-        variables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
-
-        variables.myBox.getChildren().add(new Text(getResources().getString("Var")));
-
-        variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
+    	userVariables = new SPane(25, UIConstants.LOWER_PANE_Y);
+        userVariables.myPane.setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
+        userVariables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
 
         VariableModel varModel = new VariableModel();
-        VariableView varView = new VariableView(variables.myBox, new VBox(),inputText,
+        VariableView varView = new VariableView(userVariables.myBox, new VBox(),inputText,
                                                 getMyLang());
         varModel.addObserver(varView);
         varModel.notifyObservers();
         modelMap.setVariable(varModel);
-        getRoot().getChildren().add(variables.myPane);
+        getRoot().getChildren().add(userVariables.myPane);
     }
 
+    /*
+     * Sets the Pane for the current user-defined methods in the environment
+     */
     private void setUserCommandPane () {
-
-        SPane variables = new SPane(25, 35);
-        variables.myPane.setMinSize(360, 465);
-        variables.myPane.setMaxSize(360, 475);
-        variables.myBox.getChildren().add(new Text(getResources().getString("UCommands")));
-
-//        SPane variables = new SPane(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH);
-//        variables.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-//        variables.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-        variables.myBox.getChildren().add(new Text("User Commands"));
+        userMethods = new SPane(UIConstants.BORDER_WIDTH, UIConstants.METHODS_Y);
+        userMethods.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        userMethods.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        userMethods.myBox.getChildren().add(new Text(getResources().getString("UCommands")));
 
         CommandsModel varModel = new CommandsModel();
-        CommandsView varView = new CommandsView(variables.myBox, inputText);
+        CommandsView varView = new CommandsView(userMethods.myBox, inputText);
         varModel.addObserver(varView);
         varModel.notifyObservers();
         modelMap.setCommands(varModel);
-        getRoot().getChildren().add(variables.myPane);
-    }
-
-    
-    private void setHelpButton () {
-        Button help = featureMaker.makeB("Help", event -> openHelpPage());
-        getRoot().getChildren().add(help);
-        help.setLayoutX(UIConstants.ZERO);
-        help.setLayoutY(UIConstants.ZERO);
-        help.setMaxSize(UIConstants.BUTTON_H, UIConstants.BORDER_WIDTH);
+        getRoot().getChildren().add(userMethods.myPane);
     }
     
+    /*
+     * Sets the Pane for the current status of the various turtles on the display
+     */
+    private void setTurtlePane(List<TurtleModel> tm) {
+        userTurtles = new SPane(UIConstants.TURTLE_PANE_X, UIConstants.LOWER_PANE_Y);
+        userTurtles.myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
+        userTurtles.myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
+        userTurtles.myBox.getChildren().add(new Text(getResources().getString("Tur")));
+        getRoot().getChildren().add(userTurtles.myPane);
+        TurtleIDView cv = new TurtleIDView(inputText, userTurtles.myBox);
+        for(int i = 0; i < tm.size(); i++) {
+            tm.get(i).addObserver(cv);
+            tm.get(i).notifyObservers();
+        }
+	}
+    
+    /*
+     * Opens an new window with a help page for reference
+     */
     private void openHelpPage () {
         Stage myStage = new Stage();
         Group helpRoot = new Group();
@@ -290,13 +298,6 @@ public class WorkSpace extends Screen {
         browser.getEngine().load(
                                  WorkSpace.class.getResource("/references/help.html")
                                          .toExternalForm());
-    }
-    
-    private void setPreferencesSaveButton(){
-        Button save = featureMaker.makeB("Set State", event -> setPrefs());
-        getRoot().getChildren().add(save);
-        save.setLayoutX(UIConstants.ZERO);
-        save.setLayoutY(UIConstants.HEIGHT-25);
     }
     
     private void setPrefs(){
@@ -318,13 +319,6 @@ public class WorkSpace extends Screen {
 			return null;
 		}
 	}
-    
-    private void setPenUpDownButton(){
-    	Button penUD = featureMaker.makeB("Pen Up/Down", event -> setPenUpDown());
-    	penUD.setLayoutX(150);
-    	penUD.setLayoutY(UIConstants.HEIGHT-25);
-    	getRoot().getChildren().add(penUD);
-    }
     
     private void setPenUpDown(){
     	
@@ -348,9 +342,5 @@ public class WorkSpace extends Screen {
 
 	public String getMyLang() {
 		return myLang;
-	}
-
-	public void setMyLang(String myLang) {
-		this.myLang = myLang;
 	}
 }
