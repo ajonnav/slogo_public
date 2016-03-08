@@ -8,6 +8,9 @@ import model.TurtleModel;
 import model.VariableModel;
 import pane.SPane;
 import parser.CommandParser;
+import preferences.PrefLoader;
+import preferences.PrefSetter;
+import preferences.PrefWriter;
 import view.CommandsView;
 import view.CoordinateView;
 import view.DisplayView;
@@ -22,15 +25,21 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import addons.Features;
 import addons.MenuMaker;
 import constants.UIConstants;
@@ -46,7 +55,6 @@ public class WorkSpace extends Screen {
     private ModelMap modelMap;
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
-    
 
     @Override
     public void setUpScene () {
@@ -89,7 +97,11 @@ public class WorkSpace extends Screen {
         
         setHistoryPane();
         setUserCommandPane();
+
         setBar();
+
+        setPenUpDownButton();
+
     }
     
     private void setTurtlePane(List<TurtleModel> tm) {
@@ -123,11 +135,16 @@ public class WorkSpace extends Screen {
     }
     
     public void setLang (String language) {
-        myLang = language;
+        setMyLang(language);
         parser = new CommandParser(modelMap);
+
         parser.addPatterns(UIConstants.RSRC_LANG + myLang);
         parser.addPatterns(UIConstants.RSRC_LANG + UIConstants.SYNTAX);
+
+        parser.addPatterns("resources/languages/" + getMyLang());
+
         setVariablePane();
+        setPreferencesSaveButton();
     }
     
     private void setDisplay() {
@@ -159,11 +176,11 @@ public class WorkSpace extends Screen {
     
     private void setTurtleCoordsBox (List<TurtleModel> turtles) {
         HBox turtleVars = new HBox();
-        turtleVars.setLayoutX(UIConstants.COORDINATE_LOCATION);
-        turtleVars.setLayoutY(UIConstants.COORDINATE_LOCATION);
+        turtleVars.setLayoutX(UIConstants.COORDINATE_LOCATION_X);
+        turtleVars.setLayoutY(UIConstants.COORDINATE_LOCATION_Y);
         turtleVars.setMaxSize(UIConstants.RECT_X, UIConstants.BORDER_WIDTH);
         getRoot().getChildren().add(turtleVars);
-        CoordinateView cv = new CoordinateView(turtleVars, 0, 0, UIConstants.INITIAL_HEADING);
+        CoordinateView cv = new CoordinateView(turtleVars, 1, 0, 0, UIConstants.INITIAL_HEADING);
         for(int i = 0; i < turtles.size(); i++) {
             turtles.get(i).addObserver(cv);
             turtles.get(i).notifyObservers();
@@ -217,10 +234,14 @@ public class WorkSpace extends Screen {
         //SPane variables = new SPane(25, UIConstants.LOWER_PANE_Y);
         variables.myPane.setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
         variables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
+
         variables.myBox.getChildren().add(new Text(getResources().getString("Var")));
+
+        variables.myPane.setStyle("-fx-background-color: #DAE6F3;");
+
         VariableModel varModel = new VariableModel();
-        VariableView varView = new VariableView(variables.myBox, inputText,
-                                                myLang);
+        VariableView varView = new VariableView(variables.myBox, new VBox(),inputText,
+                                                getMyLang());
         varModel.addObserver(varView);
         varModel.notifyObservers();
         modelMap.setVariable(varModel);
@@ -228,10 +249,17 @@ public class WorkSpace extends Screen {
     }
 
     private void setUserCommandPane () {
+
         SPane variables = new SPane(25, 35);
         variables.myPane.setMinSize(360, 465);
         variables.myPane.setMaxSize(360, 475);
         variables.myBox.getChildren().add(new Text(getResources().getString("UCommands")));
+
+//        SPane variables = new SPane(UIConstants.BORDER_WIDTH, UIConstants.BORDER_WIDTH);
+//        variables.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+//        variables.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        variables.myBox.getChildren().add(new Text("User Commands"));
+
         CommandsModel varModel = new CommandsModel();
         CommandsView varView = new CommandsView(variables.myBox, inputText);
         varModel.addObserver(varView);
@@ -240,6 +268,14 @@ public class WorkSpace extends Screen {
         getRoot().getChildren().add(variables.myPane);
     }
 
+    
+    private void setHelpButton () {
+        Button help = featureMaker.makeB("Help", event -> openHelpPage());
+        getRoot().getChildren().add(help);
+        help.setLayoutX(UIConstants.ZERO);
+        help.setLayoutY(UIConstants.ZERO);
+        help.setMaxSize(UIConstants.BUTTON_H, UIConstants.BORDER_WIDTH);
+    }
     
     private void openHelpPage () {
         Stage myStage = new Stage();
@@ -255,5 +291,66 @@ public class WorkSpace extends Screen {
                                  WorkSpace.class.getResource("/references/help.html")
                                          .toExternalForm());
     }
+    
+    private void setPreferencesSaveButton(){
+        Button save = featureMaker.makeB("Set State", event -> setPrefs());
+        getRoot().getChildren().add(save);
+        save.setLayoutX(UIConstants.ZERO);
+        save.setLayoutY(UIConstants.HEIGHT-25);
+    }
+    
+    private void setPrefs(){
+    	String newTitle = newTextInput("File Name", "Save File", "Enter New File Name", "File:");
+    	PrefWriter setter = new PrefWriter(modelMap, newTitle, myLang);
+    	setter.writeToSrl();
+    }
+    
+    private String newTextInput(String holder, String title, String header, String prompt) {
+		TextInputDialog dialog = new TextInputDialog(holder);
+		dialog.setTitle(title);
+		dialog.setHeaderText(header);
+		dialog.setContentText(prompt);
+		Optional<String> input = dialog.showAndWait();
+		if (input.isPresent()) {
+			String newTitle = input.get();
+			return newTitle;
+		} else {
+			return null;
+		}
+	}
+    
+    private void setPenUpDownButton(){
+    	Button penUD = featureMaker.makeB("Pen Up/Down", event -> setPenUpDown());
+    	penUD.setLayoutX(150);
+    	penUD.setLayoutY(UIConstants.HEIGHT-25);
+    	getRoot().getChildren().add(penUD);
+    }
+    
+    private void setPenUpDown(){
+    	
+    }
+    
+    private void setPenThicknessInputField(){
+    	
+    }
+    
+    private void setPenThickness(){
+    	
+    }
+    
+    private void setPenStyleBox(){
+    	
+    }
+    
+    private void setPenStyle(){
+    	
+    }
 
+	public String getMyLang() {
+		return myLang;
+	}
+
+	public void setMyLang(String myLang) {
+		this.myLang = myLang;
+	}
 }
