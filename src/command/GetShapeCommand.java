@@ -15,6 +15,6 @@ public class GetShapeCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getImageIndex", null);
+        return modelMap.getDisplay().TurtleAction("getImageIndex", null);
     }
 }

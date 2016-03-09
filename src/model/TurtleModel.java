@@ -1,20 +1,22 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
 
 import com.sun.prism.paint.Color;
 
 import javafx.scene.image.ImageView;
 
 
-public class TurtleModel extends Observable {
+public class TurtleModel extends Observable implements Observer{
     
     private double turtleInitialX;
     private double turtleInitialY;
     private double turtleInitialHeading;
-    private ImageView imageView;
+    private String imageString;
     private PenModel pen;
     private boolean isActive;
     private double heading;
@@ -22,13 +24,10 @@ public class TurtleModel extends Observable {
     private double positionY;
     private boolean showStatus;
     private double imageIndex;
-    private Map<Double, String> colorMap;
-    private Map<Double, String> imageMap;
     private List<LineModel> lineList;
     private List<StampModel> stampList;
 
-    public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading, 
-                        Map<Double, String> colorMap, Map<Double, String> imageMap) {
+    public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading) {
         isActive = false;
         heading = turtleInitialHeading;
         this.turtleInitialHeading = turtleInitialHeading;
@@ -38,17 +37,18 @@ public class TurtleModel extends Observable {
         this.turtleInitialY = turtleInitialY;
         showStatus = true;
         imageIndex = 5;
-        double penColorIndex = 1;
+        lineList = new ArrayList<>();
+        stampList=  new ArrayList<>();
+        double penColorIndex = 1.0;
         double lineWidth = 1;
         double style = 0;
         pen = new PenModel(false, lineWidth, penColorIndex, style);
-        this.colorMap = colorMap;
-        this.imageMap = imageMap;
+        pen.addObserver(this);
         setChanged();
     }
     
     public TurtleModel makeNewActiveTurtle() {
-        TurtleModel newTurtle = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading, colorMap, imageMap);
+        TurtleModel newTurtle = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
         newTurtle.isActive = true;
         return newTurtle;
     }
@@ -57,8 +57,8 @@ public class TurtleModel extends Observable {
     	if(pen.getStatus()) {
 	    	lineList.add(new LineModel(positionX, positionY, 
 	    			positionX+distance[0] * Math.cos(Math.toRadians(heading)), 
-	    			positionY += distance[0] * Math.sin(Math.toRadians(heading)),
-	    			pen.getSize(), pen.getColor(), pen.getStyle()));
+	    			positionY + distance[0] * Math.sin(Math.toRadians(heading)),
+	    			pen.getSize(), pen.getColorString(), pen.getStyle()));
     	}
         positionX += distance[0] * Math.cos(Math.toRadians(heading));
         positionY += distance[0] * Math.sin(Math.toRadians(heading));
@@ -93,7 +93,6 @@ public class TurtleModel extends Observable {
         return 0;
     }
     
-
     public double penDown () {
     	pen.setStatus(true);
         updateView();
@@ -101,19 +100,17 @@ public class TurtleModel extends Observable {
     }
     
     public double stamp () {
-        stampList.add(new StampModel(imageView, positionX, positionY));
+        stampList.add(new StampModel(imageString, positionX, positionY));
         updateView();
         return imageIndex;
     }
     
-
     public double show () {
         showStatus = true;
         updateView();
         return 1;
     }
     
-
     public double hide () {
         showStatus = false;
         updateView();
@@ -151,40 +148,19 @@ public class TurtleModel extends Observable {
         updateView();
         return headingDiff >= 180 ? 360 - headingDiff : headingDiff;
     }
-      
-    public void setColorMap(Map<Double, String> colorMap) {
-        this.colorMap = colorMap;
-        updateView();
-    }
-    
-    public void setImageMap(Map<Double, String> imageMap) {
-        this.imageMap = imageMap;
-        updateView();
-    }
-    
-    public Map<Double, String> getColorMap() {
-        return colorMap;
-    }
-    
-    public Map<Double, String> getImageMap() {
-        return imageMap;
-    }
     
     public double getPositionY () {
         return positionY;
     }
     
-
     public double getPositionX () {
         return positionX;
     }
     
-
     public double getHeading () {
         return heading;
     }
     
-
     public double getPenStatus () {
         return pen.getStatus() ? 1 : 0;
     }
@@ -200,36 +176,34 @@ public class TurtleModel extends Observable {
         updateView();
         return returnValue;
     }
-    
 
     public double getPenColorIndex () {
-        return pen.getColor();
+        return pen.getColorIndex();
     }
     
-
     public double setPenColorIndex (double[] penColorIndex) {
-        this.pen.setColor(penColorIndex[0]);
+        this.pen.setColorIndex(penColorIndex[0]);
         updateView();
         return penColorIndex[0];
     }
     
-
+    public void setPenColorString(String colorString) {
+    	pen.setColorString(colorString);
+    }
+    
     public double getImageIndex () {
         return imageIndex;
     }
     
-
     public double setImageIndex (double[] imageIndex) {
         this.imageIndex = imageIndex[0];
         updateView();
         return imageIndex[0];
     }
     
-
     public double getLineWidth () {
         return pen.getSize();
     }
-    
 
     public double setLineWidth (double[] lineWidth) {
         this.pen.setSize(lineWidth[0]);
@@ -244,16 +218,36 @@ public class TurtleModel extends Observable {
     public boolean isActive () {
         return isActive;
     }
-    
 
     public void setActive (double isActive) {
         this.isActive = isActive == 1 ? true : false;
     }
+
+    public String getImageString() {
+    	return imageString;
+    }
     
-  
+    public void setImageString(String imageString) {
+    	this.imageString = imageString;
+    }
+    
+    public List<LineModel> getLineList() {
+    	return lineList;
+    }
+    
+    public List<StampModel> getStampList() {
+    	return stampList;
+    }
+    
     public void updateView() {
         setChanged();
         notifyObservers();
     }
+
+	
+    @Override
+	public void update(Observable o, Object arg) {
+		updateView();
+	}
     
 }

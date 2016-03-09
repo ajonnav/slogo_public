@@ -18,10 +18,10 @@ public class AskCommand extends Command {
         for(int i = 0; i < getCommands().get(0).size(); i++) {
             turtles[i] = getCommands().get(0).get(i).execute();
         }
-        double[] oldValues = modelMap.getActiveTurtleIDs();
-        modelMap.tell(turtles);
+        double[] oldValues = modelMap.getDisplay().getActiveTurtleIDs();
+        modelMap.getDisplay().tell(turtles);
         double returnValue = loopExecute(getCommands().get(1));
-        modelMap.tell(oldValues);
+        modelMap.getDisplay().tell(oldValues);
         return returnValue;
     }
 }

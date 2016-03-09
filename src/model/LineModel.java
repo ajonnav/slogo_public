@@ -6,17 +6,17 @@ public class LineModel {
 	private double y1;
 	private double x2;
 	private double y2;
-	private double size;
-	private double color;
+	private double width;
+	private String color;
 	private double[] style;
 	
-	public LineModel(double x1, double y1, double x2, double y2, double size, double color, double[] style) {
+	public LineModel(double x1, double y1, double x2, double y2, double width, String color, double[] style) {
 		this.x1 = x1;
 		this.x2 = x2;
 		this.y1 = y1;
 		this.y2 = y2;
 		this.color = color;
-		this.size = size;
+		this.width = width;
 		this.style = style;
 	}
 	
@@ -36,11 +36,11 @@ public class LineModel {
 		return y2;
 	}
 	
-	public double getSize() {
-		return size;
+	public double getWidth() {
+		return width;
 	}
 	
-	public double getColor() {
+	public String getColor() {
 		return color;
 	}
 	

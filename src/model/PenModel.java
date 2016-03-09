@@ -1,6 +1,8 @@
 package model;
 
-public class PenModel {
+import java.util.Observable;
+
+public class PenModel extends Observable {
 
 	private static final int SOLID = 0;
 	private static final int DASHED = 1;
@@ -8,13 +10,14 @@ public class PenModel {
 	
 	private boolean status;
 	private double size;
-	private double color;
+	private double colorIndex;
 	private double style;
+	private String colorString;
 	
-	public PenModel(boolean status, double size, double color, double style) {
+	public PenModel(boolean status, double size, double colorIndex, double style) {
 		this.status = status;
 		this.size = size;
-		this.color = color;
+		this.colorIndex = colorIndex;
 		this.style = style;
 	}
 	public boolean getStatus() {
@@ -25,7 +28,7 @@ public class PenModel {
 	}
 	public double[] getStyle() {
 		if(Math.round(style) == SOLID) {
-			return new double[] {20};
+			return new double[] {};
 		}
 		else if(Math.round(style) == DASHED) {
 			return new double[] {10, 10};
@@ -33,22 +36,38 @@ public class PenModel {
 		else if(Math.round(style) == DOTTED) {
 			return new double[] {4, 16};
 		}
-		return new double [] {20};
+		return new double [] {};
 	}
 	public void setStyle(double style) {
 		this.style = style;
+		updateObservers();
 	}
-	public double getColor() {
-		return color;
+	public double getColorIndex() {
+		return colorIndex;
 	}
-	public void setColor(double color) {
-		this.color = color;
+	public void setColorIndex(double colorIndex) {
+		this.colorIndex = colorIndex;
+		updateObservers();
 	}
 	public double getSize() {
 		return size;
 	}
 	public void setSize(double size) {
 		this.size = size;
+		updateObservers();
+	}
+	
+	public void setColorString(String colorString) {
+		this.colorString = colorString;
+	}
+	
+	public String getColorString() {
+		return colorString;
+	}
+	
+	private void updateObservers() {
+		setChanged();
+		notifyObservers();
 	}
 
 }

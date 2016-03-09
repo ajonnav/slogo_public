@@ -23,10 +23,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import addons.Features;
 import constants.UIConstants;
 
@@ -76,9 +78,9 @@ public class WorkSpace extends Screen {
         imageMap.put(10.0, "turtle.png");
         imageMap.put(11.0, "red.png");
         imageMap.put(12.0, "turtle.png");
-        modelMap = new ModelMap(colorMap, imageMap);
-        setDisplay();
-        setTurtle();
+        modelMap = new ModelMap();
+        setDisplay(colorMap, imageMap);
+        setTurtleCoordsBox(modelMap.getDisplay().getTurtleList());
         setInputPane();
         setHistoryPane();
         setHelpButton();
@@ -93,30 +95,12 @@ public class WorkSpace extends Screen {
         setVariablePane();
     }
     
-    private void setDisplay() {
+    private void setDisplay(Map<Double, String> colorMap, Map<Double, String> imageMap) {
         DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
         DisplayView displayView = new DisplayView(getRoot());
         displayModel.addObserver(displayView);
         modelMap.setDisplay(displayModel);
         displayModel.notifyObservers();
-    }
-    
-    private void setTurtle () {
-        String turtleImage = "turtle.png";
-        List<TurtleModel> turtles = new ArrayList<TurtleModel>();
-        List<TurtleView> turtleViews = new ArrayList<TurtleView>();
-        for(int i = 0; i < 3; i++) {
-            TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING, colorMap, imageMap); 
-            TurtleView turtleView = new TurtleView(turtleImage, getRoot());
-            turtleModel.addObserver(turtleView);
-            turtleModel.notifyObservers();
-            turtleModel.penDown();
-            turtles.add(turtleModel);
-            turtleViews.add(turtleView);
-        }
-        modelMap.setTurtles(turtles);
-        modelMap.setTurtleViews(turtleViews);
-        setTurtleCoordsBox(turtles);
     }
     
     private void setTurtleCoordsBox (List<TurtleModel> turtles) {

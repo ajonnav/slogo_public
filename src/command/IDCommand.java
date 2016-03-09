@@ -15,8 +15,8 @@ public class IDCommand extends Command {
     
     @Override
     public double execute () {
-        System.out.println(modelMap.getLastActiveID());
-        return modelMap.getLastActiveID();
+        System.out.println(modelMap.getDisplay().getLastActiveID());
+        return modelMap.getDisplay().getLastActiveID();
     }
 
 }

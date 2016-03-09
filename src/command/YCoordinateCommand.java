@@ -14,7 +14,7 @@ public class YCoordinateCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getPositionY", null);
+        return modelMap.getDisplay().TurtleAction("getPositionY", null);
     }
 
 }
