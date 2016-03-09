@@ -100,7 +100,7 @@ public class TurtleModel extends Observable implements Observer{
     }
     
     public double stamp () {
-        stampList.add(new StampModel(imageString, positionX, positionY));
+        stampList.add(new StampModel(imageString, positionX, positionY, heading));
         updateView();
         return imageIndex;
     }

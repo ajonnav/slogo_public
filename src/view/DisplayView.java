@@ -115,7 +115,10 @@ public class DisplayView implements IView {
 	public void drawStamps(List<StampModel> list) {
 		list.stream().forEach(s->
 		{
-			
+			Image image = getImageFromString(s.getImageString());
+	        drawRotatedImage(image, transformX(s.getPositionX()) - 50/2,
+	        		transformY(s.getPositionY()) - 50/2,
+	        		transformHeading(s.getHeading()));
 		});
 	}
 
