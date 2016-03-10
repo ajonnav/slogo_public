@@ -1,6 +1,7 @@
 package display;
 
 import model.CommandsModel;
+
 import model.DisplayModel;
 import model.HistoryPaneModel;
 import model.ModelMap;
@@ -16,7 +17,6 @@ import view.CoordinateView;
 import view.DisplayView;
 import view.HistoryPaneView;
 import view.TurtleIDView;
-import view.TurtleView;
 import view.VariableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -76,10 +76,10 @@ public class DemoWSpace extends Screen {
 		modelMap = new ModelMap();
 		setDisplay();
 		setInputPane();
-		setTurtle();
 		setHistoryPane();
 		setUserCommandPane();
 		setBar();
+		setTurtlePane(modelMap.getDisplay().getFrame(modelMap.getDisplay().getNumFrames()-1));
 	}
 
 	@Override
@@ -165,30 +165,7 @@ public class DemoWSpace extends Screen {
 		}
 	}
 
-	/*
-	 * creates the starting turtles
-	 */
-	private void setTurtle() {
-		String turtleImage = "turtle.png";
-		System.out.println(myState.imageFile);
-		//String turtleImage = myState.imageFile;
-		List<TurtleModel> turtles = new ArrayList<TurtleModel>();
-		List<TurtleView> turtleViews = new ArrayList<TurtleView>();
-		for (int i = 0; i < myState.turtleNumber; i++) {
-			TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING, myState.colorMap,
-					myState.images);
-			TurtleView turtleView = new TurtleView(turtleImage, getRoot());
-			turtleModel.addObserver(turtleView);
-			turtleModel.notifyObservers();
-			turtleModel.penDown();
-			turtles.add(turtleModel);
-			turtleViews.add(turtleView);
-		}
-		modelMap.setTurtles(turtles);
-		modelMap.setTurtleViews(turtleViews);
-		setTurtleCoordsBox(turtles);
-		setTurtlePane(turtles);
-	}
+
 
 	private void setTurtleCoordsBox(List<TurtleModel> turtles) {
 		HBox turtleVars = new HBox();

@@ -9,6 +9,7 @@ import model.VariableModel;
 import pane.SPane;
 import parser.CommandParser;
 import preferences.PrefWriter;
+import preferences.saveState;
 import view.CommandsView;
 import view.CoordinateView;
 import view.DisplayView;
@@ -56,11 +57,12 @@ public class WorkSpace extends Screen {
     private SPane userInput;
     
     private Boolean down = false;
+    private saveState myState;
 
     @Override
     public void setUpScene () {
-        getRoot().getStylesheets().add(
-                                       UIConstants.DEFAULT_RESOURCE + "demo.css");
+        //getRoot().getStylesheets().add(
+          //                             UIConstants.DEFAULT_RESOURCE + "demo.css");
         featureMaker = new Features();
         setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT,
                            Color.LIGHTBLUE));
