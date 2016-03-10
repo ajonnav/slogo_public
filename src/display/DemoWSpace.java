@@ -1,6 +1,7 @@
 package display;
 
 import model.CommandsModel;
+
 import model.DisplayModel;
 import model.HistoryPaneModel;
 import model.ModelMap;
@@ -16,7 +17,6 @@ import view.CoordinateView;
 import view.DisplayView;
 import view.HistoryPaneView;
 import view.TurtleIDView;
-import view.TurtleView;
 import view.VariableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -76,10 +76,10 @@ public class DemoWSpace extends Screen {
 		modelMap = new ModelMap();
 		setDisplay();
 		setInputPane();
-		setTurtle();
 		setHistoryPane();
 		setUserCommandPane();
 		setBar();
+		setTurtlePane(modelMap.getDisplay().getFrame(modelMap.getDisplay().getNumFrames()-1));
 	}
 
 	@Override
