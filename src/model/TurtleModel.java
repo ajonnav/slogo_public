@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class TurtleModel extends Observable implements Observer, Serializable{
+public class TurtleModel extends Observable implements Serializable{
     
 	private static final long serialVersionUID = 7400792168904381245L;
 	private double turtleInitialX;
@@ -39,8 +39,6 @@ public class TurtleModel extends Observable implements Observer, Serializable{
         double lineWidth = 1;
         double style = 0;
         pen = new PenModel(false, lineWidth, penColorIndex, style);
-        pen.addObserver(this);
-        setChanged();
     }
     
     public TurtleModel makeNewActiveTurtle() {
@@ -58,7 +56,6 @@ public class TurtleModel extends Observable implements Observer, Serializable{
     	}
         positionX += distance[0] * Math.cos(Math.toRadians(heading));
         positionY += distance[0] * Math.sin(Math.toRadians(heading));
-        updateView();
         return distance[0];
     }
     
@@ -69,12 +66,10 @@ public class TurtleModel extends Observable implements Observer, Serializable{
 
     public void setHeading (double[] degrees) {
         heading = degrees[0];
-        updateView();
     }
 
     public double turnRight (double[] degree) {
         heading -= degree[0];
-        updateView();
         return degree[0];
     }
 
@@ -85,38 +80,32 @@ public class TurtleModel extends Observable implements Observer, Serializable{
 
     public double penUp () {
         pen.setStatus(false);
-        updateView();
         return 0;
     }
     
     public double penDown () {
     	pen.setStatus(true);
-        updateView();
         return 1;
     }
     
     public double stamp () {
         stampList.add(new StampModel(imageString, positionX, positionY, heading));
-        updateView();
         return imageIndex;
     }
     
     public double show () {
         showStatus = true;
-        updateView();
         return 1;
     }
     
     public double hide () {
         showStatus = false;
-        updateView();
         return 0;
     }
     
     public double home () {
         double returnValue = setPosition(new double[] {0, 0});
         heading = 90;
-        updateView();
         return returnValue;
     }
     
@@ -128,7 +117,6 @@ public class TurtleModel extends Observable implements Observer, Serializable{
 	    	lineList.add(new LineModel(oldPos[0], oldPos[1], positionX, positionY,
 	    			pen.getSize(), pen.getColorString(), pen.getStyle()));
     	}
-        updateView();
         return Math.sqrt(Math.pow((oldPos[0] - positionX), 2) +
                          Math.pow((oldPos[1] - positionY), 2));
     }
@@ -142,7 +130,6 @@ public class TurtleModel extends Observable implements Observer, Serializable{
         double newHeading = xy[0] - positionX >= 0 ? rawDegrees : rawDegrees - 180;
         heading = newHeading;
         double headingDiff = Math.abs(lastHeading - heading);
-        updateView();
         return headingDiff >= 180 ? 360 - headingDiff : headingDiff;
     }
     
@@ -170,7 +157,6 @@ public class TurtleModel extends Observable implements Observer, Serializable{
         double returnValue = home();
         stampList.clear();
         lineList.clear();
-        updateView();
         return returnValue;
     }
 
@@ -180,7 +166,6 @@ public class TurtleModel extends Observable implements Observer, Serializable{
     
     public double setPenColorIndex (double[] penColorIndex) {
         this.pen.setColorIndex(penColorIndex[0]);
-        updateView();
         return penColorIndex[0];
     }
     
@@ -194,7 +179,6 @@ public class TurtleModel extends Observable implements Observer, Serializable{
     
     public double setImageIndex (double[] imageIndex) {
         this.imageIndex = imageIndex[0];
-        updateView();
         return imageIndex[0];
     }
     
@@ -204,7 +188,6 @@ public class TurtleModel extends Observable implements Observer, Serializable{
 
     public double setLineWidth (double[] lineWidth) {
         this.pen.setSize(lineWidth[0]);
-        updateView();
         return lineWidth[0];
     }
     
@@ -236,16 +219,7 @@ public class TurtleModel extends Observable implements Observer, Serializable{
     	return stampList;
     }
     
-    public void updateView() {
-        setChanged();
-        notifyObservers();
-    }
 
-	
-    @Override
-	public void update(Observable o, Object arg) {
-		updateView();
-	}
     
    /* public TurtleModel copyTurtleModel() {
     	TurtleModel turtle = new TurtleModel(this.positionX, this.positionY, this.heading);

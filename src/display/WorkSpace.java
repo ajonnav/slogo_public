@@ -29,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,6 +142,7 @@ public class WorkSpace extends Screen {
         DisplayView displayView = new DisplayView(getRoot());
         displayModel.addObserver(displayView);
         modelMap.setDisplay(displayModel);
+        displayModel.setToAnimate(true);
         displayModel.notifyObservers();
     }
     
