@@ -15,7 +15,7 @@ public class SetPaletteCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.addToColorMap(new double[] { getCommands().get(0).get(0).execute(),
+        return modelMap.getDisplay().addToColorMap(new double[] { getCommands().get(0).get(0).execute(),
                                                      getCommands().get(1).get(0).execute(),
                                                      getCommands().get(2).get(0).execute(),
                                                      getCommands().get(3).get(0).execute()});

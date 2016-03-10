@@ -16,7 +16,7 @@ public class SetShapeCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("setImageIndex", Arrays.asList(getCommands().get(0).get(0)));
+        return modelMap.getDisplay().TurtleAction("setImageIndex", Arrays.asList(getCommands().get(0).get(0)));
     }
 
 }

@@ -14,7 +14,7 @@ public class PenUpCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("penUp", null);
+        return modelMap.getDisplay().TurtleAction("penUp", null);
     }
 
 }

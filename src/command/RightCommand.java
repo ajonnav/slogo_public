@@ -15,6 +15,6 @@ public class RightCommand extends Command {
     }
 
     public double execute () {
-        return modelMap.TurtleAction("turnRight", Arrays.asList(getCommands().get(0).get(0)));
+        return modelMap.getDisplay().TurtleAction("turnRight", Arrays.asList(getCommands().get(0).get(0)));
     }
 }

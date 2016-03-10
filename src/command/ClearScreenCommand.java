@@ -15,7 +15,7 @@ public class ClearScreenCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("clearScreen", null);
+        return modelMap.getDisplay().TurtleAction("clearScreen", null);
     }
 
 }

@@ -17,8 +17,8 @@ public class SetPositionCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("setPosition", Arrays.asList(getCommands().get(0).get(0), 
-                                                                  getCommands().get(1).get(0))); 
+        return modelMap.getDisplay().TurtleAction("setPosition", Arrays.asList(getCommands().get(0).get(0), 
+                                                                  getCommands().get(1).get(0)));
     }
 
 }

@@ -14,7 +14,6 @@ import view.CoordinateView;
 import view.DisplayView;
 import view.HistoryPaneView;
 import view.TurtleIDView;
-import view.TurtleView;
 import view.VariableView;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -30,8 +29,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,10 +89,11 @@ public class WorkSpace extends Screen {
         imageMap.put(10.0, "turtle.png");
         imageMap.put(11.0, "red.png");
         imageMap.put(12.0, "turtle.png");
-        modelMap = new ModelMap(colorMap, imageMap);
-        setDisplay();
+        modelMap = new ModelMap();
+        setDisplay(colorMap, imageMap);
+        setTurtleCoordsBox(modelMap.getDisplay().getNextTurtleList());
         setInputPane();
-        setTurtle();
+        setTurtlePane(modelMap.getDisplay().getNextTurtleList());
         setHistoryPane();
         setUserCommandPane();
         setBar();
@@ -133,19 +131,8 @@ public class WorkSpace extends Screen {
         setVariablePane();
     }
     
-    /*
-     * reads the input and passes it to the parser to interpret
-     */
-    private void readInput (CommandParser parser, TextArea input) {
-        parser.parseText(input.getText());
-        input.clear();
-    }
-    
-    /*
-     * Initializes the turtle display's front end and back end relationship
-     */
-    private void setDisplay() {
-        DisplayModel displayModel = new DisplayModel(colorMap);
+    private void setDisplay(Map<Double, String> colorMap, Map<Double, String> imageMap) {
+        DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
         DisplayView displayView = new DisplayView(getRoot());
         displayModel.addObserver(displayView);
         modelMap.setDisplay(displayModel);
@@ -162,28 +149,6 @@ public class WorkSpace extends Screen {
     	else{
     		getRoot().getChildren().add(variables.myPane);
     	}
-    }
-    
-    /*
-     * creates the starting turtles
-     */
-    private void setTurtle () {
-        String turtleImage = "turtle.png";
-        List<TurtleModel> turtles = new ArrayList<TurtleModel>();
-        List<TurtleView> turtleViews = new ArrayList<TurtleView>();
-        for(int i = 0; i < 3; i++) {
-            TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING, colorMap, imageMap); 
-            TurtleView turtleView = new TurtleView(turtleImage, getRoot());
-            turtleModel.addObserver(turtleView);
-            turtleModel.notifyObservers();
-            turtleModel.penDown();
-            turtles.add(turtleModel);
-            turtleViews.add(turtleView);
-        }
-        modelMap.setTurtles(turtles);
-        modelMap.setTurtleViews(turtleViews);
-        setTurtleCoordsBox(turtles);
-        setTurtlePane(turtles);
     }
     
     private void setTurtleCoordsBox (List<TurtleModel> turtles) {
@@ -212,6 +177,11 @@ public class WorkSpace extends Screen {
                                                 event -> readInput(parser, inputText));
         userInput.myBox.getChildren().add(inputButton);
         getRoot().getChildren().add(userInput.myPane);
+    }
+    
+    private void readInput (CommandParser parser, TextArea input) {
+        parser.parseText(input.getText());
+        input.clear();
     }
 
     /*

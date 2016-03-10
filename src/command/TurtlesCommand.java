@@ -13,7 +13,7 @@ public class TurtlesCommand extends Command {
     
     @Override
     public double execute () {
-        return modelMap.getNumTurtles();
+        return modelMap.getDisplay().getNumTurtles();
     }
 
 }

@@ -17,7 +17,7 @@ public class LeftCommand extends Command {
 
     @Override
     public double execute () {
-        return -modelMap.TurtleAction("turnLeft", Arrays.asList(getCommands().get(0).get(0)));
+        return -modelMap.getDisplay().TurtleAction("turnLeft", Arrays.asList(getCommands().get(0).get(0)));
     }
 
 }

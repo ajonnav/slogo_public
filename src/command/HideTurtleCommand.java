@@ -16,7 +16,7 @@ public class HideTurtleCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("hide", null);
+        return modelMap.getDisplay().TurtleAction("hide", null);
     }
 
 }
