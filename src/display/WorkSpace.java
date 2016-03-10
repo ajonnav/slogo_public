@@ -2,7 +2,7 @@ package display;
 
 import model.CommandsModel;
 import model.DisplayModel;
-import model.HistoryPaneModel;
+import model.HistoryModel;
 import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
@@ -198,7 +198,7 @@ public class WorkSpace extends Screen {
         userHistory.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
         userHistory.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
         getRoot().getChildren().add(userHistory.myPane);
-        HistoryPaneModel hpm = new HistoryPaneModel();
+        HistoryModel hpm = new HistoryModel();
         hpv = new HistoryPaneView(userHistory.myBox, inputText);
         hpm.addObserver(hpv);
         hpm.notifyObservers();

@@ -1,33 +1,33 @@
 package model;
 
-public class ModelMap {
+public class ModelMap implements IModelMap {
 
-    private HistoryPaneModel history;
-    private CommandsModel commands;
-    private VariableModel variable;
+    private IHistoryModel history;
+    private ICommandsModel commands;
+    private IVariableModel variable;
     private DisplayModel display;    
 
-    public void setHistory (HistoryPaneModel history) {
+    public void setHistory (IHistoryModel history) {
         this.history = history;
     }
 
-    public HistoryPaneModel getHistory () {
+    public IHistoryModel getHistory () {
         return history;
     }
 
-    public void setCommands (CommandsModel commands) {
+    public void setCommands (ICommandsModel commands) {
         this.commands = commands;
     }
 
-    public CommandsModel getCommands () {
+    public ICommandsModel getCommands () {
         return commands;
     }
 
-    public void setVariable (VariableModel variable) {
+    public void setVariable (IVariableModel variable) {
         this.variable = variable;
     }
 
-    public VariableModel getVariable () {
+    public IVariableModel getVariable () {
         return variable;
     }
 
@@ -38,4 +38,5 @@ public class ModelMap {
     public DisplayModel getDisplay () {
         return display;
     }
+    
 }

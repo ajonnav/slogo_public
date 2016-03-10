@@ -29,11 +29,11 @@ public class DisplayModel extends Observable{
         this.imageMap = imageMap;
         this.toAnimate = true;
         stateList = new ArrayList<>();
-        setTurtles();
+        setInitialTurtles();
         setChanged();
     }
     
-    private void setTurtles () {
+    private void setInitialTurtles() {
         List<TurtleModel> firstTurtleList = new ArrayList<TurtleModel>();
         stateList.add(firstTurtleList);
         stateList.add(firstTurtleList);
@@ -115,7 +115,7 @@ public class DisplayModel extends Observable{
         return values[0];
     }
     
-    public double[] commandsToDoubleArray(List<Command> parameters) {
+    private double[] commandsToDoubleArray(List<Command> parameters) {
         double[] array = new double[parameters.size()];
         for(int i = 0; i < parameters.size(); i++) {
             array[i] = parameters.get(i).execute();

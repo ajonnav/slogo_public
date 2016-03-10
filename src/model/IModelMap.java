@@ -1,7 +1,8 @@
 package model;
 
 public interface IModelMap {
-	public IDisplayModel getDisplay();
+	
+	public DisplayModel getDisplay();
 	
 	public IHistoryModel getHistory();
 	
@@ -9,11 +10,12 @@ public interface IModelMap {
 	
 	public ICommandsModel getCommands();
 	
-	public void setDisplay(IDisplayModel);
+	public void setDisplay(DisplayModel displayModel);
 	
-	public void setHistory(IHistoryModel);
+	public void setHistory(IHistoryModel historyModel);
 	
-	public void setCommands(ICommandsModel);
+	public void setCommands(ICommandsModel commandsModel);
 	
-	public void setVariable(IVariableModel);
+	public void setVariable(IVariableModel historyModel);
+	
 }

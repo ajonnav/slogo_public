@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import exception.SLogoSyntaxException;
-import model.CommandsModel;
+import model.ICommandsModel;
 import model.ModelMap;
 
 
 public class CommandCommand extends Command {
 
-    private CommandsModel commandsModel;
+    private ICommandsModel commandsModel;
     private ModelMap modelMap;
     private String name;
 

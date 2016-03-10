@@ -1,9 +1,9 @@
 package display;
 
 import model.CommandsModel;
-
 import model.DisplayModel;
-import model.HistoryPaneModel;
+import model.HistoryModel;
+import model.IHistoryModel;
 import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
@@ -33,9 +33,11 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
+
 import addons.Features;
 import addons.MenuMaker;
 import constants.UIConstants;
@@ -193,7 +195,7 @@ public class DemoWSpace extends Screen {
 		userHistory.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
 		userHistory.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
 		getRoot().getChildren().add(userHistory.myPane);
-		HistoryPaneModel hpm = new HistoryPaneModel();
+		IHistoryModel hpm = new HistoryModel();
 		hpv = new HistoryPaneView(userHistory.myBox, inputText);
 		hpm.addObserver(hpv);
 		hpm.notifyObservers();
