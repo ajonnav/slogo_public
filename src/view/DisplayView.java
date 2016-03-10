@@ -7,7 +7,9 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import model.DisplayModel;
 
 
@@ -15,7 +17,7 @@ public class DisplayView implements IView {
 
     private Canvas backgroundLayer;
     private GraphicsContext backgroundGC;
-    private ComboBox<String> backgroundChange;
+    private ComboBox<HBox> backgroundChange;
     private Features features;
 
     public DisplayView (Group root) {
@@ -41,7 +43,9 @@ public class DisplayView implements IView {
             String backgroundColor = displayModel.getBackgroundColorIndex() + " " +
                                      displayModel.getColorMap()
                                              .get(displayModel.getBackgroundColorIndex());
-            backgroundChange.setValue(backgroundColor);
+            HBox myHB = new HBox();
+            myHB.getChildren().add(new Text("Background Choices"));
+            backgroundChange.setValue(myHB);
             sceneChange(Color.web(backgroundColor.split(" ")[1]));
         }
     }

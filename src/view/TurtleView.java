@@ -11,7 +11,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import model.TurtleModel;
 
 
@@ -23,8 +25,8 @@ public class TurtleView implements IView {
     private Group root;
     private GraphicsContext lineGC;
     private List<ImageView> stamps;
-    private ComboBox<String> penChange;
-    private ComboBox<String> imageChange;
+    private ComboBox<HBox> penChange;
+    private ComboBox<HBox> imageChange;
     private Features features;
 
     public TurtleView (String image, Group root) {
@@ -87,14 +89,18 @@ public class TurtleView implements IView {
 
     public void updateStyles (TurtleModel turtleModel) {
         features.updateComboBoxOptions(penChange, turtleModel.getColorMap());
-        features.updateComboBoxOptions(imageChange, turtleModel.getImageMap());
+        features.updateComboBoxOptionsImage(imageChange, turtleModel.getImageMap());
         String penColor = turtleModel.getPenColorIndex() + " " +
                           turtleModel.getColorMap().get(turtleModel.getPenColorIndex());
         String imageString = turtleModel.getImageIndex() + " " +
                              turtleModel.getImageMap().get(turtleModel.getImageIndex());
-        penChange.setValue(penColor);
+        HBox penHB = new HBox();
+        penHB.getChildren().add(new Text("Pen Choices"));
+        penChange.setValue(penHB);
         
-        imageChange.setValue(imageString);
+        HBox imageHB = new HBox();
+        imageHB.getChildren().add(new Text("Image Choices"));
+        imageChange.setValue(imageHB);
         lineGC.setStroke(Color.web(penColor.split(" ")[1]));
         lineGC.setLineWidth(turtleModel.getLineWidth());
         image.setImage(getImageFromString(imageString.split(" ")[1]));

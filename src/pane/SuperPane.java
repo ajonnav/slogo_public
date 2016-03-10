@@ -10,16 +10,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.TurtleModel;
 
-public class SPane {
+public abstract class SuperPane{
+
 	public ScrollPane myPane;
 	public Group myRoot;
 	public VBox myBox;
 	
-	public SPane(double x, double y) {	
+	public SuperPane(double x, double y) {	
 		setMyRoot(new Group());
 		myBox = new VBox();
 		
-		//getMyRoot().getStylesheets().add(UIConstants.DEFAULT_RESOURCE + "demo.css");
+		getMyRoot().getStylesheets().add(UIConstants.DEFAULT_RESOURCE + UIConstants.SPLASH_CSS);
 		
 		setMyPane(new ScrollPane(myBox));
 		getMyRoot().getChildren().add(myPane);
@@ -28,6 +29,9 @@ public class SPane {
 		
 		myPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		myPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		
+		myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
+        myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
 	}
 
 	public ScrollPane getMyPane() {
@@ -53,3 +57,4 @@ public class SPane {
 		}
 	}
 }
+

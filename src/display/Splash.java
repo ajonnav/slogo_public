@@ -1,8 +1,10 @@
 package display;
 
-import java.util.ResourceBundle;
 import java.io.File;
+import java.util.Map;
+
 import preferences.PrefLoader;
+import preferences.saveState;
 import addons.Features;
 import constants.UIConstants;
 import javafx.collections.FXCollections;
@@ -10,7 +12,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -21,15 +22,14 @@ public class Splash extends Screen {
 	private Features featMaker;
 	private ComboBox<String> languageCBox;
 	private Button go;
+	private saveState myState;
 
 	@Override
 	public void setUpScene() {
-		getRoot().getStylesheets().add(
-				UIConstants.DEFAULT_RESOURCE + UIConstants.SPLASH_CSS);
-
+		getRoot().getStylesheets().add(UIConstants.DEFAULT_RESOURCE + UIConstants.SPLASH_CSS);
 		featMaker = new Features();
 		
-		setScene(new Scene(getRoot(), UIConstants.SWIDTH, UIConstants.SHEIGHT, Color.GRAY));
+		setScene(new Scene(getRoot(), UIConstants.SWIDTH, UIConstants.SHEIGHT));
 
 		setLangBox();
 
@@ -47,14 +47,10 @@ public class Splash extends Screen {
 		welRect.setArcHeight(UIConstants.ARC);
 		welRect.setArcWidth(UIConstants.ARC);
 		getRoot().getChildren().add(welRect);
-		welRect.getStyleClass().add(
-				getResources().getString("welRect"));
 
 		Text welText = new Text(getResources().getString(UIConstants.TITLE));
 		welText.setLayoutX(110);
 		welText.setLayoutY(150);
-		welText.getStyleClass().add(
-				getResources().getString("welText"));
 		getRoot().getChildren().add(welText);
 	}
 
@@ -87,13 +83,18 @@ public class Splash extends Screen {
 		File selectedFile = fileChooser.showOpenDialog(getStage());
 
 		PrefLoader loader = new PrefLoader();
-		loader.load(selectedFile);
+		myState = loader.load(selectedFile);
+		if(myState.colorMap instanceof Map){
+			System.out.println("Is this a map");
+			System.out.println(myState.colorMap);
+		}
+		System.out.println(myState.backColorIndex);
 		go.setDisable(false);
 	}
 
 	private void goToWorkSpace(String lang) {
-		WorkSpace myW = new WorkSpace();
-
+		//WorkSpace myW = new WorkSpace();
+		DemoWSpace myW = new DemoWSpace(myState);
 		myW.setLang(lang);
 		getStage().close();
 		myW.begin();

@@ -1,9 +1,11 @@
-.root {
-    -fx-font-size: 11pt;
+Group {
+    -fx-font-size: 10pt;
     -fx-base: rgb(32, 75, 193);
-    -fx-background: #76AF64;
+    -fx-background-color: lightblue;
 }
-
+Root{
+	-fx-background-color: #CCFC7A
+}
 .button {
     -fx-text-fill: black;
     -fx-background-color: #E0E0E0;
@@ -12,24 +14,25 @@
     -fx-background-radius: 15;
     -fx-padding: 8;
 }
-
+Rectangle{
+	-fx-fill: #CCFC7A
+}
 .button:hover {
     -fx-background-color: green;
     -fx-border-color: white;
     -fx-text-fill: white;
 }
-.welRect {
-    -fx-fill: lightblue;
-}
-.welText {
-    -fx-font-size: 20pt;
-    -fx-font-family: "Helvetica";
-    -fx-text-color-fill: blue;
-}
-.text {
-    -fx-font-family: "Helvetica";
-    -fx-text-color-fill: black;
+Text{
+	-fx-fill: #FFFFFF;
+	-fx-font-size: 20pt;
+	-fx-font-family: "Helvetica";
+	-fx-text-align: center;
 }
 .myPane {
 	-fx-background-color: black;
+}
+Region{
+	-fx-font-size: 10pt;
+    -fx-base: #BCD4F7;
+    -fx-background-color: #8CDFA0;
 }

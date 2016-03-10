@@ -10,12 +10,16 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 
 public class Features {
@@ -48,14 +52,14 @@ public class Features {
         return myCBox;
     }
 
-    public ComboBox<String> makeColorPicker (double layoutX,
+    public ComboBox<HBox> makeColorPicker (double layoutX,
                                              double layoutY,
                                              double width,
                                              double height) {
-        ComboBox<String> cb = new ComboBox<String>();
-        SingleSelectionModel<String> model = new SingleSelectionModel<String>() {
+        ComboBox<HBox> cb = new ComboBox<HBox>();
+        SingleSelectionModel<HBox> model = new SingleSelectionModel<HBox>() {
             @Override
-            protected String getModelItem (int index) {
+            protected HBox getModelItem (int index) {
                 return null;
             }
 
@@ -72,10 +76,27 @@ public class Features {
         return cb;
     }
     
-    public void updateComboBoxOptions (ComboBox<String> cb, Map<Double, String> map) {
+    public void updateComboBoxOptions (ComboBox<HBox> cb, Map<Double, String> map) {
         cb.getItems().clear();
         for (Double s : map.keySet()) {
-            cb.getItems().add(s + " " + map.get(s));
+        	HBox myHB = new HBox(4);
+        	myHB.getChildren().add(makeRect(Color.web(map.get(s))));
+        	myHB.getChildren().add(makeText(Integer.toString(s.intValue())));
+            cb.getItems().add(myHB);
+        }
+    }
+    
+    public void updateComboBoxOptionsImage (ComboBox<HBox> cb, Map<Double, String> map) {
+        cb.getItems().clear();
+        for (Double s : map.keySet()) {
+        	HBox myHB = new HBox(4);
+        	ImageView myImage = new ImageView();
+        	myImage.setImage(new Image(getClass().getClassLoader().getResourceAsStream(map.get(s))));
+        	myImage.setFitWidth(20);
+        	myImage.setFitHeight(20);
+        	myHB.getChildren().add(myImage);
+        	myHB.getChildren().add(makeText(Integer.toString(s.intValue())));
+            cb.getItems().add(myHB);
         }
     }
 
@@ -112,5 +133,8 @@ public class Features {
     
     public static Text makeText(String input){
     	return new Text(input);
+    }
+    public static Rectangle makeRect(Color input){
+    	return new Rectangle(120, 18 ,input);
     }
 }

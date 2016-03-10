@@ -11,7 +11,7 @@ public class PrefLoader {
 	public PrefLoader(){
 	}
 	
-	public void load(File loadingFile){
+	public saveState load(File loadingFile){
 		e = null;
 	    try
 	    {
@@ -20,15 +20,16 @@ public class PrefLoader {
 	       e = (saveState) in.readObject();
 	       in.close();
 	       fileIn.close();
+	       //return e;
 	    }catch(IOException i)
 	    {
 	       i.printStackTrace();
-	       return;
+	       return null;
 	    }catch(ClassNotFoundException c)
 	    {
 	       System.out.println("Employee class not found");
 	       c.printStackTrace();
-	       return;
+	       return null;
 	    }
 	    System.out.println(e.backColorIndex);
 	    System.out.println(e.language);
@@ -41,5 +42,6 @@ public class PrefLoader {
 	    for (Double n: e.colorMap.keySet()){
 	    	System.out.println(n + " " + e.colorMap.get(n));
 	    }
+	    return e;
 	}
 }

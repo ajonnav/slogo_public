@@ -58,14 +58,16 @@ public class WorkSpace extends Screen {
     private SPane userVariables;
     private SPane userTurtles;
     private SPane userInput;
+    
+    private Boolean down = false;
 
     @Override
     public void setUpScene () {
         getRoot().getStylesheets().add(
-                                       UIConstants.DEFAULT_RESOURCE + UIConstants.SPLASH_CSS);
+                                       UIConstants.DEFAULT_RESOURCE + "demo.css");
         featureMaker = new Features();
         setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT,
-                           Color.GRAY));
+                           Color.LIGHTBLUE));
         colorMap = new HashMap<Double, String>();
         colorMap.put(1.0, "#849775");
         colorMap.put(2.0, "#1518b4");
@@ -99,6 +101,7 @@ public class WorkSpace extends Screen {
         setHistoryPane();
         setUserCommandPane();
         setBar();
+        
     }
     
 
@@ -112,16 +115,17 @@ public class WorkSpace extends Screen {
     	MenuMaker menuMaker = new MenuMaker();
     	MenuBar myMenu = menuMaker.getMenu();
     	Menu fileMenu = menuMaker.addMenu(getResources().getString("FileCommand"));
-    	MenuItem helpItem = menuMaker.addMenuItem(getResources().getString("HelpTitle"), e -> openHelpPage(), fileMenu);
-    	MenuItem newItem = menuMaker.addMenuItem(getResources().getString("NewCommand"), e -> switchWS(), fileMenu);
-    	MenuItem saveItem = menuMaker.addMenuItem(getResources().getString("SaveCommand"), e -> setPrefs(), fileMenu);
+    	menuMaker.addMenuItem(getResources().getString("HelpTitle"), e -> openHelpPage(), fileMenu);
+    	menuMaker.addMenuItem(getResources().getString("NewCommand"), e -> switchWS(), fileMenu);
+    	menuMaker.addMenuItem(getResources().getString("SaveCommand"), e -> setPrefs(), fileMenu);
     	Menu toggleMenu = menuMaker.addMenu(getResources().getString("Toggle"));
-    	MenuItem commandToggle = menuMaker.addMenuItem(getResources().getString("cToggle"), e -> noVars(userVariables), toggleMenu);
-    	MenuItem historyToggle = menuMaker.addMenuItem(getResources().getString("hToggle"), e -> noVars(userHistory), toggleMenu);
-    	MenuItem turtleToggle = menuMaker.addMenuItem(getResources().getString("tToggle"), e -> noVars(userTurtles), toggleMenu);
-    	MenuItem variableToggle = menuMaker.addMenuItem(getResources().getString("vToggle"), e -> noVars(userMethods), toggleMenu);
+    	menuMaker.addMenuItem(getResources().getString("cToggle"), e -> noVars(userVariables), toggleMenu);
+    	menuMaker.addMenuItem(getResources().getString("hToggle"), e -> noVars(userHistory), toggleMenu);
+    	menuMaker.addMenuItem(getResources().getString("tToggle"), e -> noVars(userTurtles), toggleMenu);
+    	menuMaker.addMenuItem(getResources().getString("vToggle"), e -> noVars(userMethods), toggleMenu);
+    	menuMaker.addMenuItem(getResources().getString("uToggle"), e -> noVars(userInput), toggleMenu);
     	Menu editMenu = menuMaker.addMenu(getResources().getString("EditCommand"));
-    	MenuItem penStatus = menuMaker.addMenuItem(getResources().getString("penStatus"), e -> setPenUpDown(), editMenu);
+    	menuMaker.addMenuItem(getResources().getString("penStatus"), e -> setPenUpDown(), editMenu);
     	getRoot().getChildren().add(myMenu);
     }
     
@@ -205,8 +209,8 @@ public class WorkSpace extends Screen {
     private void setInputPane () {
     	userInput = new SPane(UIConstants.RECT_W, UIConstants.LOWER_PANE_Y);
         inputText = new TextArea();
-        inputText.setMinSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
-        inputText.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
+        inputText.setMinSize(UIConstants.LOWER_PANE_WIDTH, 120);
+        inputText.setMaxSize(UIConstants.LOWER_PANE_WIDTH, 120);
         userInput.myBox.getChildren().add(inputText);
         Button inputButton = featureMaker.makeB(getResources().getString("GoCommand"),
                                                 event -> readInput(parser, inputText));
@@ -221,7 +225,7 @@ public class WorkSpace extends Screen {
         userHistory = new SPane(UIConstants.HISTORY_PANE_X, UIConstants.BORDER_WIDTH);
         userHistory.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
         userHistory.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-        getRoot().getChildren().addAll(userHistory.myRoot);
+        getRoot().getChildren().add(userHistory.myPane);
         HistoryPaneModel hpm = new HistoryPaneModel();
         hpv = new HistoryPaneView(userHistory.myBox, inputText);
         hpm.addObserver(hpv);
@@ -267,6 +271,7 @@ public class WorkSpace extends Screen {
      * Sets the Pane for the current status of the various turtles on the display
      */
     private void setTurtlePane(List<TurtleModel> tm) {
+    	//use display model
         userTurtles = new SPane(UIConstants.TURTLE_PANE_X, UIConstants.LOWER_PANE_Y);
         userTurtles.myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
         userTurtles.myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
@@ -318,7 +323,15 @@ public class WorkSpace extends Screen {
 	}
     
     private void setPenUpDown(){
-    	
+    	if(down == true){
+    		parser.parseText("pu");
+    		down = false;
+    	}
+    	else{
+    		parser.parseText("pd");
+    		down = true;
+    	}
+    		
     }
     
     private void setPenThicknessInputField(){
