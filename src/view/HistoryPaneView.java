@@ -15,8 +15,8 @@ import javafx.scene.control.TextArea;
 
 public class HistoryPaneView implements IView {
 
-    public VBox myVBox;
-    public TextArea myTA;
+    private VBox myVBox;
+    private TextArea myTA;
     private ResourceBundle myResources;
     
     public HistoryPaneView (VBox vb, TextArea ta) {

@@ -1,7 +1,6 @@
 package display;
 
 import model.CommandsModel;
-
 import model.DisplayModel;
 import model.HistoryPaneModel;
 import model.ModelMap;
@@ -45,6 +44,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import command.Command;
 
 import addons.Features;
 import addons.MenuMaker;
@@ -146,11 +147,11 @@ public class DemoWSpace extends Screen {
 	 * Initializes the turtle display's front end and back end relationship
 	 */
 	private void setDisplay() {
-		DisplayModel displayModel = new DisplayModel(myState.colorMap, myState.images);
+		DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
 		DisplayView displayView = new DisplayView(getRoot());
 		displayModel.addObserver(displayView);
 		modelMap.setDisplay(displayModel);
-		modelMap.getDisplay().setBackgroundColorIndex(myState.backColorIndex);
+		modelMap.getDisplay().setBackgroundColorIndex(myState.getBackColorIndex());
 		displayModel.notifyObservers();
 	}
 
@@ -158,10 +159,10 @@ public class DemoWSpace extends Screen {
 	 * Hides/shows a user view from the Scene
 	 */
 	private void noVars(SPane variables) {
-		if (getRoot().getChildren().contains(variables.myPane)) {
-			getRoot().getChildren().remove(variables.myPane);
+		if (getRoot().getChildren().contains(variables.getMyPane())) {
+			getRoot().getChildren().remove(variables.getMyPane());
 		} else {
-			getRoot().getChildren().add(variables.myPane);
+			getRoot().getChildren().add(variables.getMyPane());
 		}
 	}
 
@@ -188,12 +189,12 @@ public class DemoWSpace extends Screen {
 		inputText = new TextArea();
 		inputText.setMinSize(UIConstants.LOWER_PANE_WIDTH, 120);
 		inputText.setMaxSize(UIConstants.LOWER_PANE_WIDTH, 120);
-		userInput.myBox.getChildren().add(inputText);
+		userInput.getMyBox().getChildren().add(inputText);
 		Button inputButton = featureMaker.makeB(getResources().getString("GoCommand"),
 				event -> readInput(parser, inputText));
 		inputButton.setMinWidth(UIConstants.LOWER_PANE_WIDTH);
-		userInput.myBox.getChildren().add(inputButton);
-		getRoot().getChildren().add(userInput.myPane);
+		userInput.getMyBox().getChildren().add(inputButton);
+		getRoot().getChildren().add(userInput.getMyPane());
 	}
 
 	/*
@@ -201,47 +202,63 @@ public class DemoWSpace extends Screen {
 	 */
 	private void setHistoryPane() {
 		userHistory = new SPane(UIConstants.HISTORY_PANE_X, UIConstants.BORDER_WIDTH);
-		userHistory.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-		userHistory.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-		getRoot().getChildren().add(userHistory.myPane);
+		userHistory.getMyPane().setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+		userHistory.getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+		getRoot().getChildren().add(userHistory.getMyPane());
 		HistoryPaneModel hpm = new HistoryPaneModel();
-		hpv = new HistoryPaneView(userHistory.myBox, inputText);
+		//initializeHistory(hpm, myState.getHistory());
+		hpv = new HistoryPaneView(userHistory.getMyBox(), inputText);
 		hpm.addObserver(hpv);
 		hpm.notifyObservers();
 		modelMap.setHistory(hpm);
 	}
-
+	/*
+	private void initializeHistory(HistoryPaneModel hpm, List<String> history){
+		if (!myState.getHistory().isEmpty()){
+			for(String n: myState.getHistory()){
+				hpm.addToHistory(n);
+			}
+		}
+	}
+	*/
+	
 	/*
 	 * Sets the Pane for the current user-defined variables in the environment
 	 */
 	private void setVariablePane() {
 		userVariables = new SPane(25, UIConstants.LOWER_PANE_Y);
-		userVariables.myPane.setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
-		userVariables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
+		userVariables.getMyPane().setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
+		userVariables.getMyPane().setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
 
 		VariableModel varModel = new VariableModel();
-		VariableView varView = new VariableView(userVariables.myBox, new VBox(), inputText, getMyLang());
+		//initializeVariables(varModel, myState.getVariables());
+		VariableView varView = new VariableView(userVariables.getMyBox(), new VBox(), inputText, getMyLang());
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
 		modelMap.setVariable(varModel);
-		getRoot().getChildren().add(userVariables.myPane);
+		getRoot().getChildren().add(userVariables.getMyPane());
 	}
-
+	/*
+	private void initializeVariables(VariableModel vpm, HashMap<String, Double> vars){
+		vpm.pushNewMap(vars);
+	}
+	*/
+	
 	/*
 	 * Sets the Pane for the current user-defined methods in the environment
 	 */
 	private void setUserCommandPane() {
 		userMethods = new SPane(UIConstants.BORDER_WIDTH, UIConstants.METHODS_Y);
-		userMethods.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-		userMethods.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-		userMethods.myBox.getChildren().add(new Text(getResources().getString("UCommands")));
+		userMethods.getMyPane().setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+		userMethods.getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+		userMethods.getMyBox().getChildren().add(new Text(getResources().getString("UCommands")));
 
 		CommandsModel varModel = new CommandsModel();
-		CommandsView varView = new CommandsView(userMethods.myBox, inputText);
+		CommandsView varView = new CommandsView(userMethods.getMyBox(), inputText);
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
 		modelMap.setCommands(varModel);
-		getRoot().getChildren().add(userMethods.myPane);
+		getRoot().getChildren().add(userMethods.getMyPane());
 	}
 
 	/*
@@ -251,11 +268,11 @@ public class DemoWSpace extends Screen {
 	private void setTurtlePane(List<TurtleModel> tm) {
 		// use display model
 		userTurtles = new SPane(UIConstants.TURTLE_PANE_X, UIConstants.LOWER_PANE_Y);
-		userTurtles.myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
-		userTurtles.myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
-		userTurtles.myBox.getChildren().add(new Text(getResources().getString("Tur")));
-		getRoot().getChildren().add(userTurtles.myPane);
-		TurtleIDView cv = new TurtleIDView(inputText, userTurtles.myBox);
+		userTurtles.getMyPane().setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
+		userTurtles.getMyPane().setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
+		userTurtles.getMyBox().getChildren().add(new Text(getResources().getString("Tur")));
+		getRoot().getChildren().add(userTurtles.getMyPane());
+		TurtleIDView cv = new TurtleIDView(inputText, userTurtles.getMyBox());
 		for (int i = 0; i < tm.size(); i++) {
 			tm.get(i).addObserver(cv);
 			tm.get(i).notifyObservers();
@@ -280,7 +297,7 @@ public class DemoWSpace extends Screen {
 
 	private void setPrefs() {
 		String newTitle = newTextInput("File Name", "Save File", "Enter New File Name", "File:");
-		PrefWriter setter = new PrefWriter(modelMap, "image.png", myLang);
+		PrefWriter setter = new PrefWriter(modelMap, newTitle, myLang);
 		setter.writeToSrl();
 	}
 

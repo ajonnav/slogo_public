@@ -7,9 +7,9 @@ import javafx.scene.layout.VBox;
 
 public class MasterPane {
 
-	public Pane myPane;
-	public Group myRoot;
-	public VBox myBox;
+	private Pane myPane;
+	private Group myRoot;
+	private VBox myBox;
 	
 	public MasterPane(int x, int y) {
 		setMyPane(new Pane());
