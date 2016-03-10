@@ -27,7 +27,7 @@ public class DisplayModel extends Observable{
         this.lastActiveID = 1;
         this.colorMap = colorMap;
         this.imageMap = imageMap;
-        this.toAnimate = false;
+        this.toAnimate = true;
         stateList = new ArrayList<>();
         setTurtles();
         setChanged();
@@ -44,14 +44,11 @@ public class DisplayModel extends Observable{
             turtleModel.setPenColorString(colorMap.get(turtleModel.getPenColorIndex()));
             firstTurtleList.add(turtleModel);
         }
-        
     }
-    
     
     public double getBackgroundColorIndex () {
         return backgroundColorIndex;
     }
-    
     
     public double TurtleAction (String command, List<Command> parameters) {
     	 lastValue = 0;
@@ -80,7 +77,6 @@ public class DisplayModel extends Observable{
          return lastValue;
     }
     
-    
     public double tell (double[] values) {
     	List<TurtleModel> nextTurtleList = makeCopyOfTurtleList(stateList.get(stateList.size()-1));
         stateList.add(nextTurtleList);
@@ -102,7 +98,6 @@ public class DisplayModel extends Observable{
         return lastActiveID;
     }
     
-    
     public double[] getActiveTurtleIDs() {
         List<Double> active = new ArrayList<Double>();
         for(int i = 0; i < stateList.get(stateList.size()-1).size(); i++) {
@@ -113,14 +108,12 @@ public class DisplayModel extends Observable{
         return active.stream().mapToDouble(d -> d).toArray();
     }
     
-    
     public double addToColorMap (double[] values) {
         colorMap.put(values[0], String.format("#%02X%02X%02X", (int) values[1], (int) values[2],
                                               (int) values[3]));
         setColorMap(colorMap);
         return values[0];
     }
-    
     
     public double[] commandsToDoubleArray(List<Command> parameters) {
         double[] array = new double[parameters.size()];
@@ -130,45 +123,37 @@ public class DisplayModel extends Observable{
         return array;
     }
 
-    
     public double setBackgroundColorIndex (double backgroundColorIndex) {
         this.backgroundColorIndex = backgroundColorIndex;
         updateView();
         return backgroundColorIndex;
     }
     
-    
     public Map<Double, String> getColorMap() {
         return colorMap;
     }
-    
     
     public void setColorMap(Map<Double, String> colorMap) {
         this.colorMap = colorMap;
         updateView();
     }
     
-    
     public String getBackgroundColor() {
     	return colorMap.get(backgroundColorIndex);
     }
         
-    
     public void updateView() {
         setChanged();
         notifyObservers();
     }
     
-    
     public int getLastActiveID() {
         return lastActiveID;
     }
     
-    
     public Map<Double, String> getImageMap () {
         return imageMap;
     }
-    
     
     public int getNumTurtles() {
         return stateList.get(stateList.size()-1).size();
@@ -180,10 +165,6 @@ public class DisplayModel extends Observable{
     
     public List<TurtleModel> getPrevTurtleList() {
     	return stateList.get(stateList.size()-2);
-    }
-
-    private void setImage(TurtleModel turtleModel) {
-    	turtleModel.setImageString(imageMap.get(turtleModel.getImageIndex()));
     }
 
 	public void updateDisplay() {

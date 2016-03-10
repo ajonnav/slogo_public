@@ -7,10 +7,6 @@ public class ModelMap {
     private VariableModel variable;
     private DisplayModel display;    
 
-    public ModelMap () {
-        
-    }
-    
     public void setHistory (HistoryPaneModel history) {
         this.history = history;
     }

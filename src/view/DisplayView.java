@@ -2,7 +2,6 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-
 import addons.Features;
 import constants.UIConstants;
 import javafx.animation.Animation;
@@ -10,14 +9,12 @@ import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
@@ -31,7 +28,6 @@ public class DisplayView implements IView {
 
     private Canvas backgroundCanvas;
     private GraphicsContext backgroundGC;
-    private ComboBox<HBox> backgroundChange;
     private ComboBox<HBox> backgroundColorComboBox;
     private ComboBox<HBox> penChange;
     private ComboBox<HBox> imageChange;

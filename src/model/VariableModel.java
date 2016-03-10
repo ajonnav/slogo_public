@@ -20,12 +20,12 @@ public class VariableModel extends Observable {
         return variableMap.peek().containsKey(variable) ? variableMap.peek().get(variable) : setVariable(variable, 0.0);
     }
     
-    public void pushNewMap(Map<String, Double> variableMap) {
+    public void pushScope(Map<String, Double> variableMap) {
         this.variableMap.push((HashMap<String, Double>) variableMap);
         updateView();
     }
     
-    public void popMap() {
+    public void popScope() {
         this.variableMap.pop();
         updateView();
     }
@@ -39,12 +39,6 @@ public class VariableModel extends Observable {
     public void clearVariables () {
         variableMap.clear();
         updateView();
-    }
-    
-    public void printMap() {
-        for(String s : variableMap.peek().keySet()) {
-            System.out.println(s + " " + variableMap.peek().get(s));
-        }
     }
     
     public Map<String, Double> getImmutableVariableMap () {

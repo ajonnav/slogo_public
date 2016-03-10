@@ -101,7 +101,6 @@ public class WorkSpace extends Screen {
         setHistoryPane();
         setUserCommandPane();
         setBar();
-        
     }
     
 

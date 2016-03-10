@@ -39,9 +39,9 @@ public class CommandCommand extends Command {
                 mapCopy.put(((VariableCommand) commandsModel.getVariables(name).get(i))
                                 .getName(), getCommands().get(i).get(0).execute());
             }
-            modelMap.getVariable().pushNewMap(mapCopy);
+            modelMap.getVariable().pushScope(mapCopy);
             double returnValue = loopExecute(commandsModel.getCommands(name));
-            modelMap.getVariable().popMap();
+            modelMap.getVariable().popScope();
             return returnValue;
         }
         else {
