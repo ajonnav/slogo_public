@@ -19,7 +19,7 @@ public class saveState implements java.io.Serializable {
 	private List<String> history;
 	private Map<String, Double> variables = new HashMap<String, Double>();
 	private Map<Double, String> images;
-	public Map<String, List<Command>> commands;	
+	private Map<String, List<Command>> commands;	
 	
 	public Map<Double, String> getColorMap() {
 		return colorMap;
