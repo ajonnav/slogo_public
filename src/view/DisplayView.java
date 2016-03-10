@@ -99,12 +99,23 @@ public class DisplayView implements IView {
     }
     
     public void drawTurtles(DisplayModel displayModel) {
-    	for(int i=frameNumber; i<displayModel.getNumFrames()-1; i++) {
+/*    	for(int i=frameNumber; i<displayModel.getNumFrames()-1; i++) {
     		animateFrames(displayModel.getFrame(i), displayModel.getFrame(i+1));
     		frameNumber++;
-    	}
-//        drawLines(t.getLineList());
-//        drawStamps(t.getStampList());
+    	}*/
+    	displayModel.getFrame(displayModel.getNumFrames()-1).stream().forEach( t->
+    	{
+    		drawLines(t.getLineList());
+    		drawStamps(t.getStampList());
+    		Image image = getImageFromString(t.getImageString());
+    		drawRotatedImage(image, transformX(t.getPositionX()) - 50/2,
+    				 transformY(t.getPositionY()) - 50/2,
+    				 transformHeading(t.getHeading()));
+    		//drawLines(t.getLineList());
+    		//drawStamps(t.getStampList());
+    	});
+    				
+        
     }
     
     public void animateFrames(List<TurtleModel> prev, List<TurtleModel> next) {
@@ -140,7 +151,7 @@ public class DisplayView implements IView {
     }
     
     private void animate(Node image, TurtleModel prev, TurtleModel next) {
-    	TranslateTransition tt = new TranslateTransition(Duration.seconds(3), image);
+    	TranslateTransition tt = new TranslateTransition(Duration.seconds(1), image);
     	tt.setByX(next.getPositionX() - prev.getPositionX());
     	tt.setByY(prev.getPositionY() - next.getPositionY());
     	tt.setAutoReverse(true);
