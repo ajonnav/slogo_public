@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
+import addons.Features;
 import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
@@ -14,16 +15,23 @@ import model.VariableModel;
 public class VariableView implements IView{
 
 	private Map<String, Double> vars;
+	private VBox paneBox;
 	private VBox varBox;
 	private TextArea myTA;
 	private ResourceBundle myBundle;
+	private ResourceBundle myResources;
 	
-	public VariableView(VBox vb, TextArea ta, String language) {
+	public VariableView(VBox vbMain, VBox vbVar, TextArea ta, String language) {
 		vars = new HashMap<String, Double>();
-		varBox = vb;
+		paneBox = vbMain;
+		varBox = vbVar;
 		myTA = ta;
 		String myLang = language;
 		myBundle = ResourceBundle.getBundle(UIConstants.RSRC_LANG + myLang);
+		myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
+				
+		vbMain.getChildren().add(Features.makeText(myResources.getString("Var")));
+		vbMain.getChildren().add(varBox);
 	}
 
 	@Override

@@ -1,10 +1,14 @@
 package pane;
 
+import java.util.List;
+
 import constants.UIConstants;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import model.TurtleModel;
 
 public class SPane {
 	public ScrollPane myPane;
@@ -24,8 +28,6 @@ public class SPane {
 		
 		myPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		myPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		myPane.setStyle("-fx-color: red;");
-	
 	}
 
 	public ScrollPane getMyPane() {
@@ -42,5 +44,12 @@ public class SPane {
 	
 	public void setMyRoot(Group r){
 		myRoot = r;
+	}
+
+	public void addTurtles(List<TurtleModel> tm) {
+		for(TurtleModel item : tm){
+			Text info = new Text(Boolean.toString(item.isActive()));
+			myBox.getChildren().add(info);
+		}
 	}
 }

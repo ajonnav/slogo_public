@@ -29,7 +29,7 @@ public class DisplayView implements IView {
 
     private Canvas backgroundCanvas;
     private GraphicsContext backgroundGC;
-    private ComboBox<String> backgroundColorCombo;
+    private ComboBox<String> backgroundColorComboBox;
     private ComboBox<String> penChange;
     private ComboBox<String> imageChange;
     private Features features;
@@ -44,13 +44,13 @@ public class DisplayView implements IView {
                                                    Color.GREEN);
         this.backgroundGC = backgroundCanvas.getGraphicsContext2D();
         this.imageViewGroup = new Group();
-        this.backgroundColorCombo =
-                features.makeColorPicker(UIConstants.BACKGROUND_PICK_X,
-                                         UIConstants.ZERO,
+        this.backgroundColorComboBox =
+                features.makeColorPicker(1100,
+                                         550,
                                          UIConstants.COLOR_SELECTOR_WIDTH,
                                          UIConstants.BORDER_WIDTH);
         root.getChildren().add(backgroundCanvas);
-        root.getChildren().add(backgroundColorCombo);
+        root.getChildren().add(backgroundColorComboBox);
         root.getChildren().add(imageViewGroup);
         animationList = new ArrayList<>();
         frameNumber = 0;
@@ -77,10 +77,10 @@ public class DisplayView implements IView {
         if (o instanceof DisplayModel) {
         	animationList.clear();
             DisplayModel displayModel = (DisplayModel) o;
-            features.updateComboBoxOptions(backgroundColorCombo, displayModel.getColorMap());
+            features.updateComboBoxOptions(backgroundColorComboBox, displayModel.getColorMap());
             String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
                                      displayModel.getBackgroundColor();
-            backgroundColorCombo.setValue(backgroundColorString);
+            backgroundColorComboBox.setValue(backgroundColorString);
             backgroundGC.clearRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
             drawBackgroundRectangle(Color.web(backgroundColorString.split(" ")[1]));
             if(displayModel.getNumFrames()>0) {

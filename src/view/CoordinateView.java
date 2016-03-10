@@ -1,10 +1,14 @@
 package view;
 
 import java.util.Observable;
+
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import model.TurtleModel;
 
+import java.util.ResourceBundle;
+
+import constants.UIConstants;
 
 public class CoordinateView implements IView {
 
@@ -13,18 +17,25 @@ public class CoordinateView implements IView {
     private Text xCoord;
     private Text yCoord;
     private Text heading;
-
-    public CoordinateView (HBox hb, double initX, double initY, double initHeading) {
+    private Text penStat;
+    private ResourceBundle myResources;
+    
+    //or refactor to be a single string to be shorter, will see
+    public CoordinateView (HBox hb, double penState, double initX, double initY, double initHeading) {
         coordBox = hb;
         xCoord = new Text();
         yCoord = new Text();
         heading = new Text();
-        xCoord = updateText(xWorkSpaceCoordinate(initX), "X Coord: ", xCoord);
-        yCoord = updateText(yWorkSpaceCoordinate(initY), "Y Coord: ", yCoord);
-        heading = updateText(workSpaceHeading(initHeading), "Heading: ", heading);
-        coordBox.getChildren().add(xCoord);
-        coordBox.getChildren().add(yCoord);
-        coordBox.getChildren().add(heading);
+        penStat = new Text();
+        myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
+        
+        xCoord = updateTurtleStat(initX, myResources.getString("xcoord"), xCoord);
+        yCoord = updateTurtleStat(initY, myResources.getString("ycoord"), yCoord);
+        heading = updateTurtleStat(initHeading, myResources.getString("heading"), heading);
+        penStat = updatePenStatus(penState, myResources.getString("pendu"), penStat);
+        		
+        coordBox.getChildren().addAll(xCoord, yCoord, heading, penStat);
+
     }
 
     private Double xWorkSpaceCoordinate (double modelCoordinate) {
@@ -38,19 +49,28 @@ public class CoordinateView implements IView {
     private Double workSpaceHeading (double heading) {
         return Math.abs((90 - heading) % 360);
     }
-
-    private Text updateText (Double setting, String text, Text field) {
+    
+    private Text updateTurtleStat (Double setting, String text, Text field) {
         field.setText(text + setting.toString() + "  ");
         return field;
     }
 
+    private Text updatePenStatus (double status, String text, Text field) {
+    	if (status==1)
+    		field.setText(text + myResources.getString("true"));
+    	else 
+    		field.setText(text + myResources.getString("false"));
+    	return field;
+    }
+    
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof TurtleModel) {
-            TurtleModel turtleModel = (TurtleModel) o;
-            updateText(xWorkSpaceCoordinate(turtleModel.getPositionX()), "X Coord: ", xCoord);
-            updateText(yWorkSpaceCoordinate(turtleModel.getPositionY()), "Y Coord: ", yCoord);
-            updateText(workSpaceHeading(turtleModel.getHeading()), "Heading: ", heading);
+        	TurtleModel turtleModel = (TurtleModel) o;
+            updateTurtleStat(xWorkSpaceCoordinate(turtleModel.getPositionX()), myResources.getString("xcoord"), xCoord);
+            updateTurtleStat(yWorkSpaceCoordinate(turtleModel.getPositionY()), myResources.getString("ycoord"), yCoord);
+            updateTurtleStat(workSpaceHeading(turtleModel.getHeading()), myResources.getString("heading"), heading);
+            updatePenStatus(turtleModel.getPenStatus(), myResources.getString("pendu"), penStat);
         }
     }
 }
