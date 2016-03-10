@@ -73,7 +73,7 @@ public class DemoWSpace extends Screen {
 
 	public DemoWSpace(saveState myS) {
 		myState = myS;
-		modelMap = new ModelMap(myState.colorMap, myState.images);
+		modelMap = new ModelMap();
 		setDisplay();
 		setInputPane();
 		setTurtle();
@@ -146,7 +146,7 @@ public class DemoWSpace extends Screen {
 	 * Initializes the turtle display's front end and back end relationship
 	 */
 	private void setDisplay() {
-		DisplayModel displayModel = new DisplayModel(myState.colorMap);
+		DisplayModel displayModel = new DisplayModel(myState.colorMap, myState.images);
 		DisplayView displayView = new DisplayView(getRoot());
 		displayModel.addObserver(displayView);
 		modelMap.setDisplay(displayModel);

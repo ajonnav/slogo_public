@@ -17,17 +17,17 @@ public class AskWithCommand extends Command {
     @Override
     public double execute () { 
         List<Double> ids = new ArrayList<Double>();
-        double[] oldValues = modelMap.getActiveTurtleIDs();
-        List<TurtleModel> turtles = modelMap.getImmutableTurtles();
-        for(int i = 0; i < turtles.size(); i++) {
-            modelMap.tell(new double[]{i+1});;
+        double[] oldValues = modelMap.getDisplay().getActiveTurtleIDs();
+        List<TurtleModel> turtleList = modelMap.getDisplay().getFrame( modelMap.getDisplay().getNumFrames());
+        for(int i = 0; i < turtleList.size(); i++) {
+            modelMap.getDisplay().tell(new double[]{i+1});;
             if(getCommands().get(0).get(0).execute() == 1) {
                 ids.add((double) i + 1);
             }
         }
-        modelMap.tell(ids.stream().mapToDouble(d -> d).toArray());
+        modelMap.getDisplay().tell(ids.stream().mapToDouble(d -> d).toArray());
         double returnValue = loopExecute(getCommands().get(1));
-        modelMap.tell(oldValues);
+        modelMap.getDisplay().tell(oldValues);
         return returnValue;
     }
 }

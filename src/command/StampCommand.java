@@ -14,7 +14,7 @@ public class StampCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("stamp", null);
+        return modelMap.getDisplay().TurtleAction("stamp", null);
     }
 
 }

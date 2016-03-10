@@ -16,7 +16,7 @@ public class SetPenSizeCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("setLineWidth", Arrays.asList(getCommands().get(0).get(0)));
+        return modelMap.getDisplay().TurtleAction("setLineWidth", Arrays.asList(getCommands().get(0).get(0)));
     }
 
 }

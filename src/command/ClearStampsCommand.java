@@ -13,7 +13,7 @@ public class ClearStampsCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("setShouldClearStamp", null);
+        return modelMap.getDisplay().TurtleAction("setShouldClearStamp", null);
     }
 
 }

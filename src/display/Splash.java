@@ -88,8 +88,8 @@ public class Splash extends Screen {
 	}
 
 	private void goToWorkSpace(String lang) {
-		//WorkSpace myW = new WorkSpace();
-		DemoWSpace myW = new DemoWSpace(myState);
+		WorkSpace myW = new WorkSpace();
+		//DemoWSpace myW = new DemoWSpace(myState);
 		myW.setLang(lang);
 		getStage().close();
 		myW.begin();

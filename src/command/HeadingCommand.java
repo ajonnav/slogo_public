@@ -15,6 +15,6 @@ public class HeadingCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.TurtleAction("getHeading", null);
+        return modelMap.getDisplay().TurtleAction("getHeading", null);
     }
 }

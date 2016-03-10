@@ -1,60 +1,61 @@
 package model;
 
-import java.util.Map;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
-
-public class TurtleModel extends Observable {
+public class TurtleModel extends Observable implements Observer, Serializable{
     
-    private double turtleInitialX;
+	private static final long serialVersionUID = 7400792168904381245L;
+	private double turtleInitialX;
     private double turtleInitialY;
     private double turtleInitialHeading;
+    private String imageString;
+    private PenModel pen;
     private boolean isActive;
     private double heading;
     private double positionX;
     private double positionY;
-    private boolean penStatus;
     private boolean showStatus;
-    private boolean shouldClear;
-    private boolean shouldStamp;
-    private boolean shouldClearStamp;
-    private int numStamps;
-    private double penColorIndex;
     private double imageIndex;
-    private double lineWidth;
-    private Map<Double, String> colorMap;
-    private Map<Double, String> imageMap;
+    private List<LineModel> lineList;
+    private List<StampModel> stampList;
 
-    public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading, 
-                        Map<Double, String> colorMap, Map<Double, String> imageMap) {
+    public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading) {
         isActive = false;
         heading = turtleInitialHeading;
         this.turtleInitialHeading = turtleInitialHeading;
-        positionX = turtleInitialX; 
+        positionX = turtleInitialX;
         this.turtleInitialX = turtleInitialX;
         positionY = turtleInitialY;
         this.turtleInitialY = turtleInitialY;
-        penStatus = false;
         showStatus = true;
-        shouldClear = false;
-        shouldStamp = false;
-        numStamps = 0;
-        penColorIndex = 1;
         imageIndex = 5;
-        lineWidth = 1;
-        this.colorMap = colorMap;
-        this.imageMap = imageMap;
+        lineList = new ArrayList<>();
+        stampList=  new ArrayList<>();
+        double penColorIndex = 1.0;
+        double lineWidth = 1;
+        double style = 0;
+        pen = new PenModel(false, lineWidth, penColorIndex, style);
+        pen.addObserver(this);
         setChanged();
     }
     
     public TurtleModel makeNewActiveTurtle() {
-        TurtleModel newTurtle = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading, colorMap, imageMap);
+        TurtleModel newTurtle = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
         newTurtle.isActive = true;
         return newTurtle;
     }
 
-
     public double forward (double[] distance) {
+    	if(pen.getStatus()) {
+	    	lineList.add(new LineModel(positionX, positionY, 
+	    			positionX+distance[0] * Math.cos(Math.toRadians(heading)), 
+	    			positionY + distance[0] * Math.sin(Math.toRadians(heading)),
+	    			pen.getSize(), pen.getColorString(), pen.getStyle()));
+    	}
         positionX += distance[0] * Math.cos(Math.toRadians(heading));
         positionY += distance[0] * Math.sin(Math.toRadians(heading));
         updateView();
@@ -70,43 +71,42 @@ public class TurtleModel extends Observable {
         heading = degrees[0];
         updateView();
     }
-    
 
     public double turnRight (double[] degree) {
         heading -= degree[0];
         updateView();
         return degree[0];
     }
-    
+
     public double turnLeft (double[] degree) {
         degree[0] = -degree[0];
         return turnRight(degree);
     }
 
     public double penUp () {
-        penStatus = false;
+        pen.setStatus(false);
         updateView();
         return 0;
     }
-
+    
     public double penDown () {
-        penStatus = true;
+    	pen.setStatus(true);
         updateView();
         return 1;
     }
     
     public double stamp () {
-        this.setShouldStamp(1);
-        numStamps++;
+        stampList.add(new StampModel(imageString, positionX, positionY, heading));
+        updateView();
         return imageIndex;
     }
-
+    
     public double show () {
         showStatus = true;
         updateView();
         return 1;
     }
-
+    
     public double hide () {
         showStatus = false;
         updateView();
@@ -114,10 +114,7 @@ public class TurtleModel extends Observable {
     }
     
     public double home () {
-        double returnValue = Math.sqrt(Math.pow((0 - positionX), 2) +
-                                       Math.pow((0 - positionY), 2));
-        positionX = 0;
-        positionY = 0;
+        double returnValue = setPosition(new double[] {0, 0});
         heading = 90;
         updateView();
         return returnValue;
@@ -127,6 +124,10 @@ public class TurtleModel extends Observable {
         double[] oldPos = new double[]{positionX, positionY};
         positionX = xy[0];
         positionY = xy[1];
+        if(pen.getStatus()) {
+	    	lineList.add(new LineModel(oldPos[0], oldPos[1], positionX, positionY,
+	    			pen.getSize(), pen.getColorString(), pen.getStyle()));
+    	}
         updateView();
         return Math.sqrt(Math.pow((oldPos[0] - positionX), 2) +
                          Math.pow((oldPos[1] - positionY), 2));
@@ -144,124 +145,71 @@ public class TurtleModel extends Observable {
         updateView();
         return headingDiff >= 180 ? 360 - headingDiff : headingDiff;
     }
-      
-    public void setColorMap(Map<Double, String> colorMap) {
-        this.colorMap = colorMap;
-        updateView();
-    }
-    
-    public void setImageMap(Map<Double, String> imageMap) {
-        this.imageMap = imageMap;
-        updateView();
-    }
-    
-    public Map<Double, String> getColorMap() {
-        return colorMap;
-    }
-    
-    public Map<Double, String> getImageMap() {
-        return imageMap;
-    }
     
     public double getPositionY () {
         return positionY;
     }
-
+    
     public double getPositionX () {
         return positionX;
     }
-
+    
     public double getHeading () {
         return heading;
     }
-
+    
     public double getPenStatus () {
-        return penStatus ? 1 : 0;
+        return pen.getStatus() ? 1 : 0;
     }
 
     public double getShowStatus () {
         return showStatus ? 1 : 0;
     }
-
-    public boolean shouldClear () {
-        return shouldClear;
-    }
     
     public double clearScreen() {
         double returnValue = home();
-        setShouldClear(1);
-        return returnValue;
-    }
-    
-    public void setShouldClear(double shouldClear) {
-        this.shouldClear = shouldClear == 1 ? true : false;
+        stampList.clear();
+        lineList.clear();
         updateView();
+        return returnValue;
     }
 
     public double getPenColorIndex () {
-        return penColorIndex;
+        return pen.getColorIndex();
     }
-
+    
     public double setPenColorIndex (double[] penColorIndex) {
-        this.penColorIndex = penColorIndex[0];
+        this.pen.setColorIndex(penColorIndex[0]);
         updateView();
         return penColorIndex[0];
     }
-
+    
+    public void setPenColorString(String colorString) {
+    	pen.setColorString(colorString);
+    }
+    
     public double getImageIndex () {
         return imageIndex;
     }
-
+    
     public double setImageIndex (double[] imageIndex) {
         this.imageIndex = imageIndex[0];
         updateView();
         return imageIndex[0];
     }
-
+    
     public double getLineWidth () {
-        return lineWidth;
+        return pen.getSize();
     }
 
     public double setLineWidth (double[] lineWidth) {
-        this.lineWidth = lineWidth[0];
+        this.pen.setSize(lineWidth[0]);
         updateView();
         return lineWidth[0];
     }
-
-    public boolean shouldStamp () {
-        return shouldStamp;
-    }
-
-    public void setShouldStamp (double shouldStamp) {
-        this.shouldStamp = shouldStamp == 1 ? true : false;
-        updateView();
-    }
     
     public int getNumStamps() {
-        return numStamps;
-    }
-    
-    public void setNumStamps(int numStamps) {
-        this.numStamps = numStamps;
-        updateView();
-    }
-
-    public boolean shouldClearStamp () {
-        return shouldClearStamp;
-    }
-    
-    public double clearStamp () {
-        return setShouldClearStamp(1);
-    }
-    
-    public double setShouldClearStamp (double shouldClearStamp) {
-        if(numStamps > 0) {
-            numStamps = 0;
-            this.shouldClearStamp = shouldClearStamp == 1 ? true : false;
-            updateView();
-            return 1;
-        }
-        return 0;
+        return stampList.size();
     }
     
     public boolean isActive () {
@@ -271,10 +219,48 @@ public class TurtleModel extends Observable {
     public void setActive (double isActive) {
         this.isActive = isActive == 1 ? true : false;
     }
-  
+
+    public String getImageString() {
+    	return imageString;
+    }
+    
+    public void setImageString(String imageString) {
+    	this.imageString = imageString;
+    }
+    
+    public List<LineModel> getLineList() {
+    	return lineList;
+    }
+    
+    public List<StampModel> getStampList() {
+    	return stampList;
+    }
+    
     public void updateView() {
         setChanged();
         notifyObservers();
     }
+
+	
+    @Override
+	public void update(Observable o, Object arg) {
+		updateView();
+	}
+    
+   /* public TurtleModel copyTurtleModel() {
+    	TurtleModel turtle = new TurtleModel(this.positionX, this.positionY, this.heading);
+    	turtle.isActive = this.isActive;
+        turtle.turtleInitialHeading = this.turtleInitialHeading;
+        turtle.turtleInitialX = this.turtleInitialX;
+        turtle.turtleInitialY = this.turtleInitialY;
+        turtle.showStatus = this.showStatus;
+        turtle.imageIndex = this.imageIndex;
+        turtle.lineList = new ArrayList<>(this.lineList);
+        turtle.stampList=  new ArrayList<>(this.stampList);
+        turtle.pen = this.pen.copyPenModel();
+        turtle.pen.addObserver(turtle);
+        turtle.setChanged();
+        return turtle;
+    }*/
     
 }
