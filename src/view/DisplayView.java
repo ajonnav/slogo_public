@@ -1,8 +1,13 @@
 package view;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import addons.Features;
 import constants.UIConstants;
+import javafx.animation.Animation;
+import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
@@ -24,19 +29,23 @@ public class DisplayView implements IView {
     private Canvas backgroundCanvas;
     private GraphicsContext backgroundGC;
     private ComboBox<String> backgroundColorCombo;
-    private ComboBox<String> penChange;
-    private ComboBox<String> imageChange;
     private Features features;
+    private List<Animation> animations;
     private Group imageViewGroup;
-    private int frameNumber;
+    private int lastExpressionFrameNumber;
+    private List<ImageView> turtleViews;
 
     public DisplayView (Group root) {
         this.features = new Features();
         this.backgroundCanvas = features.makeCanvas(UIConstants.CANVAS_X, UIConstants.BORDER_WIDTH,
-                                                   UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE,
-                                                   Color.GREEN);
+                                                    UIConstants.CANVAS_SIZE,
+                                                    UIConstants.CANVAS_SIZE,
+                                                    Color.GREEN);
         this.backgroundGC = backgroundCanvas.getGraphicsContext2D();
+        animations = new ArrayList<>();
+        turtleViews = new ArrayList<>();
         this.imageViewGroup = new Group();
+        this.lastExpressionFrameNumber = 1;
         this.backgroundColorCombo =
                 features.makeColorPicker(UIConstants.BACKGROUND_PICK_X,
                                          UIConstants.ZERO,
@@ -45,107 +54,120 @@ public class DisplayView implements IView {
         root.getChildren().add(backgroundCanvas);
         root.getChildren().add(backgroundColorCombo);
         root.getChildren().add(imageViewGroup);
-        frameNumber = 1;
     }
 
     public void setUpLayers () {
         this.backgroundCanvas = features.makeCanvas(UIConstants.CANVAS_X, UIConstants.BORDER_WIDTH,
-                                             UIConstants.CANVAS_SIZE, UIConstants.CANVAS_SIZE,
-                                             Color.TRANSPARENT);
+                                                    UIConstants.CANVAS_SIZE,
+                                                    UIConstants.CANVAS_SIZE,
+                                                    Color.TRANSPARENT);
         this.backgroundGC = backgroundCanvas.getGraphicsContext2D();
     }
 
-    public void setUpPickers () {
-        this.penChange =
-                features.makeColorPicker(UIConstants.PEN_PICK_X, UIConstants.ZERO,
-                                UIConstants.COLOR_SELECTOR_WIDTH, UIConstants.BORDER_WIDTH);
-        this.imageChange =
-                features.makeColorPicker(UIConstants.IMAGE_SELECT_X, UIConstants.ZERO,
-                                UIConstants.IMAGE_SELECT_WIDTH, UIConstants.BORDER_WIDTH);
-    }
-    
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof DisplayModel) {
             DisplayModel displayModel = (DisplayModel) o;
-            features.updateComboBoxOptions(backgroundColorCombo, displayModel.getColorMap());
-            String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
-                                     displayModel.getBackgroundColor();
-            backgroundColorCombo.setValue(backgroundColorString);
-            backgroundGC.clearRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
-            imageViewGroup.getChildren().clear();
-            drawBackgroundRectangle(Color.web(backgroundColorString.split(" ")[1]));
-            
+            if (displayModel.isToAnimate()) {
+                displayModel.setToAnimate(false);
+                features.updateComboBoxOptions(backgroundColorCombo, displayModel.getColorMap());
+                String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
+                                               displayModel.getBackgroundColor();
+                backgroundColorCombo.setValue(backgroundColorString);
+                backgroundGC.clearRect(0, 0, backgroundCanvas.getWidth(),
+                                       backgroundCanvas.getHeight());
+                drawBackgroundRectangle(Color.web(backgroundColorString.split(" ")[1]));
+                animations.clear();
+                drawTurtles(displayModel);
+                SequentialTransition st = new SequentialTransition();
+                for (Animation a : animations) {
+                    st.getChildren().add(a);
+                }
+                st.play();
+                lastExpressionFrameNumber = displayModel.getNumberOfFrames();
+            }
         }
     }
-    
-    public void updateStyles (DisplayModel displayModel) {
-        features.updateComboBoxOptions(penChange, displayModel.getColorMap());
-        features.updateComboBoxOptions(imageChange, displayModel.getImageMap());
-    }
-    
-    public void drawTurtles(DisplayModel displayModel) {
-    	for(int i = 0; i < displayModel.getFrame(frameNumber).size(); i++) {
-    		ImageView image = new ImageView();
-    		image.setImage(getImageFromString(displayModel.getFrame(frameNumber).get(i).getImageString()));
-    		image.setFitHeight(50);
-            image.setFitWidth(50);
-    		image.setOpacity(displayModel.getFrame(frameNumber).get(i).getShowStatus());
-	        image.setX(getDrawableX(displayModel.getFrame(frameNumber).get(i).getPositionX()));
-	        image.setY(getDrawableY(displayModel.getFrame(frameNumber).get(i).getPositionY()));
-	        image.setRotate(transformHeading(displayModel.getFrame(frameNumber).get(i).getHeading()));
-	        imageViewGroup.getChildren().add(image);
-	        for(int j = frameNumber; j<displayModel.getNumberOfFrames(); j++) {
-	        	animate(image, displayModel.getFrame(j-1).get(i), displayModel.getFrame(j).get(i));
+
+    public void drawTurtles (DisplayModel displayModel) {
+        for (int i = lastExpressionFrameNumber; i < displayModel.getNumberOfFrames(); i++) {
+            for (int j = turtleViews.size(); j < displayModel.getFrame(i - 1).size(); j++) {
+                ImageView image = initImageView(displayModel.getFrame(i - 1).get(j));
+                imageViewGroup.getChildren().add(image);
+                turtleViews.add(image);
             }
-	        
-    	}
-//        drawLines(t.getLineList());
-//        drawStamps(t.getStampList());
-    }
-    
-    public double getDrawableX(double x) {
-    	return transformX(x) + UIConstants.INITIAL_X;
-    }
-    
-    public double getDrawableY(double y) {
-    	return transformY(y) + UIConstants.INITIAL_Y;
-    }
-    
-    private void animate(ImageView image, TurtleModel prev, TurtleModel next) {
-    	TranslateTransition tt = new TranslateTransition(Duration.seconds(3), image);
-    	tt.setByX(prev.getPositionX() - next.getPositionX());
-    	tt.setByY(prev.getPositionY() - next.getPositionY());
-    	tt.setCycleCount(1);
-    	tt.play();
-    }
-    
-    public void drawLines(List<LineModel> list) {
-    	list.stream().forEach(l->
-    	{
-    		backgroundGC.setLineDashes(l.getStyle());
-    		backgroundGC.setStroke(Color.web(l.getColor()));
-    		backgroundGC.setLineWidth(l.getWidth());
-    		backgroundGC.strokeLine(transformX(l.getX1()), transformY(l.getY1()),
-                    transformX(l.getX2()), transformY(l.getY2()));
-    	});
+            for (int j = 0; j < displayModel.getFrame(i).size(); j++) {
+                animate(turtleViews.get(j), displayModel.getFrame(i - 1).get(j),
+                        displayModel.getFrame(i).get(j));
+            }
+        }
+        // drawStamps(displayModel.getFrame(i).get(j).getStampList());
+        // drawLines(t.getLineList());
     }
 
-	public void drawStamps(List<StampModel> list) {
-		list.stream().forEach(s->
-		{
-			Image image = getImageFromString(s.getImageString());
-	        drawRotatedImage(image, transformX(s.getPositionX()) - 50/2,
-	        		transformY(s.getPositionY()) - 50/2,
-	        		transformHeading(s.getHeading()));
-		});
-	}
+    private void animate (ImageView image, TurtleModel prev, TurtleModel next) {
+        double translationTime =
+                prev.getPositionX() != next.getPositionX() ||
+                                 prev.getPositionY() != next.getPositionY() ? 1000 : 1;
+        double rotationTime = prev.getHeading() != next.getHeading() ? 1000 : 1;
+        TranslateTransition tt = new TranslateTransition(Duration.millis(translationTime), image);
+        RotateTransition rt = new RotateTransition(Duration.millis(rotationTime), image);
+        tt.setFromX(getDrawableX(prev.getPositionX()));
+        tt.setFromY(getDrawableY(prev.getPositionY()));
+        tt.setToX(getDrawableX(next.getPositionX()));
+        tt.setToY(getDrawableY(next.getPositionY()));
+        tt.setCycleCount(1);
+        rt.setFromAngle(transformHeading(prev.getHeading()));
+        rt.setToAngle(transformHeading(next.getHeading()));
+        rt.setCycleCount(1);
+        animations.add(tt);
+        animations.add(rt);
+    }
+
+    public ImageView initImageView (TurtleModel t) {
+        ImageView image = new ImageView();
+        image.setImage(getImageFromString(t.getImageString()));
+        image.setFitHeight(50);
+        image.setFitWidth(50);
+        image.setOpacity(t.getShowStatus());
+        image.setX(0);
+        image.setY(0);
+        image.setRotate(transformHeading(t.getHeading()));
+        return image;
+    }
+
+    public double getDrawableX (double x) {
+        return transformX(x) + UIConstants.INITIAL_X;
+    }
+
+    public double getDrawableY (double y) {
+        return transformY(y) + UIConstants.INITIAL_Y;
+    }
+
+    public void drawLines (List<LineModel> list) {
+        list.stream().forEach(l -> {
+            backgroundGC.setLineDashes(l.getStyle());
+            backgroundGC.setStroke(Color.web(l.getColor()));
+            backgroundGC.setLineWidth(l.getWidth());
+            backgroundGC.strokeLine(transformX(l.getX1()), transformY(l.getY1()),
+                                    transformX(l.getX2()), transformY(l.getY2()));
+        });
+    }
+
+    public void drawStamps (List<StampModel> list) {
+        list.stream().forEach(s -> {
+            Image image = getImageFromString(s.getImageString());
+            drawRotatedImage(image, transformX(s.getPositionX()) - 50 / 2,
+                             transformY(s.getPositionY()) - 50 / 2,
+                             transformHeading(s.getHeading()));
+        });
+    }
 
     public void drawBackgroundRectangle (Color value) {
         backgroundGC.setFill(value);
         backgroundGC.fillRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
     }
-    
+
     private double transformX (double x) {
         return x + (double) UIConstants.CANVAS_SIZE / 2;
     }
@@ -157,18 +179,17 @@ public class DisplayView implements IView {
     private double transformHeading (double heading) {
         return 90 - heading;
     }
-    
+
     public Image getImageFromString (String image) {
         return new Image(getClass().getClassLoader().getResourceAsStream(image));
     }
-    
-    private void drawRotatedImage(Image image, double imageX, double imageY, double heading) {
-    	ImageView iv = new ImageView(image);
-    	iv.setRotate(heading);
-    	SnapshotParameters params = new SnapshotParameters();
-    	params.setFill(Color.TRANSPARENT);
-    	Image rotatedImage = iv.snapshot(params, null);
-    	backgroundGC.drawImage(rotatedImage, imageX, imageY, 50, 50);
-    }
 
+    private void drawRotatedImage (Image image, double imageX, double imageY, double heading) {
+        ImageView iv = new ImageView(image);
+        iv.setRotate(heading);
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        Image rotatedImage = iv.snapshot(params, null);
+        backgroundGC.drawImage(rotatedImage, imageX, imageY, 50, 50);
+    }
 }

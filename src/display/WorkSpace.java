@@ -12,7 +12,6 @@ import view.CommandsView;
 import view.CoordinateView;
 import view.DisplayView;
 import view.HistoryPaneView;
-import view.TurtleView;
 import view.VariableView;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -100,6 +99,7 @@ public class WorkSpace extends Screen {
         DisplayView displayView = new DisplayView(getRoot());
         displayModel.addObserver(displayView);
         modelMap.setDisplay(displayModel);
+        displayModel.setToAnimate(true);
         displayModel.notifyObservers();
     }
     
@@ -132,8 +132,7 @@ public class WorkSpace extends Screen {
     
     private void readInput (CommandParser parser, TextArea input) {
         parser.parseText(input.getText());
-        input.clear();
-        
+        input.clear();   
     }
 
     private void setHistoryPane () {
