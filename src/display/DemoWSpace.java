@@ -1,9 +1,10 @@
 package display;
 
 import model.CommandsModel;
-
 import model.DisplayModel;
-import model.HistoryPaneModel;
+import model.HistoryModel;
+import model.IHistoryModel;
+import model.IVariableModel;
 import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
@@ -18,21 +19,16 @@ import view.DisplayView;
 import view.HistoryPaneView;
 import view.TurtleIDView;
 import view.VariableView;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -40,10 +36,7 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import addons.Features;
@@ -58,8 +51,6 @@ public class DemoWSpace extends Screen {
 	private String myLang;
 	private HistoryPaneView hpv;
 	private ModelMap modelMap;
-	private Map<Double, String> imageMap;
-	private Map<Double, String> colorMap;
 
 	private saveState myState;
 
@@ -151,6 +142,7 @@ public class DemoWSpace extends Screen {
 		displayModel.addObserver(displayView);
 		modelMap.setDisplay(displayModel);
 		modelMap.getDisplay().setBackgroundColorIndex(myState.backColorIndex);
+		displayModel.setToAnimate(true);
 		displayModel.notifyObservers();
 	}
 
@@ -204,7 +196,7 @@ public class DemoWSpace extends Screen {
 		userHistory.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
 		userHistory.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
 		getRoot().getChildren().add(userHistory.myPane);
-		HistoryPaneModel hpm = new HistoryPaneModel();
+		IHistoryModel hpm = new HistoryModel();
 		hpv = new HistoryPaneView(userHistory.myBox, inputText);
 		hpm.addObserver(hpv);
 		hpm.notifyObservers();
@@ -219,7 +211,7 @@ public class DemoWSpace extends Screen {
 		userVariables.myPane.setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
 		userVariables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
 
-		VariableModel varModel = new VariableModel();
+		IVariableModel varModel = new VariableModel();
 		VariableView varView = new VariableView(userVariables.myBox, new VBox(), inputText, getMyLang());
 		varModel.addObserver(varView);
 		varModel.notifyObservers();

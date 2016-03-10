@@ -2,7 +2,7 @@ package display;
 
 import model.CommandsModel;
 import model.DisplayModel;
-import model.HistoryPaneModel;
+import model.HistoryModel;
 import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
@@ -21,7 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
@@ -30,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,7 +101,6 @@ public class WorkSpace extends Screen {
         setHistoryPane();
         setUserCommandPane();
         setBar();
-        
     }
     
 
@@ -142,6 +141,7 @@ public class WorkSpace extends Screen {
         DisplayView displayView = new DisplayView(getRoot());
         displayModel.addObserver(displayView);
         modelMap.setDisplay(displayModel);
+        displayModel.setToAnimate(true);
         displayModel.notifyObservers();
     }
     
@@ -198,7 +198,7 @@ public class WorkSpace extends Screen {
         userHistory.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
         userHistory.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
         getRoot().getChildren().add(userHistory.myPane);
-        HistoryPaneModel hpm = new HistoryPaneModel();
+        HistoryModel hpm = new HistoryModel();
         hpv = new HistoryPaneView(userHistory.myBox, inputText);
         hpm.addObserver(hpv);
         hpm.notifyObservers();
