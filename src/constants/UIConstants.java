@@ -10,6 +10,7 @@ public class UIConstants {
 	public static final String GO = "go";
 	public static final String RSRC_LANG = "resources/languages/";
 	public static final String SYNTAX = "Syntax";
+	public static final String EXTRAS = "Extras.properties";
 	
 	public static final double WIDTH = 1300;
 	public static final double HEIGHT = 750;

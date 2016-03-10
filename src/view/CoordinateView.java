@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 import constants.UIConstants;
 
-public class CoordinateView implements IView {
+public class CoordinateView extends View {
 
     private HBox coordBox;
 
@@ -21,8 +21,11 @@ public class CoordinateView implements IView {
     private ResourceBundle myResources;
     
     //or refactor to be a single string to be shorter, will see
-    public CoordinateView (HBox hb, double penState, double initX, double initY, double initHeading) {
-        coordBox = hb;
+    public CoordinateView (double penState, double initX, double initY, double initHeading) {
+        coordBox = new HBox();
+		coordBox.setLayoutX(UIConstants.COORDINATE_LOCATION_X);
+		coordBox.setLayoutY(UIConstants.COORDINATE_LOCATION_Y);
+		coordBox.setMaxSize(UIConstants.RECT_X, UIConstants.BORDER_WIDTH);
         xCoord = new Text();
         yCoord = new Text();
         heading = new Text();
@@ -61,6 +64,10 @@ public class CoordinateView implements IView {
     	else 
     		field.setText(text + myResources.getString("false"));
     	return field;
+    }
+    
+    public HBox getMyHBox(){
+    	return coordBox;
     }
     
     @Override

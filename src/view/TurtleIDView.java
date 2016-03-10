@@ -4,21 +4,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
+import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.TurtleModel;
+import pane.SPane;
 
-public class TurtleIDView implements IView {
+public class TurtleIDView extends ScrollView {
 	private TextArea myTA;
 	private VBox myHB;
 	private Map<Double, VBox> myMap;
 	
-	public TurtleIDView(TextArea ta, VBox myVBox) {
+	public TurtleIDView(TextArea ta) {
+		getMyPane().setLayoutX(UIConstants.TURTLE_PANE_X);
+		getMyPane().setLayoutY(UIConstants.LOWER_PANE_Y);
+		getMyPane().setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
+		getMyPane().setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
+		getMyBox().getChildren().add(new Text("Turtles"));
 		myTA = ta;
-		myHB = myVBox;
+		myHB = getMyBox();
 		myMap = new HashMap<Double,VBox>();
 	}
 	
