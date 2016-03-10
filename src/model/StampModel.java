@@ -1,7 +1,10 @@
 package model;
 
-public class StampModel {
+import java.io.Serializable;
 
+public class StampModel implements Serializable{
+
+	private static final long serialVersionUID = -5144563801703455373L;
 	private String imageString;
 	private double x;
 	private double y;

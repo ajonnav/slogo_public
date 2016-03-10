@@ -1,7 +1,10 @@
 package model;
 
-public class LineModel {
+import java.io.Serializable;
+
+public class LineModel implements Serializable {
 	
+	private static final long serialVersionUID = -1688403945670006642L;
 	private double x1;
 	private double y1;
 	private double x2;

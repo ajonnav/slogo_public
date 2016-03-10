@@ -1,19 +1,15 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.sun.prism.paint.Color;
-
-import javafx.scene.image.ImageView;
-
-
-public class TurtleModel extends Observable implements Observer{
+public class TurtleModel extends Observable implements Observer, Serializable{
     
-    private double turtleInitialX;
+	private static final long serialVersionUID = 7400792168904381245L;
+	private double turtleInitialX;
     private double turtleInitialY;
     private double turtleInitialHeading;
     private String imageString;
@@ -118,10 +114,7 @@ public class TurtleModel extends Observable implements Observer{
     }
     
     public double home () {
-        double returnValue = Math.sqrt(Math.pow((0 - positionX), 2) +
-                                       Math.pow((0 - positionY), 2));
-        positionX = 0;
-        positionY = 0;
+        double returnValue = setPosition(new double[] {0, 0});
         heading = 90;
         updateView();
         return returnValue;
@@ -131,6 +124,10 @@ public class TurtleModel extends Observable implements Observer{
         double[] oldPos = new double[]{positionX, positionY};
         positionX = xy[0];
         positionY = xy[1];
+        if(pen.getStatus()) {
+	    	lineList.add(new LineModel(oldPos[0], oldPos[1], positionX, positionY,
+	    			pen.getSize(), pen.getColorString(), pen.getStyle()));
+    	}
         updateView();
         return Math.sqrt(Math.pow((oldPos[0] - positionX), 2) +
                          Math.pow((oldPos[1] - positionY), 2));
@@ -249,5 +246,21 @@ public class TurtleModel extends Observable implements Observer{
 	public void update(Observable o, Object arg) {
 		updateView();
 	}
+    
+   /* public TurtleModel copyTurtleModel() {
+    	TurtleModel turtle = new TurtleModel(this.positionX, this.positionY, this.heading);
+    	turtle.isActive = this.isActive;
+        turtle.turtleInitialHeading = this.turtleInitialHeading;
+        turtle.turtleInitialX = this.turtleInitialX;
+        turtle.turtleInitialY = this.turtleInitialY;
+        turtle.showStatus = this.showStatus;
+        turtle.imageIndex = this.imageIndex;
+        turtle.lineList = new ArrayList<>(this.lineList);
+        turtle.stampList=  new ArrayList<>(this.stampList);
+        turtle.pen = this.pen.copyPenModel();
+        turtle.pen.addObserver(turtle);
+        turtle.setChanged();
+        return turtle;
+    }*/
     
 }

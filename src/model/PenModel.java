@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Observable;
 
-public class PenModel extends Observable {
+public class PenModel extends Observable implements Serializable {
 
+	private static final long serialVersionUID = 2420490101474962510L;
 	private static final int SOLID = 0;
 	private static final int DASHED = 1;
 	private static final int DOTTED = 2;
@@ -20,12 +22,15 @@ public class PenModel extends Observable {
 		this.colorIndex = colorIndex;
 		this.style = style;
 	}
+	
 	public boolean getStatus() {
 		return status;
 	}
+	
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+	
 	public double[] getStyle() {
 		if(Math.round(style) == SOLID) {
 			return new double[] {};
@@ -38,13 +43,16 @@ public class PenModel extends Observable {
 		}
 		return new double [] {};
 	}
+	
 	public void setStyle(double style) {
 		this.style = style;
 		updateObservers();
 	}
+	
 	public double getColorIndex() {
 		return colorIndex;
 	}
+	
 	public void setColorIndex(double colorIndex) {
 		this.colorIndex = colorIndex;
 		updateObservers();
@@ -68,6 +76,12 @@ public class PenModel extends Observable {
 	private void updateObservers() {
 		setChanged();
 		notifyObservers();
+	}
+	
+	public PenModel copyPenModel () {
+		PenModel pen = new PenModel(this.status, this.size, this.colorIndex, this.style);
+		pen.colorString = this.colorString;
+		return pen;
 	}
 
 }

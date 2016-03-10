@@ -1,16 +1,16 @@
 package model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-
-import javafx.scene.layout.HBox;
 import command.Command;
 import constants.UIConstants;
-import view.CoordinateView;
-import view.TurtleView;
 
 public class DisplayModel extends Observable implements Observer{
     
@@ -18,7 +18,7 @@ public class DisplayModel extends Observable implements Observer{
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
     private double lastValue;
-    private List<TurtleModel> turtleList;
+    private List<List<TurtleModel>> stateList;
     private int lastActiveID;
     
     public DisplayModel(Map<Double, String> colorMap, Map<Double, String> imageMap) {
@@ -27,13 +27,13 @@ public class DisplayModel extends Observable implements Observer{
         this.lastActiveID = 1;
         this.colorMap = colorMap;
         this.imageMap = imageMap;
-        turtleList = new ArrayList<>();
+        stateList = new ArrayList<>();
         setTurtle();
         setChanged();
     }
     
     private void setTurtle () {
-        turtleList = new ArrayList<TurtleModel>();
+        List<TurtleModel> firstTurtleList = new ArrayList<TurtleModel>();
         for(int i = 0; i < 3; i++) {
             TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING);
             setImage(turtleModel);
@@ -41,9 +41,12 @@ public class DisplayModel extends Observable implements Observer{
             turtleModel.addObserver(this);
             turtleModel.setImageString(imageMap.get(turtleModel.getImageIndex()));
             turtleModel.setPenColorString(colorMap.get(turtleModel.getPenColorIndex()));
-            turtleList.add(turtleModel);
+            turtleModel.addObserver(this);
+            firstTurtleList.add(turtleModel);
             updateView();
         }
+        stateList.add(firstTurtleList);
+        stateList.add(firstTurtleList);
     }
     
     
@@ -54,10 +57,12 @@ public class DisplayModel extends Observable implements Observer{
     
     public double TurtleAction (String command, List<Command> parameters) {
     	 lastValue = 0;
-         turtleList.stream().filter(t -> t.isActive()).
+    	 List<TurtleModel> nextTurtleList = makeCopyOfTurtleList(stateList.get(stateList.size()-1));
+    	 stateList.add(nextTurtleList);
+         nextTurtleList.stream().filter(t -> t.isActive()).
          forEach(turtle -> {
              try {
-                 lastActiveID = turtleList.indexOf(turtle) + 1;
+                 lastActiveID = nextTurtleList.indexOf(turtle) + 1;
                  if (parameters == null) {
                      lastValue = (double) turtle.getClass().getDeclaredMethod(command).invoke(turtle);
                  }
@@ -71,33 +76,38 @@ public class DisplayModel extends Observable implements Observer{
                  e.printStackTrace();
              }
          });
+         
          return lastValue;
     }
     
     
     public double tell (double[] values) {
-    	turtleList.stream().forEach(t -> t.setActive(0));
+    	List<TurtleModel> nextTurtleList = makeCopyOfTurtleList(stateList.get(stateList.size()-1));
+        stateList.add(nextTurtleList);
+    	nextTurtleList.stream().forEach(t -> t.setActive(0));
         for(int i = 0; i < values.length; i++) {
-            if(values[i] > turtleList.size()) {
-                int currSize = turtleList.size();
+            if(values[i] > nextTurtleList.size()) {
+                int currSize = nextTurtleList.size();
                 for(int j = 0; j < values[i] - currSize; j++) {
-                    TurtleModel newTurtle = turtleList.get(0).makeNewActiveTurtle();
-                    turtleList.add(newTurtle);
+                    TurtleModel newTurtle = nextTurtleList.get(0).makeNewActiveTurtle();
+                    newTurtle.addObserver(this);
+                    nextTurtleList.add(newTurtle);
                 }
             }
-            turtleList.get((int) values[i]-1).setActive(1);
+            nextTurtleList.get((int) values[i]-1).setActive(1);
         }
         if(values.length != 0) {
             lastActiveID = (int) values[values.length-1];
         }
+        updateView();
         return lastActiveID;
     }
     
     
     public double[] getActiveTurtleIDs() {
         List<Double> active = new ArrayList<Double>();
-        for(int i = 0; i < turtleList.size(); i++) {
-            if(turtleList.get(i).isActive()) {
+        for(int i = 0; i < stateList.get(stateList.size()-1).size(); i++) {
+            if(stateList.get(stateList.size()-1).get(i).isActive()) {
                 active.add((double) i + 1);
             }
         }
@@ -162,17 +172,18 @@ public class DisplayModel extends Observable implements Observer{
     
     
     public int getNumTurtles() {
-        return turtleList.size();
+        return stateList.get(stateList.size()-1).size();
     }
     
-    
-    public void setTurtles (List<TurtleModel> turtles) {
-        this.turtleList = turtles;
+    public List<TurtleModel> getNextTurtleList() {
+    	return stateList.get(stateList.size()-1);
     }
     
-    
-    public List<TurtleModel> getTurtleList() {
-    	return new ArrayList<TurtleModel>(turtleList);
+    public List<TurtleModel> getPrevTurtleList() {
+    	if(stateList.size() == 1) {
+    		return getNextTurtleList();
+    	}
+    	return stateList.get(stateList.size()-2);
     }
 
     private void setImage(TurtleModel turtleModel) {
@@ -181,12 +192,46 @@ public class DisplayModel extends Observable implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		turtleList.stream().forEach(t->
+		stateList.get(stateList.size()-1).stream().forEach(t->
 		{
-			t.addObserver(this);
 			t.setImageString(imageMap.get(t.getImageIndex()));
 			t.setPenColorString(colorMap.get(t.getPenColorIndex()));
 		});
 		updateView();
+	}
+	
+	public List<TurtleModel> makeCopyOfTurtleList(List<TurtleModel> turtleList) {
+		List<TurtleModel> newList = new ArrayList<TurtleModel>();
+		for(TurtleModel t : turtleList) {
+			TurtleModel newTurtle = makeCopyOfTurtleModel(t);
+			newTurtle.addObserver(this);
+			newList.add(newTurtle);
+		}
+		return newList;
+	}
+	
+	private TurtleModel makeCopyOfTurtleModel(TurtleModel turtle) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+			oos.writeObject(turtle);
+			oos.flush();
+			oos.close();
+			bos.close();
+			byte[] byteData = bos.toByteArray();
+			ByteArrayInputStream bais = new ByteArrayInputStream(byteData);
+			return (TurtleModel) new ObjectInputStream(bais).readObject();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public int getNumberOfFrames() {
+		return stateList.size();
+	}
+	
+	public List<TurtleModel> getFrame(int frameNumber) {
+		return stateList.get(frameNumber);
 	}
 }

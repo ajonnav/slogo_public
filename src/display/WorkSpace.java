@@ -80,7 +80,7 @@ public class WorkSpace extends Screen {
         imageMap.put(12.0, "turtle.png");
         modelMap = new ModelMap();
         setDisplay(colorMap, imageMap);
-        setTurtleCoordsBox(modelMap.getDisplay().getTurtleList());
+        setTurtleCoordsBox(modelMap.getDisplay().getNextTurtleList());
         setInputPane();
         setHistoryPane();
         setHelpButton();
