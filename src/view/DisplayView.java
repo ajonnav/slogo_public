@@ -1,10 +1,16 @@
 package view;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+
 import addons.Features;
 import constants.UIConstants;
+import javafx.animation.Animation;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,6 +35,7 @@ public class DisplayView implements IView {
     private Features features;
     private Group imageViewGroup;
     private int frameNumber;
+    private List<Animation> animationList;
 
     public DisplayView (Group root) {
         this.features = new Features();
@@ -45,7 +52,8 @@ public class DisplayView implements IView {
         root.getChildren().add(backgroundCanvas);
         root.getChildren().add(backgroundColorCombo);
         root.getChildren().add(imageViewGroup);
-        frameNumber = 1;
+        animationList = new ArrayList<>();
+        frameNumber = 0;
     }
 
     public void setUpLayers () {
@@ -67,15 +75,21 @@ public class DisplayView implements IView {
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof DisplayModel) {
+        	animationList.clear();
             DisplayModel displayModel = (DisplayModel) o;
             features.updateComboBoxOptions(backgroundColorCombo, displayModel.getColorMap());
             String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
                                      displayModel.getBackgroundColor();
             backgroundColorCombo.setValue(backgroundColorString);
             backgroundGC.clearRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
-            imageViewGroup.getChildren().clear();
             drawBackgroundRectangle(Color.web(backgroundColorString.split(" ")[1]));
-            
+            if(displayModel.getNumFrames()>0) {
+	            drawTurtles(displayModel);
+	            SequentialTransition s = new SequentialTransition((Transition[]) animationList.toArray(new Transition[animationList.size()]));
+	            s.setAutoReverse(false);
+	            s.setCycleCount(animationList.size());
+	            s.play();
+            }
         }
     }
     
@@ -85,23 +99,36 @@ public class DisplayView implements IView {
     }
     
     public void drawTurtles(DisplayModel displayModel) {
-    	for(int i = 0; i < displayModel.getFrame(frameNumber).size(); i++) {
-    		ImageView image = new ImageView();
-    		image.setImage(getImageFromString(displayModel.getFrame(frameNumber).get(i).getImageString()));
-    		image.setFitHeight(50);
-            image.setFitWidth(50);
-    		image.setOpacity(displayModel.getFrame(frameNumber).get(i).getShowStatus());
-	        image.setX(getDrawableX(displayModel.getFrame(frameNumber).get(i).getPositionX()));
-	        image.setY(getDrawableY(displayModel.getFrame(frameNumber).get(i).getPositionY()));
-	        image.setRotate(transformHeading(displayModel.getFrame(frameNumber).get(i).getHeading()));
-	        imageViewGroup.getChildren().add(image);
-	        for(int j = frameNumber; j<displayModel.getNumberOfFrames(); j++) {
-	        	animate(image, displayModel.getFrame(j-1).get(i), displayModel.getFrame(j).get(i));
-            }
-	        
+    	for(int i=frameNumber; i<displayModel.getNumFrames()-1; i++) {
+    		animateFrames(displayModel.getFrame(i), displayModel.getFrame(i+1));
+    		frameNumber++;
     	}
 //        drawLines(t.getLineList());
 //        drawStamps(t.getStampList());
+    }
+    
+    public void animateFrames(List<TurtleModel> prev, List<TurtleModel> next) {
+    	if(prev.size()>next.size()) {
+    		imageViewGroup.getChildren()
+    			.removeIf(image->imageViewGroup.getChildren()
+    							.indexOf(image) > next.size());
+    	}
+    	if(imageViewGroup.getChildren().size()<next.size()) {
+    		for(int i=imageViewGroup.getChildren().size();i<next.size();i++) {
+    			ImageView image = new ImageView();
+        		image.setImage(getImageFromString(next.get(i).getImageString()));
+        		image.setFitHeight(50);
+                image.setFitWidth(50);
+        		image.setOpacity(next.get(i).getShowStatus());
+    	        image.setX(getDrawableX(next.get(i).getPositionX()));
+    	        image.setY(getDrawableY(next.get(i).getPositionY()));
+    	        image.setRotate(transformHeading(next.get(i).getHeading()));
+    	        imageViewGroup.getChildren().add(image);
+    		}
+    	}
+    	for(int i=0; i<prev.size(); i++) {
+    		animate(imageViewGroup.getChildren().get(i), prev.get(i), next.get(i));
+    	}
     }
     
     public double getDrawableX(double x) {
@@ -112,12 +139,13 @@ public class DisplayView implements IView {
     	return transformY(y) + UIConstants.INITIAL_Y;
     }
     
-    private void animate(ImageView image, TurtleModel prev, TurtleModel next) {
+    private void animate(Node image, TurtleModel prev, TurtleModel next) {
     	TranslateTransition tt = new TranslateTransition(Duration.seconds(3), image);
-    	tt.setByX(prev.getPositionX() - next.getPositionX());
+    	tt.setByX(next.getPositionX() - prev.getPositionX());
     	tt.setByY(prev.getPositionY() - next.getPositionY());
+    	tt.setAutoReverse(true);
     	tt.setCycleCount(1);
-    	tt.play();
+    	animationList.add(tt);
     }
     
     public void drawLines(List<LineModel> list) {

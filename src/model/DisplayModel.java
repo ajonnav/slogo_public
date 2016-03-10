@@ -34,19 +34,18 @@ public class DisplayModel extends Observable implements Observer{
     
     private void setTurtle () {
         List<TurtleModel> firstTurtleList = new ArrayList<TurtleModel>();
+        stateList.add(firstTurtleList);
+        stateList.add(firstTurtleList);
         for(int i = 0; i < 3; i++) {
             TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING);
-            setImage(turtleModel);
             turtleModel.penDown();
             turtleModel.addObserver(this);
             turtleModel.setImageString(imageMap.get(turtleModel.getImageIndex()));
             turtleModel.setPenColorString(colorMap.get(turtleModel.getPenColorIndex()));
             turtleModel.addObserver(this);
             firstTurtleList.add(turtleModel);
-            updateView();
         }
-        stateList.add(firstTurtleList);
-        stateList.add(firstTurtleList);
+        
     }
     
     
@@ -186,10 +185,6 @@ public class DisplayModel extends Observable implements Observer{
     	return stateList.get(stateList.size()-2);
     }
 
-    private void setImage(TurtleModel turtleModel) {
-    	turtleModel.setImageString(imageMap.get(turtleModel.getImageIndex()));
-    }
-
 	@Override
 	public void update(Observable o, Object arg) {
 		stateList.get(stateList.size()-1).stream().forEach(t->
@@ -227,7 +222,7 @@ public class DisplayModel extends Observable implements Observer{
 		}
 	}
 
-	public int getNumberOfFrames() {
+	public int getNumFrames() {
 		return stateList.size();
 	}
 	
