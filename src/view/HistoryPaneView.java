@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 import constants.UIConstants;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import model.HistoryPaneModel;
+import model.HistoryModel;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 
@@ -27,8 +27,8 @@ public class HistoryPaneView implements IView {
 
     @Override
     public void update (Observable o, Object arg) {
-        if (o instanceof HistoryPaneModel) {
-            HistoryPaneModel hpm = (HistoryPaneModel) o;
+        if (o instanceof HistoryModel) {
+            HistoryModel hpm = (HistoryModel) o;
             myVBox.getChildren().clear();
             int x = 1;
             for (String item : hpm.getImmutableHistoryList()) {

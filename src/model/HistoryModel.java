@@ -3,14 +3,13 @@ package model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
 
 
-public class HistoryPaneModel extends Observable {
+public class HistoryModel extends IHistoryModel {
 
     private List<String> history;
 
-    public HistoryPaneModel () {
+    public HistoryModel () {
         history = new ArrayList<>();
     }
 

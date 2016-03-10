@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import exception.SLogoSyntaxException;
-import model.CommandsModel;
+import model.ICommandsModel;
 import model.ModelMap;
 
 
 public class CommandCommand extends Command {
 
-    private CommandsModel commandsModel;
+    private ICommandsModel commandsModel;
     private ModelMap modelMap;
     private String name;
 
@@ -39,9 +39,9 @@ public class CommandCommand extends Command {
                 mapCopy.put(((VariableCommand) commandsModel.getVariables(name).get(i))
                                 .getName(), getCommands().get(i).get(0).execute());
             }
-            modelMap.getVariable().pushNewMap(mapCopy);
+            modelMap.getVariable().pushScope(mapCopy);
             double returnValue = loopExecute(commandsModel.getCommands(name));
-            modelMap.getVariable().popMap();
+            modelMap.getVariable().popScope();
             return returnValue;
         }
         else {

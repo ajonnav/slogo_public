@@ -52,6 +52,8 @@ public class CommandParser {
              for (int i = 0; i < commandsList.size(); i++) {
                  returnValue = commandsList.get(i).execute();
             }
+            modelMap.getDisplay().setToAnimate(true);
+            modelMap.getDisplay().updateView();
             modelMap.getHistory().addToHistory(Double.toString(returnValue));
         }
         catch (Exception e) {
