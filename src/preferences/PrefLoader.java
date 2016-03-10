@@ -31,17 +31,17 @@ public class PrefLoader {
 	       c.printStackTrace();
 	       return null;
 	    }
-	    System.out.println(e.backColorIndex);
-	    System.out.println(e.language);
-	    System.out.println(e.turtleNumber);
-	    
-	    for (Double n: e.images.keySet()){
-	    	System.out.println(n + " " + e.images.get(n));
-	    }
-	    
-	    for (Double n: e.colorMap.keySet()){
-	    	System.out.println(n + " " + e.colorMap.get(n));
-	    }
+//	    System.out.println(e.backColorIndex);
+//	    System.out.println(e.language);
+//	    System.out.println(e.turtleNumber);
+//	    
+//	    for (Double n: e.images.keySet()){
+//	    	System.out.println(n + " " + e.images.get(n));
+//	    }
+//	    
+//	    for (Double n: e.colorMap.keySet()){
+//	    	System.out.println(n + " " + e.colorMap.get(n));
+//	    }
 	    return e;
 	}
 }

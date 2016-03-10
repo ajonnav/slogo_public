@@ -84,11 +84,6 @@ public class Splash extends Screen {
 
 		PrefLoader loader = new PrefLoader();
 		myState = loader.load(selectedFile);
-		if(myState.colorMap instanceof Map){
-			System.out.println("Is this a map");
-			System.out.println(myState.colorMap);
-		}
-		System.out.println(myState.backColorIndex);
 		go.setDisable(false);
 	}
 

@@ -8,6 +8,7 @@ import model.TurtleModel;
 import model.VariableModel;
 import pane.SPane;
 import parser.CommandParser;
+import preferences.PrefLoader;
 import preferences.PrefWriter;
 import preferences.saveState;
 import view.CommandsView;
@@ -34,8 +35,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,47 +87,25 @@ public class DemoWSpace extends Screen {
 		//getRoot().getStylesheets().add(UIConstants.DEFAULT_RESOURCE + "demo.css");
 		featureMaker = new Features();
 		setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT, Color.LIGHTBLUE));
-		// colorMap = new HashMap<Double, String>();
-		// colorMap.put(1.0, "#849775");
-		// colorMap.put(2.0, "#1518b4");
-		// colorMap.put(3.0, "#5df45d");
-		// colorMap.put(4.0, "#7182a7");
-		// colorMap.put(5.0, "#b73547");
-		// colorMap.put(6.0, "#849775");
-		// colorMap.put(7.0, "#1518b4");
-		// colorMap.put(8.0, "#5df45d");
-		// colorMap.put(9.0, "#7182a7");
-		// colorMap.put(10.0, "#b73547");
-		// colorMap.put(11.0, "#b73547");
-		// colorMap.put(12.0, "#b73547");
-		// imageMap = new HashMap<Double, String>();
-		// imageMap.put(1.0, "black.png");
-		// imageMap.put(2.0, "blue.png");
-		// imageMap.put(3.0, "green.png");
-		// imageMap.put(4.0, "red.png");
-		// imageMap.put(5.0, "turtle.png");
-		// imageMap.put(6.0, "black.png");
-		// imageMap.put(7.0, "blue.png");
-		// imageMap.put(8.0, "green.png");
-		// imageMap.put(9.0, "red.png");
-		// imageMap.put(10.0, "turtle.png");
-		// imageMap.put(11.0, "red.png");
-		// imageMap.put(12.0, "turtle.png");
-
-		// modelMap = new ModelMap(myState.colorMap, myState.images);
-		// setDisplay();
-		// setInputPane();
-		// setTurtle();
-		// setHistoryPane();
-		// setUserCommandPane();
-		// setBar();
 	  }
 
 
 	public void switchWS() {
-		WorkSpace ws = new WorkSpace();
-		ws.setLang(myLang);
-		ws.begin();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle(getResources().getString("FileSelect"));
+		fileChooser.getExtensionFilters().addAll(
+				new ExtensionFilter(
+						getResources().getString("Files"),
+						getResources().getString("srl")));
+
+		File selectedFile = fileChooser.showOpenDialog(getStage());
+
+		PrefLoader loader = new PrefLoader();
+		saveState myState = loader.load(selectedFile);
+		
+		DemoWSpace myW = new DemoWSpace(myState);
+		myW.setLang(myLang);
+		myW.begin();
 	}
 
 	public void setBar() {
@@ -232,6 +214,7 @@ public class DemoWSpace extends Screen {
 		userInput.myBox.getChildren().add(inputText);
 		Button inputButton = featureMaker.makeB(getResources().getString("GoCommand"),
 				event -> readInput(parser, inputText));
+		inputButton.setMinWidth(UIConstants.LOWER_PANE_WIDTH);
 		userInput.myBox.getChildren().add(inputButton);
 		getRoot().getChildren().add(userInput.myPane);
 	}
