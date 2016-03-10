@@ -7,7 +7,7 @@ import java.util.Observable;
 import java.util.Stack;
 
 
-public class VariableModel extends Observable implements IVariableModel{
+public class VariableModel extends IVariableModel{
 
     private Stack<HashMap<String, Double>> variableMap;
 

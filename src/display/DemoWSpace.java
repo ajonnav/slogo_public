@@ -4,6 +4,7 @@ import model.CommandsModel;
 import model.DisplayModel;
 import model.HistoryModel;
 import model.IHistoryModel;
+import model.IVariableModel;
 import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
@@ -210,7 +211,7 @@ public class DemoWSpace extends Screen {
 		userVariables.myPane.setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
 		userVariables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
 
-		VariableModel varModel = new VariableModel();
+		IVariableModel varModel = new VariableModel();
 		VariableView varView = new VariableView(userVariables.myBox, new VBox(), inputText, getMyLang());
 		varModel.addObserver(varView);
 		varModel.notifyObservers();
