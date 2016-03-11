@@ -5,7 +5,7 @@ import java.util.Map;
 
 import command.Command;
 
-public class saveState implements java.io.Serializable {
+public class SaveState implements java.io.Serializable {
 	private static final long serialVersionUID = 7735208842814805719L;
 	private int backColorIndex;
 	private Map<Double, String> colorMap;

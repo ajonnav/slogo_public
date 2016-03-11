@@ -3,7 +3,7 @@ package display;
 import java.io.File;
 
 import preferences.PrefLoader;
-import preferences.saveState;
+import preferences.SaveState;
 import addons.Features;
 import constants.UIConstants;
 import javafx.collections.FXCollections;
@@ -21,7 +21,7 @@ public class Splash extends Screen {
 	private Features featMaker;
 	private ComboBox<String> languageCBox;
 	private Button go;
-	private saveState myState;
+	private SaveState myState;
 
 	@Override
 	public void setUpScene() {
@@ -40,16 +40,16 @@ public class Splash extends Screen {
 	}
 
 	private void setTitle() {
-		Rectangle welRect = new Rectangle(300, 200);
-		welRect.setX(100);
-		welRect.setY(50);
+		Rectangle welRect = new Rectangle(UIConstants.LOAD_BUTTON_Y, UIConstants.RECT_X);
+		welRect.setX(UIConstants.VARIABLE_PANE_X);
+		welRect.setY(UIConstants.BUTTON_H);
 		welRect.setArcHeight(UIConstants.ARC);
 		welRect.setArcWidth(UIConstants.ARC);
 		getRoot().getChildren().add(welRect);
 
 		Text welText = new Text(getResources().getString(UIConstants.TITLE));
-		welText.setLayoutX(110);
-		welText.setLayoutY(150);
+		welText.setLayoutX(UIConstants.WEL_RECT_X);
+		welText.setLayoutY(UIConstants.COLOR_SELECTOR_WIDTH);
 		getRoot().getChildren().add(welText);
 	}
 
@@ -58,16 +58,16 @@ public class Splash extends Screen {
 				e -> goToWorkSpace((String) languageCBox.getValue()));
 		getRoot().getChildren().add(go);
 		go.setDisable(true);
-		go.setLayoutX(200);
-		go.setLayoutY(355);
-		go.setPrefSize(100, 50);
+		go.setLayoutX(UIConstants.RECT_X);
+		go.setLayoutY(UIConstants.GO_BUTTON_Y);
+		go.setPrefSize(UIConstants.VARIABLE_PANE_X, UIConstants.USER_X);
 	}
 
 	private void loadPreferencesButton(){
 		Button preferences = featMaker.makeB(
 			getResources().getString("Load"), e -> loadPrefs());
-		preferences.setLayoutX(100);
-		preferences.setLayoutY(300);
+		preferences.setLayoutX(UIConstants.VARIABLE_PANE_X);
+		preferences.setLayoutY(UIConstants.LOAD_BUTTON_Y);
 		getRoot().getChildren().add(preferences);
 	}
 
@@ -87,7 +87,6 @@ public class Splash extends Screen {
 	}
 
 	private void goToWorkSpace(String lang) {
-		//WorkSpace myW = new WorkSpace();
 		DemoWSpace myW = new DemoWSpace(myState);
 		myW.setLang(lang);
 		getStage().close();
@@ -105,8 +104,8 @@ public class Splash extends Screen {
 				getResources().getString(UIConstants.RUS), getResources()
 						.getString(UIConstants.SPA));
 		languageCBox = featMaker.makeCBox(options);
-		languageCBox.setLayoutX(300);
-		languageCBox.setLayoutY(300);
+		languageCBox.setLayoutX(UIConstants.LOAD_BUTTON_Y);
+		languageCBox.setLayoutY(UIConstants.LOAD_BUTTON_Y);
 		languageCBox.setValue(getResources().getString(UIConstants.ENG));
 		getRoot().getChildren().add(languageCBox);
 

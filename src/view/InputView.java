@@ -20,8 +20,8 @@ public class InputView extends View{
 		getMyRoot().setLayoutX(UIConstants.RECT_W);
 		getMyRoot().setLayoutY(UIConstants.LOWER_PANE_Y);
 		inputText = myIT;
-		inputText.setMinSize(UIConstants.LOWER_PANE_WIDTH, 120);
-		inputText.setMaxSize(UIConstants.LOWER_PANE_WIDTH, 120);
+		inputText.setMinSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.RECTANGLE_W);
+		inputText.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.RECTANGLE_W);
 		getMyBox().getChildren().add(inputText);
 		Button inputButton = featureMaker.makeB("GO",
 				event -> readInput());

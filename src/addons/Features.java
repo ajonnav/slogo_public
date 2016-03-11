@@ -1,14 +1,15 @@
 package addons;
 
 import java.util.Map;
+import java.util.Optional;
 
+import constants.UIConstants;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -16,7 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -48,15 +49,14 @@ public class Features {
     }
 
     public ComboBox<String> makeCBox (ObservableList<String> choices) {
-        ComboBox<String> myCBox = new ComboBox<String>(choices);
-        return myCBox;
+        return new ComboBox<>(choices);
     }
 
     public ComboBox<HBox> makeColorPicker (double layoutX,
                                              double layoutY,
                                              double width,
                                              double height) {
-        ComboBox<HBox> cb = new ComboBox<HBox>();
+        ComboBox<HBox> cb = new ComboBox<>();
         cb.setLayoutX(layoutX);
         cb.setLayoutY(layoutY);
         cb.setMinWidth(width);
@@ -67,10 +67,9 @@ public class Features {
     public void updateComboBoxOptions (ComboBox<HBox> cb, Map<Double, String> map) {
         cb.getItems().clear();
         for (Double s : map.keySet()) {
-        	HBox myHB = new HBox(4);
+        	HBox myHB = new HBox(UIConstants.PADDING);
         	myHB.getChildren().add(makeRect(Color.web(map.get(s))));
         	myHB.getChildren().add(makeText(Integer.toString(s.intValue())));
-        	//System.out.println(myHB.getChildren());
             cb.getItems().add(myHB);
         }
     }
@@ -78,34 +77,15 @@ public class Features {
     public void updateComboBoxOptionsImage (ComboBox<HBox> cb, Map<Double, String> map) {
         cb.getItems().clear();
         for (Double s : map.keySet()) {
-        	HBox myHB = new HBox(4);
+        	HBox myHB = new HBox(UIConstants.PADDING);
         	ImageView myImage = new ImageView();
         	myImage.setImage(new Image(getClass().getClassLoader().getResourceAsStream(map.get(s))));
-        	myImage.setFitWidth(20);
-        	myImage.setFitHeight(20);
+        	myImage.setFitWidth(UIConstants.ARC);
+        	myImage.setFitHeight(UIConstants.ARC);
         	myHB.getChildren().add(myImage);
         	myHB.getChildren().add(makeText(Integer.toString(s.intValue())));
             cb.getItems().add(myHB);
         }
-    }
-
-    public ColorPicker setColorPicker (EventHandler<ActionEvent> event) {
-        ColorPicker cp = new ColorPicker();
-        cp.setValue(Color.CORAL);
-        cp.setOnAction(event);
-        cp.setLayoutX(250);
-        cp.setLayoutY(50);
-        return cp;
-    }
-
-    public ColorPicker setPenPicker (EventHandler<ActionEvent> event) {
-        ColorPicker cp = new ColorPicker();
-        cp.setValue(Color.CORAL);
-        cp.setOnAction(event);
-        cp.setLayoutX(400);
-        cp.setLayoutY(50);
-        return cp;
-
     }
 
     protected Menu makeMenu (String name, MenuBar parent) {
@@ -123,7 +103,21 @@ public class Features {
     public static Text makeText(String input){
     	return new Text(input);
     }
+    
     public static Rectangle makeRect(Color input){
-    	return new Rectangle(120, 18 ,input);
+    	return new Rectangle(UIConstants.RECTANGLE_W, UIConstants.RECTANGLE_H ,input);
+    }
+    
+    public String newTextInput(String holder, String title, String header, String prompt) {
+        TextInputDialog dialog = new TextInputDialog(holder);
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.setContentText(prompt);
+        Optional<String> input = dialog.showAndWait();
+        if (input.isPresent()) {
+                return input.get();
+        } else {
+                return null;
+        }
     }
 }

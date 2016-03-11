@@ -8,12 +8,12 @@ public class PrefWriter {
 	
 	private String path;
 	private ModelMap state;
-	private saveState save;
+	private SaveState save;
 	
 	public PrefWriter(ModelMap modelMap, String fileName, String myLang){
 		path = "src/preferences/" + fileName + ".srl";
 		state = modelMap;
-		save = new saveState();
+		save = new SaveState();
 		save.setColorMap(state.getDisplay().getColorMap());
 		save.setBackColorIndex((int) state.getDisplay().getBackgroundColorIndex());
 		save.setImages(state.getDisplay().getImageMap());

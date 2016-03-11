@@ -27,7 +27,7 @@ public class HistoryPaneView extends ScrollView {
             getMyBox().getChildren().clear();
             int x = 1;
             for (String item : hpm.getImmutableHistoryList()) {
-            	if(x % 2 != 0) {
+            	if(x % UIConstants.TWO != 0) {
             		Hyperlink past = new Hyperlink(">> " + item);
             		past.setOnAction(event -> {
             			myTA.appendText(item);
