@@ -11,7 +11,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.CommandsModel;
-import pane.SPane;
 
 public class CommandsView extends ScrollView{
 
