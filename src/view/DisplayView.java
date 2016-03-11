@@ -2,7 +2,6 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-
 import addons.Features;
 import constants.UIConstants;
 import javafx.animation.Animation;
@@ -20,7 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.DisplayModel;
 import model.LineModel;
@@ -53,11 +51,14 @@ public class DisplayView implements IView {
                                          550,
                                          UIConstants.COLOR_SELECTOR_WIDTH,
                                          UIConstants.BORDER_WIDTH);
-        root.getChildren().add(backgroundCanvas);
-        root.getChildren().add(backgroundColorComboBox);
-        root.getChildren().add(imageViewGroup);
         animationList = new ArrayList<>();
         frameNumber = 0;
+        setUpPickers();
+        root.getChildren().add(backgroundCanvas);
+        root.getChildren().add(backgroundColorComboBox);
+        root.getChildren().add(penChange);
+        root.getChildren().add(imageChange);
+        root.getChildren().add(imageViewGroup);
     }
 
     public void setUpLayers () {
@@ -69,10 +70,10 @@ public class DisplayView implements IView {
 
     public void setUpPickers () {
         this.penChange =
-                features.makeColorPicker(UIConstants.PEN_PICK_X, UIConstants.ZERO,
+                features.makeColorPicker(1100, 590,
                                 UIConstants.COLOR_SELECTOR_WIDTH, UIConstants.BORDER_WIDTH);
         this.imageChange =
-                features.makeColorPicker(UIConstants.IMAGE_SELECT_X, UIConstants.ZERO,
+                features.makeColorPicker(1100, 630,
                                 UIConstants.IMAGE_SELECT_WIDTH, UIConstants.BORDER_WIDTH);
     }
     
@@ -81,14 +82,13 @@ public class DisplayView implements IView {
         if (o instanceof DisplayModel) {
         	animationList.clear();
             DisplayModel displayModel = (DisplayModel) o;
-            
+            updateStyles(displayModel);
             HBox myHB = new HBox();
             myHB.getChildren().add(new Text("Background Choices"));
             
             features.updateComboBoxOptions(backgroundColorComboBox, displayModel.getColorMap());
             String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
                                      displayModel.getBackgroundColor();
-            
             
             backgroundColorComboBox.setValue(myHB);
             backgroundGC.clearRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
@@ -104,7 +104,7 @@ public class DisplayView implements IView {
     }
     
     public void updateStyles (DisplayModel displayModel) {
-        features.updateComboBoxOptions(imageChange, displayModel.getImageMap());
+        features.updateComboBoxOptionsImage(imageChange, displayModel.getImageMap());
         features.updateComboBoxOptions(penChange, displayModel.getColorMap());
         HBox penHB = new HBox();
         penHB.getChildren().add(new Text("Pen Choices"));

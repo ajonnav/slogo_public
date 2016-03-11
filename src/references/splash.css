@@ -15,7 +15,7 @@ Root{
     -fx-padding: 8;
 }
 Rectangle{
-	-fx-fill: #CCFC7A
+	-fx-fill: #527CD0
 }
 .button:hover {
     -fx-background-color: green;

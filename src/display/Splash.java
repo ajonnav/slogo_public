@@ -1,7 +1,6 @@
 package display;
 
 import java.io.File;
-import java.util.Map;
 
 import preferences.PrefLoader;
 import preferences.saveState;

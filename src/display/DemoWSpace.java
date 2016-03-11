@@ -7,7 +7,6 @@ import model.HistoryPaneModel;
 import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
-import pane.SPane;
 import parser.CommandParser;
 import preferences.PrefLoader;
 import preferences.PrefWriter;
@@ -20,37 +19,23 @@ import view.InputView;
 import view.TurtleIDView;
 import view.VariableView;
 import view.View;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Optional;
-
-import addons.Features;
 import addons.MenuMaker;
+import addons.WMenu;
 import constants.UIConstants;
 
 public class DemoWSpace extends Screen {
@@ -100,6 +85,8 @@ public class DemoWSpace extends Screen {
 	}
 
 	public void setBar() {
+		WMenu workspaceMenu = new WMenu();
+		
 		MenuMaker menuMaker = new MenuMaker();
 		MenuBar myMenu = menuMaker.getMenu();
 		Menu fileMenu = menuMaker.addMenu(getResources().getString("FileCommand"));
@@ -114,7 +101,7 @@ public class DemoWSpace extends Screen {
 		menuMaker.addMenuItem(getResources().getString("uToggle"), e -> noVars(myIV), toggleMenu);
 		Menu editMenu = menuMaker.addMenu(getResources().getString("EditCommand"));
 		menuMaker.addMenuItem(getResources().getString("penStatus"), e -> setPenUpDown(), editMenu);
-		getRoot().getChildren().add(myMenu);
+		getRoot().getChildren().add(workspaceMenu.getMyMenu());
 	}
 
 	public void setLang(String language) {
@@ -216,7 +203,7 @@ public class DemoWSpace extends Screen {
 	 */
 	private void setTurtlePane(List<TurtleModel> tm) {
 		turtleView = new TurtleIDView(inputText);
-		getRoot().getChildren().add(turtleView.getMyPane());
+		getRoot().getChildren().add(turtleView.getMyRoot());
 		for (int i = 0; i < tm.size(); i++) {
 			tm.get(i).addObserver(turtleView);
 			tm.get(i).notifyObservers();
