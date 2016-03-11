@@ -6,18 +6,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 public class PrefLoader {
-	private SaveState e;
+	private saveState e;
 	
 	public PrefLoader(){
 	}
 	
-	public SaveState load(File loadingFile){
+	public saveState load(File loadingFile){
 		e = null;
 	    try
 	    {
 	       FileInputStream fileIn = new FileInputStream(loadingFile);
 	       ObjectInputStream in = new ObjectInputStream(fileIn);
-	       e = (SaveState) in.readObject();
+	       e = (saveState) in.readObject();
 	       in.close();
 	       fileIn.close();
 	    }catch(IOException i)

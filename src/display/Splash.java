@@ -3,7 +3,7 @@ package display;
 import java.io.File;
 
 import preferences.PrefLoader;
-import preferences.SaveState;
+import preferences.saveState;
 import addons.Features;
 import constants.UIConstants;
 import javafx.collections.FXCollections;
@@ -21,7 +21,7 @@ public class Splash extends Screen {
 	private Features featMaker;
 	private ComboBox<String> languageCBox;
 	private Button go;
-	private SaveState myState;
+	private saveState myState;
 
 	@Override
 	public void setUpScene() {

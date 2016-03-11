@@ -9,7 +9,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import preferences.PrefLoader;
-import preferences.SaveState;
+import preferences.saveState;
 
 public class NewWorkspaceTransition {
 
@@ -35,7 +35,7 @@ public class NewWorkspaceTransition {
 	public void execute(String language){
 		File selectedFile = myFC.showOpenDialog(myS);
         PrefLoader loader = new PrefLoader();
-        SaveState myState = loader.load(selectedFile);
+        saveState myState = loader.load(selectedFile);
         DemoWSpace myW = new DemoWSpace(myState);
         myW.setLang(language);
         myW.begin();

@@ -7,14 +7,14 @@ import model.IModelMap;
 public class PrefWriter {
 	
 	private String path;
-	private SaveState save;
+	private saveState save;
 	private IModelMap state;
 
 	
 	public PrefWriter(IModelMap modelMap, String fileName, String myLang){
 		path = "src/preferences/" + fileName + ".srl";
 		state = modelMap;
-		save = new SaveState();
+		save = new saveState();
 		save.setColorMap(state.getDisplay().getColorMap());
 		save.setBackColorIndex((int) state.getDisplay().getBackgroundColorIndex());
 		save.setImages(state.getDisplay().getImageMap());

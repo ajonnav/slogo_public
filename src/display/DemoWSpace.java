@@ -6,7 +6,7 @@ import model.HistoryModel;
 import model.ModelMap;
 import model.VariableModel;
 import parser.CommandParser;
-import preferences.SaveState;
+import preferences.saveState;
 import view.CommandsView;
 import view.DisplayView;
 import view.HistoryPaneView;
@@ -31,14 +31,14 @@ public class DemoWSpace extends Screen {
 	private String myLang;
 	private HistoryPaneView hpv;
 	private ModelMap modelMap;
-	private SaveState myState;
+	private saveState myState;
 
 	private VariableView varView;
 	private TurtleIDView turtleView;
 	private InputView myIV;
 	private CommandsView commandView;
 
-	public DemoWSpace(SaveState myS) {
+	public DemoWSpace(saveState myS) {
 		myState = myS;
 		modelMap = new ModelMap();
 	}
