@@ -2,13 +2,13 @@ package model;
 
 public interface IStampModel {
 
-	public String getImageString ();
+	String getImageString ();
 	
-	public double getPositionX ();
+	double getPositionX ();
 	
-	public double getPositionY ();
+	double getPositionY ();
 	
-	public double getHeading ();
+	double getHeading ();
 	
-	public IStampModel copyStampModel();
+	IStampModel copyStampModel();
 }

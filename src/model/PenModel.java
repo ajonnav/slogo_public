@@ -30,7 +30,7 @@ public class PenModel extends IPenModel {
     }
 
     @Override
-    public double[] getStyle () {
+    public double[] getStyleIndex () {
         if (Math.round(style) == SOLID) {
             return new double[] {};
         }
@@ -38,13 +38,13 @@ public class PenModel extends IPenModel {
             return new double[] { 10, 10 };
         }
         else if (Math.round(style) == DOTTED) {
-            return new double[] { 4, 16 };
+            return new double[] { 1, 4 };
         }
         return new double[] {};
     }
 
     @Override
-    public void setStyle (double style) {
+    public void setStyleIndex (double style) {
         this.style = style;
         updateObservers();
     }

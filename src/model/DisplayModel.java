@@ -8,7 +8,7 @@ import command.Command;
 import constants.UIConstants;
 
 
-public class DisplayModel extends IDisplayModel {
+public class DisplayModel extends IDisplayModel{
 
     private double backgroundColorIndex;
     private Map<Double, String> imageMap;
@@ -175,4 +175,5 @@ public class DisplayModel extends IDisplayModel {
     public void setToAnimate (boolean toAnimate) {
         this.toAnimate = toAnimate;
     }
+    
 }

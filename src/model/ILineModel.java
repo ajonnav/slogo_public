@@ -2,20 +2,20 @@ package model;
 
 public interface ILineModel {
 
-	public double getX1();
+	double getX1();
 	
-	public double getX2();
+	double getX2();
 	
-	public double getY1();
+	double getY1();
 	
-	public double getY2();
+	double getY2();
 	
-	public double getWidth();
+	double getWidth();
 	
-	public String getColor();
+	String getColor();
 	
-	public double[] getStyle();
+	double[] getStyle();
 	
-	public ILineModel copyLineModel();
+	ILineModel copyLineModel();
 	
 }

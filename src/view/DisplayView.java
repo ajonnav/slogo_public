@@ -225,16 +225,19 @@ public class DisplayView implements IView {
         double y2 = getDrawableY(line.getY2());
         double xDiff = x2 - x1;
         double yDiff = y2 - y1;
-        double num = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
-        for (int i = 0; i < num; i++) {
-            Line l = new Line(x1, y1, x1 + xDiff / num * i, y1 + yDiff / num * i);
+        double distance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+        for (int i = 0; i < distance; i++) {
+            Line l = new Line(x1, y1, x1 + xDiff / distance * i, y1 + yDiff / distance * i);
             l.setTranslateX(50/2);
             l.setTranslateY(50/2);
             l.setStroke(Color.web(pen.getColorString()));
             l.setStrokeWidth(pen.getSize());
+            for(Double d: pen.getStyleIndex()) {
+            	l.getStrokeDashArray().add(d);
+            }
             lineViewGroups.get(turtleID).getChildren().add(l);
             l.setOpacity(0);
-            FadeTransition ft = new FadeTransition(Duration.millis(translationTime / num), l);
+            FadeTransition ft = new FadeTransition(Duration.millis(translationTime / distance), l);
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
             ft.setCycleCount(1);
