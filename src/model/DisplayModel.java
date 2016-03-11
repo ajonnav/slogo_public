@@ -28,6 +28,7 @@ public class DisplayModel extends Observable {
         turtleList = new ArrayList<>();
         setTurtles();
         setChanged();
+        updateView();
     }
 
     private void setTurtles () {
@@ -115,7 +116,6 @@ public class DisplayModel extends Observable {
 
     public double setBackgroundColorIndex (double backgroundColorIndex) {
         this.backgroundColorIndex = backgroundColorIndex;
-        updateView();
         return backgroundColorIndex;
     }
 
