@@ -11,9 +11,9 @@ import javafx.scene.text.Text;
 import model.TurtleModel;
 
 public class SPane {
-	public ScrollPane myPane;
-	public Group myRoot;
-	public VBox myBox;
+	private ScrollPane myPane;
+	private Group myRoot;
+	private VBox myBox;
 	
 	public SPane(double x, double y) {	
 		setMyRoot(new Group());
@@ -32,6 +32,10 @@ public class SPane {
 
 	public ScrollPane getMyPane() {
 		return myPane;
+	}
+	
+	public VBox getMyBox(){
+		return myBox;
 	}
 	
 	public Group getMyRoot(){

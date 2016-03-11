@@ -2,7 +2,7 @@ package display;
 
 import model.CommandsModel;
 import model.DisplayModel;
-import model.HistoryPaneModel;
+import model.HistoryModel;
 import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
@@ -21,7 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
@@ -30,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,7 +101,6 @@ public class WorkSpace extends Screen {
         setHistoryPane();
         setUserCommandPane();
         setBar();
-        
     }
     
 
@@ -142,6 +141,7 @@ public class WorkSpace extends Screen {
         DisplayView displayView = new DisplayView(getRoot());
         displayModel.addObserver(displayView);
         modelMap.setDisplay(displayModel);
+        displayModel.setToAnimate(true);
         displayModel.notifyObservers();
     }
     
@@ -149,11 +149,11 @@ public class WorkSpace extends Screen {
      * Hides/shows a user view from the Scene
      */
     private void noVars(SPane variables){
-    	if(getRoot().getChildren().contains(variables.myPane)){
-    		getRoot().getChildren().remove(variables.myPane);
+    	if(getRoot().getChildren().contains(variables.getMyPane())){
+    		getRoot().getChildren().remove(variables.getMyPane());
     	}
     	else{
-    		getRoot().getChildren().add(variables.myPane);
+    		getRoot().getChildren().add(variables.getMyPane());
     	}
     }
     
@@ -178,11 +178,11 @@ public class WorkSpace extends Screen {
         inputText = new TextArea();
         inputText.setMinSize(UIConstants.LOWER_PANE_WIDTH, 120);
         inputText.setMaxSize(UIConstants.LOWER_PANE_WIDTH, 120);
-        userInput.myBox.getChildren().add(inputText);
+        userInput.getMyBox().getChildren().add(inputText);
         Button inputButton = featureMaker.makeB(getResources().getString("GoCommand"),
                                                 event -> readInput(parser, inputText));
-        userInput.myBox.getChildren().add(inputButton);
-        getRoot().getChildren().add(userInput.myPane);
+        userInput.getMyBox().getChildren().add(inputButton);
+        getRoot().getChildren().add(userInput.getMyPane());
     }
     
     private void readInput (CommandParser parser, TextArea input) {
@@ -195,11 +195,12 @@ public class WorkSpace extends Screen {
      */
     private void setHistoryPane () {
         userHistory = new SPane(UIConstants.HISTORY_PANE_X, UIConstants.BORDER_WIDTH);
-        userHistory.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-        userHistory.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-        getRoot().getChildren().add(userHistory.myPane);
-        HistoryPaneModel hpm = new HistoryPaneModel();
-        hpv = new HistoryPaneView(userHistory.myBox, inputText);
+
+        userHistory.getMyPane().setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        userHistory.getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        getRoot().getChildren().add(userHistory.getMyPane());
+        HistoryModel hpm = new HistoryModel();
+        hpv = new HistoryPaneView(userHistory.getMyBox(), inputText);
         hpm.addObserver(hpv);
         hpm.notifyObservers();
         modelMap.setHistory(hpm);
@@ -210,16 +211,16 @@ public class WorkSpace extends Screen {
      */
     private void setVariablePane () {
     	userVariables = new SPane(25, UIConstants.LOWER_PANE_Y);
-        userVariables.myPane.setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
-        userVariables.myPane.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
+        userVariables.getMyPane().setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
+        userVariables.getMyPane().setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
 
         VariableModel varModel = new VariableModel();
-        VariableView varView = new VariableView(userVariables.myBox, new VBox(),inputText,
+        VariableView varView = new VariableView(userVariables.getMyBox(), new VBox(),inputText,
                                                 getMyLang());
         varModel.addObserver(varView);
         varModel.notifyObservers();
         modelMap.setVariable(varModel);
-        getRoot().getChildren().add(userVariables.myPane);
+        getRoot().getChildren().add(userVariables.getMyPane());
     }
 
     /*
@@ -227,16 +228,16 @@ public class WorkSpace extends Screen {
      */
     private void setUserCommandPane () {
         userMethods = new SPane(UIConstants.BORDER_WIDTH, UIConstants.METHODS_Y);
-        userMethods.myPane.setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-        userMethods.myPane.setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-        userMethods.myBox.getChildren().add(new Text(getResources().getString("UCommands")));
+        userMethods.getMyPane().setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        userMethods.getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        userMethods.getMyBox().getChildren().add(new Text(getResources().getString("UCommands")));
 
         CommandsModel varModel = new CommandsModel();
-        CommandsView varView = new CommandsView(userMethods.myBox, inputText);
+        CommandsView varView = new CommandsView(userMethods.getMyBox(), inputText);
         varModel.addObserver(varView);
         varModel.notifyObservers();
         modelMap.setCommands(varModel);
-        getRoot().getChildren().add(userMethods.myPane);
+        getRoot().getChildren().add(userMethods.getMyPane());
     }
     
     /*
@@ -245,11 +246,11 @@ public class WorkSpace extends Screen {
     private void setTurtlePane(List<TurtleModel> tm) {
     	//use display model
         userTurtles = new SPane(UIConstants.TURTLE_PANE_X, UIConstants.LOWER_PANE_Y);
-        userTurtles.myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
-        userTurtles.myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
-        userTurtles.myBox.getChildren().add(new Text(getResources().getString("Tur")));
-        getRoot().getChildren().add(userTurtles.myPane);
-        TurtleIDView cv = new TurtleIDView(inputText, userTurtles.myBox);
+        userTurtles.getMyPane().setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
+        userTurtles.getMyPane().setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
+        userTurtles.getMyBox().getChildren().add(new Text(getResources().getString("Tur")));
+        getRoot().getChildren().add(userTurtles.getMyPane());
+        TurtleIDView cv = new TurtleIDView(inputText, userTurtles.getMyBox());
         for(int i = 0; i < tm.size(); i++) {
             tm.get(i).addObserver(cv);
             tm.get(i).notifyObservers();

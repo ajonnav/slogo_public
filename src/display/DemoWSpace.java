@@ -1,9 +1,10 @@
 package display;
 
 import model.CommandsModel;
-
 import model.DisplayModel;
-import model.HistoryPaneModel;
+import model.HistoryModel;
+import model.IHistoryModel;
+import model.IVariableModel;
 import model.ModelMap;
 import model.TurtleModel;
 import model.VariableModel;
@@ -21,11 +22,15 @@ import view.VariableView;
 import view.View;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -34,6 +39,11 @@ import java.io.File;
 import java.util.List;
 import java.util.Observable;
 import java.util.Optional;
+import java.util.Optional;
+
+import command.Command;
+
+import addons.Features;
 import addons.MenuMaker;
 import addons.WMenu;
 import constants.UIConstants;
@@ -116,8 +126,6 @@ public class DemoWSpace extends Screen {
 		setHistoryPane();
 		setUserCommandPane();
 		setBar();
-		setTurtlePane(modelMap.getDisplay().getFrame(modelMap.getDisplay().getNumFrames()-1));
-		setTurtleCoordsBox(modelMap.getDisplay().getFrame(modelMap.getDisplay().getNumFrames()-1));
 	}
 
 
@@ -125,12 +133,15 @@ public class DemoWSpace extends Screen {
 	 * Initializes the turtle display's front end and back end relationship
 	 */
 	private void setDisplay() {
-		DisplayModel displayModel = new DisplayModel(myState.colorMap, myState.images);
+		DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
 		DisplayView displayView = new DisplayView(getRoot());
 		displayModel.addObserver(displayView);
 		modelMap.setDisplay(displayModel);
-		modelMap.getDisplay().setBackgroundColorIndex(myState.backColorIndex);
+		modelMap.getDisplay().setBackgroundColorIndex(myState.getBackColorIndex());
+		displayModel.setToAnimate(true);
 		displayModel.notifyObservers();
+		setTurtlePane(displayModel);
+		setTurtleCoordsBox(displayModel);
 	}
 
 	/*
@@ -150,12 +161,12 @@ public class DemoWSpace extends Screen {
 		getRoot().getChildren().add(myView.getMyRoot());
 	}
 
-	private void setTurtleCoordsBox(List<TurtleModel> turtles) {
+	private void setTurtleCoordsBox(DisplayModel dm) {
 		CoordinateView cv = new CoordinateView(1, 0, 0, UIConstants.INITIAL_HEADING);
 		getRoot().getChildren().add(cv.getMyHBox());
-		for (int i = 0; i < turtles.size(); i++) {
-			turtles.get(i).addObserver(cv);
-			turtles.get(i).notifyObservers();
+		for (int i = 0; i < dm.getTurtleList().size(); i++) {
+//			dm.getTurtleList().get(i).addObserver(cv);
+//			dm.getTurtleList().get(i).notifyObservers();
 		}
 	}
 
@@ -171,12 +182,21 @@ public class DemoWSpace extends Screen {
 	 * Sets the Pane for the user history
 	 */
 	private void setHistoryPane() {
-		HistoryPaneModel hpm = new HistoryPaneModel();
+		HistoryModel hpm = new HistoryModel();
 		hpv = new HistoryPaneView(inputText);
 		modelMap.setHistory(hpm);
 		establishRelationship(hpm, hpv);
 	}
-
+	/*
+	private void initializeHistory(HistoryPaneModel hpm, List<String> history){
+		if (!myState.getHistory().isEmpty()){
+			for(String n: myState.getHistory()){
+				hpm.addToHistory(n);
+			}
+		}
+	}
+	*/
+	
 	/*
 	 * Sets the Pane for the current user-defined variables in the environment
 	 */
@@ -185,8 +205,14 @@ public class DemoWSpace extends Screen {
 		varView = new VariableView(inputText, getMyLang());
 		modelMap.setVariable(varModel);
 		establishRelationship(varModel, varView);
-	}
 
+	}
+	/*
+	private void initializeVariables(VariableModel vpm, HashMap<String, Double> vars){
+		vpm.pushNewMap(vars);
+	}
+	*/
+	
 	/*
 	 * Sets the Pane for the current user-defined methods in the environment
 	 */
@@ -195,18 +221,20 @@ public class DemoWSpace extends Screen {
 		commandView = new CommandsView(inputText);
 		modelMap.setCommands(commandModel);
 		establishRelationship(commandModel, commandView);
+
 	}
 
 	/*
 	 * Sets the Pane for the current status of the various turtles on the
 	 * display
 	 */
-	private void setTurtlePane(List<TurtleModel> tm) {
+	private void setTurtlePane(DisplayModel dm) {
 		turtleView = new TurtleIDView(inputText);
 		getRoot().getChildren().add(turtleView.getMyRoot());
-		for (int i = 0; i < tm.size(); i++) {
-			tm.get(i).addObserver(turtleView);
-			tm.get(i).notifyObservers();
+
+		for (int i = 0; i < dm.getTurtleList().size(); i++) {
+//			dm.getTurtleList().get(i).addObserver(turtleView);
+//			dm.getTurtleList().get(i).notifyObservers();
 		}
 	}
 
@@ -228,7 +256,7 @@ public class DemoWSpace extends Screen {
 
 	private void setPrefs() {
 		String newTitle = newTextInput("File Name", "Save File", "Enter New File Name", "File:");
-		PrefWriter setter = new PrefWriter(modelMap, "image.png", myLang);
+		PrefWriter setter = new PrefWriter(modelMap, newTitle, myLang);
 		setter.writeToSrl();
 	}
 

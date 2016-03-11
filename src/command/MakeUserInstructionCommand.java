@@ -2,13 +2,13 @@ package command;
 
 import java.util.List;
 import exception.SLogoSyntaxException;
-import model.CommandsModel;
+import model.ICommandsModel;
 import model.ModelMap;
 
 
 public class MakeUserInstructionCommand extends Command {
 
-    private CommandsModel commandsModel;
+    private ICommandsModel commandsModel;
 
     public MakeUserInstructionCommand (ModelMap modelMap, List<String> text) {
         setNumChildren(3);

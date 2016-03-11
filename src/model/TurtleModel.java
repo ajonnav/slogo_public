@@ -1,80 +1,133 @@
 package model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.Map;
 
-public class TurtleModel extends Observable implements Observer, Serializable{
+public class TurtleModel {
     
-	private static final long serialVersionUID = 7400792168904381245L;
-	private double turtleInitialX;
+    private double turtleInitialX;
     private double turtleInitialY;
     private double turtleInitialHeading;
-    private String imageString;
-    private PenModel pen;
-    private boolean isActive;
-    private double heading;
-    private double positionX;
-    private double positionY;
-    private boolean showStatus;
-    private double imageIndex;
-    private List<LineModel> lineList;
-    private List<StampModel> stampList;
+    private int frameNumber;
+    private Map<Double, String> imageMap;
+    private Map<Double, String> colorMap;
+    private List<PenModel> pen = new ArrayList<>();
+    private double isActive;
+    private List<Double> heading = new ArrayList<>();
+    private List<Double> positionX = new ArrayList<>();
+    private List<Double> positionY = new ArrayList<>();
+    private List<Boolean> showStatus = new ArrayList<>();
+    private List<Double> imageIndex = new ArrayList<>();
+    private List<List<LineModel>> lineList = new ArrayList<>();
+    private List<List<StampModel>> stampList = new ArrayList<>();
 
-    public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading) {
-        isActive = false;
-        heading = turtleInitialHeading;
+    public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading, 
+                        Map<Double, String> imageMap, Map<Double, String> colorMap) {
+        this.frameNumber = 2;
         this.turtleInitialHeading = turtleInitialHeading;
-        positionX = turtleInitialX;
         this.turtleInitialX = turtleInitialX;
-        positionY = turtleInitialY;
         this.turtleInitialY = turtleInitialY;
-        showStatus = true;
-        imageIndex = 5;
-        lineList = new ArrayList<>();
-        stampList=  new ArrayList<>();
-        double penColorIndex = 1.0;
-        double lineWidth = 1;
-        double style = 0;
-        pen = new PenModel(false, lineWidth, penColorIndex, style);
-        pen.addObserver(this);
-        setChanged();
+        this.imageMap = imageMap;
+        this.colorMap = colorMap;
+        addInitialStates(frameNumber);
+    }
+    
+    public void addInitialStates(int num) {
+        for(int i = 0; i < num; i++) {
+            heading.add(turtleInitialHeading);
+            positionX.add(turtleInitialX);
+            positionY.add(turtleInitialY);
+            showStatus.add(true);
+            imageIndex.add(5.0);
+            lineList.add(new ArrayList<LineModel>());
+            stampList.add(new ArrayList<StampModel>());
+            pen.add(new PenModel(false, 1, 1, 0));
+        }
     }
     
     public TurtleModel makeNewActiveTurtle() {
-        TurtleModel newTurtle = new TurtleModel(turtleInitialX, turtleInitialY, turtleInitialHeading);
-        newTurtle.isActive = true;
+        TurtleModel newTurtle = new TurtleModel(this.turtleInitialX, 
+                                                this.turtleInitialY, 
+                                                this.turtleInitialHeading, 
+                                                this.imageMap, 
+                                                this.colorMap);
+        isActive = 1;
         return newTurtle;
+    }
+    
+    public void syncFrame() {
+        frameNumber++;
+        if(pen.size() != frameNumber) {
+            pen.add(getPen().copyPenModel());
+        }
+        if(heading.size() != frameNumber) {
+            heading.add(getHeading());
+        }
+        if(positionX.size() != frameNumber) {
+            positionX.add(getPositionX());
+        }
+        if(positionY.size() != frameNumber) {
+            positionY.add(getPositionY());
+        }
+        if(showStatus.size() != frameNumber) {
+            showStatus.add(isShowStatus());
+        }
+        if(imageIndex.size() != frameNumber) {
+            imageIndex.add(getImageIndex());
+        }
+        if(lineList.size() != frameNumber) {
+            lineList.add(copyLastLineList());
+        }
+        if(stampList.size() != frameNumber) {
+            stampList.add(copyLastStampList());
+        }
+    }
+    
+    public List<LineModel> copyLastLineList() {
+        List<LineModel> newLM = new ArrayList<LineModel>();
+        for(LineModel lm : getLineList()) {
+            newLM.add(lm.copyLineModel());
+        }
+        return newLM;
+    }
+    
+    public List<StampModel> copyLastStampList() {
+        List<StampModel> newSM = new ArrayList<StampModel>();
+        for(StampModel sm : getStampList()) {
+            newSM.add(sm.copyStampModel());
+        }
+        return newSM;
     }
 
     public double forward (double[] distance) {
-    	if(pen.getStatus()) {
-	    	lineList.add(new LineModel(positionX, positionY, 
-	    			positionX+distance[0] * Math.cos(Math.toRadians(heading)), 
-	    			positionY + distance[0] * Math.sin(Math.toRadians(heading)),
-	    			pen.getSize(), pen.getColorString(), pen.getStyle()));
+        PenModel lastPen = getPen ();
+    	if(lastPen.getStatus()) {
+    	        List<LineModel> nextLM = copyLastLineList();
+	    	nextLM.add(new LineModel(getPositionX(), getPositionY(), 
+	    			getPositionX()  + distance[0] * Math.cos(Math.toRadians(getHeading())), 
+	    			getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())),
+	    			lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
+	    	lineList.add(nextLM);
     	}
-        positionX += distance[0] * Math.cos(Math.toRadians(heading));
-        positionY += distance[0] * Math.sin(Math.toRadians(heading));
-        updateView();
+        positionX.add(getPositionX() + distance[0] * Math.cos(Math.toRadians(getHeading())));
+        positionY.add(getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())));
         return distance[0];
     }
     
     public double backward (double[] distance) {
         distance[0] = -distance[0];
+        syncFrame();
         return forward(distance);
     }
 
-    public void setHeading (double[] degrees) {
-        heading = degrees[0];
-        updateView();
+    public double setHeading (double[] degree) {
+        heading.add(degree[0]);
+        return degree[0];
     }
 
     public double turnRight (double[] degree) {
-        heading -= degree[0];
-        updateView();
+        heading.add(getHeading() - degree[0]);
         return degree[0];
     }
 
@@ -84,183 +137,198 @@ public class TurtleModel extends Observable implements Observer, Serializable{
     }
 
     public double penUp () {
-        pen.setStatus(false);
-        updateView();
+        PenModel newPen = pen.get(pen.size()-1).copyPenModel();
+        newPen.setStatus(false);
+        pen.add(newPen);
         return 0;
     }
     
     public double penDown () {
-    	pen.setStatus(true);
-        updateView();
+        PenModel newPen = pen.get(pen.size()-1).copyPenModel();
+        newPen.setStatus(true);
+        pen.add(newPen);
         return 1;
     }
     
     public double stamp () {
-        stampList.add(new StampModel(imageString, positionX, positionY, heading));
-        updateView();
-        return imageIndex;
+        List<StampModel> nextSM = copyLastStampList();
+        nextSM.add(new StampModel(colorMap.get(getImageIndex()), getPositionX(), getPositionY(), getHeading()));
+        stampList.add(nextSM);
+        return getLastDouble(imageIndex);
     }
     
     public double show () {
-        showStatus = true;
-        updateView();
+        showStatus.add(true);
         return 1;
     }
     
     public double hide () {
-        showStatus = false;
-        updateView();
+        showStatus.add(false);
         return 0;
     }
     
     public double home () {
-        double returnValue = setPosition(new double[] {0, 0});
-        heading = 90;
-        updateView();
-        return returnValue;
+        return setPosition(new double[] {0, 0});
     }
     
     public double setPosition(double[] xy) {
-        double[] oldPos = new double[]{positionX, positionY};
-        positionX = xy[0];
-        positionY = xy[1];
-        if(pen.getStatus()) {
-	    	lineList.add(new LineModel(oldPos[0], oldPos[1], positionX, positionY,
-	    			pen.getSize(), pen.getColorString(), pen.getStyle()));
+        double[] oldPos = new double[]{getPositionX(), getPositionY()};
+        positionX.add(xy[0]);
+        positionY.add(xy[1]);
+        PenModel lastPen = getPen ();
+        if(lastPen.getStatus()) {
+                List<LineModel> nextLM = copyLastLineList();
+	    	nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(), getPositionY(),
+	    			lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
+	    	lineList.add(nextLM);
     	}
-        updateView();
-        return Math.sqrt(Math.pow((oldPos[0] - positionX), 2) +
-                         Math.pow((oldPos[1] - positionY), 2));
+        return Math.sqrt(Math.pow((oldPos[0] - getPositionX()), 2) +
+                         Math.pow((oldPos[1] - getPositionY()), 2));
     }
     
     public double setTowards(double[] xy) {
-        double lastHeading = heading;
-        if(xy[0] == positionX && xy[1] == positionY) {
+        double lastHeading = getHeading();
+        if(xy[0] == getPositionX() && xy[1] == getPositionY()) {
             return 0;
         }
-        double rawDegrees = Math.toDegrees(Math.atan((xy[1] - positionY) / (xy[0] - positionX)));
-        double newHeading = xy[0] - positionX >= 0 ? rawDegrees : rawDegrees - 180;
-        heading = newHeading;
-        double headingDiff = Math.abs(lastHeading - heading);
-        updateView();
+        double rawDegrees = Math.toDegrees(Math.atan((xy[1] - getPositionY()) / 
+                                                     (xy[0] - getPositionX())));
+        double newHeading = xy[0] - getPositionX() >= 0 ? rawDegrees : rawDegrees - 180;
+        heading.add(newHeading);
+        double headingDiff = Math.abs(lastHeading - getHeading());
         return headingDiff >= 180 ? 360 - headingDiff : headingDiff;
     }
-    
-    public double getPositionY () {
-        return positionY;
-    }
-    
-    public double getPositionX () {
-        return positionX;
-    }
-    
-    public double getHeading () {
-        return heading;
-    }
-    
-    public double getPenStatus () {
-        return pen.getStatus() ? 1 : 0;
-    }
-
-    public double getShowStatus () {
-        return showStatus ? 1 : 0;
-    }
-    
+   
     public double clearScreen() {
-        double returnValue = home();
-        stampList.clear();
-        lineList.clear();
-        updateView();
-        return returnValue;
+        stampList.add(new ArrayList<StampModel>());
+        lineList.add(new ArrayList<LineModel>());
+        return home();
     }
-
-    public double getPenColorIndex () {
-        return pen.getColorIndex();
-    }
-    
+        
     public double setPenColorIndex (double[] penColorIndex) {
-        this.pen.setColorIndex(penColorIndex[0]);
-        updateView();
+        PenModel newPen = getPen().copyPenModel();
+        newPen.setColorIndex(penColorIndex[0]);
+        newPen.setColorString(colorMap.get(penColorIndex[0]));
+        pen.add(newPen);
         return penColorIndex[0];
     }
     
-    public void setPenColorString(String colorString) {
-    	pen.setColorString(colorString);
-    }
-    
-    public double getImageIndex () {
-        return imageIndex;
-    }
-    
     public double setImageIndex (double[] imageIndex) {
-        this.imageIndex = imageIndex[0];
-        updateView();
+        this.imageIndex.add(imageIndex[0]);
         return imageIndex[0];
-    }
-    
-    public double getLineWidth () {
-        return pen.getSize();
     }
 
     public double setLineWidth (double[] lineWidth) {
-        this.pen.setSize(lineWidth[0]);
-        updateView();
+        PenModel newPen = getPen().copyPenModel();
+        newPen.setSize(lineWidth[0]);
+        pen.add(newPen);
         return lineWidth[0];
     }
     
+    
+    
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    public int getFrameNumber() {
+        return frameNumber;
+    }
+    
     public int getNumStamps() {
-        return stampList.size();
+        return getStampList().size();
+    }   
+    
+    public void setImageMap(Map<Double, String> imageMap) {
+        this.imageMap = imageMap;
+    }
+    
+    public void setColorMap(Map<Double, String> colorMap) {
+        this.colorMap = colorMap;
+    }
+    
+    public double getShowStatus (int frameNumber) {
+        return showStatus.get(frameNumber) ? 1 : 0;
+    }
+      
+    public double getPositionY () {
+        return getLastDouble(positionY);
+    }
+    
+    public double getPositionY (int frameNumber) {
+        return positionY.get(frameNumber);
+    }
+    
+    public double getPositionX () {
+        return getLastDouble(positionX);
+    }
+    
+    public double getPositionX (int frameNumber) {
+        return positionX.get(frameNumber);
+    }
+    
+    public double getHeading () {
+        return getLastDouble(heading);
+    }
+    
+    public double getHeading(int frameNumber) {
+        return heading.get(frameNumber);
+    }
+    
+    public PenModel getPen () {
+        return pen.get(pen.size()-1);
+    }
+
+    public boolean isPenStatus () {
+        return getPen().getStatus();
+    }
+
+    public boolean isShowStatus() {
+        return getLastBoolean(showStatus);
+    }
+
+    public double getPenColorIndex () {
+        return getPen().getColorIndex();
+    }
+    
+    public double getImageIndex () {
+        return getLastDouble(imageIndex);
+    }
+    
+    public String getImageString (int frameNumber) {
+        return imageMap.get(imageIndex.get(frameNumber));
+    }
+    
+    public double getLineWidth () {
+        return getPen().getSize();
     }
     
     public boolean isActive () {
-        return isActive;
+        return isActive == 1 ? true : false;
     }
-
+    
     public void setActive (double isActive) {
-        this.isActive = isActive == 1 ? true : false;
+        this.isActive = isActive;
     }
-
-    public String getImageString() {
-    	return imageString;
-    }
-    
-    public void setImageString(String imageString) {
-    	this.imageString = imageString;
-    }
-    
+      
     public List<LineModel> getLineList() {
-    	return lineList;
+    	return lineList.get(lineList.size()-1);
     }
     
     public List<StampModel> getStampList() {
-    	return stampList;
+    	return stampList.get(stampList.size()-1);
+    }    
+    
+    public double getLastDouble(List<Double> list) {
+        return list.get(list.size() - 1).doubleValue();
     }
     
-    public void updateView() {
-        setChanged();
-        notifyObservers();
+    public boolean getLastBoolean(List<Boolean> list) {
+        return list.get(list.size() - 1).booleanValue();
     }
-
-	
-    @Override
-	public void update(Observable o, Object arg) {
-		updateView();
-	}
-    
-   /* public TurtleModel copyTurtleModel() {
-    	TurtleModel turtle = new TurtleModel(this.positionX, this.positionY, this.heading);
-    	turtle.isActive = this.isActive;
-        turtle.turtleInitialHeading = this.turtleInitialHeading;
-        turtle.turtleInitialX = this.turtleInitialX;
-        turtle.turtleInitialY = this.turtleInitialY;
-        turtle.showStatus = this.showStatus;
-        turtle.imageIndex = this.imageIndex;
-        turtle.lineList = new ArrayList<>(this.lineList);
-        turtle.stampList=  new ArrayList<>(this.stampList);
-        turtle.pen = this.pen.copyPenModel();
-        turtle.pen.addObserver(turtle);
-        turtle.setChanged();
-        return turtle;
-    }*/
-    
 }
