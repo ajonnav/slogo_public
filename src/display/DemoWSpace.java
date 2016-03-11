@@ -158,8 +158,7 @@ public class DemoWSpace extends Screen {
                 modelMap.getDisplay().setBackgroundColorIndex(myState.getBackColorIndex());
                 displayModel.setToAnimate(true);
                 displayModel.notifyObservers();
-                setTurtlePane(displayModel);
-                displayModel.updateView();
+//                setTurtlePane(displayModel);
         }
 
         /*
