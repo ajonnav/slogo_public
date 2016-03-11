@@ -2,14 +2,14 @@ package command;
 
 import java.util.List;
 import exception.SLogoSyntaxException;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class ForCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public ForCommand (ModelMap modelMap, List<String> text) {
+    public ForCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
     }

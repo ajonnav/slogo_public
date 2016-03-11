@@ -2,14 +2,14 @@ package command;
 
 import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class SetPenColorCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public SetPenColorCommand (ModelMap modelMap, List<String> text) {
+    public SetPenColorCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(1);
         this.modelMap = modelMap;
     }

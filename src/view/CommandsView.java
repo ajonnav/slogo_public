@@ -8,9 +8,8 @@ import command.Command;
 import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import model.CommandsModel;
+import model.ICommandsModel;
 
 public class CommandsView extends ScrollView{
 
@@ -29,8 +28,8 @@ public class CommandsView extends ScrollView{
 
         @Override
         public void update(Observable o, Object arg) {
-                if(o instanceof CommandsModel){
-                        CommandsModel vm = (CommandsModel) o;
+                if(o instanceof ICommandsModel){
+                        ICommandsModel vm = (ICommandsModel) o;
                         vars = vm.getImmutableVariablesMap();
                         getMyBox().getChildren().clear();
                         for(String item : vars.keySet()){

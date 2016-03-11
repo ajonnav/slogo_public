@@ -2,14 +2,14 @@ package command;
 
 import java.util.List;
 import exception.SLogoSyntaxException;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class DoTimesCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public DoTimesCommand (ModelMap modelMap, List<String> text) {
+    public DoTimesCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
     }

@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class PowerCommand extends Command {
 
-    public PowerCommand (ModelMap modelMap, List<String> text) {
+    public PowerCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 

@@ -1,8 +1,7 @@
 package model;
 
 
-
-public class StampModel {
+public class StampModel implements IStampModel{
 
     private String imageString;
     private double x;
@@ -16,23 +15,28 @@ public class StampModel {
         this.heading = heading;
     }
 
+    @Override
     public String getImageString () {
         return imageString;
     }
 
+    @Override
     public double getPositionX () {
         return x;
     }
 
+    @Override
     public double getPositionY () {
         return y;
     }
 
+    @Override
     public double getHeading () {
         return heading;
     }
     
-    public StampModel copyStampModel() {
+    @Override
+    public IStampModel copyStampModel() {
         return new StampModel(this.imageString, this.x, this.y, this.heading);
     }
 }

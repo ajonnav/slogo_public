@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class AndCommand extends Command {
 
-    public AndCommand (ModelMap modelMap, List<String> text) {
+    public AndCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }

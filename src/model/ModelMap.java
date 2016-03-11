@@ -5,7 +5,7 @@ public class ModelMap implements IModelMap {
     private IHistoryModel history;
     private ICommandsModel commands;
     private IVariableModel variable;
-    private DisplayModel display;    
+    private IDisplayModel display;    
 
     public void setHistory (IHistoryModel history) {
         this.history = history;
@@ -31,11 +31,11 @@ public class ModelMap implements IModelMap {
         return variable;
     }
 
-    public void setDisplay (DisplayModel display) {
+    public void setDisplay (IDisplayModel display) {
         this.display = display;
     }
 
-    public DisplayModel getDisplay () {
+    public IDisplayModel getDisplay () {
         return display;
     }
     

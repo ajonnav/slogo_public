@@ -2,14 +2,14 @@ package command;
 
 import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class SetHeadingCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public SetHeadingCommand (ModelMap modelMap, List<String> text) {
+    public SetHeadingCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(1);
         this.modelMap = modelMap;
     }

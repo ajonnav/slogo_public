@@ -2,14 +2,14 @@ package command;
 
 import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class SetShapeCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public SetShapeCommand (ModelMap modelMap, List<String> text) {
+    public SetShapeCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(1);
         this.modelMap = modelMap;
     }

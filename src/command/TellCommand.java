@@ -1,13 +1,13 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 public class TellCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public TellCommand (ModelMap modelMap, List<String> text) {
+    public TellCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(1);
         this.modelMap = modelMap;
     }

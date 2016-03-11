@@ -10,7 +10,7 @@ import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import model.VariableModel;
+import model.IVariableModel;
 
 public class VariableView extends ScrollView{
 
@@ -40,8 +40,8 @@ public class VariableView extends ScrollView{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o instanceof VariableModel){
-			VariableModel vm = (VariableModel) o;
+		if(o instanceof IVariableModel){
+			IVariableModel vm = (IVariableModel) o;
 			vars = vm.getImmutableVariableMap();
 			varBox.getChildren().clear();
 			for(String item : vars.keySet()){

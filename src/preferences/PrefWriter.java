@@ -2,15 +2,16 @@ package preferences;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import model.ModelMap;
+import model.IModelMap;
 
 public class PrefWriter {
 	
 	private String path;
-	private ModelMap state;
 	private SaveState save;
+	private IModelMap state;
+
 	
-	public PrefWriter(ModelMap modelMap, String fileName, String myLang){
+	public PrefWriter(IModelMap modelMap, String fileName, String myLang){
 		path = "src/preferences/" + fileName + ".srl";
 		state = modelMap;
 		save = new SaveState();

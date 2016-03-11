@@ -3,12 +3,12 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
+
 import command.Command;
 import constants.UIConstants;
 
 
-public class DisplayModel extends Observable {
+public class DisplayModel extends IDisplayModel{
 
     private double backgroundColorIndex;
     private Map<Double, String> imageMap;
@@ -38,10 +38,12 @@ public class DisplayModel extends Observable {
         }
     }
 
+    @Override
     public double getBackgroundColorIndex () {
         return backgroundColorIndex;
     }
 
+    @Override
     public double TurtleAction (String command, List<Command> parameters) {
         lastValue = 0;
         turtleList.stream().filter(t -> t.isActive()).forEach(turtle -> {
@@ -66,6 +68,7 @@ public class DisplayModel extends Observable {
         return lastValue;
     }
 
+    @Override
     public double tell (double[] values) {
         turtleList.stream().forEach(t -> {
             t.setActive(false);
@@ -89,6 +92,7 @@ public class DisplayModel extends Observable {
         return lastActiveID;
     }
 
+    @Override
     public double[] getActiveTurtleIDs () {
         List<Double> active = new ArrayList<Double>();
         for (int i = 0; i < turtleList.size(); i++) {
@@ -99,6 +103,7 @@ public class DisplayModel extends Observable {
         return active.stream().mapToDouble(d -> d).toArray();
     }
 
+    @Override
     public double addToColorMap (double[] values) {
         colorMap.put(values[0], String.format("#%02X%02X%02X", (int) values[1], (int) values[2],
                                               (int) values[3]));
@@ -113,16 +118,19 @@ public class DisplayModel extends Observable {
         }
         return array;
     }
-
+    
+    @Override
     public double setBackgroundColorIndex (double backgroundColorIndex) {
         this.backgroundColorIndex = backgroundColorIndex;
         return backgroundColorIndex;
     }
 
+    @Override
     public Map<Double, String> getColorMap () {
         return colorMap;
     }
 
+    @Override
     public void setColorMap (Map<Double, String> colorMap) {
         this.colorMap = colorMap;
         turtleList.stream().forEach(t -> t.setColorMap(colorMap));
@@ -132,32 +140,40 @@ public class DisplayModel extends Observable {
         return colorMap.get(backgroundColorIndex);
     }
 
+    @Override
     public void updateView () {
         setChanged();
         notifyObservers();
     }
 
+    @Override
     public int getLastActiveID () {
         return lastActiveID;
     }
 
+    @Override
     public Map<Double, String> getImageMap () {
         return imageMap;
     }
     
+    @Override
     public List<TurtleModel> getTurtleList() {
         return turtleList;
     }
 
+    @Override
     public int getNumTurtles () {
         return turtleList.size();
     }
 
+    @Override
     public boolean isToAnimate () {
         return toAnimate;
     }
 
+    @Override
     public void setToAnimate (boolean toAnimate) {
         this.toAnimate = toAnimate;
     }
+    
 }

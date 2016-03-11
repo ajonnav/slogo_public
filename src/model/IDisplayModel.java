@@ -1,34 +1,39 @@
 package model;
+
 import java.util.List;
 import java.util.Map;
-
+import java.util.Observable;
 import command.Command;
 
-interface IDisplayModel {
+public abstract class IDisplayModel extends Observable{
 	
-	double TurtleAction (String command, List<Command> parameters);
+	public abstract double TurtleAction (String command, List<Command> parameters);
 	
-	double tell (double[] values);
+	public abstract double tell (double[] values);
 	
-	double[] getActiveTurtleIDs();
+	public abstract double[] getActiveTurtleIDs();
 	
-	int getLastActiveID();
+	public abstract int getLastActiveID();
 	
-	int getNumTurtles();
+	public abstract int getNumTurtles();
 	
-	Map<Double, String> getColorMap();
+	public abstract List<TurtleModel> getTurtleList();
 	
-	void setColorMap(Map<Double, String> colorMap);
+	public abstract Map<Double, String> getColorMap();
 	
-	double addToColorMap (double[] values);
+	public abstract void setColorMap(Map<Double, String> colorMap);
 	
-	double setBackgroundColorIndex (double backgroundColorIndex);
+	public abstract double addToColorMap (double[] values);
 	
-	double getBackgroundColorIndex();
+	public abstract double setBackgroundColorIndex (double backgroundColorIndex);
 	
-	Map<Double, String> getImageMap ();
+	public abstract double getBackgroundColorIndex();
 	
-	List<TurtleModel> makeCopyOfTurtleList(List<TurtleModel> turtleList);
+	public abstract Map<Double, String> getImageMap ();
 	
-	void updateView();
+	public abstract void updateView ();
+	
+	public abstract boolean isToAnimate ();
+	
+	public abstract void setToAnimate (boolean toAnimate);
 }

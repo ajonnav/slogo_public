@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class RemainderCommand extends Command {
 
-    public RemainderCommand (ModelMap modelMap, List<String> text) {
+    public RemainderCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }
