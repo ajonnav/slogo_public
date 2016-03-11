@@ -1,0 +1,31 @@
+##Design Decisions
+
+We choose to refactor the hierarchy for our View package. We made an abstract class
+called View that contained the basic features of every View subclass, which was a Group called
+myRoot and a VBox to add items to. Within the DemoWSpace class, we simplified the initialization 
+methods for each of these.
+
+##ScrollView
+
+We made another abstract class called ScrollView that extended View, and this had all of the
+features that the subclasses contained, with the only difference from view being a ScrollpPane
+called myPane.
+
+##Refactoring Part 1
+The CommandsView, HistoryPaneView, TurtleIDView, and VariableView all extend ScrollView
+and use the methods in the abstract class to add to their panes and roots.
+
+##Refactoring Part 2
+InputView and CoordinateView are unique in that they do not require a ScrollPane so they only
+extend the abstract View class.
+
+##Conclusion
+The relationships between views and models is made clearer now in the DemoWSpace class.
+This is a result of moving view-specific methods to their respective view classes (like
+readInput's move to the InputView class) and also the addition of new methods like
+establishRelationships(), which is applicable for every model and view combination in the project.
+
+##Future Work
+More refactoring definitely needs to be done on the MenuBar item in the DemoWSpace class.
+Like Professor Duvall mentioned in class, this can be achieved by using a collection
+to initialize the strings and lambdas for each menu item.

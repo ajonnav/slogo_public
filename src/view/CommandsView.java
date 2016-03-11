@@ -5,21 +5,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import command.Command;
+import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import model.CommandsModel;
+import pane.SPane;
 
-public class CommandsView implements IView{
+public class CommandsView extends ScrollView{
 
         private Map<String, List<Command>> vars;
-        private VBox varBox;
         private TextArea myTA;
         
-        public CommandsView(VBox vb, TextArea va) {
+        public CommandsView(TextArea va) {
                 vars = new HashMap<String, List<Command>>();
-                varBox = vb;
                 myTA = va;
+                getMyPane().setLayoutX(UIConstants.BORDER_WIDTH);
+                getMyPane().setLayoutY(UIConstants.METHODS_Y);
+        		getMyPane().setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        		getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+        		getMyBox().getChildren().add(new Text("User Commands"));
         }
 
         @Override
@@ -27,7 +33,7 @@ public class CommandsView implements IView{
                 if(o instanceof CommandsModel){
                         CommandsModel vm = (CommandsModel) o;
                         vars = vm.getImmutableVariablesMap();
-                        varBox.getChildren().clear();
+                        getMyBox().getChildren().clear();
                         for(String item : vars.keySet()){
                                 if(vars.get(item) != null) {
                                     String parameterString = vars.get(item).size() == 1 ? " parameter" : " parameters";
@@ -36,7 +42,7 @@ public class CommandsView implements IView{
                                     pastVar.setOnAction(event -> {
                                         myTA.appendText(item);
                                     });
-                                    varBox.getChildren().add(pastVar);
+                                    getMyBox().getChildren().add(pastVar);
                                 }
                         }
                 }

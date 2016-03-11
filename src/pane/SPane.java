@@ -50,10 +50,10 @@ public class SPane {
 		myRoot = r;
 	}
 
-	public void addTurtles(List<TurtleModel> tm) {
-		for(TurtleModel item : tm){
-			Text info = new Text(Boolean.toString(item.isActive()));
-			myBox.getChildren().add(info);
-		}
-	}
+//	public void addTurtles(List<TurtleModel> tm) {
+//		for(TurtleModel item : tm){
+//			Text info = new Text(Boolean.toString(item.isActive()));
+//			myBox.getChildren().add(info);
+//		}
+//	}
 }

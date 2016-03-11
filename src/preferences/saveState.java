@@ -1,7 +1,5 @@
 package preferences;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +16,8 @@ public class saveState implements java.io.Serializable {
 	private List<String> history;
 	private Map<String, Double> variables;
 	private Map<Double, String> images;
-	private Map<String, List<Command>> commands;
-	private Map<String, List<Command>> commandVars;
+	//private Map<String, List<Command>> commands;
+	//private Map<String, List<Command>> commandVars;
 	
 	public Map<Double, String> getColorMap() {
 		return colorMap;
@@ -92,7 +90,7 @@ public class saveState implements java.io.Serializable {
 	public void setVariables(Map<String, Double> variables) {
 		this.variables = variables;
 	}
-
+	/*
 	public Map<String, List<Command>> getCommands() {
 		return commands;
 	}
@@ -108,4 +106,5 @@ public class saveState implements java.io.Serializable {
 	public void setCommandVars(Map<String, List<Command>> commandVars) {
 		this.commandVars = commandVars;
 	}
+	*/
 }

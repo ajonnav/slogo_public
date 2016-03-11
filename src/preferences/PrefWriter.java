@@ -23,8 +23,8 @@ public class PrefWriter {
 		save.setBackColor(state.getDisplay().getBackgroundColorIndex());
 		save.setHistory((state.getHistory().getImmutableHistoryList()));
 		save.setVariables(state.getVariable().getImmutableVariableMap());
-		save.setCommands(state.getCommands().getImmutableCommandsMap());
-		save.setCommandVars(state.getCommands().getImmutableVariablesMap());
+		//save.setCommands(state.getCommands().getImmutableCommandsMap());
+		//save.setCommandVars(state.getCommands().getImmutableVariablesMap());
 	}
 	
 	public void writeToSrl(){
