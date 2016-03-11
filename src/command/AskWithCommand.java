@@ -2,14 +2,14 @@ package command;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 import model.TurtleModel;
 
 public class AskWithCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public AskWithCommand (ModelMap modelMap, List<String> text) {
+    public AskWithCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
     }

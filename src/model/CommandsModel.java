@@ -1,6 +1,5 @@
 package model;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +12,8 @@ public class CommandsModel extends ICommandsModel {
     private Map<String, List<Command>> nameToVariablesMap;
 
     public CommandsModel () {
-        this.nameToCommandsMap = new HashMap<String, List<Command>>();
-        this.nameToVariablesMap = new HashMap<String, List<Command>>();
+        this.nameToCommandsMap = new HashMap<>();
+        this.nameToVariablesMap = new HashMap<>();
     }
 
     @Override

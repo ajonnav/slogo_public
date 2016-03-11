@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class ListStartCommand extends Command {
 
-    public ListStartCommand (ModelMap modelMap, List<String> text) {
+    public ListStartCommand (IModelMap modelMap, List<String> text) {
     }
 
     @Override

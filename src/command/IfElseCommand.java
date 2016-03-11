@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class IfElseCommand extends Command {
 
-    public IfElseCommand (ModelMap modelMap, List<String> text) {
+    public IfElseCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(3);
         setTakesUnlimitedParameters(false);
     }

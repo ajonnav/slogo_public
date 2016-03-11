@@ -13,22 +13,26 @@ public class HistoryModel extends IHistoryModel {
         history = new ArrayList<>();
     }
 
+    @Override
     public void addToHistory (String command) {
         history.add(command);
         setChanged();
         notifyObservers();
     }
 
+    @Override
     public void clearHistory () {
         history.clear();
         setChanged();
         notifyObservers();
     }
 
+    @Override
     public List<String> getImmutableHistoryList () {
         return Collections.unmodifiableList(history);
     }
     
+    @Override
     public void updateView(){
     	setChanged();
     	notifyObservers();
