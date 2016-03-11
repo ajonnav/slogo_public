@@ -1,6 +1,5 @@
 package preferences;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,12 +13,11 @@ public class saveState implements java.io.Serializable {
 	private Integer turtleNumber;
 	private String language;
 	private double backColor;
-	//TODO
-	private int penColor;
 	private List<String> history;
-	private Map<String, Double> variables = new HashMap<String, Double>();
+	private Map<String, Double> variables;
 	private Map<Double, String> images;
-	private Map<String, List<Command>> commands;	
+	//private Map<String, List<Command>> commands;
+	//private Map<String, List<Command>> commandVars;
 	
 	public Map<Double, String> getColorMap() {
 		return colorMap;
@@ -85,11 +83,28 @@ public class saveState implements java.io.Serializable {
 		this.history = history;
 	}
 
-	public HashMap<String, Double> getVariables() {
-		return (HashMap<String, Double>) variables;
+	public Map<String, Double> getVariables() {
+		return (Map<String, Double>) variables;
 	}
 
 	public void setVariables(Map<String, Double> variables) {
 		this.variables = variables;
 	}
+	/*
+	public Map<String, List<Command>> getCommands() {
+		return commands;
+	}
+
+	public void setCommands(Map<String, List<Command>> commands) {
+		this.commands = commands;
+	}
+
+	public Map<String, List<Command>> getCommandVars() {
+		return commandVars;
+	}
+
+	public void setCommandVars(Map<String, List<Command>> commandVars) {
+		this.commandVars = commandVars;
+	}
+	*/
 }

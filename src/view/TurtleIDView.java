@@ -18,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.DisplayModel;
 import model.TurtleModel;
-import pane.SPane;
 
 public class TurtleIDView extends ScrollView {
 	private TextArea myTA;

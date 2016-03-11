@@ -3,13 +3,13 @@ package pane;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-public interface IPane {
+interface IPane {
 	
-	public Pane getPane();
+	Pane getPane();
 	
-	public void add(Node item);
+	void add(Node item);
 	
-	public void setPane(Pane p);
+	void setPane(Pane p);
 
 
 }

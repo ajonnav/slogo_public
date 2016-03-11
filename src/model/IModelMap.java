@@ -1,21 +1,21 @@
 package model;
 
-public interface IModelMap {
+interface IModelMap {
 	
-	public DisplayModel getDisplay();
+	DisplayModel getDisplay();
 	
-	public IHistoryModel getHistory();
+	IHistoryModel getHistory();
 	
-	public IVariableModel getVariable();
+	IVariableModel getVariable();
 	
-	public ICommandsModel getCommands();
+	ICommandsModel getCommands();
 	
-	public void setDisplay(DisplayModel displayModel);
+	void setDisplay(DisplayModel displayModel);
 	
-	public void setHistory(IHistoryModel historyModel);
+	void setHistory(IHistoryModel historyModel);
 	
-	public void setCommands(ICommandsModel commandsModel);
+	void setCommands(ICommandsModel commandsModel);
 	
-	public void setVariable(IVariableModel historyModel);
+	void setVariable(IVariableModel historyModel);
 	
 }

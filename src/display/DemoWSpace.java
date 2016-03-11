@@ -44,7 +44,6 @@ import java.util.TreeMap;
 import java.util.Optional;
 
 import command.Command;
-
 import addons.Features;
 import addons.MenuMaker;
 import addons.WMenu;
@@ -113,7 +112,7 @@ public class DemoWSpace extends Screen {
 		menuMaker.addMenuItem(getResources().getString("uToggle"), e -> noVars(myIV), toggleMenu);
 		Menu editMenu = menuMaker.addMenu(getResources().getString("EditCommand"));
 		menuMaker.addMenuItem(getResources().getString("penStatus"), e -> setPenUpDown(), editMenu);
-		getRoot().getChildren().add(workspaceMenu.getMyMenu());
+		getRoot().getChildren().add(myMenu);
 	}
 
 	public void setLang(String language) {
@@ -121,8 +120,8 @@ public class DemoWSpace extends Screen {
 		parser = new CommandParser(modelMap);
 		parser.addPatterns(UIConstants.RSRC_LANG + myLang);
 		parser.addPatterns(UIConstants.RSRC_LANG + UIConstants.SYNTAX);
+		
 		setVariablePane();
-
 		setInputPane();
 		setDisplay();
 		setHistoryPane();
@@ -176,7 +175,6 @@ public class DemoWSpace extends Screen {
 		getRoot().getChildren().add(myView.getMyRoot());
 	}
 
-
 	/*
 	 * Sets the Pane for the user input text area
 	 */
@@ -193,16 +191,16 @@ public class DemoWSpace extends Screen {
 		hpv = new HistoryPaneView(inputText);
 		modelMap.setHistory(hpm);
 		establishRelationship(hpm, hpv);
+		initializeHistory(hpm, myState.getHistory());
+		hpm.updateView();
 	}
-	/*
-	private void initializeHistory(HistoryPaneModel hpm, List<String> history){
-		if (!myState.getHistory().isEmpty()){
-			for(String n: myState.getHistory()){
-				hpm.addToHistory(n);
-			}
+	
+	private void initializeHistory(HistoryModel hpm, List<String> history){
+		for(String n: myState.getHistory()){
+			hpm.addToHistory(n);
 		}
 	}
-	*/
+	
 	
 	/*
 	 * Sets the Pane for the current user-defined variables in the environment
@@ -212,13 +210,16 @@ public class DemoWSpace extends Screen {
 		varView = new VariableView(inputText, getMyLang());
 		modelMap.setVariable(varModel);
 		establishRelationship(varModel, varView);
-
+		System.out.println(myState.getVariables().keySet());
+		initializeVariables(varModel, myState.getVariables());
+		varModel.updateView();
 	}
-	/*
-	private void initializeVariables(VariableModel vpm, HashMap<String, Double> vars){
-		vpm.pushNewMap(vars);
+	
+	private void initializeVariables(VariableModel vpm, Map<String, Double> vars){
+		for (String n: vars.keySet()){
+			vpm.setVariable(n, vars.get(n));
+		}
 	}
-	*/
 	
 	/*
 	 * Sets the Pane for the current user-defined methods in the environment
@@ -228,9 +229,19 @@ public class DemoWSpace extends Screen {
 		commandView = new CommandsView(inputText);
 		modelMap.setCommands(commandModel);
 		establishRelationship(commandModel, commandView);
-
+		//initializeCommands(commandModel, myState.getCommands(), myState.getCommandVars());
+		commandModel.updateView();
 	}
-
+	
+	/*
+	private void initializeCommands(CommandsModel cpm, Map<String, List<Command>> commands, Map<String, List<Command>> commVars){
+		for (String n: commands.keySet()){
+			cpm.setCommands(n, commands.get(n));
+			cpm.setVariables(n, commVars.get(n));
+		}
+	}
+	*/
+	
 	/*
 	 * Sets the Pane for the current status of the various turtles on the
 	 * display

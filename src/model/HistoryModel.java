@@ -28,5 +28,9 @@ public class HistoryModel extends IHistoryModel {
     public List<String> getImmutableHistoryList () {
         return Collections.unmodifiableList(history);
     }
-
+    
+    public void updateView(){
+    	setChanged();
+    	notifyObservers();
+    }
 }

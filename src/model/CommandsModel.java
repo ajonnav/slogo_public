@@ -60,4 +60,9 @@ public class CommandsModel extends ICommandsModel {
         return Collections.unmodifiableMap(nameToVariablesMap);
     }
 
+    @Override 
+    public void updateView() {
+        setChanged();
+        notifyObservers();
+    }
 }
