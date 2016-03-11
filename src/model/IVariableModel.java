@@ -1,21 +1,22 @@
 package model;
 
 import java.util.Map;
+import java.util.Observable;
 
-public interface IVariableModel {
+public abstract class IVariableModel extends Observable {
 	
-	public Double getVariable (String variable);
+	public abstract Double getVariable (String variable);
 	
-	public void pushScope(Map<String, Double> variableMap);
+	public abstract void pushScope(Map<String, Double> variableMap);
 	
-	public void popScope();
+	public abstract void popScope();
 	
-	public Double setVariable (String variable, double value);
+	public abstract Double setVariable (String variable, double value);
 	
-	public void clearVariables();
+	public abstract void clearVariables();
 	
-	public Map<String, Double> getImmutableVariableMap();
+	public abstract Map<String, Double> getImmutableVariableMap();
 	
-	public void updateView();
+	public abstract void updateView();
 	
 }

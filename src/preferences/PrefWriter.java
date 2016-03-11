@@ -2,7 +2,6 @@ package preferences;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Map;
 import model.ModelMap;
 
 public class PrefWriter {
@@ -15,13 +14,17 @@ public class PrefWriter {
 		path = "src/preferences/" + fileName + ".srl";
 		state = modelMap;
 		save = new saveState();
-		save.colorMap = state.getDisplay().getColorMap();
-		save.backColorIndex = (int) state.getDisplay().getBackgroundColorIndex();
-		save.images = state.getDisplay().getImageMap();
-		save.language = myLang;
-		save.imageFile = fileName;
-		save.turtleNumber = modelMap.getDisplay().getNumTurtles();
-		//save.loadFile = null;
+		save.setColorMap(state.getDisplay().getColorMap());
+		save.setBackColorIndex((int) state.getDisplay().getBackgroundColorIndex());
+		save.setImages(state.getDisplay().getImageMap());
+		save.setLanguage(myLang);
+		save.setImageFile(fileName);
+		save.setTurtleNumber(modelMap.getDisplay().getNumTurtles());
+		save.setBackColor(state.getDisplay().getBackgroundColorIndex());
+		save.setHistory((state.getHistory().getImmutableHistoryList()));
+		save.setVariables(state.getVariable().getImmutableVariableMap());
+		//save.setCommands(state.getCommands().getImmutableCommandsMap());
+		//save.setCommandVars(state.getCommands().getImmutableVariablesMap());
 	}
 	
 	public void writeToSrl(){
@@ -32,10 +35,9 @@ public class PrefWriter {
 	         out.writeObject(save);
 	         out.close();
 	         fileOut.close();
-	         System.out.printf("Serialized data is saved in" + path);
 	      }catch(IOException i)
 	      {
-	          i.printStackTrace();
+	          System.out.println("Error saving to file");
 	      }
 	}
 }

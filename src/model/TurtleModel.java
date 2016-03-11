@@ -145,14 +145,14 @@ public class TurtleModel {
 
     public double forward (double[] distance) {
         PenModel lastPen = getPen ();
-    	if(lastPen.getStatus()) {
-    	        List<LineModel> nextLM = copyLineList(getLineList());
-	    	nextLM.add(new LineModel(getPositionX(), getPositionY(), 
-	    			getPositionX()  + distance[0] * Math.cos(Math.toRadians(getHeading())), 
-	    			getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())),
-	    			lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
-	    	lines.add(nextLM);
-    	}
+        if(lastPen.getStatus()) {
+                List<LineModel> nextLM = copyLineList(getLineList());
+                nextLM.add(new LineModel(getPositionX(), getPositionY(), 
+                                getPositionX()  + distance[0] * Math.cos(Math.toRadians(getHeading())), 
+                                getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())),
+                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
+                lines.add(nextLM);
+        }
         positionX.add(getPositionX() + distance[0] * Math.cos(Math.toRadians(getHeading())));
         positionY.add(getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())));
         return distance[0];
@@ -220,10 +220,10 @@ public class TurtleModel {
         PenModel lastPen = getPen ();
         if(lastPen.getStatus()) {
                 List<LineModel> nextLM = copyLineList(getLineList());
-	    	nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(), getPositionY(),
-	    			lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
-	    	lines.add(nextLM);
-    	}
+                nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(), getPositionY(),
+                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
+                lines.add(nextLM);
+        }
         return Math.sqrt(Math.pow((oldPos[0] - getPositionX()), 2) +
                          Math.pow((oldPos[1] - getPositionY()), 2));
     }
@@ -387,11 +387,11 @@ public class TurtleModel {
     }
     
     public List<LineModel> getLineList() {
-    	return lines.get(lines.size()-1);
+        return lines.get(lines.size()-1);
     }
     
     public List<StampModel> getStampList() {
-    	return stamps.get(stamps.size()-1);
+        return stamps.get(stamps.size()-1);
     }    
     
     public double getLastDouble(List<Double> list) {
