@@ -1,7 +1,7 @@
 package display;
 
 public abstract class WSpace extends Screen{
-	protected String myLang;
+	private String myLang;
 	
 	public WSpace(String lang) {
 		myLang = lang;

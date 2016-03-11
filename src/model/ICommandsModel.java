@@ -21,4 +21,5 @@ public abstract class ICommandsModel extends Observable{
 	
 	public abstract Map<String, List<Command>> getImmutableVariablesMap ();
 	
+	public abstract void updateView ();
 }

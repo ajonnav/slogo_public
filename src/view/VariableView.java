@@ -12,7 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import model.VariableModel;
 
-public class VariableView implements IView{
+public class VariableView extends ScrollView{
 
 	private Map<String, Double> vars;
 	private VBox paneBox;
@@ -21,17 +21,21 @@ public class VariableView implements IView{
 	private ResourceBundle myBundle;
 	private ResourceBundle myResources;
 	
-	public VariableView(VBox vbMain, VBox vbVar, TextArea ta, String language) {
+	public VariableView(TextArea ta, String language) {
+		getMyPane().setLayoutX(25);
+		getMyPane().setLayoutY(UIConstants.LOWER_PANE_Y);
+		getMyPane().setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
+		getMyPane().setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
 		vars = new HashMap<String, Double>();
-		paneBox = vbMain;
-		varBox = vbVar;
+		paneBox = getMyBox();
+		varBox = getMyBox();
 		myTA = ta;
 		String myLang = language;
 		myBundle = ResourceBundle.getBundle(UIConstants.RSRC_LANG + myLang);
 		myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
 				
-		vbMain.getChildren().add(Features.makeText(myResources.getString("Var")));
-		vbMain.getChildren().add(varBox);
+		getMyBox().getChildren().add(Features.makeText(myResources.getString("Var")));
+		//getMyBox().getChildren().add(varBox);
 	}
 
 	@Override

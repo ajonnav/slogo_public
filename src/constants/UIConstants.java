@@ -10,7 +10,7 @@ public class UIConstants {
 	public static final String GO = "go";
 	public static final String RSRC_LANG = "resources/languages/";
 	public static final String SYNTAX = "Syntax";
-	
+	public static final String EXTRAS = "Extras";
 	public static final double WIDTH = 1300;
 	public static final double HEIGHT = 750;
 	public static final double SWIDTH = 500;
@@ -46,6 +46,7 @@ public class UIConstants {
 	public static final double TURTLE_PANE_X = 300;
 	public static final double TURTLE_MIN_W = 250;
 	public static final double USER_X = 50;
+	public static final double TURTLE_SIZE = 50;
 	
 	public static final String CHIN = "CHIN";
 	public static final String ENG = "ENG";

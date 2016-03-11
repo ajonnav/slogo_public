@@ -4,31 +4,31 @@ import java.util.Map;
 
 import command.Command;
 
-public interface IDisplayModel {
+interface IDisplayModel {
 	
-	public double TurtleAction (String command, List<Command> parameters);
+	double TurtleAction (String command, List<Command> parameters);
 	
-	public double tell (double[] values);
+	double tell (double[] values);
 	
-	public double[] getActiveTurtleIDs();
+	double[] getActiveTurtleIDs();
 	
-	public int getLastActiveID();
+	int getLastActiveID();
 	
-	public int getNumTurtles();
+	int getNumTurtles();
 	
-	public Map<Double, String> getColorMap();
+	Map<Double, String> getColorMap();
 	
-	public void setColorMap(Map<Double, String> colorMap);
+	void setColorMap(Map<Double, String> colorMap);
 	
-	public double addToColorMap (double[] values);
+	double addToColorMap (double[] values);
 	
-	public double setBackgroundColorIndex (double backgroundColorIndex);
+	double setBackgroundColorIndex (double backgroundColorIndex);
 	
-	public double getBackgroundColorIndex();
+	double getBackgroundColorIndex();
 	
-	public Map<Double, String> getImageMap ();
+	Map<Double, String> getImageMap ();
 	
-	public List<TurtleModel> makeCopyOfTurtleList(List<TurtleModel> turtleList);
+	List<TurtleModel> makeCopyOfTurtleList(List<TurtleModel> turtleList);
 	
-	public void updateView();
+	void updateView();
 }
