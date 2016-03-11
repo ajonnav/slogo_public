@@ -17,10 +17,10 @@ public class HelpBrowser {
         Group helpRoot = new Group();
         Scene scene = new Scene(helpRoot, UIConstants.WIDTH, UIConstants.HEIGHT);
         myStage.setScene(scene);
-        myStage.show();
         WebView browser = new WebView();
         browser.setPrefSize(UIConstants.WIDTH, UIConstants.HEIGHT);
         helpRoot.getChildren().add(browser);
+        myStage.show();
         browser.getEngine().load(DemoWSpace.class.getResource("/references/help.html").toExternalForm());
 	}
 

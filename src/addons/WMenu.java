@@ -2,7 +2,6 @@ package addons;
 
 import java.util.List;
 import java.util.ResourceBundle;
-
 import constants.UIConstants;
 import javafx.scene.Group;
 import javafx.scene.control.Menu;
@@ -22,7 +21,7 @@ public class WMenu {
 	private String myLang;
 	private Stage myStage;
 	private Features featureMaker;
-	
+
 	public WMenu(Group root, ModelMap myMap, String language) {
 		myRoot = root;
 		modelMap = myMap;
@@ -31,96 +30,97 @@ public class WMenu {
 		featureMaker = new Features();
 		myMenu = menuMaker.getMenu();
 		myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.EXTRAS);
-		
+
 	}
-	
-	public void setStage(Stage s){
+
+	public void setStage(Stage s) {
 		myStage = s;
 	}
 
-	public void initializeMenus() throws NoSuchMethodException{
+	public void initializeMenus() throws NoSuchMethodException {
 		makeFileMenu();
 		makeEditMenu();
 	}
-	
-	public MenuBar getMyMenu(){
+
+	public MenuBar getMyMenu() {
 		return myMenu;
 	}
-	
+
 	/*
 	 * Makes the File Menu by initializing each of its Menu Items and methods
 	 */
-	public void makeFileMenu() throws NoSuchMethodException{
+	public void makeFileMenu() throws NoSuchMethodException {
 		Menu fileMenu = menuMaker.addMenu(myResources.getString("FileCommand"));
 		String[] fileM = myResources.getString("fileMenu").split("/");
-		for(String pair: fileM){
+		for (String pair : fileM) {
 			String[] combo = pair.split(",");
 			try {
 				menuMaker.addMenuItem(combo[0], e -> {
 					try {
 						getClass().getDeclaredMethod(combo[1]).invoke(this);
-					}
-					catch (Exception e2) {
+					} catch (Exception e2) {
 						e2.printStackTrace();
 					}
-				}, fileMenu);
+				} , fileMenu);
 			} catch (IllegalArgumentException | SecurityException e1) {
 				e1.printStackTrace();
 			}
 		}
 	}
-	
+
 	/*
-	 * Creates MenuItems for each view so that they can be toggled on or off the screen
+	 * Creates MenuItems for each view so that they can be toggled on or off the
+	 * screen
 	 */
-	public void setViews(List<View> myList){
+	public void setViews(List<View> myList) {
 		String[] tMenu = myResources.getString("toggleMenu").split("/");
 		Menu toggleMenu = menuMaker.addMenu(myResources.getString("Toggle"));
 		int i = 0;
-		for(View aView : myList){
+		for (View aView : myList) {
 			menuMaker.addMenuItem(tMenu[i], e -> noVars(aView), toggleMenu);
 			i++;
 		}
 	}
 
-	
-	public void makeEditMenu(){
+	public void makeEditMenu() {
 		menuMaker.addMenu(myResources.getString("EditCommand"));
 	}
-	
-    /*
-     * Hides/shows a user view from the Scene
-     */
-    private void noVars(View variables) {
-            if (myRoot.getChildren().contains(variables.getMyRoot())) {
-                    myRoot.getChildren().remove(variables.getMyRoot());
-            } else {
-                    myRoot.getChildren().add(variables.getMyRoot());
-            }
-    }
-    
-    /*
-     * Initializes a new workspace and opens it up in a separate window
-     */
-    private void switchWS(){
-    	NewWorkspaceTransition myTransition = new NewWorkspaceTransition(myStage);
-    	myTransition.execute(myLang);
-    }
-    
-    /*
-     * Initializes a new window with information about Slogo commands
-     */
-    private void openHelpPage(){
-    	HelpBrowser hb = new HelpBrowser();
-    }
-    
-    /*
-     * Creates and saves a user-titled file with the specifications of the current workspace 
-     */
-    private void setPrefs() {
-        String newTitle = featureMaker.newTextInput("File Name", "Save File", "Enter New File Name", "File:");
-        PrefWriter setter = new PrefWriter(modelMap, newTitle, myLang);
-        setter.writeToSrl();
-    }
-    
+
+	/*
+	 * Hides/shows a user view from the Scene
+	 */
+	private void noVars(View variables) {
+		if (myRoot.getChildren().contains(variables.getMyRoot())) {
+			myRoot.getChildren().remove(variables.getMyRoot());
+		} else {
+			myRoot.getChildren().add(variables.getMyRoot());
+		}
+	}
+
+	/*
+	 * Initializes a new workspace and opens it up in a separate window
+	 */
+	private void switchWS() {
+		NewWorkspaceTransition myTransition = new NewWorkspaceTransition(myStage);
+		myTransition.execute(myLang);
+	}
+
+	/*
+	 * Initializes a new window with information about Slogo commands
+	 */
+	private void openHelpPage() {
+		HelpBrowser hb = new HelpBrowser();
+	}
+
+	/*
+	 * Creates and saves a user-titled file with the specifications of the
+	 * current workspace
+	 */
+	private void setPrefs() {
+		String newTitle = featureMaker.newTextInput(myResources.getString("FileName"),
+				myResources.getString("SaveFile"), myResources.getString("EnterNFN"), myResources.getString("FI"));
+		PrefWriter setter = new PrefWriter(modelMap, newTitle, myLang);
+		setter.writeToSrl();
+	}
+
 }
