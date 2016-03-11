@@ -13,14 +13,14 @@ public class TurtleModel {
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
     private List<PenModel> pen = new ArrayList<>();
-    private double isActive;
+    private List<Boolean> isActive = new ArrayList<>();
     private List<Double> heading = new ArrayList<>();
     private List<Double> positionX = new ArrayList<>();
     private List<Double> positionY = new ArrayList<>();
     private List<Boolean> showStatus = new ArrayList<>();
     private List<Double> imageIndex = new ArrayList<>();
-    private List<List<LineModel>> lineList = new ArrayList<>();
-    private List<List<StampModel>> stampList = new ArrayList<>();
+    private List<List<LineModel>> lines = new ArrayList<>();
+    private List<List<StampModel>> stamps = new ArrayList<>();
 
     public TurtleModel (double turtleInitialX, double turtleInitialY, double turtleInitialHeading, 
                         Map<Double, String> imageMap, Map<Double, String> colorMap) {
@@ -35,14 +35,17 @@ public class TurtleModel {
     
     public void addInitialStates(int num) {
         for(int i = 0; i < num; i++) {
+            PenModel newPen = new PenModel(true, 1, 1, 0);
+            newPen.setColorString(colorMap.get(newPen.getColorIndex()));
+            pen.add(newPen);  
+            isActive.add(false);
             heading.add(turtleInitialHeading);
             positionX.add(turtleInitialX);
             positionY.add(turtleInitialY);
             showStatus.add(true);
             imageIndex.add(4.0);
-            lineList.add(new ArrayList<LineModel>());
-            stampList.add(new ArrayList<StampModel>());
-            pen.add(new PenModel(false, 1, 1, 0));
+            lines.add(new ArrayList<LineModel>());
+            stamps.add(new ArrayList<StampModel>());
         }
     }
     
@@ -52,7 +55,44 @@ public class TurtleModel {
                                                 this.turtleInitialHeading, 
                                                 this.imageMap, 
                                                 this.colorMap);
-        isActive = 1;
+        List<PenModel> newPen = new ArrayList<>();
+        for(PenModel pen : this.pen) {
+            newPen.add(pen.copyPenModel());
+        }
+        newTurtle.pen = newPen;
+        newTurtle.pen.remove(newTurtle.pen.size() - 1);
+        newTurtle.pen.remove(newTurtle.pen.size() - 1);
+        newTurtle.heading = new ArrayList<Double>(heading);
+        newTurtle.heading.remove(newTurtle.heading.size() - 1);
+        newTurtle.heading.remove(newTurtle.heading.size() - 1);
+        newTurtle.positionX = new ArrayList<Double>(positionX);
+        newTurtle.positionX.remove(newTurtle.positionX.size() - 1);
+        newTurtle.positionX.remove(newTurtle.positionX.size() - 1);
+        newTurtle.positionY = new ArrayList<Double>(positionY);
+        newTurtle.positionY.remove(newTurtle.positionY.size() - 1);
+        newTurtle.positionY.remove(newTurtle.positionY.size() - 1);
+        newTurtle.showStatus = new ArrayList<Boolean>(showStatus);
+        newTurtle.showStatus.remove(newTurtle.showStatus.size() - 1);
+        newTurtle.showStatus.remove(newTurtle.showStatus.size() - 1);
+        newTurtle.imageIndex = new ArrayList<Double>(imageIndex);
+        newTurtle.imageIndex.remove(newTurtle.imageIndex.size() - 1);
+        newTurtle.imageIndex.remove(newTurtle.imageIndex.size() - 1);
+        List<List<LineModel>> newLines = new ArrayList<>();
+        for(List<LineModel> lineList : this.lines) {
+            newLines.add(copyLineList(lineList));
+        }
+        newTurtle.lines = newLines;
+        newTurtle.lines.remove(newTurtle.lines.size() - 1);
+        newTurtle.lines.remove(newTurtle.lines.size() - 1);
+        List<List<StampModel>> newStamps = new ArrayList<>();
+        for(List<StampModel> stampList : this.stamps) {
+            newStamps.add(copyStampList(stampList));
+        }
+        newTurtle.stamps = newStamps;
+        newTurtle.stamps.remove(newTurtle.stamps.size() - 1);
+        newTurtle.stamps.remove(newTurtle.stamps.size() - 1);
+        newTurtle.addInitialStates(2);
+        newTurtle.frameNumber = this.frameNumber;
         return newTurtle;
     }
     
@@ -76,25 +116,28 @@ public class TurtleModel {
         if(imageIndex.size() != frameNumber) {
             imageIndex.add(getImageIndex());
         }
-        if(lineList.size() != frameNumber) {
-            lineList.add(copyLastLineList());
+        if(lines.size() != frameNumber) {
+            lines.add(copyLineList(getLineList()));
         }
-        if(stampList.size() != frameNumber) {
-            stampList.add(copyLastStampList());
+        if(stamps.size() != frameNumber) {
+            stamps.add(copyStampList(getStampList()));
+        }
+        if(isActive.size() != frameNumber) {
+            isActive.add(isActive());
         }
     }
     
-    public List<LineModel> copyLastLineList() {
+    public List<LineModel> copyLineList(List<LineModel> lineList) {
         List<LineModel> newLM = new ArrayList<LineModel>();
-        for(LineModel lm : getLineList()) {
+        for(LineModel lm : lineList) {
             newLM.add(lm.copyLineModel());
         }
         return newLM;
     }
     
-    public List<StampModel> copyLastStampList() {
+    public List<StampModel> copyStampList(List<StampModel> stampList) {
         List<StampModel> newSM = new ArrayList<StampModel>();
-        for(StampModel sm : getStampList()) {
+        for(StampModel sm : stampList) {
             newSM.add(sm.copyStampModel());
         }
         return newSM;
@@ -102,14 +145,14 @@ public class TurtleModel {
 
     public double forward (double[] distance) {
         PenModel lastPen = getPen ();
-    	if(lastPen.getStatus()) {
-    	        List<LineModel> nextLM = copyLastLineList();
-	    	nextLM.add(new LineModel(getPositionX(), getPositionY(), 
-	    			getPositionX()  + distance[0] * Math.cos(Math.toRadians(getHeading())), 
-	    			getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())),
-	    			lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
-	    	lineList.add(nextLM);
-    	}
+        if(lastPen.getStatus()) {
+                List<LineModel> nextLM = copyLineList(getLineList());
+                nextLM.add(new LineModel(getPositionX(), getPositionY(), 
+                                getPositionX()  + distance[0] * Math.cos(Math.toRadians(getHeading())), 
+                                getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())),
+                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
+                lines.add(nextLM);
+        }
         positionX.add(getPositionX() + distance[0] * Math.cos(Math.toRadians(getHeading())));
         positionY.add(getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())));
         return distance[0];
@@ -117,7 +160,6 @@ public class TurtleModel {
     
     public double backward (double[] distance) {
         distance[0] = -distance[0];
-        syncFrame();
         return forward(distance);
     }
 
@@ -151,9 +193,9 @@ public class TurtleModel {
     }
     
     public double stamp () {
-        List<StampModel> nextSM = copyLastStampList();
-        nextSM.add(new StampModel(colorMap.get(getImageIndex()), getPositionX(), getPositionY(), getHeading()));
-        stampList.add(nextSM);
+        List<StampModel> nextSM = copyStampList(getStampList());
+        nextSM.add(new StampModel(imageMap.get(getImageIndex()), getPositionX(), getPositionY(), getHeading()));
+        stamps.add(nextSM);
         return getLastDouble(imageIndex);
     }
     
@@ -177,11 +219,11 @@ public class TurtleModel {
         positionY.add(xy[1]);
         PenModel lastPen = getPen ();
         if(lastPen.getStatus()) {
-                List<LineModel> nextLM = copyLastLineList();
-	    	nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(), getPositionY(),
-	    			lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
-	    	lineList.add(nextLM);
-    	}
+                List<LineModel> nextLM = copyLineList(getLineList());
+                nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(), getPositionY(),
+                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
+                lines.add(nextLM);
+        }
         return Math.sqrt(Math.pow((oldPos[0] - getPositionX()), 2) +
                          Math.pow((oldPos[1] - getPositionY()), 2));
     }
@@ -200,9 +242,21 @@ public class TurtleModel {
     }
    
     public double clearScreen() {
-        stampList.add(new ArrayList<StampModel>());
-        lineList.add(new ArrayList<LineModel>());
-        return home();
+        clearStamps();
+        lines.add(new ArrayList<LineModel>());
+        double[] oldPos = new double[]{getPositionX(), getPositionY()};
+        positionX.add(0.0);
+        positionY.add(0.0);
+        return Math.sqrt(Math.pow((oldPos[0] - getPositionX()), 2) +
+                         Math.pow((oldPos[1] - getPositionY()), 2));
+    }
+    
+    public double clearStamps() {
+        if(getNumStamps() > 0) {
+            stamps.add(new ArrayList<StampModel>());
+            return stamps.get(stamps.size()-2).size();
+        }
+        return 0;
     }
         
     public double setPenColorIndex (double[] penColorIndex) {
@@ -224,6 +278,17 @@ public class TurtleModel {
         pen.add(newPen);
         return lineWidth[0];
     }
+    
+    
+    
+    
+    
+   
+    
+    
+    
+    
+    
     
     public int getFrameNumber() {
         return frameNumber;
@@ -272,6 +337,10 @@ public class TurtleModel {
     public PenModel getPen () {
         return pen.get(pen.size()-1);
     }
+    
+    public PenModel getPen (int frameNumber) {
+        return pen.get(frameNumber);
+    }
 
     public boolean isPenStatus () {
         return getPen().getStatus();
@@ -297,20 +366,32 @@ public class TurtleModel {
         return getPen().getSize();
     }
     
-    public boolean isActive () {
-        return isActive == 1 ? true : false;
+    public void setActive (boolean isActive) {
+        this.isActive.add(isActive);
+    }  
+    
+    public boolean isActive (int frameNumber) {
+        return isActive.get(frameNumber);
     }
     
-    public void setActive (double isActive) {
-        this.isActive = isActive;
+    public boolean isActive () {
+        return getLastBoolean(isActive);
     }
-      
+    
+    public List<LineModel> getLineList(int frameNumber) {
+        return lines.get(frameNumber);
+    }
+    
+    public List<StampModel> getStampList(int frameNumber) {
+        return stamps.get(frameNumber);
+    }
+    
     public List<LineModel> getLineList() {
-    	return lineList.get(lineList.size()-1);
+        return lines.get(lines.size()-1);
     }
     
     public List<StampModel> getStampList() {
-    	return stampList.get(stampList.size()-1);
+        return stamps.get(stamps.size()-1);
     }    
     
     public double getLastDouble(List<Double> list) {

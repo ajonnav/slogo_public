@@ -28,12 +28,12 @@ public class DisplayModel extends Observable {
         turtleList = new ArrayList<>();
         setTurtles();
         setChanged();
+        updateView();
     }
 
     private void setTurtles () {
         for (int i = 0; i < 3; i++) {
             TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING, imageMap, colorMap);
-            turtleModel.penDown();
             turtleList.add(turtleModel);
         }
     }
@@ -67,7 +67,10 @@ public class DisplayModel extends Observable {
     }
 
     public double tell (double[] values) {
-        turtleList.stream().forEach(t -> t.setActive(0));
+        turtleList.stream().forEach(t -> {
+            t.setActive(false);
+            t.syncFrame();
+        });
         for (int i = 0; i < values.length; i++) {
             if (values[i] > turtleList.size()) {
                 int currSize = turtleList.size();
@@ -76,11 +79,12 @@ public class DisplayModel extends Observable {
                     turtleList.add(newTurtle);
                 }
             }
-            turtleList.get((int) values[i] - 1).setActive(1);
+            turtleList.get((int) values[i] - 1).setActive(true);
         }
         if (values.length != 0) {
             lastActiveID = (int) values[values.length - 1];
         }
+        turtleList.stream().forEach(t -> { t.syncFrame(); });
         updateView();
         return lastActiveID;
     }
@@ -112,7 +116,6 @@ public class DisplayModel extends Observable {
 
     public double setBackgroundColorIndex (double backgroundColorIndex) {
         this.backgroundColorIndex = backgroundColorIndex;
-        updateView();
         return backgroundColorIndex;
     }
 
