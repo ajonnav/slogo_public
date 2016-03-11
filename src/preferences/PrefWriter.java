@@ -23,8 +23,8 @@ public class PrefWriter {
 		save.setBackColor(state.getDisplay().getBackgroundColorIndex());
 		save.setHistory((state.getHistory().getImmutableHistoryList()));
 		save.setVariables(state.getVariable().getImmutableVariableMap());
-		//save.setTurtleModel(state.getTurtleModel());
-		//save.loadFile = null;
+		save.setCommands(state.getCommands().getImmutableCommandsMap());
+		save.setCommandVars(state.getCommands().getImmutableVariablesMap());
 	}
 	
 	public void writeToSrl(){
@@ -37,7 +37,7 @@ public class PrefWriter {
 	         fileOut.close();
 	      }catch(IOException i)
 	      {
-	          i.printStackTrace();
+	          System.out.println("Error saving to file");
 	      }
 	}
 }

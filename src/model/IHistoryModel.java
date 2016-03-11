@@ -10,4 +10,6 @@ public abstract class IHistoryModel extends Observable{
 	public abstract void clearHistory ();
 	
 	public abstract List<String> getImmutableHistoryList ();
+	
+	public abstract void updateView ();
 }

@@ -36,11 +36,12 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import command.Command;
-
 import addons.Features;
 import addons.MenuMaker;
 import constants.UIConstants;
@@ -159,21 +160,6 @@ public class DemoWSpace extends Screen {
 		}
 	}
 
-
-
-	private void setTurtleCoordsBox(List<TurtleModel> turtles) {
-		HBox turtleVars = new HBox();
-		turtleVars.setLayoutX(UIConstants.COORDINATE_LOCATION_X);
-		turtleVars.setLayoutY(UIConstants.COORDINATE_LOCATION_Y);
-		turtleVars.setMaxSize(UIConstants.RECT_X, UIConstants.BORDER_WIDTH);
-		getRoot().getChildren().add(turtleVars);
-		CoordinateView cv = new CoordinateView(turtleVars, 1, 0, 0, UIConstants.INITIAL_HEADING);
-		for (int i = 0; i < turtles.size(); i++) {
-			turtles.get(i).addObserver(cv);
-			turtles.get(i).notifyObservers();
-		}
-	}
-
 	/*
 	 * Sets the Pane for the user input text area
 	 */
@@ -199,21 +185,20 @@ public class DemoWSpace extends Screen {
 		userHistory.getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
 		getRoot().getChildren().add(userHistory.getMyPane());
 		HistoryModel hpm = new HistoryModel();
-		//initializeHistory(hpm, myState.getHistory());
+		initializeHistory(hpm, myState.getHistory());
 		hpv = new HistoryPaneView(userHistory.getMyBox(), inputText);
 		hpm.addObserver(hpv);
 		hpm.notifyObservers();
 		modelMap.setHistory(hpm);
+		hpm.updateView();
 	}
-	/*
-	private void initializeHistory(HistoryPaneModel hpm, List<String> history){
-		if (!myState.getHistory().isEmpty()){
-			for(String n: myState.getHistory()){
-				hpm.addToHistory(n);
-			}
+	
+	private void initializeHistory(HistoryModel hpm, List<String> history){
+		for(String n: myState.getHistory()){
+			hpm.addToHistory(n);
 		}
 	}
-	*/
+	
 	
 	/*
 	 * Sets the Pane for the current user-defined variables in the environment
@@ -223,19 +208,21 @@ public class DemoWSpace extends Screen {
 		userVariables.getMyPane().setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
 		userVariables.getMyPane().setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
 
-		VariableModel varModel = new VariableModel();
-		//initializeVariables(varModel, myState.getVariables());
+		VariableModel vpm = new VariableModel();
+		initializeVariables(vpm, myState.getVariables());
 		VariableView varView = new VariableView(userVariables.getMyBox(), new VBox(), inputText, getMyLang());
-		varModel.addObserver(varView);
-		varModel.notifyObservers();
-		modelMap.setVariable(varModel);
+		vpm.addObserver(varView);
+		vpm.notifyObservers();
+		modelMap.setVariable(vpm);
 		getRoot().getChildren().add(userVariables.getMyPane());
+		vpm.updateView();
 	}
-	/*
-	private void initializeVariables(VariableModel vpm, HashMap<String, Double> vars){
-		vpm.pushNewMap(vars);
+	
+	private void initializeVariables(VariableModel vpm, Map<String, Double> vars){
+		for (String n: vars.keySet()){
+			vpm.setVariable(n, vars.get(n));
+		}
 	}
-	*/
 	
 	/*
 	 * Sets the Pane for the current user-defined methods in the environment
@@ -246,14 +233,23 @@ public class DemoWSpace extends Screen {
 		userMethods.getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
 		userMethods.getMyBox().getChildren().add(new Text(getResources().getString("UCommands")));
 
-		CommandsModel varModel = new CommandsModel();
-		CommandsView varView = new CommandsView(userMethods.getMyBox(), inputText);
-		varModel.addObserver(varView);
-		varModel.notifyObservers();
-		modelMap.setCommands(varModel);
+		CommandsModel cpm = new CommandsModel();
+		initializeCommands(cpm, myState.getCommands(), myState.getCommandVars());
+		CommandsView commandView = new CommandsView(userMethods.getMyBox(), inputText);
+		cpm.addObserver(commandView);
+		cpm.notifyObservers();
+		modelMap.setCommands(cpm);
 		getRoot().getChildren().add(userMethods.getMyPane());
+		cpm.updateView();
 	}
 
+	private void initializeCommands(CommandsModel cpm, Map<String, List<Command>> commands, Map<String, List<Command>> commVars){
+		for (String n: commands.keySet()){
+			cpm.setCommands(n, commands.get(n));
+			cpm.setVariables(n, commVars.get(n));
+		}
+	}
+	
 	/*
 	 * Sets the Pane for the current status of the various turtles on the
 	 * display

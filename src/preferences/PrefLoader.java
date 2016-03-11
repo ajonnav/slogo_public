@@ -22,12 +22,11 @@ public class PrefLoader {
 	       fileIn.close();
 	    }catch(IOException i)
 	    {
-	       i.printStackTrace();
+	       System.out.println("Invalid save file");
 	       return null;
 	    }catch(ClassNotFoundException c)
 	    {
 	       System.out.println("Parameter not found");
-	       c.printStackTrace();
 	       return null;
 	    }
 	    return e;
