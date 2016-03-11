@@ -39,7 +39,7 @@ public class TurtleModel {
             positionX.add(turtleInitialX);
             positionY.add(turtleInitialY);
             showStatus.add(true);
-            imageIndex.add(5.0);
+            imageIndex.add(4.0);
             lineList.add(new ArrayList<LineModel>());
             stampList.add(new ArrayList<StampModel>());
             pen.add(new PenModel(false, 1, 1, 0));

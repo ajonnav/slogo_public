@@ -15,6 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
@@ -29,6 +30,8 @@ public class DisplayView implements IView {
     private Canvas backgroundCanvas;
     private GraphicsContext backgroundGC;
     private ComboBox<HBox> backgroundColorComboBox;
+    private ComboBox<HBox> penColorComboBox;
+    private ComboBox<HBox> imageColorComboBox;
     private Features features;
     private List<Animation> animations;
     private Group imageViewGroup;
@@ -54,6 +57,9 @@ public class DisplayView implements IView {
         root.getChildren().add(backgroundCanvas);
         root.getChildren().add(backgroundColorComboBox);
         root.getChildren().add(imageViewGroup);
+        setPickers();
+        root.getChildren().add(penColorComboBox);
+        root.getChildren().add(imageColorComboBox);
     }
 
     public void setUpLayers () {
@@ -64,6 +70,10 @@ public class DisplayView implements IView {
         this.backgroundGC = backgroundCanvas.getGraphicsContext2D();
     }
 
+    public void setPickers(){
+    	this.penColorComboBox = features.makeColorPicker(1000, 0, UIConstants.COLOR_SELECTOR_WIDTH, UIConstants.BORDER_WIDTH);
+    	this.imageColorComboBox = features.makeColorPicker(600, 0, UIConstants.COLOR_SELECTOR_WIDTH, UIConstants.BORDER_WIDTH);
+    }
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof DisplayModel) {
@@ -71,6 +81,7 @@ public class DisplayView implements IView {
             if (displayModel.isToAnimate()) {
                 displayModel.setToAnimate(false);
                 features.updateComboBoxOptions(backgroundColorComboBox, displayModel.getColorMap());
+                updateStyles(displayModel);
                 String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
                                                displayModel.getBackgroundColor();
                 //backgroundColorComboBox.setValue(backgroundColorString);
@@ -88,10 +99,17 @@ public class DisplayView implements IView {
             }
         }
     }
-
+    
+    public void updateStyles (DisplayModel displayModel) {
+        features.updateComboBoxOptionsImage(imageColorComboBox, displayModel.getImageMap());
+        features.updateComboBoxOptions(penColorComboBox, displayModel.getColorMap());
+    }
+    
     public void drawTurtles (DisplayModel displayModel) {
+    	turtleViews.clear();
+    	imageViewGroup.getChildren().clear();
         for (int i = lastExpressionFrameNumber; i < displayModel.getTurtleList().get(0).getFrameNumber(); i++) {
-            for (int j = turtleViews.size(); j < displayModel.getTurtleList().size(); j++) {
+            for (int j = 0; j < displayModel.getTurtleList().size(); j++) {
                 ImageView image = initImageView(displayModel.getTurtleList().get(j), i);
                 imageViewGroup.getChildren().add(image);
                 turtleViews.add(image);
