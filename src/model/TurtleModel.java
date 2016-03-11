@@ -35,7 +35,7 @@ public class TurtleModel {
     
     public void addInitialStates(int num) {
         for(int i = 0; i < num; i++) {
-            IPenModel newPen = new PenModel(true, 1, 1, 0);
+            IPenModel newPen = new PenModel(true, 1, 1, 2);
             newPen.setColorString(colorMap.get(newPen.getColorIndex()));
             pen.add(newPen);  
             isActive.add(false);
@@ -150,7 +150,7 @@ public class TurtleModel {
                 nextLM.add(new LineModel(getPositionX(), getPositionY(), 
                                 getPositionX()  + distance[0] * Math.cos(Math.toRadians(getHeading())), 
                                 getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())),
-                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
+                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyleIndex()));
                 lines.add(nextLM);
         }
         positionX.add(getPositionX() + distance[0] * Math.cos(Math.toRadians(getHeading())));
@@ -221,7 +221,7 @@ public class TurtleModel {
         if(lastPen.getStatus()) {
                 List<ILineModel> nextLM = copyLineList(getLineList());
                 nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(), getPositionY(),
-                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
+                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyleIndex()));
                 lines.add(nextLM);
         }
         return Math.sqrt(Math.pow((oldPos[0] - getPositionX()), 2) +
@@ -265,6 +265,13 @@ public class TurtleModel {
         newPen.setColorString(colorMap.get(penColorIndex[0]));
         pen.add(newPen);
         return penColorIndex[0];
+    }
+    
+    public double setPenStyleIndex (double[] penStyleIndex) {
+        IPenModel newPen = getPen().copyPenModel();
+        newPen.setStyleIndex(penStyleIndex[0]);
+        pen.add(newPen);
+        return penStyleIndex[0];
     }
     
     public double setImageIndex (double[] imageIndex) {
