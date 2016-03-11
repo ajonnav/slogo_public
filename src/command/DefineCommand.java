@@ -2,14 +2,14 @@ package command;
 
 import java.util.List;
 import exception.SLogoSyntaxException;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class DefineCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public DefineCommand (ModelMap modelMap, List<String> text) {
+    public DefineCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
         modelMap.getCommands().setVariables(text.get(1), null);

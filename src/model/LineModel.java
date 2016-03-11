@@ -1,7 +1,7 @@
 package model;
 
 
-public class LineModel {
+public class LineModel implements ILineModel {
         
         private double x1;
         private double y1;
@@ -49,7 +49,7 @@ public class LineModel {
                 return style;
         }
         
-        public LineModel copyLineModel() {
+        public ILineModel copyLineModel() {
             return new LineModel(this.x1, this.y1, this.x2, this.y2, this.width, this.color, this.style);
         }
         

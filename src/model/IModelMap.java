@@ -1,8 +1,8 @@
 package model;
 
-interface IModelMap {
+public interface IModelMap {
 	
-	DisplayModel getDisplay();
+	IDisplayModel getDisplay();
 	
 	IHistoryModel getHistory();
 	
@@ -10,7 +10,7 @@ interface IModelMap {
 	
 	ICommandsModel getCommands();
 	
-	void setDisplay(DisplayModel displayModel);
+	void setDisplay(IDisplayModel displayModel);
 	
 	void setHistory(IHistoryModel historyModel);
 	

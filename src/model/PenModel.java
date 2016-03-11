@@ -1,14 +1,11 @@
 package model;
 
-import java.util.Observable;
 
-
-public class PenModel extends Observable {
+public class PenModel extends IPenModel {
 
     private static final int SOLID = 0;
     private static final int DASHED = 1;
     private static final int DOTTED = 2;
-
     private boolean status;
     private double size;
     private double colorIndex;
@@ -22,14 +19,17 @@ public class PenModel extends Observable {
         this.style = style;
     }
 
+    @Override
     public boolean getStatus () {
         return status;
     }
 
+    @Override
     public void setStatus (boolean status) {
         this.status = status;
     }
 
+    @Override
     public double[] getStyle () {
         if (Math.round(style) == SOLID) {
             return new double[] {};
@@ -43,43 +43,51 @@ public class PenModel extends Observable {
         return new double[] {};
     }
 
+    @Override
     public void setStyle (double style) {
         this.style = style;
         updateObservers();
     }
 
+    @Override
     public double getColorIndex () {
         return colorIndex;
     }
 
+    @Override
     public void setColorIndex (double colorIndex) {
         this.colorIndex = colorIndex;
         updateObservers();
     }
 
+    @Override
     public double getSize () {
         return size;
     }
 
+    @Override
     public void setSize (double size) {
         this.size = size;
         updateObservers();
     }
 
+    @Override
     public void setColorString (String colorString) {
         this.colorString = colorString;
     }
 
+    @Override
     public String getColorString () {
         return colorString;
     }
-
+    
     private void updateObservers () {
         setChanged();
         notifyObservers();
     }
-
-    public PenModel copyPenModel () {
+    
+    @Override
+    public IPenModel copyPenModel () {
         PenModel pen = new PenModel(this.status, this.size, this.colorIndex, this.style);
         pen.setColorString(this.colorString);
         return pen;

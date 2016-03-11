@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Map;
 import exception.SLogoSyntaxException;
 import model.ICommandsModel;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class CommandCommand extends Command {
 
     private ICommandsModel commandsModel;
-    private ModelMap modelMap;
+    private IModelMap modelMap;
     private String name;
 
-    public CommandCommand (ModelMap modelMap, List<String> text) {
+    public CommandCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(-1);
         this.modelMap = modelMap;
         this.commandsModel = modelMap.getCommands();

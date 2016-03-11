@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class ListEndCommand extends Command {
 
-    public ListEndCommand (ModelMap modelMap, List<String> text) {
+    public ListEndCommand (IModelMap modelMap, List<String> text) {
     }
 
     @Override

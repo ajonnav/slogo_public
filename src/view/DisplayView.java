@@ -23,10 +23,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import model.DisplayModel;
-import model.LineModel;
-import model.PenModel;
-import model.StampModel;
+import model.IDisplayModel;
+import model.ILineModel;
+import model.IPenModel;
+import model.IStampModel;
 import model.TurtleModel;
 
 
@@ -80,13 +80,13 @@ public class DisplayView implements IView {
 
     @Override
     public void update (Observable o, Object arg) {
-        if (o instanceof DisplayModel) {
-            DisplayModel displayModel = (DisplayModel) o;
+        if (o instanceof IDisplayModel) {
+            IDisplayModel displayModel = (IDisplayModel) o;
             if (displayModel.isToAnimate()) {
                 displayModel.setToAnimate(false);
                 features.updateComboBoxOptions(backgroundColorComboBox, displayModel.getColorMap());
                 String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
-                                               displayModel.getBackgroundColor();
+                                               displayModel.getColorMap().get(displayModel.getBackgroundColorIndex());
                 // backgroundColorComboBox.setValue(backgroundColorString);
                 backgroundGC.clearRect(0, 0, backgroundCanvas.getWidth(),
                                        backgroundCanvas.getHeight());
@@ -104,7 +104,7 @@ public class DisplayView implements IView {
         }
     }
 
-    public void drawTurtles (DisplayModel displayModel) {
+    public void drawTurtles (IDisplayModel displayModel) {
         for (int i = lastExpressionFrameNumber; i < displayModel.getTurtleList().get(0)
                 .getFrameNumber(); i++) {
             for (int j = turtleViews.size(); j < displayModel.getTurtleList().size(); j++) {
@@ -199,7 +199,7 @@ public class DisplayView implements IView {
         animations.add(rt);
     }
 
-    public FadeTransition drawStamp (StampModel stamp, int turtleID) {
+    public FadeTransition drawStamp (IStampModel stamp, int turtleID) {
         ImageView image = new ImageView();
         System.out.println(stamp.getImageString());
         image.setImage(getImageFromString(stamp.getImageString()));
@@ -217,7 +217,7 @@ public class DisplayView implements IView {
         return ft;
     }
 
-    public SequentialTransition drawLine (PenModel pen, LineModel line, double translationTime, int turtleID) {
+    public SequentialTransition drawLine (IPenModel pen, ILineModel line, double translationTime, int turtleID) {
         SequentialTransition st = new SequentialTransition();
         double x1 = getDrawableX(line.getX1());
         double x2 = getDrawableX(line.getX2());
@@ -263,7 +263,7 @@ public class DisplayView implements IView {
         return transformY(y) + UIConstants.INITIAL_Y;
     }
 
-    public void drawStamps (List<StampModel> list) {
+    public void drawStamps (List<IStampModel> list) {
         list.stream().forEach(s -> {
             Image image = getImageFromString(s.getImageString());
             drawRotatedImage(image, transformX(s.getPositionX()) - 50 / 2,

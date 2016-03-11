@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class OrCommand extends Command {
 
-    public OrCommand (ModelMap modelMap, List<String> text) {
+    public OrCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 

@@ -1,14 +1,14 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class HomeCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public HomeCommand (ModelMap modelMap, List<String> text) {
+    public HomeCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(0);
         setTakesUnlimitedParameters(false);
         this.modelMap = modelMap;

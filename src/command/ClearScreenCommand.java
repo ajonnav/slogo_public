@@ -1,14 +1,14 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class ClearScreenCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public ClearScreenCommand (ModelMap modelMap, List<String> text) {
+    public ClearScreenCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(0);
         this.modelMap = modelMap;
     }

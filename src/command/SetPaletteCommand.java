@@ -1,14 +1,14 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class SetPaletteCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public SetPaletteCommand (ModelMap modelMap, List<String> text) {
+    public SetPaletteCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(4);
         this.modelMap = modelMap;
     }

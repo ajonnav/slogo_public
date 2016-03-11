@@ -2,12 +2,12 @@ package command;
 
 import java.util.List;
 import java.util.Random;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class RandomCommand extends Command {
 
-    public RandomCommand (ModelMap modelMap, List<String> text) {
+    public RandomCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(1);
     }
 

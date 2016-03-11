@@ -1,14 +1,14 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class IsPenDownCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public IsPenDownCommand (ModelMap modelMap, List<String> text) {
+    public IsPenDownCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(0);
         setTakesUnlimitedParameters(false);
         this.modelMap = modelMap;

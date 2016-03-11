@@ -1,15 +1,15 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class VariableCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
     private String name;
 
-    public VariableCommand (ModelMap modelMap, List<String> text) {
+    public VariableCommand (IModelMap modelMap, List<String> text) {
         this.modelMap = modelMap;
         this.name = text.get(0);
     }

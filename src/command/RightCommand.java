@@ -2,14 +2,14 @@ package command;
 
 import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class RightCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public RightCommand (ModelMap modelMap, List<String> text) {
+    public RightCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(1);
         this.modelMap = modelMap;
     }

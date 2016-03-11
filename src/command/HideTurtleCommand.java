@@ -1,14 +1,14 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class HideTurtleCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public HideTurtleCommand (ModelMap modelMap, List<String> text) {
+    public HideTurtleCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(0);
         setTakesUnlimitedParameters(false);
         this.modelMap = modelMap;

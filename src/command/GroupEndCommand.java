@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class GroupEndCommand extends Command {
 
-    public GroupEndCommand (ModelMap modelMap, List<String> text) {
+    public GroupEndCommand (IModelMap modelMap, List<String> text) {
     }
 
     @Override

@@ -1,13 +1,13 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 public class ClearStampsCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public ClearStampsCommand (ModelMap modelMap, List<String> text) {
+    public ClearStampsCommand (IModelMap modelMap, List<String> text) {
         this.modelMap = modelMap;
     }
 

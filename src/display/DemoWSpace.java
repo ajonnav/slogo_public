@@ -3,10 +3,12 @@ package display;
 import model.CommandsModel;
 import model.DisplayModel;
 import model.HistoryModel;
+import model.ICommandsModel;
+import model.IDisplayModel;
 import model.IHistoryModel;
+import model.IModelMap;
 import model.IVariableModel;
 import model.ModelMap;
-import model.TurtleModel;
 import model.VariableModel;
 import parser.CommandParser;
 import preferences.PrefLoader;
@@ -21,30 +23,21 @@ import view.VariableView;
 import view.View;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.Optional;
-
-import command.Command;
-import addons.Features;
 import addons.MenuMaker;
 import addons.WMenu;
 import constants.UIConstants;
@@ -55,10 +48,8 @@ public class DemoWSpace extends Screen {
         private TextArea inputText;
         private String myLang;
         private HistoryPaneView hpv;
-        private ModelMap modelMap;
+        private IModelMap modelMap;
         private saveState myState;
-
-        
         private VariableView varView;
         private TurtleIDView turtleView;
         private InputView myIV;
@@ -146,15 +137,14 @@ public class DemoWSpace extends Screen {
         imageMap.put(2.0, "green.png");
         imageMap.put(3.0, "red.png");
         imageMap.put(4.0, "turtle.png");
-        DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
-        //DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
-                DisplayView displayView = new DisplayView(getRoot());
-                displayModel.addObserver(displayView);
-                modelMap.setDisplay(displayModel);
-                modelMap.getDisplay().setBackgroundColorIndex(myState.getBackColorIndex());
-                displayModel.setToAnimate(true);
-                displayModel.notifyObservers();
-//                setTurtlePane(displayModel);
+        IDisplayModel displayModel = new DisplayModel(colorMap, imageMap);
+        DisplayView displayView = new DisplayView(getRoot());
+        displayModel.addObserver(displayView);
+        modelMap.setDisplay(displayModel);
+        modelMap.getDisplay().setBackgroundColorIndex(myState.getBackColorIndex());
+        displayModel.setToAnimate(true);
+        displayModel.notifyObservers();
+        displayModel.updateView();
         }
 
         /*
@@ -186,7 +176,7 @@ public class DemoWSpace extends Screen {
          * Sets the Pane for the user history
          */
         private void setHistoryPane() {
-                HistoryModel hpm = new HistoryModel();
+                IHistoryModel hpm = new HistoryModel();
                 hpv = new HistoryPaneView(inputText);
                 modelMap.setHistory(hpm);
                 establishRelationship(hpm, hpv);
@@ -194,7 +184,7 @@ public class DemoWSpace extends Screen {
                 hpm.updateView();
         }
         
-        private void initializeHistory(HistoryModel hpm, List<String> history){
+        private void initializeHistory(IHistoryModel hpm, List<String> history){
                 for(String n: myState.getHistory()){
                         hpm.addToHistory(n);
                 }
@@ -205,7 +195,7 @@ public class DemoWSpace extends Screen {
          * Sets the Pane for the current user-defined variables in the environment
          */
         private void setVariablePane() {
-                VariableModel varModel = new VariableModel();
+                IVariableModel varModel = new VariableModel();
                 varView = new VariableView(inputText, getMyLang());
                 modelMap.setVariable(varModel);
                 establishRelationship(varModel, varView);
@@ -214,7 +204,7 @@ public class DemoWSpace extends Screen {
                 varModel.updateView();
         }
         
-        private void initializeVariables(VariableModel vpm, Map<String, Double> vars){
+        private void initializeVariables(IVariableModel vpm, Map<String, Double> vars){
                 for (String n: vars.keySet()){
                         vpm.setVariable(n, vars.get(n));
                 }
@@ -224,28 +214,18 @@ public class DemoWSpace extends Screen {
          * Sets the Pane for the current user-defined methods in the environment
          */
         private void setUserCommandPane() {
-                CommandsModel commandModel = new CommandsModel();
+                ICommandsModel commandModel = new CommandsModel();
                 commandView = new CommandsView(inputText);
                 modelMap.setCommands(commandModel);
                 establishRelationship(commandModel, commandView);
-                //initializeCommands(commandModel, myState.getCommands(), myState.getCommandVars());
                 commandModel.updateView();
         }
-        
-        /*
-        private void initializeCommands(CommandsModel cpm, Map<String, List<Command>> commands, Map<String, List<Command>> commVars){
-                for (String n: commands.keySet()){
-                        cpm.setCommands(n, commands.get(n));
-                        cpm.setVariables(n, commVars.get(n));
-                }
-        }
-        */
         
         /*
          * Sets the Pane for the current status of the various turtles on the
          * display
          */
-        private void setTurtlePane(DisplayModel dm) {
+        private void setTurtlePane(IDisplayModel dm) {
                 turtleView = new TurtleIDView(inputText);
                 getRoot().getChildren().add(turtleView.getMyRoot());
                 dm.addObserver(turtleView);

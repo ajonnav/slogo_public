@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class NotEqualCommand extends Command {
 
-    public NotEqualCommand (ModelMap modelMap, List<String> text) {
+    public NotEqualCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
     }
 

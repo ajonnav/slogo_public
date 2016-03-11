@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class CosineCommand extends Command {
 
-    public CosineCommand (ModelMap modelMap, List<String> text) {
+    public CosineCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(1);
     }
 
