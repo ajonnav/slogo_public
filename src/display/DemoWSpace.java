@@ -13,7 +13,6 @@ import preferences.PrefLoader;
 import preferences.PrefWriter;
 import preferences.saveState;
 import view.CommandsView;
-import view.CoordinateView;
 import view.DisplayView;
 import view.HistoryPaneView;
 import view.InputView;
@@ -141,7 +140,6 @@ public class DemoWSpace extends Screen {
 		displayModel.setToAnimate(true);
 		displayModel.notifyObservers();
 		setTurtlePane(displayModel);
-		setTurtleCoordsBox(displayModel);
 	}
 
 	/*
@@ -161,14 +159,6 @@ public class DemoWSpace extends Screen {
 		getRoot().getChildren().add(myView.getMyRoot());
 	}
 
-	private void setTurtleCoordsBox(DisplayModel dm) {
-		CoordinateView cv = new CoordinateView(1, 0, 0, UIConstants.INITIAL_HEADING);
-		getRoot().getChildren().add(cv.getMyHBox());
-		for (int i = 0; i < dm.getTurtleList().size(); i++) {
-//			dm.getTurtleList().get(i).addObserver(cv);
-//			dm.getTurtleList().get(i).notifyObservers();
-		}
-	}
 
 	/*
 	 * Sets the Pane for the user input text area
@@ -231,11 +221,7 @@ public class DemoWSpace extends Screen {
 	private void setTurtlePane(DisplayModel dm) {
 		turtleView = new TurtleIDView(inputText);
 		getRoot().getChildren().add(turtleView.getMyRoot());
-
-		for (int i = 0; i < dm.getTurtleList().size(); i++) {
-//			dm.getTurtleList().get(i).addObserver(turtleView);
-//			dm.getTurtleList().get(i).notifyObservers();
-		}
+		dm.addObserver(turtleView);
 	}
 
 	/*

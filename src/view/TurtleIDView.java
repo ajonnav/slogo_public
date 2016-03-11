@@ -10,6 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import model.DisplayModel;
 import model.TurtleModel;
 import pane.SPane;
 
@@ -32,18 +33,21 @@ public class TurtleIDView extends ScrollView {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o instanceof TurtleModel){
-			TurtleModel myT = (TurtleModel) o;
-			VBox myBox = new VBox();
-			Hyperlink item = new Hyperlink(Boolean.toString(((TurtleModel) o).isActive()));
-			item.setOnAction(e -> {
-				System.out.println(myTA);
-				myTA.appendText("tell ");
-			});
-			Text info = new Text("\t" +"(" + Double.toString(Math.round(myT.getPositionX())) + "," + Double.toString(Math.round(myT.getPositionY())) + ")");
-			myBox.getChildren().add(item);
-			myBox.getChildren().add(info);
-			myHB.getChildren().add(myBox);
+		if(o instanceof DisplayModel){
+			DisplayModel myT = (DisplayModel) o;
+			getMyBox().getChildren().clear();
+			for(int i = 0; i < myT.getTurtleList().size(); i++){
+				TurtleModel tm = myT.getTurtleList().get(i);
+				VBox myBox = new VBox();
+				Hyperlink item = new Hyperlink("Turtle " + Integer.toString(i+1) + " : " + Boolean.toString(tm.isActive()));
+				item.setOnAction(e -> {
+					myTA.appendText("tell ");
+				});
+				Text info = new Text("\t" +"(" + Double.toString(Math.round(tm.getPositionX())) + "," + Double.toString(Math.round(tm.getPositionY())) + ")");
+				myBox.getChildren().add(item);
+				myBox.getChildren().add(info);
+				myHB.getChildren().add(myBox);
+			}
 		}
 	}
 
