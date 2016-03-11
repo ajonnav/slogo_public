@@ -157,8 +157,6 @@ public class DemoWSpace extends Screen {
 		}
 	}
 
-
-
 	private void setTurtleCoordsBox(List<TurtleModel> turtles) {
 		HBox turtleVars = new HBox();
 		turtleVars.setLayoutX(UIConstants.COORDINATE_LOCATION_X);
