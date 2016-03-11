@@ -46,6 +46,7 @@ public class UIConstants {
 	public static final double TURTLE_PANE_X = 300;
 	public static final double TURTLE_MIN_W = 250;
 	public static final double USER_X = 50;
+	public static final double TURTLE_SIZE = 50;
 	
 	public static final String CHIN = "CHIN";
 	public static final String ENG = "ENG";
