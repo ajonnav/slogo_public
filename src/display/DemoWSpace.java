@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Optional;
+import java.util.TreeMap;
+import java.util.Optional;
 
 import command.Command;
 import addons.Features;
@@ -132,7 +134,20 @@ public class DemoWSpace extends Screen {
 	 * Initializes the turtle display's front end and back end relationship
 	 */
 	private void setDisplay() {
-		DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
+        TreeMap<Double,String> colorMap = new TreeMap<Double, String>();
+        colorMap.put(0.0, "#849775");
+        colorMap.put(1.0, "#1518b4");
+        colorMap.put(2.0, "#5df45d");
+        colorMap.put(3.0, "#7182a7");
+        colorMap.put(4.0, "#b73547");
+        TreeMap<Double, String> imageMap = new TreeMap<Double, String>();
+        imageMap.put(0.0, "black.png");
+        imageMap.put(1.0, "blue.png");
+        imageMap.put(2.0, "green.png");
+        imageMap.put(3.0, "red.png");
+        imageMap.put(4.0, "turtle.png");
+        DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
+        //DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
 		DisplayView displayView = new DisplayView(getRoot());
 		displayModel.addObserver(displayView);
 		modelMap.setDisplay(displayModel);
@@ -140,6 +155,7 @@ public class DemoWSpace extends Screen {
 		displayModel.setToAnimate(true);
 		displayModel.notifyObservers();
 		setTurtlePane(displayModel);
+		displayModel.updateView();
 	}
 
 	/*

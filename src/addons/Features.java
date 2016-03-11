@@ -57,18 +57,6 @@ public class Features {
                                              double width,
                                              double height) {
         ComboBox<HBox> cb = new ComboBox<HBox>();
-        SingleSelectionModel<HBox> model = new SingleSelectionModel<HBox>() {
-            @Override
-            protected HBox getModelItem (int index) {
-                return null;
-            }
-
-            @Override
-            protected int getItemCount () {
-                return 0;
-            }
-        };
-        cb.setSelectionModel(model);
         cb.setLayoutX(layoutX);
         cb.setLayoutY(layoutY);
         cb.setMinWidth(width);
@@ -82,6 +70,7 @@ public class Features {
         	HBox myHB = new HBox(4);
         	myHB.getChildren().add(makeRect(Color.web(map.get(s))));
         	myHB.getChildren().add(makeText(Integer.toString(s.intValue())));
+        	//System.out.println(myHB.getChildren());
             cb.getItems().add(myHB);
         }
     }
