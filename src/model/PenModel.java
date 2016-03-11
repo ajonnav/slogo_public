@@ -1,12 +1,10 @@
 package model;
 
-import java.io.Serializable;
 import java.util.Observable;
 
 
-public class PenModel extends Observable implements Serializable {
+public class PenModel extends Observable {
 
-    private static final long serialVersionUID = 2420490101474962510L;
     private static final int SOLID = 0;
     private static final int DASHED = 1;
     private static final int DOTTED = 2;
@@ -83,6 +81,7 @@ public class PenModel extends Observable implements Serializable {
 
     public PenModel copyPenModel () {
         PenModel pen = new PenModel(this.status, this.size, this.colorIndex, this.style);
+        pen.setColorString(this.colorString);
         return pen;
     }
 
