@@ -12,16 +12,24 @@ import javafx.stage.Stage;
  */
 public class HelpBrowser {
 
+	private Stage myStage;
+	private Scene scene;
+	private WebView browser;
+
 	public HelpBrowser() {
-		Stage myStage = new Stage();
-        Group helpRoot = new Group();
-        Scene scene = new Scene(helpRoot, UIConstants.WIDTH, UIConstants.HEIGHT);
-        myStage.setScene(scene);
-        WebView browser = new WebView();
-        browser.setPrefSize(UIConstants.WIDTH, UIConstants.HEIGHT);
-        helpRoot.getChildren().add(browser);
-        myStage.show();
-        browser.getEngine().load(DemoWSpace.class.getResource("/references/help.html").toExternalForm());
+		myStage = new Stage();
+		Group helpRoot = new Group();
+		scene = new Scene(helpRoot, UIConstants.WIDTH, UIConstants.HEIGHT);
+		browser = new WebView();
+		helpRoot.getChildren().add(browser);
+
+	}
+
+	public void execute() {
+		myStage.setScene(scene);
+		browser.setPrefSize(UIConstants.WIDTH, UIConstants.HEIGHT);
+		browser.getEngine().load(DemoWSpace.class.getResource("/references/help.html").toExternalForm());
+		myStage.show();
 	}
 
 }

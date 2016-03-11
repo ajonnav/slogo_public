@@ -15,19 +15,17 @@ import model.IVariableModel;
 public class VariableView extends ScrollView{
 
 	private Map<String, Double> vars;
-	private VBox paneBox;
 	private VBox varBox;
 	private TextArea myTA;
 	private ResourceBundle myBundle;
 	private ResourceBundle myResources;
 	
 	public VariableView(TextArea ta, String language) {
-		getMyPane().setLayoutX(25);
+		getMyPane().setLayoutX(UIConstants.BORDER_WIDTH);
 		getMyPane().setLayoutY(UIConstants.LOWER_PANE_Y);
-		getMyPane().setMinSize(250, UIConstants.LOWER_PANE_HEIGHT);
+		getMyPane().setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
 		getMyPane().setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.LOWER_PANE_HEIGHT);
-		vars = new HashMap<String, Double>();
-		paneBox = getMyBox();
+		vars = new HashMap<>();
 		varBox = getMyBox();
 		myTA = ta;
 		String myLang = language;

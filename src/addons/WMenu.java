@@ -110,6 +110,7 @@ public class WMenu {
 	 */
 	private void openHelpPage() {
 		HelpBrowser hb = new HelpBrowser();
+		hb.execute();
 	}
 
 	/*
