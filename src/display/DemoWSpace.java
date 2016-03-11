@@ -140,17 +140,21 @@ public class DemoWSpace extends Screen {
         colorMap.put(2.0, "#5df45d");
         colorMap.put(3.0, "#7182a7");
         colorMap.put(4.0, "#b73547");
+        colorMap.put(6.0, "#b73547");
         TreeMap<Double, String> imageMap = new TreeMap<Double, String>();
         imageMap.put(0.0, "black.png");
         imageMap.put(1.0, "blue.png");
         imageMap.put(2.0, "green.png");
         imageMap.put(3.0, "red.png");
         imageMap.put(4.0, "turtle.png");
+
+        imageMap.put(6.0, "turtle.png");
         DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
         //DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
                 DisplayView displayView = new DisplayView(getRoot());
                 displayModel.addObserver(displayView);
                 modelMap.setDisplay(displayModel);
+                System.out.println(myState.getBackColorIndex());
                 modelMap.getDisplay().setBackgroundColorIndex(myState.getBackColorIndex());
                 displayModel.setToAnimate(true);
                 displayModel.notifyObservers();
