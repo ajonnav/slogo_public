@@ -164,10 +164,10 @@ public class WorkSpace extends Screen {
         turtleVars.setMaxSize(UIConstants.RECT_X, UIConstants.BORDER_WIDTH);
         getRoot().getChildren().add(turtleVars);
         CoordinateView cv = new CoordinateView(turtleVars, 1, 0, 0, UIConstants.INITIAL_HEADING);
-        for(int i = 0; i < turtles.size(); i++) {
-            turtles.get(i).addObserver(cv);
-            turtles.get(i).notifyObservers();
-        }
+//        for(int i = 0; i < turtles.size(); i++) {
+//            turtles.get(i).addObserver(cv);
+//            turtles.get(i).notifyObservers();
+//        }
     }
 
     /*
@@ -243,17 +243,17 @@ public class WorkSpace extends Screen {
      * Sets the Pane for the current status of the various turtles on the display
      */
     private void setTurtlePane(List<TurtleModel> tm) {
-    	//use display model
-        userTurtles = new SPane(UIConstants.TURTLE_PANE_X, UIConstants.LOWER_PANE_Y);
-        userTurtles.myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
-        userTurtles.myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
-        userTurtles.myBox.getChildren().add(new Text(getResources().getString("Tur")));
-        getRoot().getChildren().add(userTurtles.myPane);
-        TurtleIDView cv = new TurtleIDView(inputText, userTurtles.myBox);
-        for(int i = 0; i < tm.size(); i++) {
-            tm.get(i).addObserver(cv);
-            tm.get(i).notifyObservers();
-        }
+//    	//use display model
+//        userTurtles = new SPane(UIConstants.TURTLE_PANE_X, UIConstants.LOWER_PANE_Y);
+//        userTurtles.myPane.setMinSize(UIConstants.TURTLE_MIN_W, UIConstants.LOWER_PANE_HEIGHT);
+//        userTurtles.myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
+//        userTurtles.myBox.getChildren().add(new Text(getResources().getString("Tur")));
+//        getRoot().getChildren().add(userTurtles.myPane);
+//        TurtleIDView cv = new TurtleIDView(inputText, userTurtles.myBox);
+//        for(int i = 0; i < tm.size(); i++) {
+//            tm.get(i).addObserver(cv);
+//            tm.get(i).notifyObservers();
+//        }
 	}
     
     /*

@@ -51,4 +51,8 @@ public class LineModel implements Serializable {
 		return style;
 	}
 	
+	public LineModel copyLineModel() {
+	    return new LineModel(this.x1, this.y1, this.x2, this.y2, this.width, this.color, this.style);
+	}
+	
 }

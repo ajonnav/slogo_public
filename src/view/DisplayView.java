@@ -29,8 +29,6 @@ public class DisplayView implements IView {
     private Canvas backgroundCanvas;
     private GraphicsContext backgroundGC;
     private ComboBox<HBox> backgroundColorComboBox;
-    private ComboBox<HBox> penChange;
-    private ComboBox<HBox> imageChange;
     private Features features;
     private List<Animation> animations;
     private Group imageViewGroup;
@@ -86,55 +84,52 @@ public class DisplayView implements IView {
                     st.getChildren().add(a);
                 }
                 st.play();
-                lastExpressionFrameNumber = displayModel.getNumFrames();
+                lastExpressionFrameNumber = displayModel.getTurtleList().get(0).getFrameNumber();
             }
         }
     }
 
     public void drawTurtles (DisplayModel displayModel) {
-        for (int i = lastExpressionFrameNumber; i < displayModel.getNumFrames(); i++) {
-            for (int j = turtleViews.size(); j < displayModel.getFrame(i - 1).size(); j++) {
-                ImageView image = initImageView(displayModel.getFrame(i - 1).get(j));
+        for (int i = lastExpressionFrameNumber; i < displayModel.getTurtleList().get(0).getFrameNumber(); i++) {
+            for (int j = turtleViews.size(); j < displayModel.getTurtleList().size(); j++) {
+                ImageView image = initImageView(displayModel.getTurtleList().get(j), i);
                 imageViewGroup.getChildren().add(image);
                 turtleViews.add(image);
             }
-            for (int j = 0; j < displayModel.getFrame(i).size(); j++) {
-                animate(turtleViews.get(j), displayModel.getFrame(i - 1).get(j),
-                        displayModel.getFrame(i).get(j));
+            for (int j = 0; j < displayModel.getTurtleList().size(); j++) {
+                animate(turtleViews.get(j), displayModel.getTurtleList().get(j), i-1, i);
             }
         }
-        // drawStamps(displayModel.getFrame(i).get(j).getStampList());
-        // drawLines(t.getLineList());
     }
 
-    private void animate (ImageView image, TurtleModel prev, TurtleModel next) {
+    private void animate (ImageView image, TurtleModel turtle, int prev, int next) {
         double translationTime =
-                prev.getPositionX() != next.getPositionX() ||
-                                 prev.getPositionY() != next.getPositionY() ? 1000 : 1;
-        double rotationTime = prev.getHeading() != next.getHeading() ? 1000 : 1;
+                turtle.getPositionX(prev) != turtle.getPositionX(next) ||
+                                 turtle.getPositionY(prev) != turtle.getPositionY(next) ? 100 : 1;
+        double rotationTime = turtle.getHeading(prev) != turtle.getHeading(next) ? 100 : 1;
         TranslateTransition tt = new TranslateTransition(Duration.millis(translationTime), image);
         RotateTransition rt = new RotateTransition(Duration.millis(rotationTime), image);
-        tt.setFromX(getDrawableX(prev.getPositionX()));
-        tt.setFromY(getDrawableY(prev.getPositionY()));
-        tt.setToX(getDrawableX(next.getPositionX()));
-        tt.setToY(getDrawableY(next.getPositionY()));
+        tt.setFromX(getDrawableX(turtle.getPositionX(prev)));
+        tt.setFromY(getDrawableY(turtle.getPositionY(prev)));
+        tt.setToX(getDrawableX(turtle.getPositionX(next)));
+        tt.setToY(getDrawableY(turtle.getPositionY(next)));
         tt.setCycleCount(1);
-        rt.setFromAngle(transformHeading(prev.getHeading()));
-        rt.setToAngle(transformHeading(next.getHeading()));
+        rt.setFromAngle(transformHeading(turtle.getHeading(prev)));
+        rt.setToAngle(transformHeading(turtle.getHeading(next)));
         rt.setCycleCount(1);
         animations.add(tt);
         animations.add(rt);
     }
 
-    public ImageView initImageView (TurtleModel t) {
+    public ImageView initImageView (TurtleModel t, int currFrame) {
         ImageView image = new ImageView();
-        image.setImage(getImageFromString(t.getImageString()));
+        image.setImage(getImageFromString(t.getImageString(currFrame)));
         image.setFitHeight(50);
         image.setFitWidth(50);
-        image.setOpacity(t.getShowStatus());
+        image.setOpacity(t.getShowStatus(currFrame));
         image.setX(0);
         image.setY(0);
-        image.setRotate(transformHeading(t.getHeading()));
+        image.setRotate(transformHeading(t.getHeading(currFrame)));
         return image;
     }
 

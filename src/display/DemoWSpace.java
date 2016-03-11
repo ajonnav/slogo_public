@@ -67,7 +67,6 @@ public class DemoWSpace extends Screen {
 		setHistoryPane();
 		setUserCommandPane();
 		setBar();
-		setTurtlePane(modelMap.getDisplay().getFrame(modelMap.getDisplay().getNumFrames()-1));
 	}
 
 	@Override
@@ -163,10 +162,10 @@ public class DemoWSpace extends Screen {
 		turtleVars.setMaxSize(UIConstants.RECT_X, UIConstants.BORDER_WIDTH);
 		getRoot().getChildren().add(turtleVars);
 		CoordinateView cv = new CoordinateView(turtleVars, 1, 0, 0, UIConstants.INITIAL_HEADING);
-		for (int i = 0; i < turtles.size(); i++) {
-			turtles.get(i).addObserver(cv);
-			turtles.get(i).notifyObservers();
-		}
+//		for (int i = 0; i < turtles.size(); i++) {
+//			   turtles.get(i).addObserver(cv);
+//			turtles.get(i).notifyObservers();
+//		}
 	}
 
 	/*
@@ -244,11 +243,11 @@ public class DemoWSpace extends Screen {
 		userTurtles.myPane.setMaxSize(400, UIConstants.LOWER_PANE_HEIGHT);
 		userTurtles.myBox.getChildren().add(new Text(getResources().getString("Tur")));
 		getRoot().getChildren().add(userTurtles.myPane);
-		TurtleIDView cv = new TurtleIDView(inputText, userTurtles.myBox);
-		for (int i = 0; i < tm.size(); i++) {
-			tm.get(i).addObserver(cv);
-			tm.get(i).notifyObservers();
-		}
+//		TurtleIDView cv = new TurtleIDView(inputText, userTurtles.myBox);
+//		for (int i = 0; i < tm.size(); i++) {
+//			tm.get(i).addObserver(cv);
+//			tm.get(i).notifyObservers();
+//		}
 	}
 
 	/*
