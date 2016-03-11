@@ -237,7 +237,7 @@ public class DemoWSpace extends Screen {
 		WebView browser = new WebView();
 		browser.setPrefSize(UIConstants.WIDTH, UIConstants.HEIGHT);
 		helpRoot.getChildren().add(browser);
-		browser.getEngine().load(WorkSpace.class.getResource("/references/help.html").toExternalForm());
+		browser.getEngine().load(DemoWSpace.class.getResource("/references/help.html").toExternalForm());
 	}
 
 	private void setPrefs() {
