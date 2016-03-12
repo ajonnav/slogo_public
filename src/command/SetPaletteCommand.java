@@ -8,9 +8,9 @@ public class SetPaletteCommand extends Command {
 
     private IModelMap modelMap;
 
-    public SetPaletteCommand (IModelMap modelMap, List<String> text) {
+    public SetPaletteCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(4);
-        this.modelMap = modelMap;
     }
 
     @Override

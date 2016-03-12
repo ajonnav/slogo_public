@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class NotEqualCommand extends Command {
 
-    public NotEqualCommand (IModelMap modelMap, List<String> text) {
+    public NotEqualCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
     }
 

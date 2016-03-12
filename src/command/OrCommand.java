@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class OrCommand extends Command {
 
-    public OrCommand (IModelMap modelMap, List<String> text) {
+    public OrCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
     }
 

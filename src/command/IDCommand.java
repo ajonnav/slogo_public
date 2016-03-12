@@ -7,10 +7,10 @@ public class IDCommand extends Command {
 
     private IModelMap modelMap;
 
-    public IDCommand (IModelMap modelMap, List<String> text) {
+    public IDCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(0);
         setTakesUnlimitedParameters(false);
-        this.modelMap = modelMap;
     }
     
     @Override

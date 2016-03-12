@@ -9,9 +9,9 @@ public class DefineCommand extends Command {
 
     private IModelMap modelMap;
 
-    public DefineCommand (IModelMap modelMap, List<String> text) {
+    public DefineCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
-        this.modelMap = modelMap;
         modelMap.getCommands().setVariables(text.get(1), null);
         modelMap.getCommands().setCommands(text.get(1), null);
     }

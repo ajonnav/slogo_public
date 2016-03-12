@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class RemainderCommand extends Command {
 
-    public RemainderCommand (IModelMap modelMap, List<String> text) {
+    public RemainderCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }

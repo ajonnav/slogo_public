@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class NaturalLogCommand extends Command {
 
-    public NaturalLogCommand (IModelMap modelMap, List<String> text) {
+    public NaturalLogCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
     }
 

@@ -17,9 +17,9 @@ public class CommandCommand extends Command {
     private IModelMap modelMap;
     private String name;
 
-    public CommandCommand (IModelMap modelMap, List<String> text) {
+    public CommandCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(-1);
-        this.modelMap = modelMap;
         this.commandsModel = modelMap.getCommands();
         this.name = text.get(0);
         List<Command> variables = commandsModel.getVariables(name);

@@ -1,7 +1,7 @@
 package model;
 
 
-public class LineModel implements ILineModel {
+public class LineModel implements ILineModel, ViewableLineModel {
         
         private double x1;
         private double y1;

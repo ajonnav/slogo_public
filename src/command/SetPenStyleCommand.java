@@ -9,9 +9,9 @@ public class SetPenStyleCommand extends Command{
 
 	private IModelMap modelMap;
 	
-	public SetPenStyleCommand(IModelMap modelMap, List<String> text) {
+	public SetPenStyleCommand(IModelMap modelMap, int tokenNumber, List<String> text) {
+	        super(modelMap, tokenNumber, text);
 		setNumChildren(1);
-        this.modelMap = modelMap;
 	}
 
 	@Override

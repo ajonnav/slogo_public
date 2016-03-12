@@ -10,7 +10,8 @@ public class MakeUserInstructionCommand extends Command {
 
     private ICommandsModel commandsModel;
 
-    public MakeUserInstructionCommand (IModelMap modelMap, List<String> text) {
+    public MakeUserInstructionCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(3);
         this.commandsModel = modelMap.getCommands();
     }

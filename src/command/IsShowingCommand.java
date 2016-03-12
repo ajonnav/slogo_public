@@ -8,10 +8,10 @@ public class IsShowingCommand extends Command {
 
     private IModelMap modelMap;
 
-    public IsShowingCommand (IModelMap modelMap, List<String> text) {
+    public IsShowingCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(0);
         setTakesUnlimitedParameters(false);
-        this.modelMap = modelMap;
     }
 
     @Override

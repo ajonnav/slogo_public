@@ -9,9 +9,9 @@ public class DoTimesCommand extends Command {
 
     private IModelMap modelMap;
 
-    public DoTimesCommand (IModelMap modelMap, List<String> text) {
+    public DoTimesCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
-        this.modelMap = modelMap;
     }
 
     @Override

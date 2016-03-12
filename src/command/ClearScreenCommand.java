@@ -8,9 +8,8 @@ public class ClearScreenCommand extends Command {
 
     private IModelMap modelMap;
 
-    public ClearScreenCommand (IModelMap modelMap, List<String> text) {
-        setNumChildren(0);
-        this.modelMap = modelMap;
+    public ClearScreenCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override

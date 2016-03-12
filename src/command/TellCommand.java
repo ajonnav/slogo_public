@@ -7,7 +7,8 @@ public class TellCommand extends Command {
 
     private IModelMap modelMap;
 
-    public TellCommand (IModelMap modelMap, List<String> text) {
+    public TellCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
         this.modelMap = modelMap;
     }
