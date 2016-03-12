@@ -12,7 +12,6 @@ import model.IModelMap;
 public class CommandCommand extends Command {
 
     private ICommandsModel commandsModel;
-    private IModelMap modelMap;
     private String name;
 
     public CommandCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
@@ -34,14 +33,14 @@ public class CommandCommand extends Command {
     public double execute () {
         if (getNumChildren() != -1) {
             Map<String, Double> mapCopy = 
-                    new HashMap<String, Double>(modelMap.getVariable().getImmutableVariableMap());
+                    new HashMap<String, Double>(getModelMap().getVariable().getImmutableVariableMap());
             for (int i = 0; i < getNumChildren(); i++) {
                 mapCopy.put(((VariableCommand) commandsModel.getVariables(name).get(i))
                                 .getName(), getCommands().get(i).get(0).execute());
             }
-            modelMap.getVariable().pushScope(mapCopy);
+            getModelMap().getVariable().pushScope(mapCopy);
             double returnValue = loopExecute(commandsModel.getCommands(name));
-            modelMap.getVariable().popScope();
+            getModelMap().getVariable().popScope();
             return returnValue;
         }
         else {
