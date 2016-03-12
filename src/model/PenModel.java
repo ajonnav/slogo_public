@@ -9,14 +9,14 @@ public class PenModel extends IPenModel {
     private boolean status;
     private double size;
     private double colorIndex;
-    private double style;
+    private double styleIndex;
     private String colorString;
 
-    public PenModel (boolean status, double size, double colorIndex, double style) {
+    public PenModel (boolean status, double size, double colorIndex, double styleIndex) {
         this.status = status;
         this.size = size;
         this.colorIndex = colorIndex;
-        this.style = style;
+        this.styleIndex = styleIndex;
     }
 
     @Override
@@ -30,23 +30,27 @@ public class PenModel extends IPenModel {
     }
 
     @Override
-    public double[] getStyleIndex () {
-        if (Math.round(style) == SOLID) {
-            return new double[] {};
-        }
-        else if (Math.round(style) == DASHED) {
-            return new double[] { 10, 10 };
-        }
-        else if (Math.round(style) == DOTTED) {
-            return new double[] { 1, 4 };
-        }
-        return new double[] {};
+    public double getStyleIndex () {
+        return styleIndex;
     }
 
     @Override
     public void setStyleIndex (double style) {
-        this.style = style;
+        this.styleIndex = style;
         updateObservers();
+    }
+    
+    public double[] getStyle() {
+    	if (Math.round(styleIndex) == SOLID) {
+            return new double[] {};
+        }
+        else if (Math.round(styleIndex) == DASHED) {
+            return new double[] { 10, 10 };
+        }
+        else if (Math.round(styleIndex) == DOTTED) {
+            return new double[] { 1, 4 };
+        }
+        return new double[] {};
     }
 
     @Override
@@ -88,7 +92,7 @@ public class PenModel extends IPenModel {
     
     @Override
     public IPenModel copyPenModel () {
-        PenModel pen = new PenModel(this.status, this.size, this.colorIndex, this.style);
+        PenModel pen = new PenModel(this.status, this.size, this.colorIndex, this.styleIndex);
         pen.setColorString(this.colorString);
         return pen;
     }

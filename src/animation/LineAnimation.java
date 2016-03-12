@@ -62,6 +62,9 @@ public class LineAnimation extends CustomAnimation {
             l.setTranslateY(50 / 2);
             l.setStroke(Color.web(pen.getColorString()));
             l.setStrokeWidth(pen.getSize());
+            for(Double d: pen.getStyle()) {
+            	l.getStrokeDashArray().add(d);
+            }
             lineViewGroups.get(turtleID).getChildren().add(l);
             l.setOpacity(0);
             FadeTransition ft = new FadeTransition(Duration.millis(translationTime / num), l);
