@@ -38,6 +38,7 @@ public class TurtleModel implements ViewableTurtleModel {
     private SyncableListModel<List<IStampModel>> stamps = new SyncableListModel<>();
     List<String> newTurtleFieldList = new ArrayList<>(Arrays.asList(new String[]{"heading","positionX","positionY","showStatus","imageIndex"}));
     private ResourceBundle errorBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE+UIConstants.ERRORS);
+	private double animationSpeed;
 
     public TurtleModel (double turtleInitialX,
                         double turtleInitialY,
@@ -93,8 +94,7 @@ public class TurtleModel implements ViewableTurtleModel {
 				Type t = field.getGenericType();
 				field.set(newTurtle, new SyncableListModel((SyncableListModel)field.get(this)));
 			} catch (Exception e) {
-				e.printStackTrace();
-				//throw new SLogoException(errorBundle.getString("ReflectionError"));
+				throw new SLogoException(errorBundle.getString("ReflectionError"));
 			}
         });
         setLineList(newTurtle);

@@ -62,6 +62,8 @@ public class UIConstants {
 	public static final double BG_COMBO_X = 1100;
 	public static final double BG_COMBO_Y = 650;
 	public static final double CP_THOUS = 1000;
+	public static final int INITIAL_NUM_TURTLES = 3;
+	
 	
 	
 	public static final String CHIN = "CHIN";

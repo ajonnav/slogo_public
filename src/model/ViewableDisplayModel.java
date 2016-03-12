@@ -26,4 +26,6 @@ public interface ViewableDisplayModel {
 	public abstract List<ViewableTurtleModel> getViewableTurtleList();
 	
 	public abstract Map<Double, String> getColorMap();
+
+	public abstract int getAnimationSpeed();
 }

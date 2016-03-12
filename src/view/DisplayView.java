@@ -53,7 +53,7 @@ public class DisplayView implements IView {
         if (o instanceof ViewableDisplayModel) {
         	ViewableDisplayModel displayModel = (ViewableDisplayModel) o;
             updateBackground(displayModel);
-            animateDisplay(displayModel, 1);
+            animateDisplay(displayModel, displayModel.getAnimationSpeed());
         }
     }
 

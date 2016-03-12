@@ -42,4 +42,6 @@ public abstract class IDisplayModel extends Observable implements ViewableDispla
 	public abstract boolean isToUpdateIDView ();
 
     public abstract void setIsToUpdateIDView (boolean toUpdateIDView);
+
+	public abstract double setAnimationSpeed(double[] ds);
 }
