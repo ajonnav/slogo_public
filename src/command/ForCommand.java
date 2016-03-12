@@ -7,7 +7,6 @@ import model.IModelMap;
 
 public class ForCommand extends Command {
 
-    private IModelMap modelMap;
 
     public ForCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -28,7 +27,7 @@ public class ForCommand extends Command {
         double end = block.get(2).execute();
         double increment = block.get(3).execute();
         for (double i = start; i <= end; i += increment) {
-            modelMap.getVariable()
+            getModelMap().getVariable()
                     .setVariable(((VariableCommand) block.get(0)).getName(), i);
             lastValue = loopExecute(getCommands().get(1));
         }

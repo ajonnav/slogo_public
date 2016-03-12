@@ -6,7 +6,7 @@ import model.IModelMap;
 
 public class BackwardCommand extends Command {
 
-    private IModelMap modelMap;
+
 
     public BackwardCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -15,6 +15,6 @@ public class BackwardCommand extends Command {
 
     @Override
     public double execute () {
-        return -modelMap.getDisplay().TurtleAction("backward", Arrays.asList(getCommands().get(0).get(0)));
+        return -getModelMap().getDisplay().TurtleAction("backward", Arrays.asList(getCommands().get(0).get(0)));
     }
 }

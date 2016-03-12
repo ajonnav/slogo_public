@@ -6,7 +6,6 @@ import model.IModelMap;
 
 public class YCoordinateCommand extends Command {
 
-    private IModelMap modelMap;
 
     public YCoordinateCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -14,7 +13,7 @@ public class YCoordinateCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("getPositionY", null);
+        return getModelMap().getDisplay().TurtleAction("getPositionY", null);
     }
 
 }
