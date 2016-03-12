@@ -6,7 +6,6 @@ import model.IModelMap;
 
 public class ShowTurtleCommand extends Command {
 
-    private IModelMap modelMap;
 
     public ShowTurtleCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -14,7 +13,7 @@ public class ShowTurtleCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("show", null);
+        return getModelMap().getDisplay().TurtleAction("show", null);
     }
 
 }

@@ -5,7 +5,7 @@ import model.IModelMap;
 
 public class ClearStampsCommand extends Command {
 
-    private IModelMap modelMap;
+
 
     public ClearStampsCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -13,7 +13,7 @@ public class ClearStampsCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("clearStamps", null);
+        return getModelMap().getDisplay().TurtleAction("clearStamps", null);
     }
 
 }

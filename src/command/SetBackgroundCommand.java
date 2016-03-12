@@ -6,7 +6,6 @@ import model.IModelMap;
 
 public class SetBackgroundCommand extends Command {
 
-    private IModelMap modelMap;
 
     public SetBackgroundCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -15,7 +14,7 @@ public class SetBackgroundCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().setBackgroundColorIndex(getCommands().get(0).get(0).execute());
+        return getModelMap().getDisplay().setBackgroundColorIndex(getCommands().get(0).get(0).execute());
     }
 
 }

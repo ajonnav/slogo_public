@@ -6,7 +6,6 @@ import model.IModelMap;
 
 public class GetShapeCommand extends Command {
 
-    private IModelMap modelMap;
 
     public GetShapeCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -15,6 +14,6 @@ public class GetShapeCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("getImageIndex", null);
+        return getModelMap().getDisplay().TurtleAction("getImageIndex", null);
     }
 }

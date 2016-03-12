@@ -6,7 +6,6 @@ import model.IModelMap;
 
 public class PenDownCommand extends Command {
 
-    private IModelMap modelMap;
 
     public PenDownCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -14,7 +13,7 @@ public class PenDownCommand extends Command {
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("penDown", null);
+        return getModelMap().getDisplay().TurtleAction("penDown", null);
     }
 
 }

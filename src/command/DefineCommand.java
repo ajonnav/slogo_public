@@ -7,13 +7,13 @@ import model.IModelMap;
 
 public class DefineCommand extends Command {
 
-    private IModelMap modelMap;
+
 
     public DefineCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
         setNumChildren(2);
-        modelMap.getCommands().setVariables(text.get(1), null);
-        modelMap.getCommands().setCommands(text.get(1), null);
+        getModelMap().getCommands().setVariables(text.get(1), null);
+        getModelMap().getCommands().setCommands(text.get(1), null);
     }
     
     @Override
@@ -29,7 +29,7 @@ public class DefineCommand extends Command {
             }
         }
         CommandCommand newCommand = (CommandCommand) getCommands().get(0).get(0);
-        modelMap.getCommands().setVariables(newCommand.getName(), variables);
+        getModelMap().getCommands().setVariables(newCommand.getName(), variables);
     }
 
 

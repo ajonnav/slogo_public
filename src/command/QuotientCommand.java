@@ -18,7 +18,7 @@ public class QuotientCommand extends Command {
         if(getCommands().get(0).size() > 1) {
             unlimitedExecute(Operator.QUOTIENT);
         }
-        return getCommands().get(0).get(0).execute() / getCommands().get(1).get(0).execute();
+        return Operator.QUOTIENT.operate(getCommands().get(0).get(0).execute(), getCommands().get(1).get(0).execute());
     }
 
 }

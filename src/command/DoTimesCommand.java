@@ -7,7 +7,6 @@ import model.IModelMap;
 
 public class DoTimesCommand extends Command {
 
-    private IModelMap modelMap;
 
     public DoTimesCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -24,7 +23,7 @@ public class DoTimesCommand extends Command {
             throw new SLogoException(getErrorBundle().getString("NoVariable"));
         }
         for (double i = 1; i <= getCommands().get(0).get(1).execute(); i++) {
-            modelMap.getVariable()
+            getModelMap().getVariable()
                     .setVariable(((VariableCommand) getCommands().get(0).get(0)).getName(), i);
             lastValue = loopExecute(getCommands().get(1));
         }
