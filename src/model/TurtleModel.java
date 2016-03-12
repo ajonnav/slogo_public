@@ -93,19 +93,19 @@ public class TurtleModel implements ViewableTurtleModel {
         newTurtle.penList = newPen;
         newTurtle.penList.remove(newTurtle.penList.size() - 1);
         newTurtle.penList.remove(newTurtle.penList.size() - 1);
-        newTurtle.heading = new SyncableListModel<Double>(heading);
+        newTurtle.heading = new SyncableListModel<>(heading);
         newTurtle.heading.remove(newTurtle.heading.size() - 1);
         newTurtle.heading.remove(newTurtle.heading.size() - 1);
-        newTurtle.positionX = new SyncableListModel<Double>(positionX);
+        newTurtle.positionX = new SyncableListModel<>(positionX);
         newTurtle.positionX.remove(newTurtle.positionX.size() - 1);
         newTurtle.positionX.remove(newTurtle.positionX.size() - 1);
-        newTurtle.positionY = new SyncableListModel<Double>(positionY);
+        newTurtle.positionY = new SyncableListModel<>(positionY);
         newTurtle.positionY.remove(newTurtle.positionY.size() - 1);
         newTurtle.positionY.remove(newTurtle.positionY.size() - 1);
-        newTurtle.showStatus = new SyncableListModel<Boolean>(showStatus);
+        newTurtle.showStatus = new SyncableListModel<>(showStatus);
         newTurtle.showStatus.remove(newTurtle.showStatus.size() - 1);
         newTurtle.showStatus.remove(newTurtle.showStatus.size() - 1);
-        newTurtle.imageIndex = new SyncableListModel<Double>(imageIndex);
+        newTurtle.imageIndex = new SyncableListModel<>(imageIndex);
         newTurtle.imageIndex.remove(newTurtle.imageIndex.size() - 1);
         newTurtle.imageIndex.remove(newTurtle.imageIndex.size() - 1);
         

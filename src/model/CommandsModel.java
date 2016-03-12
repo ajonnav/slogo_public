@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import command.Command;
 
-public class CommandsModel extends ICommandsModel implements ViewableCommandsModel {
+public class CommandsModel extends ICommandsModel {
 
 	private Map<String, List<Command>> nameToCommandsMap;
     private Map<String, List<Command>> nameToVariablesMap;
