@@ -4,7 +4,7 @@ import java.util.Observable;
 
 import constants.UIConstants;
 import javafx.scene.text.Text;
-import model.HistoryModel;
+import model.IHistoryModel;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 
@@ -22,12 +22,12 @@ public class HistoryPaneView extends ScrollView {
 
     @Override
     public void update (Observable o, Object arg) {
-        if (o instanceof HistoryModel) {
-            HistoryModel hpm = (HistoryModel) o;
+        if (o instanceof IHistoryModel) {
+            IHistoryModel hpm = (IHistoryModel) o;
             getMyBox().getChildren().clear();
             int x = 1;
             for (String item : hpm.getImmutableHistoryList()) {
-            	if(x % 2 != 0) {
+            	if(x % UIConstants.TWO != 0) {
             		Hyperlink past = new Hyperlink(">> " + item);
             		past.setOnAction(event -> {
             			myTA.appendText(item);

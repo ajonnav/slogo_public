@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class SineCommand extends Command {
 
-    public SineCommand (ModelMap modelMap, List<String> text) {
+    public SineCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(1);
         setTakesUnlimitedParameters(false);
     }

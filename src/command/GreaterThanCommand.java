@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class GreaterThanCommand extends Command {
 
-    public GreaterThanCommand (ModelMap modelMap, List<String> text) {
+    public GreaterThanCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }

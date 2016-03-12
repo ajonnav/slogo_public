@@ -59,7 +59,7 @@ public class DisplayView implements IView {
     public void updateBackground (DisplayModel displayModel) {
         features.updateComboBoxOptions(backgroundColorComboBox, displayModel.getColorMap());
         String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
-                                       displayModel.getBackgroundColor();
+                                       displayModel.getColorMap().get(displayModel.getBackgroundColorIndex());
         backgroundGC.clearRect(0, 0, backgroundCanvas.getWidth(),
                                backgroundCanvas.getHeight());
         backgroundGC.setFill(Color.web(backgroundColorString.split(" ")[1]));

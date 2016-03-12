@@ -9,21 +9,20 @@ import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
-
 import command.Command;
 import exception.SLogoSyntaxException;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class CommandParser {
 
     private List<Entry<String, Pattern>> mySymbols;
-    private ModelMap modelMap;
+    private IModelMap modelMap;
     public static final String WHITESPACE = "\\s+";
     private final String ERROR = "NO MATCH";
     private List<Command> commandsList;
 
-    public CommandParser (ModelMap modelMap) {
+    public CommandParser (IModelMap modelMap) {
         this.mySymbols = new ArrayList<>();
         this.modelMap = modelMap;
         this.commandsList = new ArrayList<>();
@@ -57,7 +56,6 @@ public class CommandParser {
             modelMap.getHistory().addToHistory(Double.toString(returnValue));
         }
         catch (Exception e) {
-            e.printStackTrace();
 //            modelMap.getHistory().addToHistory(e.getMessage());
         }
     }
@@ -122,7 +120,7 @@ public class CommandParser {
     public Command constructCurrCommand(List<String> text, String currName) {
         Command command = null;
         try {
-            command = ((Command) Class.forName(currName).getConstructor(ModelMap.class, List.class)
+            command = ((Command) Class.forName(currName).getConstructor(IModelMap.class, List.class)
                     .newInstance(modelMap, Collections.unmodifiableList(text)));
         }
         catch (SLogoSyntaxException ee) {

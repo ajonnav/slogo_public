@@ -2,14 +2,14 @@ package command;
 
 import java.util.List;
 import exception.SLogoSyntaxException;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class MakeVariableCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public MakeVariableCommand (ModelMap modelMap, List<String> text) {
+    public MakeVariableCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
     }

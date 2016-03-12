@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class MinusCommand extends Command {
 
-    public MinusCommand (ModelMap modelMap, List<List<Command>> commands) {
+    public MinusCommand (IModelMap modelMap, List<List<Command>> commands) {
         setNumChildren(1);
     }
 

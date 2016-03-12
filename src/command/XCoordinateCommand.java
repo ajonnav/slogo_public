@@ -1,15 +1,15 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class XCoordinateCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
     public static final String command = "getPositionX";
 
-    public XCoordinateCommand (ModelMap modelMap, List<String> text) {
+    public XCoordinateCommand (IModelMap modelMap, List<String> text) {
         this.modelMap = modelMap;
     }
 

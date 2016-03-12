@@ -49,7 +49,6 @@ public abstract class Screen {
 	}
 
 	public void setUpScene(String lang) {
-		// TODO Auto-generated method stub
 		
 	}
 }

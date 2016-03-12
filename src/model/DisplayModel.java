@@ -3,13 +3,11 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.stream.Collectors;
 import command.Command;
 import constants.UIConstants;
 
 
-public class DisplayModel extends Observable {
+public class DisplayModel extends IDisplayModel{
 
     private List<TurtleModel> turtleList = new ArrayList<>();
     private Map<Double, String> imageMap;
@@ -63,6 +61,7 @@ public class DisplayModel extends Observable {
         }
     }
 
+    @Override
     public double tell (double[] values) {
         turtleList.stream().forEach(t -> {
             t.setActive(false);
@@ -90,70 +89,83 @@ public class DisplayModel extends Observable {
         }
     }
 
+    @Override
     public double[] getActiveTurtleIDs () {
         return turtleList.stream().filter(t -> t.isActive()).mapToDouble(d -> turtleList.indexOf(d) + 1).toArray();
     }
 
+    @Override
     public double addToColorMap (double[] values) {
         colorMap.put(values[0], String.format("#%02X%02X%02X", (int) values[1], (int) values[2],
                                               (int) values[3]));
         setColorMap(colorMap);
         return values[0];
     }
+
+    public double[] commandsToDoubleArray (List<Command> parameters) {
+        double[] array = new double[parameters.size()];
+        for (int i = 0; i < parameters.size(); i++) {
+            array[i] = parameters.get(i).execute();
+        }
+        return array;
+    }
     
+    @Override
+    public double setBackgroundColorIndex (double backgroundColorIndex) {
+        this.backgroundColorIndex = backgroundColorIndex;
+        return backgroundColorIndex;
+    }
+
+    @Override
+    public Map<Double, String> getColorMap () {
+        return colorMap;
+    }
+
+    @Override
     public void setColorMap (Map<Double, String> colorMap) {
         this.colorMap = colorMap;
         turtleList.stream().forEach(t -> t.setColorMap(colorMap));
     }
 
-    public double[] commandsToDoubleArray (List<Command> parameters) {
-        return parameters.stream().map(Command::execute).collect(Collectors.toList())
-                .stream().mapToDouble(Double::doubleValue).toArray(); 
-    }
-    
+    @Override
     public void updateView () {
         setChanged();
         notifyObservers();
     }
-
-    public List<TurtleModel> getTurtleList() {
-        return turtleList;
-    }
     
-    public Map<Double, String> getImageMap () {
-        return imageMap;
-    }
-    
-    public Map<Double, String> getColorMap () {
-        return colorMap;
-    }
-    
-    public double getBackgroundColorIndex () {
-        return backgroundColorIndex;
-    }
-    
-    public String getBackgroundColor () {
-        return colorMap.get(backgroundColorIndex);
-    }
-       
-    public double setBackgroundColorIndex (double backgroundColorIndex) {
-        this.backgroundColorIndex = backgroundColorIndex;
-        return backgroundColorIndex;
-    }
-    
-    public int getNumTurtles () {
-        return turtleList.size();
-    }
-
+    @Override
     public int getLastActiveID () {
         return lastActiveID;
     }
 
+    @Override
+    public Map<Double, String> getImageMap () {
+        return imageMap;
+    }
+    
+    @Override
+    public double getBackgroundColorIndex () {
+        return backgroundColorIndex;
+    }
+    
+    @Override
+    public List<TurtleModel> getTurtleList() {
+        return turtleList;
+    }
+
+    @Override
+    public int getNumTurtles () {
+        return turtleList.size();
+    }
+
+    @Override
     public boolean isToAnimate () {
         return toAnimate;
     }
 
+    @Override
     public void setToAnimate (boolean toAnimate) {
         this.toAnimate = toAnimate;
     }
+    
 }

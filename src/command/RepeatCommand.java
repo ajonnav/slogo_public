@@ -1,14 +1,14 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class RepeatCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public RepeatCommand (ModelMap modelMap, List<String> text) {
+    public RepeatCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
     }

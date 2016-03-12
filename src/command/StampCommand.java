@@ -1,14 +1,14 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class StampCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public StampCommand (ModelMap modelMap, List<String> text) {
+    public StampCommand (IModelMap modelMap, List<String> text) {
         this.modelMap = modelMap;
     }
 

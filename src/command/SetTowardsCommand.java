@@ -3,14 +3,14 @@ package command;
 
 import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class SetTowardsCommand extends Command {
 
-    private ModelMap modelMap;
+    private IModelMap modelMap;
 
-    public SetTowardsCommand (ModelMap modelMap, List<String> text) {
+    public SetTowardsCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         this.modelMap = modelMap;
     }

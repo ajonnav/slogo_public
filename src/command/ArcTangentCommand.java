@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class ArcTangentCommand extends Command {
 
-    public ArcTangentCommand (ModelMap modelMap, List<String> text) {
+    public ArcTangentCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(1);
     }
 

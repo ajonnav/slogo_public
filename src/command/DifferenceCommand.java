@@ -1,12 +1,12 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class DifferenceCommand extends Command {
 
-    public DifferenceCommand (ModelMap modelMap, List<String> text) {
+    public DifferenceCommand (IModelMap modelMap, List<String> text) {
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }
