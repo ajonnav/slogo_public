@@ -54,7 +54,7 @@ public class DemoWSpace extends Screen {
 		workspaceMenu.setStage(getStage());
 		workspaceMenu.setViews(Arrays.asList(varView, hpv, turtleView, commandView, myIV));
 		try {
-			workspaceMenu.initializeMenus();
+			workspaceMenu.makeFileMenu();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		}

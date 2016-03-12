@@ -37,10 +37,6 @@ public class WMenu {
 		myStage = s;
 	}
 
-	public void initializeMenus() throws NoSuchMethodException {
-		makeFileMenu();
-		makeEditMenu();
-	}
 
 	public MenuBar getMyMenu() {
 		return myMenu;
@@ -82,9 +78,6 @@ public class WMenu {
 		}
 	}
 
-	public void makeEditMenu() {
-		menuMaker.addMenu(myResources.getString("EditCommand"));
-	}
 
 	/*
 	 * Hides/shows a user view from the Scene

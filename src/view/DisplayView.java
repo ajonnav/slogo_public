@@ -37,10 +37,11 @@ public class DisplayView implements IView {
                                                     UIConstants.CANVAS_SIZE,
                                                     Color.GREEN);
         this.backgroundGC = backgroundCanvas.getGraphicsContext2D();
-        this.backgroundColorComboBox = features.makeColorPicker(UIConstants.BACKGROUND_PICK_X,
-                                                                UIConstants.ZERO,
+        this.backgroundColorComboBox = features.makeColorPicker(UIConstants.BG_COMBO_X,
+                                                                UIConstants.BG_COMBO_Y,
                                                                 UIConstants.COLOR_SELECTOR_WIDTH,
                                                                 UIConstants.BORDER_WIDTH);
+        backgroundColorComboBox.setPromptText("Background Color");
         root.getChildren().add(backgroundCanvas);
         root.getChildren().add(backgroundColorComboBox);
         this.turtleAnim = new TurtleAnimation(root);
