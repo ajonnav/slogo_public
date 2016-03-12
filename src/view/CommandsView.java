@@ -8,7 +8,6 @@ import command.Command;
 import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
-import javafx.scene.text.Text;
 import model.ViewableCommandsModel;
 
 public class CommandsView extends ScrollView{

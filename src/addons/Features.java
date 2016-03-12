@@ -95,11 +95,11 @@ public class Features {
 		root.getItems().add(back);
 	}
 
-	public static Text makeText(String input) {
+	public Text makeText(String input) {
 		return new Text(input);
 	}
 
-	public static Rectangle makeRect(Color input) {
+	public Rectangle makeRect(Color input) {
 		return new Rectangle(UIConstants.RECTANGLE_W, UIConstants.RECTANGLE_H, input);
 	}
 
