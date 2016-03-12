@@ -65,7 +65,7 @@ public class DisplayView implements IView {
                                backgroundCanvas.getHeight());
         backgroundGC.setFill(Color.web(backgroundColorString.split(" ")[1]));
         backgroundGC.fillRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
-        backgroundColorComboBox.setPromptText("Background Color" + displayModel.getBackgroundColorIndex());
+        backgroundColorComboBox.setPromptText("Background Color " + displayModel.getBackgroundColorIndex());
         backgroundColorComboBox.setOnAction(e -> bgChange(displayModel, (HBox) backgroundColorComboBox.getValue()));
     }
     
