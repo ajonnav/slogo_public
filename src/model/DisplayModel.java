@@ -4,66 +4,63 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.stream.Collectors;
 import command.Command;
 import constants.UIConstants;
 
 
 public class DisplayModel extends Observable {
 
-    private double backgroundColorIndex;
+    private List<TurtleModel> turtleList = new ArrayList<>();
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
+    private double backgroundColorIndex;
     private double lastValue;
-    private List<TurtleModel> turtleList;
     private int lastActiveID;
     private boolean toAnimate;
 
     public DisplayModel (Map<Double, String> colorMap, Map<Double, String> imageMap) {
+        this.imageMap = imageMap;
         this.colorMap = colorMap;
         backgroundColorIndex = 3;
         this.lastActiveID = 1;
-        this.colorMap = colorMap;
-        this.imageMap = imageMap;
         this.toAnimate = true;
-        turtleList = new ArrayList<>();
-        setTurtles();
+        setTurtles(3);
         setChanged();
         updateView();
     }
 
-    private void setTurtles () {
-        for (int i = 0; i < 3; i++) {
+    private void setTurtles (int num) {
+        for (int i = 0; i < num; i++) {
             TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING, imageMap, colorMap);
             turtleList.add(turtleModel);
         }
     }
 
-    public double getBackgroundColorIndex () {
-        return backgroundColorIndex;
-    }
-
     public double TurtleAction (String command, List<Command> parameters) {
         lastValue = 0;
-        turtleList.stream().filter(t -> t.isActive()).forEach(turtle -> {
-            try {
-                lastActiveID = turtleList.indexOf(turtle) + 1;
-                if (parameters == null) {
-                    lastValue =
-                            (double) turtle.getClass().getDeclaredMethod(command).invoke(turtle);
-                }
-                else {
-                    lastValue =
-                            (double) turtle.getClass().getDeclaredMethod(command, double[].class)
-                                    .invoke(turtle, commandsToDoubleArray(parameters));
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        turtleList.stream().filter(t -> t.isActive()).forEach(turtle -> invokeAction(turtle, command, parameters));
         turtleList.stream().forEach(turtle -> turtle.syncFrame());
         updateView();
         return lastValue;
+    }
+    
+    public void invokeAction(TurtleModel turtle, String command, List<Command> parameters) {
+        try {
+            lastActiveID = turtleList.indexOf(turtle) + 1;
+            if (parameters == null) {
+                lastValue =
+                        (double) turtle.getClass().getDeclaredMethod(command).invoke(turtle);
+            }
+            else {
+                lastValue =
+                        (double) turtle.getClass().getDeclaredMethod(command, double[].class)
+                                .invoke(turtle, commandsToDoubleArray(parameters));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public double tell (double[] values) {
@@ -71,6 +68,16 @@ public class DisplayModel extends Observable {
             t.setActive(false);
             t.syncFrame();
         });
+        createNewTurtles(values);
+        if (values.length != 0) {
+            lastActiveID = (int) values[values.length - 1];
+        }
+        turtleList.stream().forEach(t -> t.syncFrame());
+        updateView();
+        return lastActiveID;
+    }
+    
+    public void createNewTurtles(double[] values) {
         for (int i = 0; i < values.length; i++) {
             if (values[i] > turtleList.size()) {
                 int currSize = turtleList.size();
@@ -81,22 +88,10 @@ public class DisplayModel extends Observable {
             }
             turtleList.get((int) values[i] - 1).setActive(true);
         }
-        if (values.length != 0) {
-            lastActiveID = (int) values[values.length - 1];
-        }
-        turtleList.stream().forEach(t -> { t.syncFrame(); });
-        updateView();
-        return lastActiveID;
     }
 
     public double[] getActiveTurtleIDs () {
-        List<Double> active = new ArrayList<Double>();
-        for (int i = 0; i < turtleList.size(); i++) {
-            if (turtleList.get(i).isActive()) {
-                active.add((double) i + 1);
-            }
-        }
-        return active.stream().mapToDouble(d -> d).toArray();
+        return turtleList.stream().filter(t -> t.isActive()).mapToDouble(d -> turtleList.indexOf(d) + 1).toArray();
     }
 
     public double addToColorMap (double[] values) {
@@ -105,52 +100,53 @@ public class DisplayModel extends Observable {
         setColorMap(colorMap);
         return values[0];
     }
-
-    public double[] commandsToDoubleArray (List<Command> parameters) {
-        double[] array = new double[parameters.size()];
-        for (int i = 0; i < parameters.size(); i++) {
-            array[i] = parameters.get(i).execute();
-        }
-        return array;
-    }
-
-    public double setBackgroundColorIndex (double backgroundColorIndex) {
-        this.backgroundColorIndex = backgroundColorIndex;
-        return backgroundColorIndex;
-    }
-
-    public Map<Double, String> getColorMap () {
-        return colorMap;
-    }
-
+    
     public void setColorMap (Map<Double, String> colorMap) {
         this.colorMap = colorMap;
         turtleList.stream().forEach(t -> t.setColorMap(colorMap));
     }
 
-    public String getBackgroundColor () {
-        return colorMap.get(backgroundColorIndex);
+    public double[] commandsToDoubleArray (List<Command> parameters) {
+        return parameters.stream().map(Command::execute).collect(Collectors.toList())
+                .stream().mapToDouble(Double::doubleValue).toArray(); 
     }
-
+    
     public void updateView () {
         setChanged();
         notifyObservers();
     }
 
-    public int getLastActiveID () {
-        return lastActiveID;
+    public List<TurtleModel> getTurtleList() {
+        return turtleList;
     }
-
+    
     public Map<Double, String> getImageMap () {
         return imageMap;
     }
     
-    public List<TurtleModel> getTurtleList() {
-        return turtleList;
+    public Map<Double, String> getColorMap () {
+        return colorMap;
     }
-
+    
+    public double getBackgroundColorIndex () {
+        return backgroundColorIndex;
+    }
+    
+    public String getBackgroundColor () {
+        return colorMap.get(backgroundColorIndex);
+    }
+       
+    public double setBackgroundColorIndex (double backgroundColorIndex) {
+        this.backgroundColorIndex = backgroundColorIndex;
+        return backgroundColorIndex;
+    }
+    
     public int getNumTurtles () {
         return turtleList.size();
+    }
+
+    public int getLastActiveID () {
+        return lastActiveID;
     }
 
     public boolean isToAnimate () {
