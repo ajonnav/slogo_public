@@ -2,7 +2,7 @@ package model;
 
 import java.util.Observable;
 
-public abstract class IPenModel extends Observable {
+public abstract class IPenModel extends Observable implements ViewablePenModel{
 
 	public abstract boolean getStatus ();
 	

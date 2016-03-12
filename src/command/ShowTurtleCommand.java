@@ -8,8 +8,8 @@ public class ShowTurtleCommand extends Command {
 
     private IModelMap modelMap;
 
-    public ShowTurtleCommand (IModelMap modelMap, List<String> text) {
-        this.modelMap = modelMap;
+    public ShowTurtleCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override

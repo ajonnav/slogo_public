@@ -11,6 +11,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import model.IVariableModel;
+import model.ViewableVariableModel;
 
 public class VariableView extends ScrollView{
 
@@ -40,8 +41,8 @@ public class VariableView extends ScrollView{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o instanceof IVariableModel){
-			IVariableModel vm = (IVariableModel) o;
+		if(o instanceof ViewableVariableModel){
+			ViewableVariableModel vm = (ViewableVariableModel) o;
 			vars = vm.getImmutableVariableMap();
 			varBox.getChildren().clear();
 			for(String item : vars.keySet()){

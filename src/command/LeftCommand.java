@@ -9,10 +9,10 @@ public class LeftCommand extends Command {
 
     private IModelMap modelMap;
 
-    public LeftCommand (IModelMap modelMap, List<String> text) {
+    public LeftCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
         setTakesUnlimitedParameters(false);
-        this.modelMap = modelMap;
     }
 
     @Override

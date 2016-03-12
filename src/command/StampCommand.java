@@ -8,8 +8,8 @@ public class StampCommand extends Command {
 
     private IModelMap modelMap;
 
-    public StampCommand (IModelMap modelMap, List<String> text) {
-        this.modelMap = modelMap;
+    public StampCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override

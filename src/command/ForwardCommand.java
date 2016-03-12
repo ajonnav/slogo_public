@@ -9,9 +9,9 @@ public class ForwardCommand extends Command {
 
     private IModelMap modelMap;
 
-    public ForwardCommand (IModelMap modelMap, List<String> text) {
+    public ForwardCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        this.modelMap = modelMap;
     }
 
     @Override

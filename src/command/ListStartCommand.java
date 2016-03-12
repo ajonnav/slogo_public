@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class ListStartCommand extends Command {
 
-    public ListStartCommand (IModelMap modelMap, List<String> text) {
+    public ListStartCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override

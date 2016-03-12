@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class CosineCommand extends Command {
 
-    public CosineCommand (IModelMap modelMap, List<String> text) {
+    public CosineCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
     }
 

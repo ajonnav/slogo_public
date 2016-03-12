@@ -9,9 +9,9 @@ public class SetShapeCommand extends Command {
 
     private IModelMap modelMap;
 
-    public SetShapeCommand (IModelMap modelMap, List<String> text) {
+    public SetShapeCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        this.modelMap = modelMap;
     }
 
     @Override

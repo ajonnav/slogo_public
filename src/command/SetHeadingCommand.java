@@ -9,9 +9,9 @@ public class SetHeadingCommand extends Command {
 
     private IModelMap modelMap;
 
-    public SetHeadingCommand (IModelMap modelMap, List<String> text) {
+    public SetHeadingCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        this.modelMap = modelMap;
     }
 
     @Override

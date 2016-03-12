@@ -11,6 +11,8 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import model.ILineModel;
 import model.IPenModel;
+import model.ViewableLineModel;
+import model.ViewablePenModel;
 import model.ViewableTurtleModel;
 
 
@@ -33,19 +35,19 @@ public class LineAnimation extends CustomAnimation {
     Animation generateSingleAnimation (int frameNumber, int index, int speed) {
         ViewableTurtleModel turtle = getDisplayModel().getViewableTurtleList().get(index);
         double translationTime = getTwoStateTranslationTime(turtle, frameNumber, speed);
-        if (turtle.getLineList(frameNumber - 1).size() + 1 == turtle.getLineList(frameNumber)
+        if (turtle.getViewableLineList(frameNumber - 1).size() + 1 == turtle.getViewableLineList(frameNumber)
                 .size()) {
-            return drawLine(turtle.getPen(), turtle.getLineList(frameNumber)
-                    .get(turtle.getLineList(frameNumber).size() - 1), translationTime, index);
+            return drawLine(turtle.getViewablePen(), turtle.getViewableLineList(frameNumber)
+                    .get(turtle.getViewableLineList(frameNumber).size() - 1), translationTime, index);
         }
-        if (turtle.getLineList().size() == 0) {
+        if (turtle.getViewableLineList().size() == 0) {
             lineViewGroups.get(index).getChildren().clear();
         }
         return null;
     }
 
-    public SequentialTransition drawLine (IPenModel pen,
-                                          ILineModel line,
+    public SequentialTransition drawLine (ViewablePenModel pen,
+                                          ViewableLineModel line,
                                           double translationTime,
                                           int turtleID) {
         SequentialTransition st = new SequentialTransition();

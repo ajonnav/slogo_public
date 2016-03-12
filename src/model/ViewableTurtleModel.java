@@ -9,13 +9,13 @@ public interface ViewableTurtleModel {
 	
 	double getLastDouble(List<Double> list);
 	
-	List<IStampModel> getStampList();
+	List<ViewableStampModel> getViewableStampList();
 	
-	List<ILineModel> getLineList();
+	List<ViewableLineModel> getViewableLineList();
 	
-	List<IStampModel> getStampList(int frameNumber);
+	List<ViewableStampModel> getViewableStampList(int frameNumber);
 	
-	List<ILineModel> getLineList(int frameNumber);
+	List<ViewableLineModel> getViewableLineList(int frameNumber);
 	
 	boolean isActive ();
 	
@@ -35,9 +35,9 @@ public interface ViewableTurtleModel {
 	
 	boolean isPenStatus ();
 	
-	IPenModel getPen (int frameNumber);
+	ViewablePenModel getViewablePen (int frameNumber);
 	
-	IPenModel getPen ();
+	ViewablePenModel getViewablePen ();
 	
 	double getHeading(int frameNumber);
 	

@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class ProductCommand extends Command {
 
-    public ProductCommand (IModelMap modelMap, List<String> text) {
+    public ProductCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }

@@ -8,9 +8,9 @@ public class SetBackgroundCommand extends Command {
 
     private IModelMap modelMap;
 
-    public SetBackgroundCommand (IModelMap modelMap, List<String> text) {
+    public SetBackgroundCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        this.modelMap = modelMap;
     }
 
     @Override
