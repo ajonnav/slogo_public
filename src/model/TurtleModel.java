@@ -298,6 +298,8 @@ public class TurtleModel implements ViewableTurtleModel {
         return lineWidth[0];
     }
 
+    
+    
     public int getFrameNumber () {
         return frameNumber;
     }

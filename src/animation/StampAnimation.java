@@ -2,6 +2,8 @@ package animation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import constants.UIConstants;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.scene.Group;
@@ -46,8 +48,8 @@ public class StampAnimation extends CustomAnimation {
         image.setImage(getImageFromString(stamp.getImageString()));
         image.setX(getDrawableX(stamp.getPositionX()));
         image.setY(getDrawableY(stamp.getPositionY()));
-        image.setFitWidth(50);
-        image.setFitHeight(50);
+        image.setFitWidth(UIConstants.TURTLE_IMAGE_WIDTH);
+        image.setFitHeight(UIConstants.TURTLE_IMAGE_WIDTH);
         image.setRotate(transformHeading(stamp.getHeading()));
         image.setOpacity(0);
         stampViewGroups.get(index).getChildren().add(image);

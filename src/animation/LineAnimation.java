@@ -2,6 +2,8 @@ package animation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import constants.UIConstants;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
@@ -60,8 +62,8 @@ public class LineAnimation extends CustomAnimation {
         double num = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
         for (int i = 0; i < num; i++) {
             Line l = new Line(x1, y1, x1 + xDiff / num * i, y1 + yDiff / num * i);
-            l.setTranslateX(50 / 2);
-            l.setTranslateY(50 / 2);
+            l.setTranslateX(UIConstants.TURTLE_IMAGE_WIDTH / 2);
+            l.setTranslateY(UIConstants.TURTLE_IMAGE_WIDTH / 2);
             l.setStroke(Color.web(pen.getColorString()));
             l.setStrokeWidth(pen.getSize());
             for(Double d: pen.getStyle()) {

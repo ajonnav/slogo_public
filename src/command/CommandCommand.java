@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
-import constants.UIConstants;
 import exception.SLogoException;
 import model.ICommandsModel;
 import model.IModelMap;

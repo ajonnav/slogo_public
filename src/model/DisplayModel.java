@@ -64,7 +64,7 @@ public class DisplayModel extends IDisplayModel {
             }
         }
         catch (Exception e) {
-            new SLogoException(errorBundle.getString("ReflectionError"));
+            throw new SLogoException(errorBundle.getString("ReflectionError"));
         }
     }
 

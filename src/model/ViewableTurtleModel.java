@@ -15,7 +15,7 @@ public interface ViewableTurtleModel {
 	
 	List<ViewableLineModel> getViewableLineList(int frameNumber);
 	
-	boolean isActive ();
+	//boolean isActive ();
 	
 	boolean isActive (int frameNumber);
 	
@@ -39,15 +39,15 @@ public interface ViewableTurtleModel {
 	
 	double getHeading(int frameNumber);
 	
-	double getHeading ();
+	//double getHeading ();
 	
 	double getPositionX (int frameNumber);
 	
-	double getPositionX ();
+	//double getPositionX ();
 	
 	double getPositionY (int frameNumber);
 	
-	double getPositionY ();
+	//double getPositionY ();
 	
 	double getShowStatus (int frameNumber);
 	
