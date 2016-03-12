@@ -58,7 +58,8 @@ public class CommandParser {
             modelMap.getHistory().addToHistory(Double.toString(returnValue));
         }
         catch (Exception e) {
-            modelMap.getHistory().addToHistory(e.getMessage());
+        	e.printStackTrace();
+            //modelMap.getHistory().addToHistory(e.getMessage());
         }
     }
 

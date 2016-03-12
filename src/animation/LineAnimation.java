@@ -39,10 +39,10 @@ public class LineAnimation extends CustomAnimation {
         double translationTime = getTwoStateTranslationTime(turtle, frameNumber, speed);
         if (turtle.getViewableLineList(frameNumber - 1).size() + 1 == turtle.getViewableLineList(frameNumber)
                 .size()) {
-            return drawLine(turtle.getViewablePen(), turtle.getViewableLineList(frameNumber)
+            return drawLine(turtle.getViewablePen(turtle.getFrameNumber()-1), turtle.getViewableLineList(frameNumber)
                     .get(turtle.getViewableLineList(frameNumber).size() - 1), translationTime, index);
         }
-        if (turtle.getViewableLineList().size() == 0) {
+        if (turtle.getViewableLineList(turtle.getFrameNumber()-1).size() == 0) {
             lineViewGroups.get(index).getChildren().clear();
         }
         return null;

@@ -43,7 +43,7 @@ public class DisplayModel extends IDisplayModel {
 
     public double TurtleAction (String command, List<Command> parameters) {
         lastValue = 0;
-        turtleList.stream().filter(t -> t.isActive())
+        turtleList.stream().filter(t -> t.isActive(t.getFrameNumber()-1))
                 .forEach(turtle -> invokeAction(turtle, command, parameters));
         turtleList.stream().forEach(turtle -> turtle.syncFrame());
         updateView();
@@ -102,7 +102,7 @@ public class DisplayModel extends IDisplayModel {
 
     @Override
     public double[] getActiveTurtleIDs () {
-        return turtleList.stream().filter(t -> t.isActive())
+        return turtleList.stream().filter(t -> t.isActive(t.getFrameNumber()-1))
                 .mapToDouble(d -> turtleList.indexOf(d) + 1).toArray();
     }
 

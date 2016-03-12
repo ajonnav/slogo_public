@@ -37,7 +37,7 @@ public class StampAnimation extends CustomAnimation {
                     .get(turtle.getViewableStampList(frameNumber).size() - 1),
                              index, speed);
         }
-        if (turtle.getViewableStampList().size() == 0) {
+        if (turtle.getViewableStampList(turtle.getFrameNumber()-1).size() == 0) {
             stampViewGroups.get(index).getChildren().clear();
         }
         return null;
