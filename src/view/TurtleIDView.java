@@ -93,10 +93,25 @@ public class TurtleIDView extends ScrollView {
         features.updateComboBoxOptions(myColorBoxes.get(i), displayModel.getColorMap());
         Double penID = displayModel.getViewableTurtleList().get(i).getPenColorIndex();
         myColorBoxes.get(i).setPromptText("Color " + penID.intValue());
+<<<<<<< HEAD
     }
 
     public void penChange (int ID, HBox box) {
         Text t = (Text) box.getChildren().get(1);
+=======
+        myImageBoxes.get(i).setPromptText("Image " + imageID.intValue());
+	}
+	
+	public void penChange(int ID, HBox box){
+		Text t = (Text) box.getChildren().get(1);
+        Integer ind = Integer.parseInt(t.getText());
+		displayModel.getTurtleList().get(ID).setPenColorIndex(new double[]{ind});
+		updateComboBoxes(ID);
+	}
+	
+	public void imageChange(int ID, HBox box){
+		Text t = (Text) box.getChildren().get(1);
+>>>>>>> c888c72c998c62523fbdac3e315912ceba906cd3
         Integer ind = Integer.parseInt(t.getText());
         displayModel.getViewableTurtleList().get(ID).setPenColorIndex(new double[] { ind });
         updateComboBoxes(ID);

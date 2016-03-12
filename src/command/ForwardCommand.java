@@ -7,7 +7,6 @@ import model.IModelMap;
 
 public class ForwardCommand extends Command {
 
-
     public ForwardCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
         setNumChildren(1);

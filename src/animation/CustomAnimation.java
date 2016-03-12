@@ -23,7 +23,7 @@ public abstract class CustomAnimation {
         for(int i = numNodes; i < displayModel.getViewableTurtleList().size(); i++) {
             setUpSingleView(frameNumber, i);
         }
-    };
+    }
     
     abstract void setUpSingleView(int frameNumber, int index);
     
@@ -57,7 +57,7 @@ public abstract class CustomAnimation {
     }
 
     public double transformHeading (double heading) {
-        return 90 - heading;
+        return UIConstants.NINETY - heading;
     }
     
     public Image getImageFromString (String image) {

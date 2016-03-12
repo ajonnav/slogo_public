@@ -26,8 +26,13 @@ public interface ViewableDisplayModel {
 	public abstract List<ViewableTurtleModel> getViewableTurtleList();
 	
 	public abstract Map<Double, String> getColorMap();
+<<<<<<< HEAD
 	
 	public abstract boolean isToUpdateIDView ();
 
         public abstract void setIsToUpdateIDView (boolean toUpdateIDView);
+=======
+
+	public abstract int getAnimationSpeed();
+>>>>>>> c888c72c998c62523fbdac3e315912ceba906cd3
 }
