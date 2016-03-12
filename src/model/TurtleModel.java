@@ -243,14 +243,14 @@ public class TurtleModel implements ViewableTurtleModel {
         positionX.add(xy[0]);
         positionY.add(xy[1]);
         IPenModel lastPen = penList.get(penList.size() - 1);
-        if (lastPen.getStatus()) {
-            List<ILineModel> nextLM = copyLineList(getLineList(frameNumber - 1));
-            nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(frameNumber - 1),
-                                     getPositionY(frameNumber - 1),
-                                     lastPen.getSize(), lastPen.getColorString(),
-                                     lastPen.getStyle()));
-            lines.add(nextLM);
-        }
+//        if (lastPen.getStatus()) {
+//            List<ILineModel> nextLM = copyLineList(getLineList(frameNumber - 1));
+//            nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(frameNumber - 1),
+//                                     getPositionY(frameNumber - 1),
+//                                     lastPen.getSize(), lastPen.getColorString(),
+//                                     lastPen.getStyle()));
+//            lines.add(nextLM);
+//        }
         return Math.sqrt(Math.pow((oldPos[0] - getPositionX(frameNumber - 1)), 2) +
                          Math.pow((oldPos[1] - getPositionY(frameNumber - 1)), 2));
     }
