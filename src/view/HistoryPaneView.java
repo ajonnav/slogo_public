@@ -18,13 +18,14 @@ public class HistoryPaneView extends ScrollView {
         getMyPane().setLayoutY(UIConstants.BORDER_WIDTH);
         getMyPane().setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
 		getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+		setMyName(getResources().getString("Hist"));
     }
 
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof IHistoryModel) {
             IHistoryModel hpm = (IHistoryModel) o;
-            getMyBox().getChildren().clear();
+            refresh();
             int x = 1;
             for (String item : hpm.getImmutableHistoryList()) {
             	if(x % UIConstants.TWO != 0) {

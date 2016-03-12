@@ -16,6 +16,7 @@ public class DisplayModel extends IDisplayModel{
     private double lastValue;
     private int lastActiveID;
     private boolean toAnimate;
+    private boolean toUpdateIDView;
 
     public DisplayModel (Map<Double, String> colorMap, Map<Double, String> imageMap) {
         this.imageMap = imageMap;
@@ -23,6 +24,7 @@ public class DisplayModel extends IDisplayModel{
         backgroundColorIndex = 3;
         this.lastActiveID = 1;
         this.toAnimate = true;
+        this.toUpdateIDView = true;
         setTurtles(3);
         setChanged();
         updateView();
@@ -166,6 +168,16 @@ public class DisplayModel extends IDisplayModel{
     @Override
     public void setToAnimate (boolean toAnimate) {
         this.toAnimate = toAnimate;
+    }
+    
+    @Override
+    public boolean isToUpdateIDView () {
+        return toUpdateIDView;
+    }
+
+    @Override
+    public void setIsToUpdateIDView (boolean toUpdateIDView) {
+        this.toUpdateIDView = toUpdateIDView;
     }
     
 }

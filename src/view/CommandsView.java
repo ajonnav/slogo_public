@@ -23,7 +23,8 @@ public class CommandsView extends ScrollView{
                 getMyPane().setLayoutY(UIConstants.METHODS_Y);
         		getMyPane().setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
         		getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
-        		getMyBox().getChildren().add(new Text("User Commands"));
+        		setMyName(myBundle.getString("UCommands"));
+        		refresh();
         }
 
         @Override
@@ -31,7 +32,7 @@ public class CommandsView extends ScrollView{
                 if(o instanceof ICommandsModel){
                         ICommandsModel vm = (ICommandsModel) o;
                         vars = vm.getImmutableVariablesMap();
-                        getMyBox().getChildren().clear();
+                        refresh();
                         for(String item : vars.keySet()){
                                 if(vars.get(item) != null) {
                                     String parameterString = vars.get(item).size() == 1 ? " parameter" : " parameters";

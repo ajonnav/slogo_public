@@ -29,7 +29,7 @@ public class UIConstants {
 	public static final double COORDINATE_LOCATION_X = 450;
 	public static final double COORDINATE_LOCATION_Y = 500;
 	public static final double VARIABLE_PANE_X = 100;
-	public static final double COLOR_SELECTOR_WIDTH = 150;
+	public static final double COLOR_SELECTOR_WIDTH = 100;
 	public static final double BACKGROUND_PICK_X = 100;
 	public static final double PEN_PICK_X = 250;
 	public static final double LOWER_PANE_Y = 525;
@@ -51,9 +51,10 @@ public class UIConstants {
 	public static final double LOAD_BUTTON_Y = 300;
 	public static final double WEL_RECT_X = 110;
 	public static final double PADDING = 4;
-	public static final double RECTANGLE_W = 120;
+	public static final double RECTANGLE_W = 80;
 	public static final double RECTANGLE_H = 18;
 	public static final double TWO = 2;
+	public static final double MAX_PANE = 400;
 	
 	
 	public static final String CHIN = "CHIN";

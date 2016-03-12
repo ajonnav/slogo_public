@@ -104,7 +104,7 @@ public class DemoWSpace extends Screen {
 		displayModel.setToAnimate(true);
 		displayModel.notifyObservers();
 		displayModel.updateView();
-		// setTurtlePane(displayModel);
+		setTurtlePane(displayModel);
 	}
 
 	public void establishRelationship(Observable myModel, View myView) {
@@ -182,7 +182,7 @@ public class DemoWSpace extends Screen {
 	 * display
 	 */
 	private void setTurtlePane(DisplayModel dm) {
-		turtleView = new TurtleIDView(inputText);
+		turtleView = new TurtleIDView();
 		getRoot().getChildren().add(turtleView.getMyRoot());
 		dm.addObserver(turtleView);
 	}

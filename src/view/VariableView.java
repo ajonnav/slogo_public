@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.ResourceBundle;
-import addons.Features;
 import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
@@ -17,7 +16,6 @@ public class VariableView extends ScrollView{
 	private VBox varBox;
 	private TextArea myTA;
 	private ResourceBundle myBundle;
-	private ResourceBundle myResources;
 	
 	public VariableView(TextArea ta, String language) {
 		getMyPane().setLayoutX(UIConstants.BORDER_WIDTH);
@@ -29,10 +27,8 @@ public class VariableView extends ScrollView{
 		myTA = ta;
 		String myLang = language;
 		myBundle = ResourceBundle.getBundle(UIConstants.RSRC_LANG + myLang);
-		myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
-				
-		getMyBox().getChildren().add(Features.makeText(myResources.getString("Var")));
-		//getMyBox().getChildren().add(varBox);
+		setMyName(getResources().getString("UVars"));
+		refresh();
 	}
 
 	@Override

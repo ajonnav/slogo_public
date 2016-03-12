@@ -52,11 +52,13 @@ public class CommandParser {
                  returnValue = commandsList.get(i).execute();
             }
             modelMap.getDisplay().setToAnimate(true);
+            modelMap.getDisplay().setIsToUpdateIDView(true);
             modelMap.getDisplay().updateView();
             modelMap.getHistory().addToHistory(Double.toString(returnValue));
         }
         catch (Exception e) {
-//            modelMap.getHistory().addToHistory(e.getMessage());
+        	e.printStackTrace();
+           modelMap.getHistory().addToHistory(e.getMessage());
         }
     }
 
