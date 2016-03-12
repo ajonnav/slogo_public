@@ -9,9 +9,9 @@ public class AskWithCommand extends Command {
 
     private IModelMap modelMap;
 
-    public AskWithCommand (IModelMap modelMap, List<String> text) {
+    public AskWithCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
-        this.modelMap = modelMap;
     }
     
     @Override

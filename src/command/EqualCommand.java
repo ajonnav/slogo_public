@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class EqualCommand extends Command {
 
-    public EqualCommand (IModelMap modelMap, List<String> text) {
+    public EqualCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }

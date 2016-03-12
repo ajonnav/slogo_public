@@ -8,9 +8,9 @@ public class GetShapeCommand extends Command {
 
     private IModelMap modelMap;
 
-    public GetShapeCommand (IModelMap modelMap, List<String> text) {
+    public GetShapeCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(0);
-        this.modelMap = modelMap;
     }
 
     @Override

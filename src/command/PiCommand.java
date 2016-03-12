@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class PiCommand extends Command {
 
-    public PiCommand (IModelMap modelMap, List<String> text) {
+    public PiCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override

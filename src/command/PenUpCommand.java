@@ -8,8 +8,8 @@ public class PenUpCommand extends Command {
 
     private IModelMap modelMap;
 
-    public PenUpCommand (IModelMap modelMap, List<String> text) {
-        this.modelMap = modelMap;
+    public PenUpCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override
