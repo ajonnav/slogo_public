@@ -11,7 +11,7 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import model.ILineModel;
 import model.IPenModel;
-import model.TurtleModel;
+import model.ViewableTurtleModel;
 
 
 public class LineAnimation extends CustomAnimation {
@@ -31,7 +31,7 @@ public class LineAnimation extends CustomAnimation {
 
     @Override
     Animation generateSingleAnimation (int frameNumber, int index, int speed) {
-        TurtleModel turtle = getDisplayModel().getTurtleList().get(index);
+        ViewableTurtleModel turtle = getDisplayModel().getViewableTurtleList().get(index);
         double translationTime = getTwoStateTranslationTime(turtle, frameNumber, speed);
         if (turtle.getLineList(frameNumber - 1).size() + 1 == turtle.getLineList(frameNumber)
                 .size()) {

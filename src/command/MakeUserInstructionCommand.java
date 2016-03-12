@@ -1,7 +1,7 @@
 package command;
 
 import java.util.List;
-import exception.SLogoSyntaxException;
+import exception.SLogoException;
 import model.ICommandsModel;
 import model.IModelMap;
 
@@ -19,12 +19,12 @@ public class MakeUserInstructionCommand extends Command {
     public void prepare (List<List<Command>> commands) {
         super.prepare(commands);
         if (!commands.get(0).get(0).getCommandName().equals("CommandCommand")) {
-            throw new SLogoSyntaxException("This command cannot be created");
+            throw new SLogoException(getErrorBundle().getString("CannotCreateCommmand"));
         }
         List<Command> variables = commands.get(1);
         for (Command v : variables) {
             if (!v.getCommandName().equals("VariableCommand")) {
-                throw new SLogoSyntaxException("Non-variable supplied in variable list");
+                throw new SLogoException(getErrorBundle().getString("NonVariableSupplied"));
             }
         }
         CommandCommand newCommand = (CommandCommand) commands.get(0).get(0);

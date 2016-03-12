@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import exception.SLogoSyntaxException;
+import java.util.ResourceBundle;
+import constants.UIConstants;
+import exception.SLogoException;
 import model.ICommandsModel;
 import model.IModelMap;
 
@@ -45,7 +47,7 @@ public class CommandCommand extends Command {
             return returnValue;
         }
         else {
-            throw new SLogoSyntaxException("User command not found");
+            throw new SLogoException(getErrorBundle().getString("UserCommandNotFound"));
         }
     }
 

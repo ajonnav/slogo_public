@@ -1,6 +1,9 @@
 package command;
 
 import java.util.List;
+import java.util.ResourceBundle;
+
+import constants.UIConstants;
 
 
 public abstract class Command {
@@ -9,6 +12,7 @@ public abstract class Command {
     private String name;
     private boolean takesUnlimitedParameters = false;
     private List<List<Command>> commands;
+    private ResourceBundle errorBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
 
     public abstract double execute ();
 
@@ -47,6 +51,10 @@ public abstract class Command {
 
     public void setTakesUnlimitedParameters (boolean takesUnlimitedParameters) {
         this.takesUnlimitedParameters = takesUnlimitedParameters;
+    }
+    
+    public ResourceBundle getErrorBundle() {
+    	return errorBundle;
     }
 
 }

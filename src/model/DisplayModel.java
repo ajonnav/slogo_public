@@ -3,8 +3,11 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import command.Command;
 import constants.UIConstants;
+import exception.SLogoException;
 
 
 public class DisplayModel extends IDisplayModel{
@@ -16,6 +19,7 @@ public class DisplayModel extends IDisplayModel{
     private double lastValue;
     private int lastActiveID;
     private boolean toAnimate;
+    private ResourceBundle errorBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
 
     public DisplayModel (Map<Double, String> colorMap, Map<Double, String> imageMap) {
         this.imageMap = imageMap;
@@ -57,7 +61,7 @@ public class DisplayModel extends IDisplayModel{
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            new SLogoException(errorBundle.getString("ReflectionError"));
         }
     }
 
@@ -78,6 +82,10 @@ public class DisplayModel extends IDisplayModel{
     
     public void createNewTurtles(double[] values) {
         for (int i = 0; i < values.length; i++) {
+        	if(values[i] <0) {
+        		throw new SLogoException(errorBundle.getString("InvalidIndex"));
+        	}
+        	
             if (values[i] > turtleList.size()) {
                 int currSize = turtleList.size();
                 for (int j = 0; j < values[i] - currSize; j++) {
@@ -102,7 +110,7 @@ public class DisplayModel extends IDisplayModel{
         return values[0];
     }
 
-    public double[] commandsToDoubleArray (List<Command> parameters) {
+    private double[] commandsToDoubleArray (List<Command> parameters) {
         double[] array = new double[parameters.size()];
         for (int i = 0; i < parameters.size(); i++) {
             array[i] = parameters.get(i).execute();
@@ -112,6 +120,9 @@ public class DisplayModel extends IDisplayModel{
     
     @Override
     public double setBackgroundColorIndex (double backgroundColorIndex) {
+    	if(!colorMap.containsKey(backgroundColorIndex)) {
+    		throw new SLogoException(errorBundle.getString("InvalidIndex"));
+    	}
         this.backgroundColorIndex = backgroundColorIndex;
         return backgroundColorIndex;
     }
@@ -152,6 +163,14 @@ public class DisplayModel extends IDisplayModel{
     public List<TurtleModel> getTurtleList() {
         return turtleList;
     }
+    
+    @Override
+	public List<ViewableTurtleModel> getViewableTurtleList() {
+    	List<ViewableTurtleModel> returnList = turtleList.stream()
+    			.map(t->(ViewableTurtleModel)t)
+    			.collect(Collectors.toList());
+		return returnList;
+	}
 
     @Override
     public int getNumTurtles () {
@@ -166,6 +185,10 @@ public class DisplayModel extends IDisplayModel{
     @Override
     public void setToAnimate (boolean toAnimate) {
         this.toAnimate = toAnimate;
+    }
+    
+    public ViewableTurtleModel randomMethod(TurtleModel turtle) {
+    	return turtle;
     }
     
 }

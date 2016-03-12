@@ -8,7 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import model.IStampModel;
-import model.TurtleModel;
+import model.ViewableTurtleModel;
 
 
 public class StampAnimation extends CustomAnimation {
@@ -28,7 +28,7 @@ public class StampAnimation extends CustomAnimation {
 
     @Override
     Animation generateSingleAnimation (int frameNumber, int index, int speed) {
-        TurtleModel turtle = getDisplayModel().getTurtleList().get(index);
+        ViewableTurtleModel turtle = getDisplayModel().getViewableTurtleList().get(index);
         if (turtle.getStampList(frameNumber - 1).size() + 1 == turtle.getStampList(frameNumber)
                 .size()) {
             return drawStamp(turtle.getStampList(frameNumber)
