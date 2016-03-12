@@ -1,26 +1,25 @@
 package command;
 
 import java.util.List;
-import exception.SLogoSyntaxException;
+import exception.SLogoException;
 import model.IModelMap;
 
 
 public class MakeVariableCommand extends Command {
 
-    private IModelMap modelMap;
 
-    public MakeVariableCommand (IModelMap modelMap, List<String> text) {
+    public MakeVariableCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
-        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
         if (!getCommands().get(0).get(0).getCommandName().equals("VariableCommand")) {
-            throw new SLogoSyntaxException("No Variable Specified");
+            throw new SLogoException("NoVariable");
         }
         String variable = ((VariableCommand) getCommands().get(0).get(0)).getName();
-        return modelMap.getVariable()
+        return getModelMap().getVariable()
                 .setVariable(variable, getCommands().get(1).get(0).execute());
     }
 }

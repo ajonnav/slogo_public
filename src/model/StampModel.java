@@ -1,7 +1,7 @@
 package model;
 
 
-public class StampModel implements IStampModel{
+public class StampModel implements IStampModel, ViewableStampModel{
 
     private String imageString;
     private double x;

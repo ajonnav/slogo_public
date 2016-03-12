@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import exception.SLogoSyntaxException;
+import java.util.ResourceBundle;
+import constants.UIConstants;
+import exception.SLogoException;
 import model.ICommandsModel;
 import model.IModelMap;
 
@@ -15,9 +17,9 @@ public class CommandCommand extends Command {
     private IModelMap modelMap;
     private String name;
 
-    public CommandCommand (IModelMap modelMap, List<String> text) {
+    public CommandCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(-1);
-        this.modelMap = modelMap;
         this.commandsModel = modelMap.getCommands();
         this.name = text.get(0);
         List<Command> variables = commandsModel.getVariables(name);
@@ -45,7 +47,7 @@ public class CommandCommand extends Command {
             return returnValue;
         }
         else {
-            throw new SLogoSyntaxException("User command not found");
+            throw new SLogoException(getErrorBundle().getString("UserCommandNotFound"));
         }
     }
 

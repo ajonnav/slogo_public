@@ -3,11 +3,14 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import command.Command;
 import constants.UIConstants;
+import exception.SLogoException;
 
 
-public class DisplayModel extends IDisplayModel{
+public class DisplayModel extends IDisplayModel {
 
     private List<TurtleModel> turtleList = new ArrayList<>();
     private Map<Double, String> imageMap;
@@ -17,6 +20,8 @@ public class DisplayModel extends IDisplayModel{
     private int lastActiveID;
     private boolean toAnimate;
     private boolean toUpdateIDView;
+    private ResourceBundle errorBundle =
+            ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
 
     public DisplayModel (Map<Double, String> colorMap, Map<Double, String> imageMap) {
         this.imageMap = imageMap;
@@ -32,20 +37,22 @@ public class DisplayModel extends IDisplayModel{
 
     private void setTurtles (int num) {
         for (int i = 0; i < num; i++) {
-            TurtleModel turtleModel = new TurtleModel(0, 0, UIConstants.INITIAL_HEADING, imageMap, colorMap);
+            TurtleModel turtleModel =
+                    new TurtleModel(0, 0, UIConstants.INITIAL_HEADING, imageMap, colorMap);
             turtleList.add(turtleModel);
         }
     }
 
     public double TurtleAction (String command, List<Command> parameters) {
         lastValue = 0;
-        turtleList.stream().filter(t -> t.isActive()).forEach(turtle -> invokeAction(turtle, command, parameters));
+        turtleList.stream().filter(t -> t.isActive())
+                .forEach(turtle -> invokeAction(turtle, command, parameters));
         turtleList.stream().forEach(turtle -> turtle.syncFrame());
         updateView();
         return lastValue;
     }
-    
-    public void invokeAction(TurtleModel turtle, String command, List<Command> parameters) {
+
+    public void invokeAction (TurtleModel turtle, String command, List<Command> parameters) {
         try {
             lastActiveID = turtleList.indexOf(turtle) + 1;
             if (parameters == null) {
@@ -59,7 +66,7 @@ public class DisplayModel extends IDisplayModel{
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            new SLogoException(errorBundle.getString("ReflectionError"));
         }
     }
 
@@ -77,9 +84,13 @@ public class DisplayModel extends IDisplayModel{
         updateView();
         return lastActiveID;
     }
-    
-    public void createNewTurtles(double[] values) {
+
+    public void createNewTurtles (double[] values) {
         for (int i = 0; i < values.length; i++) {
+            if (values[i] < 0) {
+                throw new SLogoException(errorBundle.getString("InvalidIndex"));
+            }
+
             if (values[i] > turtleList.size()) {
                 int currSize = turtleList.size();
                 for (int j = 0; j < values[i] - currSize; j++) {
@@ -93,7 +104,8 @@ public class DisplayModel extends IDisplayModel{
 
     @Override
     public double[] getActiveTurtleIDs () {
-        return turtleList.stream().filter(t -> t.isActive()).mapToDouble(d -> turtleList.indexOf(d) + 1).toArray();
+        return turtleList.stream().filter(t -> t.isActive())
+                .mapToDouble(d -> turtleList.indexOf(d) + 1).toArray();
     }
 
     @Override
@@ -104,16 +116,19 @@ public class DisplayModel extends IDisplayModel{
         return values[0];
     }
 
-    public double[] commandsToDoubleArray (List<Command> parameters) {
+    private double[] commandsToDoubleArray (List<Command> parameters) {
         double[] array = new double[parameters.size()];
         for (int i = 0; i < parameters.size(); i++) {
             array[i] = parameters.get(i).execute();
         }
         return array;
     }
-    
+
     @Override
     public double setBackgroundColorIndex (double backgroundColorIndex) {
+        if (!colorMap.containsKey(backgroundColorIndex)) {
+            throw new SLogoException(errorBundle.getString("InvalidIndex"));
+        }
         this.backgroundColorIndex = backgroundColorIndex;
         return backgroundColorIndex;
     }
@@ -134,7 +149,7 @@ public class DisplayModel extends IDisplayModel{
         setChanged();
         notifyObservers();
     }
-    
+
     @Override
     public int getLastActiveID () {
         return lastActiveID;
@@ -144,15 +159,22 @@ public class DisplayModel extends IDisplayModel{
     public Map<Double, String> getImageMap () {
         return imageMap;
     }
-    
+
     @Override
     public double getBackgroundColorIndex () {
         return backgroundColorIndex;
     }
-    
+
     @Override
-    public List<TurtleModel> getTurtleList() {
+    public List<TurtleModel> getTurtleList () {
         return turtleList;
+    }
+
+    @Override
+    public List<ViewableTurtleModel> getViewableTurtleList () {
+        return turtleList.stream()
+                .map(t -> (ViewableTurtleModel) t)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -169,7 +191,6 @@ public class DisplayModel extends IDisplayModel{
     public void setToAnimate (boolean toAnimate) {
         this.toAnimate = toAnimate;
     }
-    
     @Override
     public boolean isToUpdateIDView () {
         return toUpdateIDView;
@@ -179,5 +200,10 @@ public class DisplayModel extends IDisplayModel{
     public void setIsToUpdateIDView (boolean toUpdateIDView) {
         this.toUpdateIDView = toUpdateIDView;
     }
-    
+
+    public ViewableTurtleModel randomMethod (TurtleModel turtle) {
+        return turtle;
+    }
+
 }
+

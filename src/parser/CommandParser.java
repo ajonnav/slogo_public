@@ -10,7 +10,8 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 import command.Command;
-import exception.SLogoSyntaxException;
+import constants.UIConstants;
+import exception.SLogoException;
 import model.IModelMap;
 
 
@@ -21,6 +22,7 @@ public class CommandParser {
     public static final String WHITESPACE = "\\s+";
     private final String ERROR = "NO MATCH";
     private List<Command> commandsList;
+    private ResourceBundle errorMessageBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
 
     public CommandParser (IModelMap modelMap) {
         this.mySymbols = new ArrayList<>();
@@ -58,7 +60,7 @@ public class CommandParser {
         }
         catch (Exception e) {
         	e.printStackTrace();
-           modelMap.getHistory().addToHistory(e.getMessage());
+            modelMap.getHistory().addToHistory(e.getMessage());
         }
     }
 
@@ -90,7 +92,7 @@ public class CommandParser {
         String currString = text.get(0);
         String currName = getClassName(currString);
         if(currName.equalsIgnoreCase("command.NO MATCHCommand")) {
-                throw new SLogoSyntaxException("Command not found");
+                throw new SLogoException(errorMessageBundle.getString("CommandNotFound"));
         }
         Command command = null;
         if(currString.equals("(")) {
@@ -114,7 +116,7 @@ public class CommandParser {
             command.prepare(getCommandParams(text, 1, "(", ")" ));
         }     
         else {
-            throw new SLogoSyntaxException("This command can't take unlimited parameters");
+            throw new SLogoException(errorMessageBundle.getString("UnlimitedParametersNotPossible"));
         }
         return command;
     }
@@ -122,14 +124,14 @@ public class CommandParser {
     public Command constructCurrCommand(List<String> text, String currName) {
         Command command = null;
         try {
-            command = ((Command) Class.forName(currName).getConstructor(IModelMap.class, List.class)
-                    .newInstance(modelMap, Collections.unmodifiableList(text)));
+            command = ((Command) Class.forName(currName).getConstructor(IModelMap.class, int.class, List.class)
+                    .newInstance(modelMap, 0, Collections.unmodifiableList(text)));
         }
-        catch (SLogoSyntaxException ee) {
-            throw ee;
+        catch (SLogoException e) {
+            throw e;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new SLogoException("ReflectionError");
         }
         return command;
     }
@@ -138,7 +140,7 @@ public class CommandParser {
         List<List<Command>> commandParams = new ArrayList<List<Command>>();
         for (int i = 0; i < numChildren; i++) {
             if(text.isEmpty()) {
-                throw new SLogoSyntaxException("Incomplete Command");
+                throw new SLogoException(errorMessageBundle.getString("IncompleteCommand"));
             }
             if (text.get(0).equals(open)) {
                 text.remove(0);

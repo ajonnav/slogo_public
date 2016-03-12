@@ -7,27 +7,26 @@ import model.TurtleModel;
 
 public class AskWithCommand extends Command {
 
-    private IModelMap modelMap;
 
-    public AskWithCommand (IModelMap modelMap, List<String> text) {
+    public AskWithCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
-        this.modelMap = modelMap;
     }
     
     @Override
     public double execute () { 
         List<Double> ids = new ArrayList<Double>();
-        double[] oldValues = modelMap.getDisplay().getActiveTurtleIDs();
-        List<TurtleModel> turtleList = modelMap.getDisplay().getTurtleList();
+        double[] oldValues = getModelMap().getDisplay().getActiveTurtleIDs();
+        List<TurtleModel> turtleList = getModelMap().getDisplay().getTurtleList();
         for(int i = 0; i < turtleList.size(); i++) {
-            modelMap.getDisplay().tell(new double[]{i+1});
+            getModelMap().getDisplay().tell(new double[]{i+1});
             if(getCommands().get(0).get(0).execute() == 1) {
                 ids.add((double) i + 1);
             }
         }
-        modelMap.getDisplay().tell(ids.stream().mapToDouble(d -> d).toArray());
+        getModelMap().getDisplay().tell(ids.stream().mapToDouble(d -> d).toArray());
         double returnValue = loopExecute(getCommands().get(1));
-        modelMap.getDisplay().tell(oldValues);
+        getModelMap().getDisplay().tell(oldValues);
         return returnValue;
     }
 }

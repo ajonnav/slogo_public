@@ -8,7 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import model.TurtleModel;
+import model.ViewableTurtleModel;
 
 public class ActiveAnimation extends CustomAnimation{
     
@@ -26,7 +26,7 @@ public class ActiveAnimation extends CustomAnimation{
 
     @Override
     Animation generateSingleAnimation (int frameNumber, int index, int speed) {
-        TurtleModel turtle = getDisplayModel().getTurtleList().get(index);
+        ViewableTurtleModel turtle = getDisplayModel().getViewableTurtleList().get(index);
         if (turtle.isActive()) {
             Rectangle area = actives.get(index);
             area.setStroke(Color.BLACK);

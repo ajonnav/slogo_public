@@ -7,16 +7,15 @@ import model.IModelMap;
 
 public class SetHeadingCommand extends Command {
 
-    private IModelMap modelMap;
 
-    public SetHeadingCommand (IModelMap modelMap, List<String> text) {
+    public SetHeadingCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("setHeading", Arrays.asList(getCommands().get(0).get(0)));
+        return getModelMap().getDisplay().TurtleAction("setHeading", Arrays.asList(getCommands().get(0).get(0)));
     }
 
 }

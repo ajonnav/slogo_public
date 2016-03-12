@@ -6,16 +6,14 @@ import model.IModelMap;
 
 public class ClearScreenCommand extends Command {
 
-    private IModelMap modelMap;
 
-    public ClearScreenCommand (IModelMap modelMap, List<String> text) {
-        setNumChildren(0);
-        this.modelMap = modelMap;
+    public ClearScreenCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("clearScreen", null);
+        return getModelMap().getDisplay().TurtleAction("clearScreen", null);
     }
 
 }
