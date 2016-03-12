@@ -16,7 +16,7 @@ public class RemainderCommand extends Command {
     @Override
     public double execute () {
         if(getCommands().get(0).size() > 1) {
-            unlimitedExecute(Operator.REMAINDER);
+            return unlimitedExecute(Operator.REMAINDER);
         }
         return Operator.REMAINDER.operate(getCommands().get(0).get(0).execute(), getCommands().get(1).get(0).execute());
     }

@@ -15,7 +15,7 @@ public class PowerCommand extends Command {
     @Override
     public double execute () {
         if(getCommands().get(0).size() > 1) {
-            unlimitedExecute(Operator.POWER);
+            return unlimitedExecute(Operator.POWER);
         }
         return Operator.POWER.operate(getCommands().get(0).get(0).execute(), getCommands().get(1).get(0).execute());
     }
