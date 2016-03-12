@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.ResourceBundle;
-
 import addons.Features;
 import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
