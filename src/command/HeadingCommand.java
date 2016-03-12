@@ -1,20 +1,19 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class HeadingCommand extends Command {
 
-    private double heading;
 
-    public HeadingCommand (ModelMap modelMap, List<String> text) {
+    public HeadingCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(0);
-        heading = modelMap.getTurtle().getHeading();
     }
 
     @Override
     public double execute () {
-        return heading;
+        return getModelMap().getDisplay().TurtleAction("getHeading", null);
     }
 }

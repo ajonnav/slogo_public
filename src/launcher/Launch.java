@@ -15,5 +15,4 @@ public class Launch extends Application{
 		Splash start = new Splash();
 		start.begin();
 	}
-	
 }

@@ -1,22 +1,19 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class ShowTurtleCommand extends Command {
 
-    private ModelMap modelMap;
 
-    public ShowTurtleCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
-        this.modelMap = modelMap;
+    public ShowTurtleCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override
     public double execute () {
-        modelMap.getTurtle().show();
-        return 1;
+        return getModelMap().getDisplay().TurtleAction("show", null);
     }
 
 }

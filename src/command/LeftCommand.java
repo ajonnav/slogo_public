@@ -1,23 +1,21 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class LeftCommand extends Command {
 
-    private ModelMap modelMap;
 
-    public LeftCommand (ModelMap modelMap, List<String> text) {
+    public LeftCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        double deg = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().turn(-deg);
-        return deg;
+        return -getModelMap().getDisplay().TurtleAction("turnLeft", Arrays.asList(getCommands().get(0).get(0)));
     }
 
 }

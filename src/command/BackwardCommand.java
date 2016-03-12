@@ -1,22 +1,20 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
-
+import model.IModelMap;
 
 public class BackwardCommand extends Command {
 
-    private ModelMap modelMap;
 
-    public BackwardCommand (ModelMap modelMap, List<String> text) {
+
+    public BackwardCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        double dist = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().forward(-dist);
-        return dist;
+        return -getModelMap().getDisplay().TurtleAction("backward", Arrays.asList(getCommands().get(0).get(0)));
     }
 }

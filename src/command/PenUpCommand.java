@@ -1,22 +1,19 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class PenUpCommand extends Command {
 
-    private ModelMap modelMap;
 
-    public PenUpCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
-        this.modelMap = modelMap;
+    public PenUpCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override
     public double execute () {
-        modelMap.getTurtle().penUp();
-        return 0;
+        return getModelMap().getDisplay().TurtleAction("penUp", null);
     }
 
 }

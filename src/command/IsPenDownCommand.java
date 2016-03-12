@@ -1,21 +1,21 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class IsPenDownCommand extends Command {
 
-    private boolean status;
 
-    public IsPenDownCommand (ModelMap modelMap, List<String> text) {
+
+    public IsPenDownCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(0);
-        status = modelMap.getTurtle().getPenStatus();
     }
 
     @Override
     public double execute () {
-        return status ? 1 : 0;
+        return getModelMap().getDisplay().TurtleAction("getPenStatus", null);
     }
 
 }

@@ -1,48 +1,48 @@
 package view;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
-import javafx.scene.layout.VBox;
+
+import constants.UIConstants;
 import javafx.scene.text.Text;
-import model.HistoryPaneModel;
+import model.ViewableHistoryModel;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 
-
-public class HistoryPaneView implements IView {
-
-    public List<String> myHist;
-    public VBox myVBox;
+public class HistoryPaneView extends ScrollView {
+	
     public TextArea myTA;
-
-    public HistoryPaneView (VBox vb, TextArea ta) {
-        myHist = new ArrayList<>();
-        myVBox = vb;
+    
+    public HistoryPaneView (TextArea ta) {
         myTA = ta;
+        getMyPane().setLayoutX(UIConstants.HISTORY_PANE_X);
+        getMyPane().setLayoutY(UIConstants.BORDER_WIDTH);
+        getMyPane().setMinSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+		getMyPane().setMaxSize(UIConstants.UPPER_PANE_WIDTH, UIConstants.UPPER_PANE_HEIGHT);
+		setMyName(getResources().getString("Hist"));
     }
 
     @Override
     public void update (Observable o, Object arg) {
-        if (o instanceof HistoryPaneModel) {
-            HistoryPaneModel hpm = (HistoryPaneModel) o;
-            myVBox.getChildren().clear();
+        if (o instanceof ViewableHistoryModel) {
+            ViewableHistoryModel hpm1 = (ViewableHistoryModel) o;
+            getMyBox().getChildren().clear();
             int x = 1;
-            for (String item : hpm.getImmutableHistoryList()) {
-            	if(x % 2 != 0) {
+            for (String item : hpm1.getImmutableHistoryList()) {
+            	if(x % UIConstants.TWO != 0) {
             		Hyperlink past = new Hyperlink(">> " + item);
             		past.setOnAction(event -> {
             			myTA.appendText(item);
-            			past.setStyle("-fx-color: black;");
             		});
-            		myVBox.getChildren().add(past);
+            		getMyBox().getChildren().add(past);
             	}
             	else{
             		Text past = new Text("\t" + item);
-            		myVBox.getChildren().add(past);
+            		getMyBox().getChildren().add(past);
             	}
             	x++;
             }
         }
     }
+
 }
+

@@ -1,22 +1,19 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class ForwardCommand extends Command {
 
-    private ModelMap modelMap;
-
-    public ForwardCommand (ModelMap modelMap, List<String> text) {
+    public ForwardCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        double dist = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().forward(dist);
-        return dist;
+        return getModelMap().getDisplay().TurtleAction("forward", Arrays.asList(getCommands().get(0).get(0)));
     }
 }

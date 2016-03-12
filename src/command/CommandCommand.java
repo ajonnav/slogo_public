@@ -1,24 +1,30 @@
 package command;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import exception.SLogoSyntaxException;
-import model.CommandsModel;
-import model.ModelMap;
+import java.util.Map;
+import exception.SLogoException;
+import model.ICommandsModel;
+import model.IModelMap;
 
 
 public class CommandCommand extends Command {
 
-    private CommandsModel commandsModel;
-    private ModelMap modelMap;
+    private ICommandsModel commandsModel;
     private String name;
 
-    public CommandCommand (ModelMap modelMap, List<String> text) {
+    public CommandCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(-1);
-        this.modelMap = modelMap;
         this.commandsModel = modelMap.getCommands();
         this.name = text.get(0);
         List<Command> variables = commandsModel.getVariables(name);
-        if (variables != null) {
+        List<Command> commands = commandsModel.getCommands(name);
+        if (commands == null && variables != null) {
+           commandsModel.setCommands(name, new ArrayList<Command>());
+        }
+        else if(commands != null) {
             setNumChildren(variables.size());
         }
     }
@@ -26,16 +32,19 @@ public class CommandCommand extends Command {
     @Override
     public double execute () {
         if (getNumChildren() != -1) {
+            Map<String, Double> mapCopy = 
+                    new HashMap<String, Double>(getModelMap().getVariable().getImmutableVariableMap());
             for (int i = 0; i < getNumChildren(); i++) {
-                modelMap.getVariable()
-                        .setVariable(((VariableCommand) commandsModel.getVariables(name).get(i))
-                                .getName(),
-                                     getCommands().get(i).get(0).execute());
+                mapCopy.put(((VariableCommand) commandsModel.getVariables(name).get(i))
+                                .getName(), getCommands().get(i).get(0).execute());
             }
-            return loopExecute(commandsModel.getCommands(name));
+            getModelMap().getVariable().pushScope(mapCopy);
+            double returnValue = loopExecute(commandsModel.getCommands(name));
+            getModelMap().getVariable().popScope();
+            return returnValue;
         }
         else {
-            throw new SLogoSyntaxException("User command not found");
+            throw new SLogoException(getErrorBundle().getString("UserCommandNotFound"));
         }
     }
 

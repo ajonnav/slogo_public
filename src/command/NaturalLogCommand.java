@@ -1,12 +1,13 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class NaturalLogCommand extends Command {
 
-    public NaturalLogCommand (ModelMap modelMap, List<String> text) {
+    public NaturalLogCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
     }
 

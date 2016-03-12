@@ -1,13 +1,13 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class PiCommand extends Command {
 
-    public PiCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
+    public PiCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override

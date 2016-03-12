@@ -2,17 +2,19 @@ package command;
 
 import java.util.List;
 import java.util.Random;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class RandomCommand extends Command {
 
-    public RandomCommand (ModelMap modelMap, List<String> text) {
+    public RandomCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
     }
 
     @Override
     public double execute () {
-        return getCommands().get(0).get(0).execute() * (new Random()).nextDouble();
+        double random = (new Random()).nextDouble();
+        return getCommands().get(0).get(0).execute() * random;
     }
 }

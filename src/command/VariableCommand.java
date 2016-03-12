@@ -1,22 +1,21 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class VariableCommand extends Command {
 
-    private ModelMap modelMap;
     private String name;
 
-    public VariableCommand (ModelMap modelMap, List<String> text) {
-        this.modelMap = modelMap;
+    public VariableCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         this.name = text.get(0);
     }
 
     @Override
     public double execute () {
-        return modelMap.getVariable().getVariable(name);
+        return getModelMap().getVariable().getVariable(name);
     }
 
     public String getName () {

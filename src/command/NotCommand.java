@@ -1,12 +1,13 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class NotCommand extends Command {
 
-    public NotCommand (ModelMap modelMap, List<List<Command>> commands) {
+    public NotCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
     }
 

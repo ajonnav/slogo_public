@@ -1,21 +1,19 @@
 package command;
 
+import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class RightCommand extends Command {
 
-    private ModelMap modelMap;
 
-    public RightCommand (ModelMap modelMap, List<String> text) {
+    public RightCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        this.modelMap = modelMap;
     }
 
     public double execute () {
-        double deg = getCommands().get(0).get(0).execute();
-        modelMap.getTurtle().turn(deg);
-        return deg;
+        return getModelMap().getDisplay().TurtleAction("turnRight", Arrays.asList(getCommands().get(0).get(0)));
     }
 }

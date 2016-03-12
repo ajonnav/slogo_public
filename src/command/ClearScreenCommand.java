@@ -1,24 +1,19 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class ClearScreenCommand extends Command {
 
-    private ModelMap modelMap;
-    private HomeCommand home;
 
-    public ClearScreenCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
-        this.modelMap = modelMap;
-        home = new HomeCommand(modelMap, text);
+    public ClearScreenCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override
     public double execute () {
-        modelMap.getTurtle().setShouldClear(true);
-        return home.execute();
+        return getModelMap().getDisplay().TurtleAction("clearScreen", null);
     }
 
 }

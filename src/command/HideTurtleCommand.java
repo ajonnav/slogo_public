@@ -1,22 +1,20 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class HideTurtleCommand extends Command {
 
-    private ModelMap modelMap;
 
-    public HideTurtleCommand (ModelMap modelMap, List<String> text) {
+    public HideTurtleCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(0);
-        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        modelMap.getTurtle().hide();
-        return 0;
+        return getModelMap().getDisplay().TurtleAction("hide", null);
     }
 
 }

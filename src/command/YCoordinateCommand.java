@@ -1,22 +1,19 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class YCoordinateCommand extends Command {
 
-    public static final int numChildren = 0;
-    private double y;
 
-    public YCoordinateCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
-        y = modelMap.getTurtle().getPositionY();
+    public YCoordinateCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override
     public double execute () {
-        return y;
+        return getModelMap().getDisplay().TurtleAction("getPositionY", null);
     }
 
 }

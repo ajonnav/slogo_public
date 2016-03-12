@@ -3,42 +3,49 @@ package model;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
+import java.util.Stack;
 
 
-public class VariableModel extends Observable {
+public class VariableModel extends IVariableModel {
 
-    private Map<String, Double> variableMap;
+    private Stack<HashMap<String, Double>> variableMap;
 
     public VariableModel () {
-        this.variableMap = new HashMap<String, Double>();
+        this.variableMap = new Stack<HashMap<String, Double>>();
+        this.variableMap.push(new HashMap<String, Double>());
     }
 
     public Double getVariable (String variable) {
-        return variableMap.containsKey(variable) ? variableMap.get(variable) : setVariable(variable, 0.0);
+        return variableMap.peek().containsKey(variable) ? variableMap.peek().get(variable) : setVariable(variable, 0.0);
     }
-
+    
+    public void pushScope(Map<String, Double> variableMap) {
+        this.variableMap.push((HashMap<String, Double>) variableMap);
+        updateView();
+    }
+    
+    public void popScope() {
+        this.variableMap.pop();
+        updateView();
+    }
+    
     public Double setVariable (String variable, double value) {
-        variableMap.put(variable, value);
-        setChanged();
-        notifyObservers();
+        variableMap.peek().put(variable, value);
+        updateView();
         return value;
     }
 
     public void clearVariables () {
         variableMap.clear();
-        setChanged();
-        notifyObservers();
-    }
-    
-    public void printMap() {
-        for(String s : variableMap.keySet()) {
-            System.out.println(s + " " + variableMap.get(s));
-        }
+        updateView();
     }
     
     public Map<String, Double> getImmutableVariableMap () {
-        return Collections.unmodifiableMap(variableMap);
+        return Collections.unmodifiableMap(variableMap.peek());
     }
-
+    
+    public void updateView() {
+        setChanged();
+        notifyObservers();
+    }
 }

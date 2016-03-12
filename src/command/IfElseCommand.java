@@ -1,12 +1,13 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class IfElseCommand extends Command {
 
-    public IfElseCommand (ModelMap modelMap, List<String> text) {
+    public IfElseCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(3);
     }
 

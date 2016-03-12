@@ -1,28 +1,24 @@
 
 package command;
 
+import java.util.Arrays;
 import java.util.List;
-import model.ModelMap;
-import model.TurtleModel;
+import model.IModelMap;
 
 
 public class SetPositionCommand extends Command {
 
-    private ModelMap modelMap;
 
-    public SetPositionCommand (ModelMap modelMap, List<String> text) {
+
+    public SetPositionCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
-        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        double xPos = getCommands().get(0).get(0).execute();
-        double yPos = getCommands().get(1).get(0).execute();
-        TurtleModel turtleModel = modelMap.getTurtle();
-        turtleModel.setPosition(xPos, yPos);
-        return Math.sqrt(Math.pow((xPos - turtleModel.getPositionX()), 2) +
-                         Math.pow((yPos - turtleModel.getPositionY()), 2));
+        return getModelMap().getDisplay().TurtleAction("setPosition", Arrays.asList(getCommands().get(0).get(0), 
+                                                                  getCommands().get(1).get(0)));
     }
 
 }

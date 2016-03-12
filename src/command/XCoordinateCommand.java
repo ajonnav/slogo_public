@@ -1,21 +1,20 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class XCoordinateCommand extends Command {
 
-    private double x;
+    public static final String command = "getPositionX";
 
-    public XCoordinateCommand (ModelMap modelMap, List<String> text) {
-        setNumChildren(0);
-        x = modelMap.getTurtle().getPositionX();
+    public XCoordinateCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override
     public double execute () {
-        return x;
+        return getModelMap().getDisplay().TurtleAction(command, null);
     }
 
 }

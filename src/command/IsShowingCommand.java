@@ -1,21 +1,20 @@
 package command;
 
 import java.util.List;
-import model.ModelMap;
+import model.IModelMap;
 
 
 public class IsShowingCommand extends Command {
 
-    private boolean status;
 
-    public IsShowingCommand (ModelMap modelMap, List<String> text) {
+    public IsShowingCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(0);
-        status = modelMap.getTurtle().getShowStatus();
     }
 
     @Override
     public double execute () {
-        return status ? 1 : 0;
+        return getModelMap().getDisplay().TurtleAction("getShowStatus", null);
     }
 
 }
