@@ -6,6 +6,9 @@ import java.util.Map;
 
 public class TurtleModel implements ViewableTurtleModel {
     
+	private double initialPenSize = 1;
+	private double initialPenColorIndex = 1;
+	private double initialPenStyleIndex = 1;
     private double turtleInitialX;
     private double turtleInitialY;
     private double turtleInitialHeading;
@@ -33,9 +36,9 @@ public class TurtleModel implements ViewableTurtleModel {
         addInitialStates(frameNumber);
     }
     
-    public void addInitialStates(int num) {
+    private void addInitialStates(int num) {
         for(int i = 0; i < num; i++) {
-            IPenModel newPen = new PenModel(true, 1, 1, 2);
+            IPenModel newPen = new PenModel(true, initialPenSize, initialPenColorIndex, initialPenStyleIndex);
             newPen.setColorString(colorMap.get(newPen.getColorIndex()));
             pen.add(newPen);  
             isActive.add(false);
@@ -98,6 +101,7 @@ public class TurtleModel implements ViewableTurtleModel {
     
     public void syncFrame() {
         frameNumber++;
+        
         if(pen.size() != frameNumber) {
             pen.add(getPen().copyPenModel());
         }
@@ -150,7 +154,7 @@ public class TurtleModel implements ViewableTurtleModel {
                 nextLM.add(new LineModel(getPositionX(), getPositionY(), 
                                 getPositionX()  + distance[0] * Math.cos(Math.toRadians(getHeading())), 
                                 getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())),
-                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyleIndex()));
+                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
                 lines.add(nextLM);
         }
         positionX.add(getPositionX() + distance[0] * Math.cos(Math.toRadians(getHeading())));
@@ -221,7 +225,7 @@ public class TurtleModel implements ViewableTurtleModel {
         if(lastPen.getStatus()) {
                 List<ILineModel> nextLM = copyLineList(getLineList());
                 nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(), getPositionY(),
-                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyleIndex()));
+                                lastPen.getSize(), lastPen.getColorString(), lastPen.getStyle()));
                 lines.add(nextLM);
         }
         return Math.sqrt(Math.pow((oldPos[0] - getPositionX()), 2) +
@@ -285,17 +289,6 @@ public class TurtleModel implements ViewableTurtleModel {
         pen.add(newPen);
         return lineWidth[0];
     }
-    
-    
-    
-    
-    
-   
-    
-    
-    
-    
-    
     
     public int getFrameNumber() {
         return frameNumber;

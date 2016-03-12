@@ -8,9 +8,11 @@ public abstract class IPenModel extends Observable {
 	
 	public abstract void setStatus (boolean status);
 	
-	public abstract double[] getStyleIndex ();
+	public abstract double getStyleIndex ();
 	
 	public abstract void setStyleIndex (double style);
+	
+	public abstract double[] getStyle ();
 	
 	public abstract double getColorIndex ();
 	
