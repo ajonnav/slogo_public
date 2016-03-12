@@ -11,6 +11,7 @@ import model.ModelMap;
 import preferences.PrefWriter;
 import view.View;
 
+
 public class WMenu {
 
 	private ResourceBundle myResources;
@@ -37,10 +38,6 @@ public class WMenu {
 		myStage = s;
 	}
 
-	public void initializeMenus() throws NoSuchMethodException {
-		makeFileMenu();
-		makeEditMenu();
-	}
 
 	public MenuBar getMyMenu() {
 		return myMenu;
@@ -82,9 +79,6 @@ public class WMenu {
 		}
 	}
 
-	public void makeEditMenu() {
-		menuMaker.addMenu(myResources.getString("EditCommand"));
-	}
 
 	/*
 	 * Hides/shows a user view from the Scene
@@ -123,5 +117,6 @@ public class WMenu {
 		PrefWriter setter = new PrefWriter(modelMap, newTitle, myLang);
 		setter.writeToSrl();
 	}
+
 
 }

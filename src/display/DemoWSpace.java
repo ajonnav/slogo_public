@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.TreeMap;
 import addons.WMenu;
 import constants.UIConstants;
 
@@ -54,7 +55,7 @@ public class DemoWSpace extends Screen {
 		workspaceMenu.setStage(getStage());
 		workspaceMenu.setViews(Arrays.asList(varView, hpv, turtleView, commandView, myIV));
 		try {
-			workspaceMenu.initializeMenus();
+			workspaceMenu.makeFileMenu();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		}
@@ -79,23 +80,20 @@ public class DemoWSpace extends Screen {
 	 * Initializes the turtle display's front end and back end relationship
 	 */
 	private void setDisplay() {
-		// TreeMap<Double,String> colorMap = new TreeMap<Double, String>();
-		// colorMap.put(0.0, "#849775");
-		// colorMap.put(1.0, "#1518b4");
-		// colorMap.put(2.0, "#5df45d");
-		// colorMap.put(3.0, "#7182a7");
-		// colorMap.put(4.0, "#b73547");
-		// colorMap.put(6.0, "#b73547");
-		// TreeMap<Double, String> imageMap = new TreeMap<Double, String>();
-		// imageMap.put(0.0, "black.png");
-		// imageMap.put(1.0, "blue.png");
-		// imageMap.put(2.0, "green.png");
-		// imageMap.put(3.0, "red.png");
-		// imageMap.put(4.0, "turtle.png");
-		//
-		// imageMap.put(6.0, "turtle.png");
-		// DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
-		DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
+		 Map<Double,String> colorMap = new TreeMap<Double, String>();
+		 colorMap.put(0.0, "#849775");
+		 colorMap.put(1.0, "#1518b4");
+		 colorMap.put(2.0, "#5df45d");
+		 colorMap.put(3.0, "#7182a7");
+		 colorMap.put(4.0, "#b73547");
+		 Map<Double, String> imageMap = new TreeMap<Double, String>();
+		 imageMap.put(0.0, "black.png");
+		 imageMap.put(1.0, "blue.png");
+		 imageMap.put(2.0, "green.png");
+		 imageMap.put(3.0, "red.png");
+		 imageMap.put(4.0, "turtle.png");
+		 DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
+//		DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
 		DisplayView displayView = new DisplayView(getRoot());
 		displayModel.addObserver(displayView);
 		modelMap.setDisplay(displayModel);
@@ -103,8 +101,8 @@ public class DemoWSpace extends Screen {
 		modelMap.getDisplay().setBackgroundColorIndex(myState.getBackColorIndex());
 		displayModel.setToAnimate(true);
 		displayModel.notifyObservers();
-		displayModel.updateView();
 		setTurtlePane(displayModel);
+	        displayModel.updateView();
 	}
 
 	public void establishRelationship(Observable myModel, View myView) {
@@ -171,13 +169,6 @@ public class DemoWSpace extends Screen {
 	}
 
 	/*
-	 * private void initializeCommands(CommandsModel cpm, Map<String,
-	 * List<Command>> commands, Map<String, List<Command>> commVars){ for
-	 * (String n: commands.keySet()){ cpm.setCommands(n, commands.get(n));
-	 * cpm.setVariables(n, commVars.get(n)); } }
-	 */
-
-	/*
 	 * Sets the Pane for the current status of the various turtles on the
 	 * display
 	 */
@@ -185,26 +176,6 @@ public class DemoWSpace extends Screen {
 		turtleView = new TurtleIDView();
 		getRoot().getChildren().add(turtleView.getMyRoot());
 		dm.addObserver(turtleView);
-	}
-
-	private void setPenUpDown() {
-
-	}
-
-	private void setPenThicknessInputField() {
-
-	}
-
-	private void setPenThickness() {
-
-	}
-
-	private void setPenStyleBox() {
-
-	}
-
-	private void setPenStyle() {
-
 	}
 
 	public String getMyLang() {

@@ -16,6 +16,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import model.ViewableDisplayModel;
 
 
@@ -37,8 +38,8 @@ public class DisplayView implements IView {
                                                     UIConstants.CANVAS_SIZE,
                                                     Color.GREEN);
         this.backgroundGC = backgroundCanvas.getGraphicsContext2D();
-        this.backgroundColorComboBox = features.makeColorPicker(UIConstants.BACKGROUND_PICK_X,
-                                                                UIConstants.ZERO,
+        this.backgroundColorComboBox = features.makeColorPicker(UIConstants.BG_COMBO_X,
+                                                                UIConstants.BG_COMBO_Y,
                                                                 UIConstants.COLOR_SELECTOR_WIDTH,
                                                                 UIConstants.BORDER_WIDTH);
         root.getChildren().add(backgroundCanvas);
@@ -50,7 +51,7 @@ public class DisplayView implements IView {
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof ViewableDisplayModel) {
-        	ViewableDisplayModel displayModel = (ViewableDisplayModel) o;
+            ViewableDisplayModel displayModel = (ViewableDisplayModel) o;
             updateBackground(displayModel);
             animateDisplay(displayModel, displayModel.getAnimationSpeed());
         }
@@ -64,8 +65,16 @@ public class DisplayView implements IView {
                                backgroundCanvas.getHeight());
         backgroundGC.setFill(Color.web(backgroundColorString.split(" ")[1]));
         backgroundGC.fillRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
+        backgroundColorComboBox.setPromptText("Background Color " + displayModel.getBackgroundColorIndex());
+        backgroundColorComboBox.setOnAction(e -> bgChange(displayModel, (HBox) backgroundColorComboBox.getValue()));
     }
-
+    
+    public void bgChange (ViewableDisplayModel displayModel, HBox box) {
+        Text t = (Text) box.getChildren().get(1);
+        Integer ind = Integer.parseInt(t.getText());
+        displayModel.setBackgroundColorIndex((double) ind);
+    }
+    
     public void animateDisplay (ViewableDisplayModel displayModel, int speed) {
         if (displayModel.isToAnimate()) {
             displayModel.setToAnimate(false);
