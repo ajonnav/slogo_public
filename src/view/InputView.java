@@ -22,8 +22,9 @@ public class InputView extends View {
 		inputText = myIT;
 		inputText.setMinSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.RECTANGLE_W);
 		inputText.setMaxSize(UIConstants.LOWER_PANE_WIDTH, UIConstants.RECTANGLE_W);
+		getMyBox().getChildren().add(featureMaker.makeText(getResources().getString("Console")));
 		getMyBox().getChildren().add(inputText);
-		Button inputButton = featureMaker.makeB("GO", event -> readInput());
+		Button inputButton = featureMaker.makeB(getResources().getString("GO"), event -> readInput());
 		inputButton.setMinWidth(UIConstants.LOWER_PANE_WIDTH);
 		getMyBox().getChildren().add(inputButton);
 

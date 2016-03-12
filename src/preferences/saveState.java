@@ -84,7 +84,7 @@ public class saveState implements java.io.Serializable {
 	}
 
 	public Map<String, Double> getVariables() {
-		return (Map<String, Double>) variables;
+		return variables;
 	}
 
 	public void setVariables(Map<String, Double> variables) {

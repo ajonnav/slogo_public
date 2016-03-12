@@ -19,6 +19,7 @@ public class DisplayModel extends IDisplayModel {
     private double lastValue;
     private int lastActiveID;
     private boolean toAnimate;
+    private boolean toUpdateIDView;
     private ResourceBundle errorBundle =
             ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
 
@@ -28,6 +29,7 @@ public class DisplayModel extends IDisplayModel {
         backgroundColorIndex = 3;
         this.lastActiveID = 1;
         this.toAnimate = true;
+        this.toUpdateIDView = true;
         setTurtles(3);
         setChanged();
         updateView();
@@ -189,9 +191,19 @@ public class DisplayModel extends IDisplayModel {
     public void setToAnimate (boolean toAnimate) {
         this.toAnimate = toAnimate;
     }
+    @Override
+    public boolean isToUpdateIDView () {
+        return toUpdateIDView;
+    }
+
+    @Override
+    public void setIsToUpdateIDView (boolean toUpdateIDView) {
+        this.toUpdateIDView = toUpdateIDView;
+    }
 
     public ViewableTurtleModel randomMethod (TurtleModel turtle) {
         return turtle;
     }
 
 }
+
