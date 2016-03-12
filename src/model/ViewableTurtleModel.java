@@ -5,8 +5,6 @@ import java.util.Map;
 
 public interface ViewableTurtleModel {
 	
-	boolean getLastBoolean(List<Boolean> list);
-	
 	double getLastDouble(List<Double> list);
 	
 	List<IStampModel> getStampList();
