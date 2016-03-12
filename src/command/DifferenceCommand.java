@@ -2,11 +2,13 @@ package command;
 
 import java.util.List;
 import model.IModelMap;
+import parser.Operator;
 
 
 public class DifferenceCommand extends Command {
 
-    public DifferenceCommand (IModelMap modelMap, List<String> text) {
+    public DifferenceCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }
@@ -14,12 +16,8 @@ public class DifferenceCommand extends Command {
     @Override
     public double execute () {
         if(getCommands().get(0).size() > 1) {
-            double first = getCommands().get(0).get(0).execute();
-            for(int i = 1; i < getCommands().get(0).size(); i++) {
-                first -= getCommands().get(0).get(i).execute();
-            }
-            return first;
+            unlimitedExecute(Operator.DIFFERENCE);
         }
-        return getCommands().get(0).get(0).execute() - getCommands().get(1).get(0).execute();
+        return Operator.DIFFERENCE.operate(getCommands().get(0).get(0).execute(),getCommands().get(1).get(0).execute());
     }
 }

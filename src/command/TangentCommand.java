@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class TangentCommand extends Command {
 
-    public TangentCommand (IModelMap modelMap, List<String> text) {
+    public TangentCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
     }
 

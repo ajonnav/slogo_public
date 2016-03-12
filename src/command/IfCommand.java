@@ -6,9 +6,9 @@ import model.IModelMap;
 
 public class IfCommand extends Command {
 
-    public IfCommand (IModelMap modelMap, List<String> text) {
+    public IfCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
-        setTakesUnlimitedParameters(false);
     }
 
     @Override

@@ -5,15 +5,14 @@ import model.IModelMap;
 
 public class TurtlesCommand extends Command {
 
-    private IModelMap modelMap;
 
-    public TurtlesCommand (IModelMap modelMap, List<String> text) {
-        this.modelMap = modelMap;
+    public TurtlesCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
     
     @Override
     public double execute () {
-        return modelMap.getDisplay().getNumTurtles();
+        return getModelMap().getDisplay().getNumTurtles();
     }
 
 }

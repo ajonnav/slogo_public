@@ -6,7 +6,8 @@ import model.IModelMap;
 
 public class AndCommand extends Command {
 
-    public AndCommand (IModelMap modelMap, List<String> text) {
+    public AndCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }

@@ -6,15 +6,14 @@ import model.IModelMap;
 
 public class PenUpCommand extends Command {
 
-    private IModelMap modelMap;
 
-    public PenUpCommand (IModelMap modelMap, List<String> text) {
-        this.modelMap = modelMap;
+    public PenUpCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("penUp", null);
+        return getModelMap().getDisplay().TurtleAction("penUp", null);
     }
 
 }

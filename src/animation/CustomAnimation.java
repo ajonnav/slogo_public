@@ -6,30 +6,30 @@ import constants.UIConstants;
 import javafx.animation.Animation;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import model.DisplayModel;
-import model.TurtleModel;
+import model.ViewableDisplayModel;
+import model.ViewableTurtleModel;
 
 public abstract class CustomAnimation {
     
     private Group root;
     private int numNodes = 0;
-    private DisplayModel displayModel;
+    private ViewableDisplayModel displayModel;
     
     public CustomAnimation(Group root) {
         this.root = root;
     }
     
     public void setUpView(int frameNumber, int speed) {
-        for(int i = numNodes; i < displayModel.getTurtleList().size(); i++) {
+        for(int i = numNodes; i < displayModel.getViewableTurtleList().size(); i++) {
             setUpSingleView(frameNumber, i);
         }
-    };
+    }
     
     abstract void setUpSingleView(int frameNumber, int index);
     
     public List<Animation> generateAnimations(int frameNumber, int speed) {
         List<Animation> animations = new ArrayList<>();
-        for(int i = 0; i < displayModel.getTurtleList().size(); i++) {
+        for(int i = 0; i < displayModel.getViewableTurtleList().size(); i++) {
             Animation a = generateSingleAnimation(frameNumber, i, speed);
             if(a != null) {
                 animations.add(a);
@@ -57,14 +57,14 @@ public abstract class CustomAnimation {
     }
 
     public double transformHeading (double heading) {
-        return 90 - heading;
+        return UIConstants.NINETY - heading;
     }
     
     public Image getImageFromString (String image) {
         return new Image(getClass().getClassLoader().getResourceAsStream(image));
     }
     
-    public double getTwoStateTranslationTime(TurtleModel turtle, int frameNumber, int speed) {
+    public double getTwoStateTranslationTime(ViewableTurtleModel turtle, int frameNumber, int speed) {
         return turtle.getPositionX(frameNumber-1) != turtle.getPositionX(frameNumber) ||
                                  turtle.getPositionY(frameNumber-1) != turtle.getPositionY(frameNumber) ? speed : 1;
     }
@@ -77,11 +77,11 @@ public abstract class CustomAnimation {
         this.root = root;
     }
 
-    public DisplayModel getDisplayModel () {
+    public ViewableDisplayModel getDisplayModel () {
         return displayModel;
     }
 
-    public void setDisplayModel (DisplayModel displayModel) {
+    public void setDisplayModel (ViewableDisplayModel displayModel) {
         this.displayModel = displayModel;
     }
     

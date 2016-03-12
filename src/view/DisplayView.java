@@ -16,7 +16,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import model.DisplayModel;
+import model.ViewableDisplayModel;
 
 
 
@@ -50,14 +50,14 @@ public class DisplayView implements IView {
 
     @Override
     public void update (Observable o, Object arg) {
-        if (o instanceof DisplayModel) {
-            DisplayModel displayModel = (DisplayModel) o;
+        if (o instanceof ViewableDisplayModel) {
+        	ViewableDisplayModel displayModel = (ViewableDisplayModel) o;
             updateBackground(displayModel);
             animateDisplay(displayModel, 1);
         }
     }
 
-    public void updateBackground (DisplayModel displayModel) {
+    public void updateBackground (ViewableDisplayModel displayModel) {
         features.updateComboBoxOptions(backgroundColorComboBox, displayModel.getColorMap());
         String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
                                        displayModel.getColorMap().get(displayModel.getBackgroundColorIndex());
@@ -67,7 +67,7 @@ public class DisplayView implements IView {
         backgroundGC.fillRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
     }
 
-    public void animateDisplay (DisplayModel displayModel, int speed) {
+    public void animateDisplay (ViewableDisplayModel displayModel, int speed) {
         if (displayModel.isToAnimate()) {
             displayModel.setToAnimate(false);
             animations.clear();
@@ -76,14 +76,14 @@ public class DisplayView implements IView {
             animations.stream().sequential()
                     .collect(Collectors.toCollection( () -> st.getChildren()));
             st.play();
-            lastExpressionFrameNumber = displayModel.getTurtleList().get(0).getFrameNumber();
+            lastExpressionFrameNumber = displayModel.getViewableTurtleList().get(0).getFrameNumber();
         }
     }
 
-    public void drawObjects (DisplayModel displayModel, int speed) {
+    public void drawObjects (ViewableDisplayModel displayModel, int speed) {
         turtleAnim.setDisplayModel(displayModel);
         stampAnim.setDisplayModel(displayModel);
-        for (int i = lastExpressionFrameNumber; i < displayModel.getTurtleList().get(0)
+        for (int i = lastExpressionFrameNumber; i < displayModel.getViewableTurtleList().get(0)
                 .getFrameNumber(); i++) {    
             turtleAnim.setUpView(i, speed);
             stampAnim.setUpView(i, speed);

@@ -9,7 +9,7 @@ import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
-import model.ICommandsModel;
+import model.ViewableCommandsModel;
 
 public class CommandsView extends ScrollView{
 
@@ -26,11 +26,11 @@ public class CommandsView extends ScrollView{
         		setMyName(myBundle.getString("UCommands"));
         		refresh();
         }
-
+        
         @Override
         public void update(Observable o, Object arg) {
-                if(o instanceof ICommandsModel){
-                        ICommandsModel vm = (ICommandsModel) o;
+                if(o instanceof ViewableCommandsModel){
+                        ViewableCommandsModel vm = (ViewableCommandsModel) o;
                         vars = vm.getImmutableVariablesMap();
                         refresh();
                         for(String item : vars.keySet()){

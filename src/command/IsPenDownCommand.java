@@ -6,17 +6,16 @@ import model.IModelMap;
 
 public class IsPenDownCommand extends Command {
 
-    private IModelMap modelMap;
 
-    public IsPenDownCommand (IModelMap modelMap, List<String> text) {
+
+    public IsPenDownCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(0);
-        setTakesUnlimitedParameters(false);
-        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("getPenStatus", null);
+        return getModelMap().getDisplay().TurtleAction("getPenStatus", null);
     }
 
 }

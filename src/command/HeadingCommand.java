@@ -6,15 +6,14 @@ import model.IModelMap;
 
 public class HeadingCommand extends Command {
 
-    private IModelMap modelMap;
 
-    public HeadingCommand (IModelMap modelMap, List<String> text) {
+    public HeadingCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(0);
-        this.modelMap = modelMap;
     }
 
     @Override
     public double execute () {
-        return modelMap.getDisplay().TurtleAction("getHeading", null);
+        return getModelMap().getDisplay().TurtleAction("getHeading", null);
     }
 }

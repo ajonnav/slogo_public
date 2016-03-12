@@ -5,6 +5,7 @@ import java.util.Observable;
 import constants.UIConstants;
 import javafx.scene.text.Text;
 import model.IHistoryModel;
+import model.ViewableHistoryModel;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 
@@ -26,8 +27,11 @@ public class HistoryPaneView extends ScrollView {
         if (o instanceof IHistoryModel) {
             IHistoryModel hpm = (IHistoryModel) o;
             refresh();
+        if (o instanceof ViewableHistoryModel) {
+            ViewableHistoryModel hpm1 = (ViewableHistoryModel) o;
+            getMyBox().getChildren().clear();
             int x = 1;
-            for (String item : hpm.getImmutableHistoryList()) {
+            for (String item : hpm1.getImmutableHistoryList()) {
             	if(x % UIConstants.TWO != 0) {
             		Hyperlink past = new Hyperlink(">> " + item);
             		past.setOnAction(event -> {
@@ -44,4 +48,5 @@ public class HistoryPaneView extends ScrollView {
         }
     }
 
+}
 }

@@ -6,9 +6,9 @@ import model.IModelMap;
 
 public class SineCommand extends Command {
 
-    public SineCommand (IModelMap modelMap, List<String> text) {
+    public SineCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
+        super(modelMap, tokenNumber, text);
         setNumChildren(1);
-        setTakesUnlimitedParameters(false);
     }
 
     @Override
