@@ -4,7 +4,6 @@ import java.util.Observable;
 
 import constants.UIConstants;
 import javafx.scene.text.Text;
-import model.IHistoryModel;
 import model.ViewableHistoryModel;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
@@ -24,9 +23,6 @@ public class HistoryPaneView extends ScrollView {
 
     @Override
     public void update (Observable o, Object arg) {
-        if (o instanceof IHistoryModel) {
-            IHistoryModel hpm = (IHistoryModel) o;
-            refresh();
         if (o instanceof ViewableHistoryModel) {
             ViewableHistoryModel hpm1 = (ViewableHistoryModel) o;
             getMyBox().getChildren().clear();
@@ -49,4 +45,4 @@ public class HistoryPaneView extends ScrollView {
     }
 
 }
-}
+

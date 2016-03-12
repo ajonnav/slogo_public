@@ -2,7 +2,6 @@ package command;
 
 import java.util.List;
 import model.IModelMap;
-import parser.Operator;
 
 
 public class EqualCommand extends Command {
@@ -14,6 +13,6 @@ public class EqualCommand extends Command {
 
     @Override
     public double execute () {
-        return Operator.EQUAL.operate(getCommands().get(0).get(0).execute(),getCommands().get(1).get(0).execute());
+        return getCommands().get(0).get(0).execute() == getCommands().get(1).get(0).execute() ? 1 : 0;
     }
 }

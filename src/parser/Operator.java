@@ -8,19 +8,7 @@ public enum Operator {
     SUM((n1, n2) -> n1 + n2),
     QUOTIENT((n1,n2) -> n1 / n2),
     REMAINDER((n1,n2) -> n1 % n2),
-    POWER((n1,n2) -> Math.pow(n1, n2)),
-    NOTEQUAL((n1,n2) -> {
-        if(n1 != n2) {
-            return 1.0;
-        }
-        return 0.0;
-    }),
-    EQUAL((n1,n2) -> {
-        if(n1 == n2){
-          return 1.0;  
-        }
-        return 0.0;
-    });
+    POWER((n1,n2) -> Math.pow(n1, n2));
 
     private final BinaryOperator<Double> operation;
 

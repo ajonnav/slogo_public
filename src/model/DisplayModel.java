@@ -13,7 +13,7 @@ import exception.SLogoException;
 
 public class DisplayModel extends IDisplayModel {
 
-	private int numInitialTurtles = UIConstants.INITIAL_NUM_TURTLES;
+    private int numInitialTurtles = UIConstants.INITIAL_NUM_TURTLES;
     private List<TurtleModel> turtleList = new ArrayList<>();
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
@@ -24,7 +24,7 @@ public class DisplayModel extends IDisplayModel {
     private boolean toUpdateIDView;
     private ResourceBundle errorBundle =
             ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
-	private int animationSpeed;
+    private int animationSpeed = 1000;
 
     public DisplayModel (Map<Double, String> colorMap, Map<Double, String> imageMap) {
         this.imageMap = imageMap;
