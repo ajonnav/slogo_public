@@ -122,8 +122,8 @@ public class CommandParser {
     public Command constructCurrCommand(List<String> text, String currName) {
         Command command = null;
         try {
-            command = ((Command) Class.forName(currName).getConstructor(IModelMap.class, List.class)
-                    .newInstance(modelMap, Collections.unmodifiableList(text)));
+            command = ((Command) Class.forName(currName).getConstructor(IModelMap.class, int.class, List.class)
+                    .newInstance(modelMap, 0, Collections.unmodifiableList(text)));
         }
         catch (SLogoException e) {
             throw e;

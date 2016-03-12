@@ -7,7 +7,6 @@ import model.IModelMap;
 
 public class MakeVariableCommand extends Command {
 
-    private IModelMap modelMap;
 
     public MakeVariableCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);
@@ -20,7 +19,7 @@ public class MakeVariableCommand extends Command {
             throw new SLogoException("NoVariable");
         }
         String variable = ((VariableCommand) getCommands().get(0).get(0)).getName();
-        return modelMap.getVariable()
+        return getModelMap().getVariable()
                 .setVariable(variable, getCommands().get(1).get(0).execute());
     }
 }
