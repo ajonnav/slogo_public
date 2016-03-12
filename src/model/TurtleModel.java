@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TurtleModel {
+public class TurtleModel implements ViewableTurtleModel {
     
     private double turtleInitialX;
     private double turtleInitialY;
@@ -44,8 +44,8 @@ public class TurtleModel {
             positionY.add(turtleInitialY);
             showStatus.add(true);
             imageIndex.add(4.0);
-            lines.add(new ArrayList<ILineModel>());
-            stamps.add(new ArrayList<IStampModel>());
+            lines.add(new ArrayList<>());
+            stamps.add(new ArrayList<>());
         }
     }
     
@@ -62,19 +62,19 @@ public class TurtleModel {
         newTurtle.pen = newPen;
         newTurtle.pen.remove(newTurtle.pen.size() - 1);
         newTurtle.pen.remove(newTurtle.pen.size() - 1);
-        newTurtle.heading = new ArrayList<Double>(heading);
+        newTurtle.heading = new ArrayList<>(heading);
         newTurtle.heading.remove(newTurtle.heading.size() - 1);
         newTurtle.heading.remove(newTurtle.heading.size() - 1);
-        newTurtle.positionX = new ArrayList<Double>(positionX);
+        newTurtle.positionX = new ArrayList<>(positionX);
         newTurtle.positionX.remove(newTurtle.positionX.size() - 1);
         newTurtle.positionX.remove(newTurtle.positionX.size() - 1);
-        newTurtle.positionY = new ArrayList<Double>(positionY);
+        newTurtle.positionY = new ArrayList<>(positionY);
         newTurtle.positionY.remove(newTurtle.positionY.size() - 1);
         newTurtle.positionY.remove(newTurtle.positionY.size() - 1);
-        newTurtle.showStatus = new ArrayList<Boolean>(showStatus);
+        newTurtle.showStatus = new ArrayList<>(showStatus);
         newTurtle.showStatus.remove(newTurtle.showStatus.size() - 1);
         newTurtle.showStatus.remove(newTurtle.showStatus.size() - 1);
-        newTurtle.imageIndex = new ArrayList<Double>(imageIndex);
+        newTurtle.imageIndex = new ArrayList<>(imageIndex);
         newTurtle.imageIndex.remove(newTurtle.imageIndex.size() - 1);
         newTurtle.imageIndex.remove(newTurtle.imageIndex.size() - 1);
         List<List<ILineModel>> newLines = new ArrayList<>();
@@ -243,7 +243,7 @@ public class TurtleModel {
    
     public double clearScreen() {
         clearStamps();
-        lines.add(new ArrayList<ILineModel>());
+        lines.add(new ArrayList<>());
         double[] oldPos = new double[]{getPositionX(), getPositionY()};
         positionX.add(0.0);
         positionY.add(0.0);
@@ -253,7 +253,7 @@ public class TurtleModel {
     
     public double clearStamps() {
         if(getNumStamps() > 0) {
-            stamps.add(new ArrayList<IStampModel>());
+            stamps.add(new ArrayList<>());
             return stamps.get(stamps.size()-2).size();
         }
         return 0;

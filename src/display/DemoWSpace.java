@@ -185,7 +185,7 @@ public class DemoWSpace extends Screen {
         }
         
         private void initializeHistory(IHistoryModel hpm, List<String> history){
-                for(String n: myState.getHistory()){
+                for(String n: history){
                         hpm.addToHistory(n);
                 }
         }

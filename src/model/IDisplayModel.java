@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Observable;
 import command.Command;
 
-public abstract class IDisplayModel extends Observable{
+public abstract class IDisplayModel extends Observable implements ViewableDisplayModel{
 	
 	public abstract double TurtleAction (String command, List<Command> parameters);
 	
@@ -18,6 +18,8 @@ public abstract class IDisplayModel extends Observable{
 	public abstract int getNumTurtles();
 	
 	public abstract List<TurtleModel> getTurtleList();
+	
+	public abstract List<ViewableTurtleModel> getViewableTurtleList();
 	
 	public abstract Map<Double, String> getColorMap();
 	
