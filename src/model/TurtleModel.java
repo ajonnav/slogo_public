@@ -1,11 +1,19 @@
 package model;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javafx.scene.Group;
+import exception.SLogoException;
+import constants.UIConstants;
 
 public class TurtleModel implements ViewableTurtleModel {
 
@@ -18,16 +26,18 @@ public class TurtleModel implements ViewableTurtleModel {
     private int frameNumber;
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
-    private Set<SyncableListModel> syncableSet;
-    private SyncableListModel<IPenModel> penList;
-    private SyncableListModel<Boolean> activeListModel;
-    private SyncableListModel<Double> heading;
-    private SyncableListModel<Double> positionX;
-    private SyncableListModel<Double> positionY;
-    private SyncableListModel<Boolean> showStatus;
-    private SyncableListModel<Double> imageIndex;
-    private SyncableListModel<List<ILineModel>> lines;
-    private SyncableListModel<List<IStampModel>> stamps;
+    private Set<SyncableListModel> syncableSet = new HashSet<>();
+    private SyncableListModel<IPenModel> penList = new SyncableListModel<>();
+    private SyncableListModel<Boolean> activeListModel= new SyncableListModel<>();
+    private SyncableListModel<Double> heading = new SyncableListModel<>();
+    private SyncableListModel<Double> positionX = new SyncableListModel<>();
+    private SyncableListModel<Double> positionY = new SyncableListModel<>();
+    private SyncableListModel<Boolean> showStatus = new SyncableListModel<>();
+    private SyncableListModel<Double> imageIndex = new SyncableListModel<>();
+    private SyncableListModel<List<ILineModel>> lines = new SyncableListModel<>();
+    private SyncableListModel<List<IStampModel>> stamps = new SyncableListModel<>();
+    List<String> newTurtleFieldList = new ArrayList<>(Arrays.asList(new String[]{"heading","positionX","positionY","showStatus","imageIndex"}));
+    private ResourceBundle errorBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE+UIConstants.ERRORS);
 
     public TurtleModel (double turtleInitialX,
                         double turtleInitialY,
@@ -40,16 +50,6 @@ public class TurtleModel implements ViewableTurtleModel {
         this.turtleInitialY = turtleInitialY;
         this.imageMap = imageMap;
         this.colorMap = colorMap;
-        syncableSet = new HashSet<>();
-        this.penList = new SyncableListModel<>();
-        this.activeListModel = new SyncableListModel<>();
-        this.heading = new SyncableListModel<>();
-        this.positionX = new SyncableListModel<>();
-        this.positionY = new SyncableListModel<>();
-        this.showStatus = new SyncableListModel<>();
-        this.imageIndex = new SyncableListModel<>();
-        this.lines = new SyncableListModel<>();
-        this.stamps = new SyncableListModel<>();
         syncableSet.add(penList);
         syncableSet.add(activeListModel);
         syncableSet.add(heading);
@@ -85,49 +85,54 @@ public class TurtleModel implements ViewableTurtleModel {
                                                 this.turtleInitialHeading,
                                                 this.imageMap,
                                                 this.colorMap);
-        SyncableListModel<IPenModel> newPen = new SyncableListModel<>();
-        for(IPenModel pen : this.penList.getList()) {
-            newPen.add(pen.copyPenModel());
-        }
-        
-        newTurtle.penList = newPen;
-        newTurtle.penList.remove(newTurtle.penList.size() - 1);
-        newTurtle.penList.remove(newTurtle.penList.size() - 1);
-        newTurtle.heading = new SyncableListModel<Double>(heading);
-        newTurtle.heading.remove(newTurtle.heading.size() - 1);
-        newTurtle.heading.remove(newTurtle.heading.size() - 1);
-        newTurtle.positionX = new SyncableListModel<Double>(positionX);
-        newTurtle.positionX.remove(newTurtle.positionX.size() - 1);
-        newTurtle.positionX.remove(newTurtle.positionX.size() - 1);
-        newTurtle.positionY = new SyncableListModel<Double>(positionY);
-        newTurtle.positionY.remove(newTurtle.positionY.size() - 1);
-        newTurtle.positionY.remove(newTurtle.positionY.size() - 1);
-        newTurtle.showStatus = new SyncableListModel<Boolean>(showStatus);
-        newTurtle.showStatus.remove(newTurtle.showStatus.size() - 1);
-        newTurtle.showStatus.remove(newTurtle.showStatus.size() - 1);
-        newTurtle.imageIndex = new SyncableListModel<Double>(imageIndex);
-        newTurtle.imageIndex.remove(newTurtle.imageIndex.size() - 1);
-        newTurtle.imageIndex.remove(newTurtle.imageIndex.size() - 1);
-        
-        SyncableListModel<List<ILineModel>> newLines = new SyncableListModel<>();
-        for(List<ILineModel> lineList : this.lines) {
-            newLines.add(copyLineList(lineList));
-        }
-        newTurtle.lines = newLines;
-        newTurtle.lines.remove(newTurtle.lines.size() - 1);
-        newTurtle.lines.remove(newTurtle.lines.size() - 1);
-        
-        SyncableListModel<List<IStampModel>> newStamps = new SyncableListModel<>();
+        setPenList(newTurtle);
+        newTurtleFieldList.stream().forEach(item->
+        {
+        	try {
+				Field field = getClass().getDeclaredField(item);
+				Type t = field.getGenericType();
+				field.set(newTurtle, new SyncableListModel((SyncableListModel)field.get(this)));
+			} catch (Exception e) {
+				e.printStackTrace();
+				//throw new SLogoException(errorBundle.getString("ReflectionError"));
+			}
+        });
+        setLineList(newTurtle);
+        setStampList(newTurtle);
+        newTurtle.addInitialStates(2);
+        newTurtle.frameNumber = this.frameNumber;
+        return newTurtle;
+    }
+
+	private void setStampList(TurtleModel newTurtle) {
+		SyncableListModel<List<IStampModel>> newStamps = new SyncableListModel<>();
         for(List<IStampModel> stampList : this.stamps) {
             newStamps.add(copyStampList(stampList));
         }
         newTurtle.stamps = newStamps;
         newTurtle.stamps.remove(newTurtle.stamps.size() - 1);
         newTurtle.stamps.remove(newTurtle.stamps.size() - 1);
-        newTurtle.addInitialStates(2);
-        newTurtle.frameNumber = this.frameNumber;
-        return newTurtle;
-    }
+	}
+
+	private void setLineList(TurtleModel newTurtle) {
+		SyncableListModel<List<ILineModel>> newLines = new SyncableListModel<>();
+        for(List<ILineModel> lineList : this.lines) {
+            newLines.add(copyLineList(lineList));
+        }
+        newTurtle.lines = newLines;
+        newTurtle.lines.remove(newTurtle.lines.size() - 1);
+        newTurtle.lines.remove(newTurtle.lines.size() - 1);
+	}
+
+	private void setPenList(TurtleModel newTurtle) {
+		SyncableListModel<IPenModel> newPen = new SyncableListModel<>();
+        for(IPenModel pen : this.penList.getList()) {
+            newPen.add(pen.copyPenModel());
+        }
+        newTurtle.penList = newPen;
+        newTurtle.penList.remove(newTurtle.penList.size() - 1);
+        newTurtle.penList.remove(newTurtle.penList.size() - 1);
+	}
 
     public void syncFrame () {
         frameNumber++;
@@ -153,18 +158,18 @@ public class TurtleModel implements ViewableTurtleModel {
     public double forward (double[] distance) {
         IPenModel lastPen = penList.get(penList.size()-1);
         if (lastPen.getStatus()) {
-            List<ILineModel> nextLM = copyLineList(getLineList());
-            nextLM.add(new LineModel(getPositionX(), getPositionY(),
-                                     getPositionX() + distance[0] *
-                                                      Math.cos(Math.toRadians(getHeading())),
-                                     getPositionY() + distance[0] *
-                                                      Math.sin(Math.toRadians(getHeading())),
+            List<ILineModel> nextLM = copyLineList(getLineList(frameNumber-1));
+            nextLM.add(new LineModel(getPositionX(frameNumber-1), getPositionY(frameNumber-1),
+                                     getPositionX(frameNumber-1) + distance[0] *
+                                                      Math.cos(Math.toRadians(getHeading(frameNumber-1))),
+                                     getPositionY(frameNumber-1) + distance[0] *
+                                                      Math.sin(Math.toRadians(getHeading(frameNumber-1))),
                                      lastPen.getSize(), lastPen.getColorString(),
                                      lastPen.getStyle()));
             lines.add(nextLM);
         }
-        positionX.add(getPositionX() + distance[0] * Math.cos(Math.toRadians(getHeading())));
-        positionY.add(getPositionY() + distance[0] * Math.sin(Math.toRadians(getHeading())));
+        positionX.add(getPositionX(frameNumber-1) + distance[0] * Math.cos(Math.toRadians(getHeading(frameNumber-1))));
+        positionY.add(getPositionY(frameNumber-1) + distance[0] * Math.sin(Math.toRadians(getHeading(frameNumber-1))));
         return distance[0];
     }
 
@@ -179,7 +184,7 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     public double turnRight (double[] degree) {
-        heading.add(getHeading() - degree[0]);
+        heading.add(getHeading(frameNumber-1) - degree[0]);
         return degree[0];
     }
 
@@ -203,9 +208,9 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     public double stamp () {
-        List<IStampModel> nextSM = copyStampList(getStampList());
-        nextSM.add(new StampModel(imageMap.get(getImageIndex()), getPositionX(), getPositionY(),
-                                  getHeading()));
+        List<IStampModel> nextSM = copyStampList(getStampList(frameNumber-1));
+        nextSM.add(new StampModel(imageMap.get(getImageIndex()), getPositionX(frameNumber-1), getPositionY(frameNumber-1),
+                                  getHeading(frameNumber-1)));
         stamps.add(nextSM);
         return imageIndex.get(imageIndex.size()-1);
     }
@@ -225,42 +230,42 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     public double setPosition (double[] xy) {
-        double[] oldPos = new double[] { getPositionX(), getPositionY() };
+        double[] oldPos = new double[] { getPositionX(frameNumber-1), getPositionY(frameNumber-1) };
         positionX.add(xy[0]);
         positionY.add(xy[1]);
         IPenModel lastPen = penList.get(penList.size()-1);
         if (lastPen.getStatus()) {
-            List<ILineModel> nextLM = copyLineList(getLineList());
-            nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(), getPositionY(),
+            List<ILineModel> nextLM = copyLineList(getLineList(frameNumber-1));
+            nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(frameNumber-1), getPositionY(frameNumber-1),
                                      lastPen.getSize(), lastPen.getColorString(),
                                      lastPen.getStyle()));
             lines.add(nextLM);
         }
-        return Math.sqrt(Math.pow((oldPos[0] - getPositionX()), 2) +
-                         Math.pow((oldPos[1] - getPositionY()), 2));
+        return Math.sqrt(Math.pow((oldPos[0] - getPositionX(frameNumber-1)), 2) +
+                         Math.pow((oldPos[1] - getPositionY(frameNumber-1)), 2));
     }
 
     public double setTowards (double[] xy) {
-        double lastHeading = getHeading();
-        if (xy[0] == getPositionX() && xy[1] == getPositionY()) {
+        double lastHeading = getHeading(frameNumber-1);
+        if (xy[0] == getPositionX(frameNumber-1) && xy[1] == getPositionY(frameNumber-1)) {
             return 0;
         }
-        double rawDegrees = Math.toDegrees(Math.atan((xy[1] - getPositionY()) /
-                                                     (xy[0] - getPositionX())));
-        double newHeading = xy[0] - getPositionX() >= 0 ? rawDegrees : rawDegrees - 180;
+        double rawDegrees = Math.toDegrees(Math.atan((xy[1] - getPositionY(frameNumber-1)) /
+                                                     (xy[0] - getPositionX(frameNumber-1))));
+        double newHeading = xy[0] - getPositionX(frameNumber-1) >= 0 ? rawDegrees : rawDegrees - 180;
         heading.add(newHeading);
-        double headingDiff = Math.abs(lastHeading - getHeading());
+        double headingDiff = Math.abs(lastHeading - getHeading(frameNumber-1));
         return headingDiff >= 180 ? 360 - headingDiff : headingDiff;
     }
 
     public double clearScreen () {
         clearStamps();
         lines.add(new ArrayList<>());
-        double[] oldPos = new double[] { getPositionX(), getPositionY() };
+        double[] oldPos = new double[] { getPositionX(frameNumber-1), getPositionY(frameNumber-1) };
         positionX.add(0.0);
         positionY.add(0.0);
-        return Math.sqrt(Math.pow((oldPos[0] - getPositionX()), 2) +
-                         Math.pow((oldPos[1] - getPositionY()), 2));
+        return Math.sqrt(Math.pow((oldPos[0] - getPositionX(frameNumber-1)), 2) +
+                         Math.pow((oldPos[1] - getPositionY(frameNumber-1)), 2));
     }
 
     public double clearStamps () {
@@ -298,12 +303,14 @@ public class TurtleModel implements ViewableTurtleModel {
         return lineWidth[0];
     }
 
+    
+    
     public int getFrameNumber () {
         return frameNumber;
     }
 
     public int getNumStamps () {
-        return getStampList().size();
+        return getStampList(frameNumber-1).size();
     }
 
     public void setImageMap (Map<Double, String> imageMap) {
@@ -318,32 +325,16 @@ public class TurtleModel implements ViewableTurtleModel {
         return showStatus.get(frameNumber) ? 1 : 0;
     }
 
-    public double getPositionY () {
-        return positionY.get(positionY.size()-1);
-    }
-
     public double getPositionY (int frameNumber) {
         return positionY.get(frameNumber);
-    }
-
-    public double getPositionX () {
-        return positionX.get(positionX.size()-1);
     }
 
     public double getPositionX (int frameNumber) {
         return positionX.get(frameNumber);
     }
 
-    public double getHeading () {
-        return heading.get(heading.size()-1);
-    }
-
     public double getHeading (int frameNumber) {
         return heading.get(frameNumber);
-    }
-
-    public IPenModel getPen () {
-        return penList.get(penList.size()-1);
     }
 
     public IPenModel getPen (int frameNumber) {
@@ -352,10 +343,6 @@ public class TurtleModel implements ViewableTurtleModel {
 
     public ViewablePenModel getViewablePen (int frameNumber) {
         return penList.get(frameNumber);
-    }
-
-    public ViewablePenModel getViewablePen () {
-        return penList.get(penList.size() - 1);
     }
 
     public boolean isPenStatus () {
@@ -390,22 +377,12 @@ public class TurtleModel implements ViewableTurtleModel {
         return activeListModel.get(frameNumber);
     }
 
-    public boolean isActive () {
-        return activeListModel.get(activeListModel.size()-1);
-    }
-
     public List<ILineModel> getLineList (int frameNumber) {
         return lines.get(frameNumber);
     }
 
     public List<ViewableLineModel> getViewableLineList (int frameNumber) {
         return lines.get(frameNumber).stream()
-                .map(t -> (ViewableLineModel) t)
-                .collect(Collectors.toList());
-    }
-    
-    public List<ViewableLineModel> getViewableLineList () {
-        return lines.get(lines.size()-1).stream()
                 .map(t -> (ViewableLineModel) t)
                 .collect(Collectors.toList());
     }
@@ -419,26 +396,10 @@ public class TurtleModel implements ViewableTurtleModel {
                 .map(t -> (ViewableStampModel) t)
                 .collect(Collectors.toList());
     }
-    
-    public List<ViewableStampModel> getViewableStampList () {
-        return stamps.get(stamps.size()-1).stream()
-                .map(t -> (ViewableStampModel) t)
-                .collect(Collectors.toList());
-    }
 
-    public List<ILineModel> getLineList () {
-        return lines.get(lines.size() - 1);
-    }
-
-    public List<IStampModel> getStampList () {
-        return stamps.get(stamps.size() - 1);
-    }
-
-    public double getLastDouble (List<Double> list) {
-        return list.get(list.size() - 1).doubleValue();
-    }
-
-    public boolean getLastBoolean (List<Boolean> list) {
-        return list.get(list.size() - 1).booleanValue();
-    }
+	@Override
+	public List<ViewableLineModel> getViewableLineList() {
+		getViewableLineList(lines.size()-1);
+		return null;
+	}
 }

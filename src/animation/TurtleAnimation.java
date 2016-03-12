@@ -2,6 +2,8 @@ package animation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import constants.UIConstants;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -39,8 +41,8 @@ public class TurtleAnimation extends CustomAnimation{
     
     public ImageView initTurtleImageView (ViewableTurtleModel t, int frameNumber) {
         ImageView image = new ImageView(getImageFromString(t.getImageString(frameNumber)));
-        image.setFitHeight(50);
-        image.setFitWidth(50);
+        image.setFitHeight(UIConstants.TURTLE_IMAGE_HEIGHT);
+        image.setFitWidth(UIConstants.TURTLE_IMAGE_WIDTH);
         image.setOpacity(0);
         image.setX(0);
         image.setY(0);

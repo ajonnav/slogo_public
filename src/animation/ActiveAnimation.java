@@ -2,6 +2,8 @@ package animation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import constants.UIConstants;
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
@@ -27,7 +29,7 @@ public class ActiveAnimation extends CustomAnimation{
     @Override
     Animation generateSingleAnimation (int frameNumber, int index, int speed) {
         ViewableTurtleModel turtle = getDisplayModel().getViewableTurtleList().get(index);
-        if (turtle.isActive()) {
+        if (turtle.isActive(frameNumber)) {
             Rectangle area = actives.get(index);
             area.setStroke(Color.BLACK);
             TranslateTransition at =
@@ -46,7 +48,7 @@ public class ActiveAnimation extends CustomAnimation{
     }
     
     public Rectangle initActiveRect () {
-        Rectangle area = new Rectangle(0, 0, 50, 50);
+        Rectangle area = new Rectangle(0, 0, UIConstants.TURTLE_IMAGE_WIDTH, UIConstants.TURTLE_IMAGE_HEIGHT);
         area.setFill(Color.TRANSPARENT);
         area.setStroke(Color.TRANSPARENT);
         getRoot().getChildren().add(area);

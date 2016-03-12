@@ -1,6 +1,6 @@
 package model;
 
-public interface IStampModel {
+interface IStampModel {
 
 	String getImageString ();
 	

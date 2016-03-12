@@ -15,7 +15,6 @@ import exception.SLogoException;
 import model.IModelMap;
 
 public class CommandParser {
-
 	private List<Entry<String, Pattern>> mySymbols;
 	private IModelMap modelMap;
 	public static final String WHITESPACE = "\\s+";
@@ -58,7 +57,6 @@ public class CommandParser {
 			modelMap.getDisplay().updateView();
 			modelMap.getHistory().addToHistory(Double.toString(returnValue));
 		} catch (Exception e) {
-			e.printStackTrace();
 			modelMap.getHistory().addToHistory(e.getMessage());
 		}
 	}
