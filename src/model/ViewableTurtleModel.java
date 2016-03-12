@@ -3,8 +3,6 @@ package model;
 import java.util.List;
 import java.util.Map;
 
-import javafx.scene.Group;
-
 public interface ViewableTurtleModel {
 	
 	List<ViewableStampModel> getViewableStampList(int frameNumber);

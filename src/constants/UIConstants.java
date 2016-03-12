@@ -59,6 +59,7 @@ public class UIConstants {
 	public static final double RECTANGLE_H = 18;
 	public static final double TWO = 2;
 	public static final double MAX_PANE = 400;
+	public static final int INITIAL_NUM_TURTLES = 3;
 	
 	
 	public static final String CHIN = "CHIN";
