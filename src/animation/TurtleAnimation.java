@@ -28,6 +28,14 @@ public class TurtleAnimation extends CustomAnimation{
     }
    
     @Override
+    public void setUpView(int frameNumber, int speed) {
+        super.setUpView(frameNumber, speed);
+        for (int j = 0; j < getDisplayModel().getViewableTurtleList().size(); j++) {
+            turtleViews.get(j).setImage(getImageFromString(getDisplayModel().getViewableTurtleList().get(j)
+                    .getImageString(frameNumber)));
+        }
+    }
+    
     public void setUpSingleView (int frameNumber, int index) {
         turtleViews.add(initTurtleImageView(getDisplayModel().getViewableTurtleList().get(index), frameNumber));    
         setNumNodes(turtleViews.size());

@@ -58,4 +58,10 @@ public interface ViewableTurtleModel {
 	int getNumStamps();
 	
 	int getFrameNumber();
+	
+	double setPenColorIndex (double[] penColorIndex);
+	
+	double setPenStyleIndex (double[] penStyleIndex);
+	
+	double setImageIndex (double[] imageIndex);
 }

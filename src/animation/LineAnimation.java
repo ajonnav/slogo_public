@@ -9,8 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
-import model.ILineModel;
-import model.IPenModel;
 import model.ViewableLineModel;
 import model.ViewablePenModel;
 import model.ViewableTurtleModel;

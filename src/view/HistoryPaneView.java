@@ -23,15 +23,9 @@ public class HistoryPaneView extends ScrollView {
 
     @Override
     public void update (Observable o, Object arg) {
-<<<<<<< HEAD
-        if (o instanceof IHistoryModel) {
-            IHistoryModel hpm = (IHistoryModel) o;
-            refresh();
-=======
         if (o instanceof ViewableHistoryModel) {
             ViewableHistoryModel hpm = (ViewableHistoryModel) o;
             getMyBox().getChildren().clear();
->>>>>>> 7b553a5f0b0e1de25e6454a79d1a8eedc90adeee
             int x = 1;
             for (String item : hpm.getImmutableHistoryList()) {
             	if(x % UIConstants.TWO != 0) {
