@@ -42,15 +42,12 @@ public interface ViewableTurtleModel {
 	int getNumStamps();
 	
 	int getFrameNumber();
-<<<<<<< HEAD
 	
 	double setPenColorIndex (double[] penColorIndex);
 	
 	double setPenStyleIndex (double[] penStyleIndex);
 	
 	double setImageIndex (double[] imageIndex);
-=======
 
 	List<ViewableLineModel> getViewableLineList();
->>>>>>> c888c72c998c62523fbdac3e315912ceba906cd3
 }

@@ -50,7 +50,7 @@ public class DisplayView implements IView {
     @Override
     public void update (Observable o, Object arg) {
         if (o instanceof ViewableDisplayModel) {
-        	ViewableDisplayModel displayModel = (ViewableDisplayModel) o;
+            ViewableDisplayModel displayModel = (ViewableDisplayModel) o;
             updateBackground(displayModel);
             animateDisplay(displayModel, displayModel.getAnimationSpeed());
         }

@@ -169,13 +169,6 @@ public class DemoWSpace extends Screen {
 	}
 
 	/*
-	 * private void initializeCommands(CommandsModel cpm, Map<String,
-	 * List<Command>> commands, Map<String, List<Command>> commVars){ for
-	 * (String n: commands.keySet()){ cpm.setCommands(n, commands.get(n));
-	 * cpm.setVariables(n, commVars.get(n)); } }
-	 */
-
-	/*
 	 * Sets the Pane for the current status of the various turtles on the
 	 * display
 	 */
@@ -183,26 +176,6 @@ public class DemoWSpace extends Screen {
 		turtleView = new TurtleIDView();
 		getRoot().getChildren().add(turtleView.getMyRoot());
 		dm.addObserver(turtleView);
-	}
-
-	private void setPenUpDown() {
-
-	}
-
-	private void setPenThicknessInputField() {
-
-	}
-
-	private void setPenThickness() {
-
-	}
-
-	private void setPenStyleBox() {
-
-	}
-
-	private void setPenStyle() {
-
 	}
 
 	public String getMyLang() {
