@@ -7,8 +7,9 @@ import model.IModelMap;
 public class PrefWriter {
 	
 	private String path;
-	private IModelMap state;
 	private saveState save;
+	private IModelMap state;
+
 	
 	public PrefWriter(IModelMap modelMap, String fileName, String myLang){
 		path = "src/preferences/" + fileName + ".srl";

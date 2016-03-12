@@ -48,6 +48,14 @@ public class UIConstants {
 	public static final double TURTLE_MIN_W = 250;
 	public static final double USER_X = 50;
 	public static final double TURTLE_SIZE = 50;
+	public static final double GO_BUTTON_Y = 355;
+	public static final double LOAD_BUTTON_Y = 300;
+	public static final double WEL_RECT_X = 110;
+	public static final double PADDING = 4;
+	public static final double RECTANGLE_W = 120;
+	public static final double RECTANGLE_H = 18;
+	public static final double TWO = 2;
+	
 	
 	public static final String CHIN = "CHIN";
 	public static final String ENG = "ENG";
