@@ -14,6 +14,8 @@ public class UIConstants {
 	public static final String ERRORS = "Errors";
 	public static final double WIDTH = 1300;
 	public static final double HEIGHT = 750;
+	public static final double TURTLE_IMAGE_WIDTH = 50;
+	public static final double TURTLE_IMAGE_HEIGHT = 50;
 	public static final double SWIDTH = 500;
 	public static final double SHEIGHT = 500;
 	public static final double RECT_W = 600;
@@ -39,6 +41,7 @@ public class UIConstants {
 	public static final double IMAGE_SELECT_WIDTH = 100;
 	public static final double CANVAS_X = 410;
 	public static final double ROTATION = -90;
+	public static final double NINETY = 90;
 	public static final double ZERO = 0;
 	public static final double RECT_X = 200;
 	public static final double ARC = 20;
@@ -56,6 +59,7 @@ public class UIConstants {
 	public static final double RECTANGLE_H = 18;
 	public static final double TWO = 2;
 	public static final double MAX_PANE = 400;
+	public static final int INITIAL_NUM_TURTLES = 3;
 	
 	
 	public static final String CHIN = "CHIN";

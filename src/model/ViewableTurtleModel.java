@@ -5,17 +5,9 @@ import java.util.Map;
 
 public interface ViewableTurtleModel {
 	
-	double getLastDouble(List<Double> list);
-	
-	List<ViewableStampModel> getViewableStampList();
-	
-	List<ViewableLineModel> getViewableLineList();
-	
 	List<ViewableStampModel> getViewableStampList(int frameNumber);
 	
 	List<ViewableLineModel> getViewableLineList(int frameNumber);
-	
-	boolean isActive ();
 	
 	boolean isActive (int frameNumber);
 	
@@ -35,19 +27,11 @@ public interface ViewableTurtleModel {
 	
 	ViewablePenModel getViewablePen (int frameNumber);
 	
-	ViewablePenModel getViewablePen ();
-	
 	double getHeading(int frameNumber);
-	
-	double getHeading ();
 	
 	double getPositionX (int frameNumber);
 	
-	double getPositionX ();
-	
 	double getPositionY (int frameNumber);
-	
-	double getPositionY ();
 	
 	double getShowStatus (int frameNumber);
 	
@@ -58,4 +42,6 @@ public interface ViewableTurtleModel {
 	int getNumStamps();
 	
 	int getFrameNumber();
+
+	List<ViewableLineModel> getViewableLineList();
 }

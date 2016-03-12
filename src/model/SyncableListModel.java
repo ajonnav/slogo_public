@@ -13,7 +13,7 @@ public class SyncableListModel<T> implements Iterable<T>{
 	}
 
 	public SyncableListModel(SyncableListModel<T> listModel) {
-		list = new ArrayList<T>(listModel.getList());
+		list = new ArrayList<>(listModel.getList());
 	}
 
 	public void add(T object) {

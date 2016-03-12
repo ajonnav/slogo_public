@@ -74,7 +74,6 @@ public class TurtleIDView extends ScrollView {
         Double imageID = displayModel.getTurtleList().get(i).getImageIndex();
         myColorBoxes.get(i).setPromptText("Color " + penID.intValue());
         myImageBoxes.get(i).setPromptText("Image " + imageID.intValue());
-        System.out.println("hi");
 	}
 	
 	public void penChange(int ID, HBox box){

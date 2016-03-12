@@ -3,9 +3,10 @@ package model;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
 import command.Command;
 
-public abstract class ICommandsModel extends Observable{
+public abstract class ICommandsModel extends Observable implements ViewableCommandsModel{
 	
 	public abstract List<Command> getCommands (String key);
 	

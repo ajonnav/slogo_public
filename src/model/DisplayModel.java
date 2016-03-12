@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
 import command.Command;
 import constants.UIConstants;
 import exception.SLogoException;
@@ -12,6 +13,7 @@ import exception.SLogoException;
 
 public class DisplayModel extends IDisplayModel {
 
+	private int numInitialTurtles = UIConstants.INITIAL_NUM_TURTLES;
     private List<TurtleModel> turtleList = new ArrayList<>();
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
@@ -22,6 +24,7 @@ public class DisplayModel extends IDisplayModel {
     private boolean toUpdateIDView;
     private ResourceBundle errorBundle =
             ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
+	private int animationSpeed;
 
     public DisplayModel (Map<Double, String> colorMap, Map<Double, String> imageMap) {
         this.imageMap = imageMap;
@@ -30,7 +33,7 @@ public class DisplayModel extends IDisplayModel {
         this.lastActiveID = 1;
         this.toAnimate = true;
         this.toUpdateIDView = true;
-        setTurtles(3);
+        setTurtles(numInitialTurtles);
         setChanged();
         updateView();
     }
@@ -45,7 +48,7 @@ public class DisplayModel extends IDisplayModel {
 
     public double TurtleAction (String command, List<Command> parameters) {
         lastValue = 0;
-        turtleList.stream().filter(t -> t.isActive())
+        turtleList.stream().filter(t -> t.isActive(t.getFrameNumber()-1))
                 .forEach(turtle -> invokeAction(turtle, command, parameters));
         turtleList.stream().forEach(turtle -> turtle.syncFrame());
         updateView();
@@ -66,7 +69,7 @@ public class DisplayModel extends IDisplayModel {
             }
         }
         catch (Exception e) {
-            new SLogoException(errorBundle.getString("ReflectionError"));
+            throw new SLogoException(errorBundle.getString("ReflectionError"));
         }
     }
 
@@ -104,7 +107,7 @@ public class DisplayModel extends IDisplayModel {
 
     @Override
     public double[] getActiveTurtleIDs () {
-        return turtleList.stream().filter(t -> t.isActive())
+        return turtleList.stream().filter(t -> t.isActive(t.getFrameNumber()-1))
                 .mapToDouble(d -> turtleList.indexOf(d) + 1).toArray();
     }
 
@@ -204,6 +207,16 @@ public class DisplayModel extends IDisplayModel {
     public ViewableTurtleModel randomMethod (TurtleModel turtle) {
         return turtle;
     }
+    
+    public double setAnimationSpeed(double[] speed) {
+    	animationSpeed = (int)speed[0];
+    	return animationSpeed;
+    }
+    
+    @Override
+	public int getAnimationSpeed() {
+		return animationSpeed;
+	}
 
 }
 
