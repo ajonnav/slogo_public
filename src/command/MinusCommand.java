@@ -6,8 +6,8 @@ import model.IModelMap;
 
 public class MinusCommand extends Command {
 
-    public MinusCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public MinusCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

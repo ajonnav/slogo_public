@@ -7,8 +7,8 @@ import model.IModelMap;
 public class SetBackgroundCommand extends Command {
 
 
-    public SetBackgroundCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public SetBackgroundCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

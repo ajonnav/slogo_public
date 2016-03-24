@@ -5,7 +5,8 @@ import model.DisplayModel;
 import model.HistoryModel;
 import model.ModelMap;
 import model.VariableModel;
-import parser.CommandParser;
+import parser.ICommandParser;
+import parser.SLogoCommandParser;
 import preferences.saveState;
 import view.CommandsView;
 import view.DisplayView;
@@ -21,13 +22,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-import java.util.TreeMap;
 import addons.WMenu;
 import constants.UIConstants;
 
 public class DemoWSpace extends Screen {
 
-	private CommandParser parser;
+	private ICommandParser parser;
 	private TextArea inputText;
 	private String myLang;
 	private HistoryPaneView hpv;
@@ -64,10 +64,8 @@ public class DemoWSpace extends Screen {
 
 	public void setLang(String language) {
 		this.myLang = language;
-		parser = new CommandParser(modelMap);
-		parser.addPatterns(UIConstants.RSRC_LANG + myLang);
-		parser.addPatterns(UIConstants.RSRC_LANG + UIConstants.SYNTAX);
-
+		parser = new SLogoCommandParser(modelMap);
+		parser.setLanguage(myLang);
 		setVariablePane();
 		setInputPane();
 		setDisplay();
@@ -80,20 +78,7 @@ public class DemoWSpace extends Screen {
 	 * Initializes the turtle display's front end and back end relationship
 	 */
 	private void setDisplay() {
-		 Map<Double,String> colorMap = new TreeMap<Double, String>();
-		 colorMap.put(0.0, "#849775");
-		 colorMap.put(1.0, "#1518b4");
-		 colorMap.put(2.0, "#5df45d");
-		 colorMap.put(3.0, "#7182a7");
-		 colorMap.put(4.0, "#b73547");
-		 Map<Double, String> imageMap = new TreeMap<Double, String>();
-		 imageMap.put(0.0, "black.png");
-		 imageMap.put(1.0, "blue.png");
-		 imageMap.put(2.0, "green.png");
-		 imageMap.put(3.0, "red.png");
-		 imageMap.put(4.0, "turtle.png");
-		 DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
-//		DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
+		DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
 		DisplayView displayView = new DisplayView(getRoot());
 		displayModel.addObserver(displayView);
 		modelMap.setDisplay(displayModel);

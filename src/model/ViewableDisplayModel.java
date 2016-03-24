@@ -29,7 +29,7 @@ public interface ViewableDisplayModel {
 	
 	public abstract boolean isToUpdateIDView ();
 
-        public abstract void setIsToUpdateIDView (boolean toUpdateIDView);
+        public abstract void setToUpdateIDView (boolean toUpdateIDView);
 
 	public abstract int getAnimationSpeed();
 }

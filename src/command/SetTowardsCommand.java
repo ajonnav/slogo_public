@@ -8,8 +8,8 @@ import model.IModelMap;
 
 public class SetTowardsCommand extends Command {
 
-    public SetTowardsCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public SetTowardsCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(2);
     }
 

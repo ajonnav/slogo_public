@@ -3,25 +3,24 @@ package command;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import constants.UIConstants;
+import constants.ResourceConstants;
 import model.IModelMap;
-import parser.Operator;
 
 
 public abstract class Command {
 
     private int numChildren = 0;
     private IModelMap modelMap;
-    private int tokenNumber;
+    private String expression;
     private List<String> text;
     private String name;
     private boolean takesUnlimitedParameters = false;
     private List<List<Command>> commands;
-    private ResourceBundle errorBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
+    private ResourceBundle errorBundle = ResourceBundle.getBundle(ResourceConstants.DEFAULT_RESOURCE + ResourceConstants.ERRORS);
 
-    public Command(IModelMap modelMap, int tokenNumber, List<String> text) {
+    public Command(IModelMap modelMap, String expression, List<String> text) {
         this.setModelMap(modelMap);
-        this.setTokenNumber(tokenNumber);
+        this.setExpression(expression);
         this.setText(text);
     }
     public abstract double execute ();
@@ -83,12 +82,12 @@ public abstract class Command {
         this.modelMap = modelMap;
     }
     
-    public int getTokenNumber () {
-        return tokenNumber;
+    public String getExpression () {
+        return expression;
     }
     
-    public void setTokenNumber (int tokenNumber) {
-        this.tokenNumber = tokenNumber;
+    public void setExpression (String expression) {
+        this.expression = expression;
     }
     
     public List<String> getText () {

@@ -8,8 +8,8 @@ import model.IModelMap;
 public class MakeVariableCommand extends Command {
 
 
-    public MakeVariableCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public MakeVariableCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(2);
     }
 

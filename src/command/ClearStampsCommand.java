@@ -7,8 +7,8 @@ public class ClearStampsCommand extends Command {
 
 
 
-    public ClearStampsCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public ClearStampsCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
     }
 
     @Override

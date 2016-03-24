@@ -6,8 +6,8 @@ import model.IModelMap;
 
 public class IfCommand extends Command {
 
-    public IfCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public IfCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(2);
     }
 

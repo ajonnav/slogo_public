@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.stream.Collectors;
 import addons.Features;
 import animation.StampAnimation;
@@ -20,8 +21,7 @@ import javafx.scene.text.Text;
 import model.ViewableDisplayModel;
 
 
-
-public class DisplayView implements IView {
+public class DisplayView implements Observer{
 
     private Canvas backgroundCanvas;
     private GraphicsContext backgroundGC;
@@ -60,21 +60,25 @@ public class DisplayView implements IView {
     public void updateBackground (ViewableDisplayModel displayModel) {
         features.updateComboBoxOptions(backgroundColorComboBox, displayModel.getColorMap());
         String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
-                                       displayModel.getColorMap().get(displayModel.getBackgroundColorIndex());
+                                       displayModel.getColorMap()
+                                               .get(displayModel.getBackgroundColorIndex());
         backgroundGC.clearRect(0, 0, backgroundCanvas.getWidth(),
                                backgroundCanvas.getHeight());
         backgroundGC.setFill(Color.web(backgroundColorString.split(" ")[1]));
         backgroundGC.fillRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
-        backgroundColorComboBox.setPromptText("Background Color " + displayModel.getBackgroundColorIndex());
-        backgroundColorComboBox.setOnAction(e -> bgChange(displayModel, (HBox) backgroundColorComboBox.getValue()));
+        backgroundColorComboBox
+                .setPromptText("Background Color " + displayModel.getBackgroundColorIndex());
+        backgroundColorComboBox
+                .setOnAction(e -> bgChange(displayModel,
+                                           (HBox) backgroundColorComboBox.getValue()));
     }
-    
+
     public void bgChange (ViewableDisplayModel displayModel, HBox box) {
         Text t = (Text) box.getChildren().get(1);
         Integer ind = Integer.parseInt(t.getText());
         displayModel.setBackgroundColorIndex((double) ind);
     }
-    
+
     public void animateDisplay (ViewableDisplayModel displayModel, int speed) {
         if (displayModel.isToAnimate()) {
             displayModel.setToAnimate(false);
@@ -84,7 +88,8 @@ public class DisplayView implements IView {
             animations.stream().sequential()
                     .collect(Collectors.toCollection( () -> st.getChildren()));
             st.play();
-            lastExpressionFrameNumber = displayModel.getViewableTurtleList().get(0).getFrameNumber();
+            lastExpressionFrameNumber =
+                    displayModel.getViewableTurtleList().get(0).getFrameNumber();
         }
     }
 
@@ -92,7 +97,7 @@ public class DisplayView implements IView {
         turtleAnim.setDisplayModel(displayModel);
         stampAnim.setDisplayModel(displayModel);
         for (int i = lastExpressionFrameNumber; i < displayModel.getViewableTurtleList().get(0)
-                .getFrameNumber(); i++) {    
+                .getFrameNumber(); i++) {
             turtleAnim.setUpView(i, speed);
             stampAnim.setUpView(i, speed);
             animations.addAll(turtleAnim.generateAnimations(i, speed));

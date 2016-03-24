@@ -7,8 +7,8 @@ import model.IModelMap;
 public class PenDownCommand extends Command {
 
 
-    public PenDownCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public PenDownCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
     }
 
     @Override

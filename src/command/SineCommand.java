@@ -6,8 +6,8 @@ import model.IModelMap;
 
 public class SineCommand extends Command {
 
-    public SineCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public SineCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

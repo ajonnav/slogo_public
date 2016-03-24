@@ -8,8 +8,8 @@ public class IsPenDownCommand extends Command {
 
 
 
-    public IsPenDownCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public IsPenDownCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(0);
     }
 

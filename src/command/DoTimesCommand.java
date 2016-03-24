@@ -8,8 +8,8 @@ import model.IModelMap;
 public class DoTimesCommand extends Command {
 
 
-    public DoTimesCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public DoTimesCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(2);
     }
 

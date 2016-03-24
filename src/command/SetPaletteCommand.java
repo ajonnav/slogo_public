@@ -7,8 +7,8 @@ import model.IModelMap;
 public class SetPaletteCommand extends Command {
 
 
-    public SetPaletteCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public SetPaletteCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(4);
     }
 

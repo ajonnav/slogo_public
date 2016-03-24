@@ -2,13 +2,12 @@ package command;
 
 import java.util.List;
 import model.IModelMap;
-import parser.Operator;
 
 
 public class PowerCommand extends Command {
 
-    public PowerCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public PowerCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(2);
     }
 

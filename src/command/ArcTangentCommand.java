@@ -6,8 +6,8 @@ import model.IModelMap;
 
 public class ArcTangentCommand extends Command {
 
-    public ArcTangentCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public ArcTangentCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

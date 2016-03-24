@@ -8,8 +8,8 @@ public class BackwardCommand extends Command {
 
 
 
-    public BackwardCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public BackwardCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

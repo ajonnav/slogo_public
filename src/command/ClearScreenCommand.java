@@ -7,8 +7,8 @@ import model.IModelMap;
 public class ClearScreenCommand extends Command {
 
 
-    public ClearScreenCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public ClearScreenCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
     }
 
     @Override

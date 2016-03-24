@@ -7,8 +7,8 @@ import model.IModelMap;
 public class YCoordinateCommand extends Command {
 
 
-    public YCoordinateCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public YCoordinateCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
     }
 
     @Override

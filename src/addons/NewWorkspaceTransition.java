@@ -3,7 +3,7 @@ package addons;
 import java.io.File;
 import java.util.ResourceBundle;
 
-import constants.UIConstants;
+import constants.ResourceConstants;
 import display.DemoWSpace;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -20,7 +20,7 @@ public class NewWorkspaceTransition {
 	public NewWorkspaceTransition(Stage myStage) {
 		myS = myStage;
         myFC = new FileChooser();
-        myBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
+        myBundle = ResourceBundle.getBundle(ResourceConstants.DEFAULT_RESOURCE + ResourceConstants.SCREEN_LANG);
         myFC.setTitle(myBundle.getString("FileSelect"));
         myFC.getExtensionFilters().addAll(
                         new ExtensionFilter(

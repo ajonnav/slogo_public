@@ -6,8 +6,8 @@ import model.IModelMap;
 
 public class ListEndCommand extends Command {
 
-    public ListEndCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public ListEndCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
     }
 
     @Override

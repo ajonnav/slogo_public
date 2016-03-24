@@ -8,8 +8,8 @@ import model.IModelMap;
 public class SetHeadingCommand extends Command {
 
 
-    public SetHeadingCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public SetHeadingCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

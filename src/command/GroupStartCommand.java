@@ -7,8 +7,8 @@ import model.IModelMap;
 
 public class GroupStartCommand extends Command {
 
-    public GroupStartCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-    	super(modelMap, tokenNumber, text);
+    public GroupStartCommand (IModelMap modelMap, String expression, List<String> text) {
+    	super(modelMap, expression, text);
     }
 
     @Override

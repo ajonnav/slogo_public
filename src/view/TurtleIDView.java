@@ -40,7 +40,7 @@ public class TurtleIDView extends ScrollView {
         if (o instanceof ViewableDisplayModel) {
             displayModel = (ViewableDisplayModel) o;
             if (displayModel.isToUpdateIDView()) {
-                displayModel.setIsToUpdateIDView(false);
+                displayModel.setToUpdateIDView(false);
                 displayModel = (DisplayModel) o;
                 for (int i = myColorBoxes.size(); i < displayModel.getViewableTurtleList().size(); i++) {
                     setUpViews(i);

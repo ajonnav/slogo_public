@@ -2,8 +2,7 @@ package view;
 
 import java.util.Observer;
 import java.util.ResourceBundle;
-
-import constants.UIConstants;
+import constants.ResourceConstants;
 import javafx.scene.Group;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -19,7 +18,7 @@ public abstract class View implements Observer{
 		setMyBox(new VBox());
 		setMyRoot(new Group());
 		getMyRoot().getChildren().add(getMyBox());
-		myBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.EXTRAS);
+		myBundle = ResourceBundle.getBundle(ResourceConstants.DEFAULT_RESOURCE + ResourceConstants.EXTRAS);
 		}
 	
 	public VBox getMyBox(){

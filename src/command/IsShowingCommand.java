@@ -7,8 +7,8 @@ import model.IModelMap;
 public class IsShowingCommand extends Command {
 
 
-    public IsShowingCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public IsShowingCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(0);
     }
 

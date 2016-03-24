@@ -7,8 +7,8 @@ import model.IModelMap;
 
 public class SetPenSizeCommand extends Command {
 
-    public SetPenSizeCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public SetPenSizeCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

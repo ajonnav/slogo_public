@@ -8,8 +8,8 @@ import model.IModelMap;
 public class SetPenStyleCommand extends Command{
 
 	
-	public SetPenStyleCommand(IModelMap modelMap, int tokenNumber, List<String> text) {
-	        super(modelMap, tokenNumber, text);
+	public SetPenStyleCommand(IModelMap modelMap, String expression, List<String> text) {
+	        super(modelMap, expression, text);
 		setNumChildren(1);
 	}
 

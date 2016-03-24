@@ -8,8 +8,8 @@ public class XCoordinateCommand extends Command {
 
     public static final String command = "getPositionX";
 
-    public XCoordinateCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public XCoordinateCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
     }
 
     @Override

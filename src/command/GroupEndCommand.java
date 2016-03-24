@@ -7,8 +7,8 @@ import model.IModelMap;
 
 public class GroupEndCommand extends Command {
 
-    public GroupEndCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-    	super(modelMap, tokenNumber, text);
+    public GroupEndCommand (IModelMap modelMap, String expression, List<String> text) {
+    	super(modelMap, expression, text);
     }
 
     @Override

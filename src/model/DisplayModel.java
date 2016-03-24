@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import command.Command;
+import constants.ResourceConstants;
 import constants.UIConstants;
 import exception.SLogoException;
 
@@ -23,7 +24,7 @@ public class DisplayModel extends IDisplayModel {
     private boolean toAnimate;
     private boolean toUpdateIDView;
     private ResourceBundle errorBundle =
-            ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
+            ResourceBundle.getBundle(ResourceConstants.DEFAULT_RESOURCE + ResourceConstants.ERRORS);
     private int animationSpeed = 1000;
 
     public DisplayModel (Map<Double, String> colorMap, Map<Double, String> imageMap) {
@@ -200,7 +201,7 @@ public class DisplayModel extends IDisplayModel {
     }
 
     @Override
-    public void setIsToUpdateIDView (boolean toUpdateIDView) {
+    public void setToUpdateIDView (boolean toUpdateIDView) {
         this.toUpdateIDView = toUpdateIDView;
     }
 

@@ -7,8 +7,8 @@ import model.IModelMap;
 
 public class RandomCommand extends Command {
 
-    public RandomCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public RandomCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

@@ -8,8 +8,8 @@ import model.TurtleModel;
 public class AskWithCommand extends Command {
 
 
-    public AskWithCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public AskWithCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(2);
     }
     

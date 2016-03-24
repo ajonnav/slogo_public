@@ -7,8 +7,8 @@ import model.IModelMap;
 public class StampCommand extends Command {
 
 
-    public StampCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public StampCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
     }
 
     @Override

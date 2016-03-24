@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.ResourceBundle;
+import constants.ResourceConstants;
 import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import model.IVariableModel;
 import model.ViewableVariableModel;
 
 public class VariableView extends ScrollView{
@@ -27,7 +27,7 @@ public class VariableView extends ScrollView{
 		varBox = getMyBox();
 		myTA = ta;
 		String myLang = language;
-		myBundle = ResourceBundle.getBundle(UIConstants.RSRC_LANG + myLang);
+		myBundle = ResourceBundle.getBundle(ResourceConstants.RSRC_LANG + myLang);
 		setMyName(getResources().getString("UVars"));
 		refresh();
 	}

@@ -1,8 +1,9 @@
-package parser;
+package command;
 
 import java.util.function.BinaryOperator;
 
 public enum Operator {
+    
     PRODUCT((n1, n2) -> n1 * n2),
     DIFFERENCE((n1, n2) -> n1-n2),
     SUM((n1, n2) -> n1 + n2),

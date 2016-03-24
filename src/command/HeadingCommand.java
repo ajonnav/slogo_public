@@ -7,8 +7,8 @@ import model.IModelMap;
 public class HeadingCommand extends Command {
 
 
-    public HeadingCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public HeadingCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(0);
     }
 

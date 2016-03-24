@@ -6,8 +6,8 @@ import model.IModelMap;
 public class IDCommand extends Command {
 
 
-    public IDCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public IDCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(0);
     }
     

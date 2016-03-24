@@ -8,8 +8,8 @@ public class VariableCommand extends Command {
 
     private String name;
 
-    public VariableCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public VariableCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         this.name = text.get(0);
     }
 

@@ -7,8 +7,8 @@ import model.IModelMap;
 
 public class SetShapeCommand extends Command {
 
-    public SetShapeCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public SetShapeCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

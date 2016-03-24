@@ -6,8 +6,8 @@ import model.IModelMap;
 
 public class GreaterThanCommand extends Command {
 
-    public GreaterThanCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public GreaterThanCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(2);
         setTakesUnlimitedParameters(true);
     }

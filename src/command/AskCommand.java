@@ -5,8 +5,8 @@ import model.IModelMap;
 
 public class AskCommand extends Command {
 
-    public AskCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public AskCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(2);
     }
     

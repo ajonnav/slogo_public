@@ -6,8 +6,8 @@ import model.IModelMap;
 
 public class NotCommand extends Command {
 
-    public NotCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public NotCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 

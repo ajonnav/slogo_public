@@ -2,7 +2,7 @@ package addons;
 
 import java.util.List;
 import java.util.ResourceBundle;
-import constants.UIConstants;
+import constants.ResourceConstants;
 import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -30,7 +30,7 @@ public class WMenu {
 		menuMaker = new MenuMaker();
 		featureMaker = new Features();
 		myMenu = menuMaker.getMenu();
-		myResources = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.EXTRAS);
+		myResources = ResourceBundle.getBundle(ResourceConstants.DEFAULT_RESOURCE + ResourceConstants.EXTRAS);
 
 	}
 

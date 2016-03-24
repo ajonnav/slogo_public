@@ -1,7 +1,7 @@
 package display;
 
 import java.util.ResourceBundle;
-
+import constants.ResourceConstants;
 import constants.UIConstants;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,7 +16,7 @@ public abstract class Screen {
 	
 	
 	public Screen() {
-		myBundle = ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.SCREEN_LANG);
+		myBundle = ResourceBundle.getBundle(ResourceConstants.DEFAULT_RESOURCE + ResourceConstants.SCREEN_LANG);
 		myStage = new Stage();
 		myStage.setTitle(myBundle.getString(UIConstants.TITLE));
 		myRoot = new Group();

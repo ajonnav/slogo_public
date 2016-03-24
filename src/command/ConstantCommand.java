@@ -8,8 +8,8 @@ public class ConstantCommand extends Command {
 
     private double constant;
 
-    public ConstantCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public ConstantCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         this.constant = Double.parseDouble(text.get(0));
     }
     

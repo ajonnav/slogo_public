@@ -8,8 +8,8 @@ import model.IModelMap;
 public class RightCommand extends Command {
 
 
-    public RightCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
-        super(modelMap, tokenNumber, text);
+    public RightCommand (IModelMap modelMap, String expression, List<String> text) {
+        super(modelMap, expression, text);
         setNumChildren(1);
     }
 
