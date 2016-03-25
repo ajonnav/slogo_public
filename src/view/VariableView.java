@@ -8,7 +8,7 @@ import constants.UIConstants;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import model.IVariableModel;
+import model.AbstractVariableModel;
 import model.ViewableVariableModel;
 
 public class VariableView extends ScrollView{

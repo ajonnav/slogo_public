@@ -2,7 +2,7 @@ package model;
 
 import java.util.Observable;
 
-public abstract class IPenModel extends Observable implements ViewablePenModel{
+public abstract class AbstractPenModel extends Observable implements ViewablePenModel{
 
 	public abstract boolean getStatus ();
 	
@@ -26,6 +26,6 @@ public abstract class IPenModel extends Observable implements ViewablePenModel{
 	
 	public abstract String getColorString ();
 	
-	public abstract IPenModel copyPenModel ();
+	public abstract AbstractPenModel copyPenModel ();
 
 }

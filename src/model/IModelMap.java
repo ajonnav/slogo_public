@@ -2,20 +2,20 @@ package model;
 
 public interface IModelMap {
 	
-	IDisplayModel getDisplay();
+	AbstractDisplayModel getDisplay();
 	
-	IHistoryModel getHistory();
+	AbstractHistoryModel getHistory();
 	
-	IVariableModel getVariable();
+	AbstractVariableModel getVariable();
 	
-	ICommandsModel getCommands();
+	AbstractCommandsModel getCommands();
 	
-	void setDisplay(IDisplayModel displayModel);
+	void setDisplay(AbstractDisplayModel displayModel);
 	
-	void setHistory(IHistoryModel historyModel);
+	void setHistory(AbstractHistoryModel historyModel);
 	
-	void setCommands(ICommandsModel commandsModel);
+	void setCommands(AbstractCommandsModel commandsModel);
 	
-	void setVariable(IVariableModel historyModel);
+	void setVariable(AbstractVariableModel historyModel);
 	
 }

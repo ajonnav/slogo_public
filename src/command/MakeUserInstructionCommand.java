@@ -2,13 +2,13 @@ package command;
 
 import java.util.List;
 import exception.SLogoException;
-import model.ICommandsModel;
+import model.AbstractCommandsModel;
 import model.IModelMap;
 
 
 public class MakeUserInstructionCommand extends Command {
 
-    private ICommandsModel commandsModel;
+    private AbstractCommandsModel commandsModel;
 
     public MakeUserInstructionCommand (IModelMap modelMap, int tokenNumber, List<String> text) {
         super(modelMap, tokenNumber, text);

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class HistoryModel extends IHistoryModel{
+public class HistoryModel extends AbstractHistoryModel{
 
     private List<String> history;
 

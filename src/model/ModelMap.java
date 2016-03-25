@@ -2,40 +2,40 @@ package model;
 
 public class ModelMap implements IModelMap {
 
-    private IHistoryModel history;
-    private ICommandsModel commands;
-    private IVariableModel variable;
-    private IDisplayModel display;    
+    private AbstractHistoryModel history;
+    private AbstractCommandsModel commands;
+    private AbstractVariableModel variable;
+    private AbstractDisplayModel display;    
 
-    public void setHistory (IHistoryModel history) {
+    public void setHistory (AbstractHistoryModel history) {
         this.history = history;
     }
 
-    public IHistoryModel getHistory () {
+    public AbstractHistoryModel getHistory () {
         return history;
     }
 
-    public void setCommands (ICommandsModel commands) {
+    public void setCommands (AbstractCommandsModel commands) {
         this.commands = commands;
     }
 
-    public ICommandsModel getCommands () {
+    public AbstractCommandsModel getCommands () {
         return commands;
     }
 
-    public void setVariable (IVariableModel variable) {
+    public void setVariable (AbstractVariableModel variable) {
         this.variable = variable;
     }
 
-    public IVariableModel getVariable () {
+    public AbstractVariableModel getVariable () {
         return variable;
     }
 
-    public void setDisplay (IDisplayModel display) {
+    public void setDisplay (AbstractDisplayModel display) {
         this.display = display;
     }
 
-    public IDisplayModel getDisplay () {
+    public AbstractDisplayModel getDisplay () {
         return display;
     }
     

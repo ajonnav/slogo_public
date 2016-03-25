@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import exception.SLogoException;
-import model.ICommandsModel;
+import model.AbstractCommandsModel;
 import model.IModelMap;
 
 
 public class CommandCommand extends Command {
 
-    private ICommandsModel commandsModel;
+    private AbstractCommandsModel commandsModel;
     private String name;
 
     public CommandCommand (IModelMap modelMap, int tokenNumber, List<String> text) {

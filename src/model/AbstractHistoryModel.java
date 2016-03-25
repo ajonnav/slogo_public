@@ -3,7 +3,7 @@ package model;
 import java.util.List;
 import java.util.Observable;
 
-public abstract class IHistoryModel extends Observable implements ViewableHistoryModel {
+public abstract class AbstractHistoryModel extends Observable implements ViewableHistoryModel {
 
 	public abstract void addToHistory (String command);
 	

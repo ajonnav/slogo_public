@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SyncableListModel<T> implements Iterable<T>{
+public class SyncableListModel<T> implements ISyncableListModel<T>{
 
 	private List<T> list;
 	
@@ -42,7 +42,6 @@ public class SyncableListModel<T> implements Iterable<T>{
 		}
 	}
 
-	@Override
 	public Iterator<T> iterator() {
 		return list.iterator();
 	}

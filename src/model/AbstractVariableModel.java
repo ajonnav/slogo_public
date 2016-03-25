@@ -3,7 +3,7 @@ package model;
 import java.util.Map;
 import java.util.Observable;
 
-public abstract class IVariableModel extends Observable implements ViewableVariableModel {
+public abstract class AbstractVariableModel extends Observable implements ViewableVariableModel {
 	
 	public abstract Double getVariable (String variable);
 	

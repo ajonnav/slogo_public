@@ -1,7 +1,7 @@
 package model;
 
 
-public class PenModel extends IPenModel {
+public class PenModel extends AbstractPenModel {
 
     private static final int SOLID = 0;
     private static final int DASHED = 1;
@@ -91,7 +91,7 @@ public class PenModel extends IPenModel {
     }
     
     @Override
-    public IPenModel copyPenModel () {
+    public AbstractPenModel copyPenModel () {
         PenModel pen = new PenModel(this.status, this.size, this.colorIndex, this.styleIndex);
         pen.setColorString(this.colorString);
         return pen;

@@ -11,7 +11,7 @@ import constants.UIConstants;
 import exception.SLogoException;
 
 
-public class DisplayModel extends IDisplayModel {
+public class DisplayModel extends AbstractDisplayModel {
 
     private int numInitialTurtles = UIConstants.INITIAL_NUM_TURTLES;
     private List<TurtleModel> turtleList = new ArrayList<>();

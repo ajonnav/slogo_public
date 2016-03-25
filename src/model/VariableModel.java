@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Stack;
 
 
-public class VariableModel extends IVariableModel {
+public class VariableModel extends AbstractVariableModel {
 
     private Stack<HashMap<String, Double>> variableMap;
 

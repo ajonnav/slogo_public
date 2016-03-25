@@ -25,16 +25,16 @@ public class TurtleModel implements ViewableTurtleModel {
     private int frameNumber;
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
-    private Set<SyncableListModel> syncableSet = new HashSet<>();
-    private SyncableListModel<IPenModel> penList = new SyncableListModel<>();
-    private SyncableListModel<Boolean> activeListModel = new SyncableListModel<>();
-    private SyncableListModel<Double> heading = new SyncableListModel<>();
-    private SyncableListModel<Double> positionX = new SyncableListModel<>();
-    private SyncableListModel<Double> positionY = new SyncableListModel<>();
-    private SyncableListModel<Boolean> showStatus = new SyncableListModel<>();
-    private SyncableListModel<Double> imageIndex = new SyncableListModel<>();
-    private SyncableListModel<List<ILineModel>> lines = new SyncableListModel<>();
-    private SyncableListModel<List<IStampModel>> stamps = new SyncableListModel<>();
+    private Set<ISyncableListModel> syncableSet = new HashSet<>();
+    private ISyncableListModel<AbstractPenModel> penList = new SyncableListModel<>();
+    private ISyncableListModel<Boolean> activeListModel = new SyncableListModel<>();
+    private ISyncableListModel<Double> heading = new SyncableListModel<>();
+    private ISyncableListModel<Double> positionX = new SyncableListModel<>();
+    private ISyncableListModel<Double> positionY = new SyncableListModel<>();
+    private ISyncableListModel<Boolean> showStatus = new SyncableListModel<>();
+    private ISyncableListModel<Double> imageIndex = new SyncableListModel<>();
+    private ISyncableListModel<List<ILineModel>> lines = new SyncableListModel<>();
+    private ISyncableListModel<List<IStampModel>> stamps = new SyncableListModel<>();
     List<String> newTurtleFieldList =
             new ArrayList<>(Arrays.asList(new String[] { "heading", "positionX", "positionY",
                                                          "showStatus", "imageIndex" }));
@@ -66,7 +66,7 @@ public class TurtleModel implements ViewableTurtleModel {
 
     private void addInitialStates (int num) {
         for (int i = 0; i < num; i++) {
-            IPenModel newPen =
+            AbstractPenModel newPen =
                     new PenModel(true, initialPenSize, initialPenColorIndex, initialPenStyleIndex);
             newPen.setColorString(colorMap.get(newPen.getColorIndex()));
             penList.add(newPen);
@@ -106,7 +106,7 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     private void setStampList (TurtleModel newTurtle) {
-        SyncableListModel<List<IStampModel>> newStamps = new SyncableListModel<>();
+        ISyncableListModel<List<IStampModel>> newStamps = new SyncableListModel<>();
         for (List<IStampModel> stampList : this.stamps) {
             newStamps.add(copyStampList(stampList));
         }
@@ -116,7 +116,7 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     private void setLineList (TurtleModel newTurtle) {
-        SyncableListModel<List<ILineModel>> newLines = new SyncableListModel<>();
+        ISyncableListModel<List<ILineModel>> newLines = new SyncableListModel<>();
         for (List<ILineModel> lineList : this.lines) {
             newLines.add(copyLineList(lineList));
         }
@@ -126,8 +126,8 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     private void setPenList (TurtleModel newTurtle) {
-        SyncableListModel<IPenModel> newPen = new SyncableListModel<>();
-        for (IPenModel pen : this.penList.getList()) {
+        ISyncableListModel<AbstractPenModel> newPen = new SyncableListModel<>();
+        for (AbstractPenModel pen : this.penList.getList()) {
             newPen.add(pen.copyPenModel());
         }
         newTurtle.penList = newPen;
@@ -157,7 +157,7 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     public double forward (double[] distance) {
-        IPenModel lastPen = penList.get(penList.size() - 1);
+        AbstractPenModel lastPen = penList.get(penList.size() - 1);
         if (lastPen.getStatus()) {
             List<ILineModel> nextLM = copyLineList(getLineList(frameNumber - 1));
             nextLM.add(new LineModel(getPositionX(frameNumber - 1), getPositionY(frameNumber - 1),
@@ -201,14 +201,14 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     public double penUp () {
-        IPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
+        AbstractPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
         newPen.setStatus(false);
         penList.add(newPen);
         return 0;
     }
 
     public double penDown () {
-        IPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
+        AbstractPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
         newPen.setStatus(true);
         penList.add(newPen);
         return 1;
@@ -242,7 +242,7 @@ public class TurtleModel implements ViewableTurtleModel {
                 new double[] { getPositionX(frameNumber - 1), getPositionY(frameNumber - 1) };
         positionX.add(xy[0]);
         positionY.add(xy[1]);
-        IPenModel lastPen = penList.get(penList.size() - 1);
+        AbstractPenModel lastPen = penList.get(penList.size() - 1);
 //        if (lastPen.getStatus()) {
 //            List<ILineModel> nextLM = copyLineList(getLineList(frameNumber - 1));
 //            nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(frameNumber - 1),
@@ -289,7 +289,7 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     public double setPenColorIndex (double[] penColorIndex) {
-        IPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
+        AbstractPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
         newPen.setColorIndex(penColorIndex[0]);
         newPen.setColorString(colorMap.get(penColorIndex[0]));
         penList.add(newPen);
@@ -297,7 +297,7 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     public double setPenStyleIndex (double[] penStyleIndex) {
-        IPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
+        AbstractPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
         newPen.setStyleIndex(penStyleIndex[0]);
         penList.add(newPen);
         return penStyleIndex[0];
@@ -309,7 +309,7 @@ public class TurtleModel implements ViewableTurtleModel {
     }
 
     public double setLineWidth (double[] lineWidth) {
-        IPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
+        AbstractPenModel newPen = penList.get(penList.size() - 1).copyPenModel();
         newPen.setSize(lineWidth[0]);
         penList.add(newPen);
         return lineWidth[0];
@@ -347,7 +347,7 @@ public class TurtleModel implements ViewableTurtleModel {
         return heading.get(frameNumber);
     }
 
-    public IPenModel getPen (int frameNumber) {
+    public AbstractPenModel getPen (int frameNumber) {
         return penList.get(frameNumber);
     }
 

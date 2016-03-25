@@ -6,7 +6,7 @@ import java.util.Observable;
 
 import command.Command;
 
-public abstract class ICommandsModel extends Observable implements ViewableCommandsModel{
+public abstract class AbstractCommandsModel extends Observable implements ViewableCommandsModel{
 	
 	public abstract List<Command> getCommands (String key);
 	

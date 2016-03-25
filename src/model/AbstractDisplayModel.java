@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Observable;
 import command.Command;
 
-public abstract class IDisplayModel extends Observable implements ViewableDisplayModel{
+public abstract class AbstractDisplayModel extends Observable implements ViewableDisplayModel{
 	
 	public abstract double TurtleAction (String command, List<Command> parameters);
 	
