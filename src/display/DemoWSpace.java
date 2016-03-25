@@ -26,7 +26,7 @@ import addons.WMenu;
 import constants.UIConstants;
 
 public class DemoWSpace extends Screen {
-
+	
 	private CommandParser parser;
 	private TextArea inputText;
 	private String myLang;

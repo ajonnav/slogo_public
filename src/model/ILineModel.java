@@ -1,6 +1,6 @@
 package model;
 
-public interface ILineModel {
+interface ILineModel {
 
 	double getX1();
 	

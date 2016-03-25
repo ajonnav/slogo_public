@@ -19,8 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.ViewableDisplayModel;
 
-
-
 public class DisplayView implements IView {
 
     private Canvas backgroundCanvas;
@@ -57,6 +55,7 @@ public class DisplayView implements IView {
         }
     }
 
+    @Override
     public void updateBackground (ViewableDisplayModel displayModel) {
         features.updateComboBoxOptions(backgroundColorComboBox, displayModel.getColorMap());
         String backgroundColorString = displayModel.getBackgroundColorIndex() + " " +
@@ -66,15 +65,17 @@ public class DisplayView implements IView {
         backgroundGC.setFill(Color.web(backgroundColorString.split(" ")[1]));
         backgroundGC.fillRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
         backgroundColorComboBox.setPromptText("Background Color " + displayModel.getBackgroundColorIndex());
-        backgroundColorComboBox.setOnAction(e -> bgChange(displayModel, (HBox) backgroundColorComboBox.getValue()));
+        backgroundColorComboBox.setOnAction(e -> backgroundChange(displayModel, (HBox) backgroundColorComboBox.getValue()));
     }
     
-    public void bgChange (ViewableDisplayModel displayModel, HBox box) {
+    @Override
+    public void backgroundChange (ViewableDisplayModel displayModel, HBox box) {
         Text t = (Text) box.getChildren().get(1);
         Integer ind = Integer.parseInt(t.getText());
         displayModel.setBackgroundColorIndex((double) ind);
     }
     
+    @Override
     public void animateDisplay (ViewableDisplayModel displayModel, int speed) {
         if (displayModel.isToAnimate()) {
             displayModel.setToAnimate(false);
@@ -88,6 +89,7 @@ public class DisplayView implements IView {
         }
     }
 
+    @Override
     public void drawObjects (ViewableDisplayModel displayModel, int speed) {
         turtleAnim.setDisplayModel(displayModel);
         stampAnim.setDisplayModel(displayModel);
