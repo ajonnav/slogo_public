@@ -7,11 +7,12 @@
  * Observer and that alone was why this class was implemented. This interface now bears a real 
  * purpose and can conveniently be used with any future view classes requiring animation, drawing, 
  * or updates. That said, the reason other classes did not implement this interface was because they 
- * already had code to implemented scroll view which focused on statistic display instead of 
+ * already had code to implement scrollView which focused on statistic display instead of 
  * drawings. That said, if we chose to include everything in a single interface (doubtful though), 
  * we would just have to add the scrollView methods into this interface and either abstract 
  * implementing classes if we choose to not use every method in the interface or to include one line 
- * empty overrides to avoid issues. 
+ * empty overrides to avoid issues. As a whole, adding methods to this class creates a contract 
+ * between classes that improves readability and allows for calling various methods cross class.
  */
 
 package view;
