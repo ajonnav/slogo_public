@@ -1,3 +1,16 @@
+// This entire file is part of my masterpiece.
+// Michael Figueiras
+
+/*
+ * This workspace needed to be refactored because it had poor duplicate code in terms
+ * of initializing the color and image maps. I realized they were overwriting the maps
+ * loaded in through the user's file, so it was clear that this code needed to be replaced. In addition,
+ * I used reflection to initialize the methods that set up the model and views. This helped improve
+ * the dependencies that were discussed in my analysis. I also moved the language feature to the Screen class
+ * since both Splash and DemoWSpace keep track of the user language. 
+ * This adheres better to the inheritance hierarchy of the display package and encapsulates this data
+ * more appropriately.  
+ */
 package display;
 
 import model.CommandsModel;
@@ -17,11 +30,11 @@ import view.View;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-import java.util.TreeMap;
 import addons.WMenu;
 import constants.UIConstants;
 
@@ -29,7 +42,6 @@ public class DemoWSpace extends Screen {
 
 	private CommandParser parser;
 	private TextArea inputText;
-	private String myLang;
 	private HistoryPaneView hpv;
 	private ModelMap modelMap;
 	private saveState myState;
@@ -42,14 +54,44 @@ public class DemoWSpace extends Screen {
 	public DemoWSpace(saveState myS) {
 		myState = myS;
 		modelMap = new ModelMap();
+		parser = new CommandParser(modelMap);
 	}
 
 	@Override
 	public void setUpScene() {
 		setScene(new Scene(getRoot(), UIConstants.WIDTH, UIConstants.HEIGHT, Color.LIGHTBLUE));
 		inputText = new TextArea();
+		parser.addPatterns(UIConstants.RSRC_LANG + getMyLang());
+		parser.addPatterns(UIConstants.RSRC_LANG + UIConstants.SYNTAX);
+		for (String s : getResources().getString(UIConstants.INIT).split("/")) {
+			try {
+				getClass().getDeclaredMethod(s).invoke(this);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+					| NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
+	/*
+	 * Initializes the turtle display's front end and back end relationship
+	 */
+	private void setDisplay() {
+		DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
+		DisplayView displayView = new DisplayView(getRoot());
+		displayModel.addObserver(displayView);
+		modelMap.setDisplay(displayModel);
+		modelMap.getDisplay().setBackgroundColorIndex(myState.getBackColorIndex());
+		displayModel.setToAnimate(true);
+		displayModel.notifyObservers();
+		setTurtlePane(displayModel);
+		displayModel.updateView();
+	}
+
+	/*
+	 * Initializes the MenuBar for the workspace screen
+	 */
 	public void setBar() {
 		WMenu workspaceMenu = new WMenu(getRoot(), modelMap, getMyLang());
 		workspaceMenu.setStage(getStage());
@@ -62,49 +104,9 @@ public class DemoWSpace extends Screen {
 		getRoot().getChildren().add(workspaceMenu.getMyMenu());
 	}
 
-	public void setLang(String language) {
-		this.myLang = language;
-		parser = new CommandParser(modelMap);
-		parser.addPatterns(UIConstants.RSRC_LANG + myLang);
-		parser.addPatterns(UIConstants.RSRC_LANG + UIConstants.SYNTAX);
-
-		setVariablePane();
-		setInputPane();
-		setDisplay();
-		setHistoryPane();
-		setUserCommandPane();
-		setBar();
-	}
-
 	/*
-	 * Initializes the turtle display's front end and back end relationship
+	 * Establishes the observer and observable relationship for a model and view
 	 */
-	private void setDisplay() {
-		 Map<Double,String> colorMap = new TreeMap<Double, String>();
-		 colorMap.put(0.0, "#849775");
-		 colorMap.put(1.0, "#1518b4");
-		 colorMap.put(2.0, "#5df45d");
-		 colorMap.put(3.0, "#7182a7");
-		 colorMap.put(4.0, "#b73547");
-		 Map<Double, String> imageMap = new TreeMap<Double, String>();
-		 imageMap.put(0.0, "black.png");
-		 imageMap.put(1.0, "blue.png");
-		 imageMap.put(2.0, "green.png");
-		 imageMap.put(3.0, "red.png");
-		 imageMap.put(4.0, "turtle.png");
-		 DisplayModel displayModel = new DisplayModel(colorMap, imageMap);
-//		DisplayModel displayModel = new DisplayModel(myState.getColorMap(), myState.getImages());
-		DisplayView displayView = new DisplayView(getRoot());
-		displayModel.addObserver(displayView);
-		modelMap.setDisplay(displayModel);
-		System.out.println(myState.getBackColorIndex());
-		modelMap.getDisplay().setBackgroundColorIndex(myState.getBackColorIndex());
-		displayModel.setToAnimate(true);
-		displayModel.notifyObservers();
-		setTurtlePane(displayModel);
-	        displayModel.updateView();
-	}
-
 	public void establishRelationship(Observable myModel, View myView) {
 		myModel.addObserver(myView);
 		myModel.notifyObservers();
@@ -163,8 +165,6 @@ public class DemoWSpace extends Screen {
 		commandView = new CommandsView(inputText);
 		modelMap.setCommands(commandModel);
 		establishRelationship(commandModel, commandView);
-		// initializeCommands(commandModel, myState.getCommands(),
-		// myState.getCommandVars());
 		commandModel.updateView();
 	}
 
@@ -176,9 +176,5 @@ public class DemoWSpace extends Screen {
 		turtleView = new TurtleIDView();
 		getRoot().getChildren().add(turtleView.getMyRoot());
 		dm.addObserver(turtleView);
-	}
-
-	public String getMyLang() {
-		return myLang;
 	}
 }

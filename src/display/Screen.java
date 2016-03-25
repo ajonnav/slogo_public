@@ -13,6 +13,7 @@ public abstract class Screen {
 	private Group myRoot;
 	private Stage myStage;
 	private ResourceBundle myBundle;
+	private String myLang;
 	
 	
 	public Screen() {
@@ -27,6 +28,14 @@ public abstract class Screen {
 	
 	protected void setScene(Scene s){
 		myScene = s;
+	}
+	
+	public void setMyLang(String s){
+		myLang = s;
+	}
+	
+	public String getMyLang(){
+		return myLang;
 	}
 	
 	public void begin(){

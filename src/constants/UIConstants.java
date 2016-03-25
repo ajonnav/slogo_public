@@ -12,6 +12,8 @@ public class UIConstants {
 	public static final String SYNTAX = "Syntax";
 	public static final String EXTRAS = "Extras";
 	public static final String ERRORS = "Errors";
+	public static final String INIT = "Init";
+	public static final String TEST = "Testing";
 	public static final double WIDTH = 1300;
 	public static final double HEIGHT = 750;
 	public static final double TURTLE_IMAGE_WIDTH = 50;

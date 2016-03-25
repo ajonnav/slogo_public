@@ -37,7 +37,7 @@ public class NewWorkspaceTransition {
         PrefLoader loader = new PrefLoader();
         saveState myState = loader.load(selectedFile);
         DemoWSpace myW = new DemoWSpace(myState);
-        myW.setLang(language);
+        myW.setMyLang(language);
         myW.begin();
 	}
 
