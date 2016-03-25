@@ -1,5 +1,7 @@
 // This entire file is part of my masterpiece.
 // Anirudh Jonnavithula
+// This class is just a concrete class example of the ISyncableListModel
+// interface.
 package model;
 
 import java.util.ArrayList;
