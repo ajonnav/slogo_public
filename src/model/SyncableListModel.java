@@ -1,9 +1,19 @@
+// This entire file is part of my masterpiece.
+// Anirudh Jonnavithula
 package model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/***
+ * This class is used in TurtleModel to keep track of all the attributes
+ * that change from frame to frame. We keep track of the attributes to
+ * help with animation
+ * @author aj168
+ *
+ * @param <T> Type of objects in this list
+ */
 public class SyncableListModel<T> implements ISyncableListModel<T>{
 
 	private List<T> list;
