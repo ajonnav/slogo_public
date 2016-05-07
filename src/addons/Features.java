@@ -81,6 +81,9 @@ public class Features {
 			myHB.getChildren().add(makeText(Integer.toString(s.intValue())));
 			cb.getItems().add(myHB);
 		}
+		HBox tempB = new HBox();
+        tempB.getChildren().add(new Text(UIConstants.IMAGE_TURT));
+		cb.setValue(tempB);
 	}
 
 	protected Menu makeMenu(String name, MenuBar parent) {
