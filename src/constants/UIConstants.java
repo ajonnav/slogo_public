@@ -14,6 +14,9 @@ public class UIConstants {
 	public static final String ERRORS = "Errors";
 	public static final double WIDTH = 1300;
 	public static final double HEIGHT = 750;
+	public static final int DEFAULT_DISPLAY_BEHAVIOR = 2;
+	public static final int FENCE = 3;
+	public static final int WINDOW = 2;
 	public static final double TURTLE_IMAGE_WIDTH = 50;
 	public static final double TURTLE_IMAGE_HEIGHT = 50;
 	public static final double SWIDTH = 500;

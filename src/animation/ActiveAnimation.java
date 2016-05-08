@@ -32,6 +32,7 @@ public class ActiveAnimation extends CustomAnimation{
         if (turtle.isActive(frameNumber)) {
             Rectangle area = actives.get(index);
             area.setStroke(Color.BLACK);
+            area.setOpacity(turtle.getShowStatus(frameNumber) == 1 ? 1.0 : 0.0);
             TranslateTransition at =
                     new TranslateTransition(Duration.millis(getTwoStateTranslationTime(turtle, frameNumber, speed)), 
                                             area);

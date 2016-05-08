@@ -23,14 +23,17 @@ public class TurtleModel implements ViewableTurtleModel {
     private double turtleInitialY;
     private double turtleInitialHeading;
     private int frameNumber;
+    private boolean offDisplay;
     private Map<Double, String> imageMap;
     private Map<Double, String> colorMap;
+    private DisplayBehaviorHelper displayBehaviorHelper;
     private Set<SyncableListModel> syncableSet = new HashSet<>();
     private SyncableListModel<IPenModel> penList = new SyncableListModel<>();
     private SyncableListModel<Boolean> activeListModel = new SyncableListModel<>();
     private SyncableListModel<Double> heading = new SyncableListModel<>();
     private SyncableListModel<Double> positionX = new SyncableListModel<>();
     private SyncableListModel<Double> positionY = new SyncableListModel<>();
+    private SyncableListModel<Integer> displayBehaviour = new SyncableListModel<>();
     private SyncableListModel<Boolean> showStatus = new SyncableListModel<>();
     private SyncableListModel<Double> imageIndex = new SyncableListModel<>();
     private SyncableListModel<List<ILineModel>> lines = new SyncableListModel<>();
@@ -46,6 +49,9 @@ public class TurtleModel implements ViewableTurtleModel {
                         double turtleInitialHeading,
                         Map<Double, String> imageMap,
                         Map<Double, String> colorMap) {
+        this.offDisplay = false;
+        this.displayBehaviorHelper = new DisplayBehaviorHelper();
+        displayBehaviour.add(UIConstants.DEFAULT_DISPLAY_BEHAVIOR);
         this.frameNumber = 2;
         this.turtleInitialHeading = turtleInitialHeading;
         this.turtleInitialX = turtleInitialX;
@@ -72,13 +78,31 @@ public class TurtleModel implements ViewableTurtleModel {
             penList.add(newPen);
             activeListModel.add(false);
             heading.add(turtleInitialHeading);
-            positionX.add(turtleInitialX);
-            positionY.add(turtleInitialY);
+            addX(turtleInitialX);
+            addY(turtleInitialY);
             showStatus.add(true);
             imageIndex.add(4.0);
             lines.add(new ArrayList<>());
             stamps.add(new ArrayList<>());
         }
+    }
+
+    public void addX (double x) {
+        positionX.add(displayBehaviorHelper.checkFence(x, UIConstants.TURTLE_IMAGE_HEIGHT));
+    }
+
+    public void addY (double y) {
+        positionY.add(displayBehaviorHelper.checkFence(y, UIConstants.TURTLE_IMAGE_WIDTH));
+    }
+
+    public double window () {
+        displayBehaviour.add(2);
+        return 2;
+    }
+
+    public double fence () {
+        displayBehaviour.add(3);
+        return 3;
     }
 
     public TurtleModel makeNewActiveTurtle () {
@@ -156,27 +180,48 @@ public class TurtleModel implements ViewableTurtleModel {
         return newSM;
     }
 
+    public void updateWindowBehavior (IPenModel lastPen, double posX, double posY) {
+        if (!displayBehaviorHelper.checkX(posX) || !displayBehaviorHelper.checkY(posY)) {
+            if (displayBehaviour.get(displayBehaviour.size() - 1) == 2) {
+                showStatus.add(false);
+            }
+            lastPen.setStatus(false);
+            offDisplay = true;
+        }
+        if ((displayBehaviorHelper.checkX(posX) && displayBehaviorHelper.checkY(posY)) &&
+            offDisplay) {
+            if (displayBehaviour.get(displayBehaviour.size() - 1) == 2) {
+                showStatus.add(true);
+            }
+            lastPen.setStatus(true);
+            offDisplay = false;
+        }
+    }
+
     public double forward (double[] distance) {
+        double savedPositionX = getPositionX(frameNumber - 1);
+        double savedPositionY = getPositionY(frameNumber - 1);
+        addX(getPositionX(frameNumber - 1) +
+             distance[0] * Math.cos(Math.toRadians(getHeading(frameNumber - 1))));
+        addY(getPositionY(frameNumber - 1) +
+             distance[0] * Math.sin(Math.toRadians(getHeading(frameNumber - 1))));
         IPenModel lastPen = penList.get(penList.size() - 1);
+        updateWindowBehavior(lastPen, getPositionX(frameNumber), getPositionY(frameNumber));
         if (lastPen.getStatus()) {
             List<ILineModel> nextLM = copyLineList(getLineList(frameNumber - 1));
-            nextLM.add(new LineModel(getPositionX(frameNumber - 1), getPositionY(frameNumber - 1),
-                                     getPositionX(frameNumber - 1) + distance[0] *
-                                                                     Math.cos(Math
-                                                                             .toRadians(getHeading(frameNumber -
-                                                                                                   1))),
-                                     getPositionY(frameNumber - 1) + distance[0] *
-                                                                     Math.sin(Math
-                                                                             .toRadians(getHeading(frameNumber -
-                                                                                                   1))),
+            nextLM.add(new LineModel(savedPositionX, savedPositionY,
+                                     savedPositionX + distance[0] *
+                                                      Math.cos(Math
+                                                              .toRadians(getHeading(frameNumber -
+                                                                                    1))),
+                                     savedPositionY + distance[0] *
+                                                      Math.sin(Math
+                                                              .toRadians(getHeading(frameNumber -
+                                                                                    1))),
                                      lastPen.getSize(), lastPen.getColorString(),
                                      lastPen.getStyle()));
             lines.add(nextLM);
         }
-        positionX.add(getPositionX(frameNumber - 1) +
-                      distance[0] * Math.cos(Math.toRadians(getHeading(frameNumber - 1))));
-        positionY.add(getPositionY(frameNumber - 1) +
-                      distance[0] * Math.sin(Math.toRadians(getHeading(frameNumber - 1))));
         return distance[0];
     }
 
@@ -240,17 +285,17 @@ public class TurtleModel implements ViewableTurtleModel {
     public double setPosition (double[] xy) {
         double[] oldPos =
                 new double[] { getPositionX(frameNumber - 1), getPositionY(frameNumber - 1) };
-        positionX.add(xy[0]);
-        positionY.add(xy[1]);
+        addX(xy[0]);
+        addY(xy[1]);
         IPenModel lastPen = penList.get(penList.size() - 1);
-//        if (lastPen.getStatus()) {
-//            List<ILineModel> nextLM = copyLineList(getLineList(frameNumber - 1));
-//            nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(frameNumber - 1),
-//                                     getPositionY(frameNumber - 1),
-//                                     lastPen.getSize(), lastPen.getColorString(),
-//                                     lastPen.getStyle()));
-//            lines.add(nextLM);
-//        }
+        // if (lastPen.getStatus()) {
+        // List<ILineModel> nextLM = copyLineList(getLineList(frameNumber - 1));
+        // nextLM.add(new LineModel(oldPos[0], oldPos[1], getPositionX(frameNumber - 1),
+        // getPositionY(frameNumber - 1),
+        // lastPen.getSize(), lastPen.getColorString(),
+        // lastPen.getStyle()));
+        // lines.add(nextLM);
+        // }
         return Math.sqrt(Math.pow((oldPos[0] - getPositionX(frameNumber - 1)), 2) +
                          Math.pow((oldPos[1] - getPositionY(frameNumber - 1)), 2));
     }
@@ -274,8 +319,8 @@ public class TurtleModel implements ViewableTurtleModel {
         lines.add(new ArrayList<>());
         double[] oldPos =
                 new double[] { getPositionX(frameNumber - 1), getPositionY(frameNumber - 1) };
-        positionX.add(0.0);
-        positionY.add(0.0);
+        addX(0.0);
+        addY(0.0);
         return Math.sqrt(Math.pow((oldPos[0] - getPositionX(frameNumber - 1)), 2) +
                          Math.pow((oldPos[1] - getPositionY(frameNumber - 1)), 2));
     }
