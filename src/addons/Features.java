@@ -50,7 +50,7 @@ public class Features {
 		return new ComboBox<>(choices);
 	}
 
-	public ComboBox<HBox> makeColorPicker(double layoutX, double layoutY, double width, double height) {
+	public ComboBox<HBox> makeHBox(double layoutX, double layoutY, double width, double height) {
 		ComboBox<HBox> cb = new ComboBox<>();
 		cb.setLayoutX(layoutX);
 		cb.setLayoutY(layoutY);
@@ -115,4 +115,5 @@ public class Features {
 			return null;
 		}
 	}
+	
 }

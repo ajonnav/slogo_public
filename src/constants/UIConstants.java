@@ -1,5 +1,8 @@
 package constants;
 
+/**
+ * Why we made this constants file... who knows, but never again
+ */
 public class UIConstants {
 
 	public static final String TITLE = "title";
