@@ -25,6 +25,7 @@ public class DisplayModel extends AbstractDisplayModel {
     private ResourceBundle errorBundle =
             ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
     private int animationSpeed = 1000;
+    private int windowBehaviour = UIConstants.DEFAULT_WINDOW_BEHAVIOUR;
 
     public DisplayModel (Map<Double, String> colorMap, Map<Double, String> imageMap) {
         this.imageMap = imageMap;

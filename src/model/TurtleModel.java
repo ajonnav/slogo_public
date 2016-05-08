@@ -1,6 +1,7 @@
 package model;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import exception.SLogoException;
 import constants.UIConstants;
 
@@ -35,11 +37,14 @@ public class TurtleModel implements ViewableTurtleModel {
     private ISyncableListModel<Double> imageIndex = new SyncableListModel<>();
     private ISyncableListModel<List<ILineModel>> lines = new SyncableListModel<>();
     private ISyncableListModel<List<IStampModel>> stamps = new SyncableListModel<>();
+    private ISyncableListModel<Integer> windowBehaviour = new SyncableListModel<>();
     List<String> newTurtleFieldList =
             new ArrayList<>(Arrays.asList(new String[] { "heading", "positionX", "positionY",
                                                          "showStatus", "imageIndex" }));
     private ResourceBundle errorBundle =
             ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.ERRORS);
+    private ResourceBundle windowBundle =
+            ResourceBundle.getBundle(UIConstants.DEFAULT_RESOURCE + UIConstants.WINDOW_BUNDLE);
 
     public TurtleModel (double turtleInitialX,
                         double turtleInitialY,
@@ -72,12 +77,12 @@ public class TurtleModel implements ViewableTurtleModel {
             penList.add(newPen);
             activeListModel.add(false);
             heading.add(turtleInitialHeading);
-            positionX.add(turtleInitialX);
-            positionY.add(turtleInitialY);
             showStatus.add(true);
             imageIndex.add(4.0);
             lines.add(new ArrayList<>());
             stamps.add(new ArrayList<>());
+            windowBehaviour.add(UIConstants.DEFAULT_WINDOW_BEHAVIOUR);
+            changeXY(turtleInitialX, turtleInitialY);
         }
     }
 
@@ -160,27 +165,46 @@ public class TurtleModel implements ViewableTurtleModel {
         AbstractPenModel lastPen = penList.get(penList.size() - 1);
         if (lastPen.getStatus()) {
             List<ILineModel> nextLM = copyLineList(getLineList(frameNumber - 1));
-            nextLM.add(new LineModel(getPositionX(frameNumber - 1), getPositionY(frameNumber - 1),
-                                     getPositionX(frameNumber - 1) + distance[0] *
-                                                                     Math.cos(Math
-                                                                             .toRadians(getHeading(frameNumber -
-                                                                                                   1))),
-                                     getPositionY(frameNumber - 1) + distance[0] *
-                                                                     Math.sin(Math
-                                                                             .toRadians(getHeading(frameNumber -
-                                                                                                   1))),
+            nextLM.add(new LineModel(getPositionX(frameNumber - 2), getPositionY(frameNumber - 2),
+                                     getPositionX(frameNumber - 1), getPositionY(frameNumber - 1),
                                      lastPen.getSize(), lastPen.getColorString(),
                                      lastPen.getStyle()));
             lines.add(nextLM);
         }
-        positionX.add(getPositionX(frameNumber - 1) +
-                      distance[0] * Math.cos(Math.toRadians(getHeading(frameNumber - 1))));
-        positionY.add(getPositionY(frameNumber - 1) +
+        changeXY(getPositionX(frameNumber - 1) +
+                      distance[0] * Math.cos(Math.toRadians(getHeading(frameNumber - 1))), getPositionY(frameNumber - 1) +
                       distance[0] * Math.sin(Math.toRadians(getHeading(frameNumber - 1))));
         return distance[0];
     }
 
-    public double backward (double[] distance) {
+    private void changeXY(double newX, double newY) {
+		String command = windowBundle.getString(windowBehaviour.get(windowBehaviour.size()-1).toString());
+		try {
+			this.getClass().getDeclaredMethod(command, double.class, double.class)
+			.invoke(this, newX, newY);
+		} 
+		catch (Exception e) {
+            throw new SLogoException(errorBundle.getString("ReflectionError"));
+        }
+	}
+    
+    private void changeWindow(double newX, double newY) {
+    	positionX.add(newX);
+    	positionY.add(newY);
+    	
+    }
+    
+    private void changeFence(double newX, double newY) {
+    	if(Math.abs(newX)>UIConstants.CANVAS_SIZE/2) {
+    		newX = Math.signum(newX)*UIConstants.CANVAS_SIZE/2;
+    	}
+    	if(Math.abs(newY)>UIConstants.CANVAS_SIZE/2) {
+    		newY = Math.signum(newY)*UIConstants.CANVAS_SIZE/2;
+    	}
+    	changeWindow(newX, newY);
+    }
+
+	public double backward (double[] distance) {
         distance[0] = -distance[0];
         return forward(distance);
     }
@@ -222,6 +246,16 @@ public class TurtleModel implements ViewableTurtleModel {
         stamps.add(nextSM);
         return imageIndex.get(imageIndex.size() - 1);
     }
+    
+    public double fence() {
+    	windowBehaviour.add(UIConstants.FENCE);
+    	return UIConstants.FENCE;
+    }
+    
+    public double window() {
+    	windowBehaviour.add(UIConstants.WINDOW);
+    	return UIConstants.WINDOW;
+    }
 
     public double show () {
         showStatus.add(true);
@@ -240,8 +274,7 @@ public class TurtleModel implements ViewableTurtleModel {
     public double setPosition (double[] xy) {
         double[] oldPos =
                 new double[] { getPositionX(frameNumber - 1), getPositionY(frameNumber - 1) };
-        positionX.add(xy[0]);
-        positionY.add(xy[1]);
+        changeXY(xy[0], xy[1]);
         AbstractPenModel lastPen = penList.get(penList.size() - 1);
 //        if (lastPen.getStatus()) {
 //            List<ILineModel> nextLM = copyLineList(getLineList(frameNumber - 1));
@@ -274,8 +307,7 @@ public class TurtleModel implements ViewableTurtleModel {
         lines.add(new ArrayList<>());
         double[] oldPos =
                 new double[] { getPositionX(frameNumber - 1), getPositionY(frameNumber - 1) };
-        positionX.add(0.0);
-        positionY.add(0.0);
+        changeXY(0.0, 0.0);
         return Math.sqrt(Math.pow((oldPos[0] - getPositionX(frameNumber - 1)), 2) +
                          Math.pow((oldPos[1] - getPositionY(frameNumber - 1)), 2));
     }

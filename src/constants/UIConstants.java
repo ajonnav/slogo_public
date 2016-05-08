@@ -9,6 +9,7 @@ public class UIConstants {
 	public static final String DEMO_CSS = "demo.css";
 	public static final String GO = "go";
 	public static final String RSRC_LANG = "resources/languages/";
+	public static final String WINDOW_BUNDLE = "WindowBundle";
 	public static final String SYNTAX = "Syntax";
 	public static final String EXTRAS = "Extras";
 	public static final String ERRORS = "Errors";
@@ -63,6 +64,9 @@ public class UIConstants {
 	public static final double BG_COMBO_Y = 675;
 	public static final double CP_THOUS = 1000;
 	public static final int INITIAL_NUM_TURTLES = 3;
+	public static final int DEFAULT_WINDOW_BEHAVIOUR = 2;
+	public static final int FENCE = 3;
+	public static final int WINDOW = 2;
 	
 	
 	
